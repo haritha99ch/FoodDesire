@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Order: TrackingEntity {
+public sealed class Order: TrackedEntity {
     [Required]
     public int CustomerId { get; set; }
     [Required]
