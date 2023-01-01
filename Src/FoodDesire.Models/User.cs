@@ -16,6 +16,7 @@ public abstract class User: TrackingEntity {
     [Required, NotNull]
     public int AccountId { get; set; }
 
+
     [ForeignKey(nameof(AddressId))]
     public Address? Address { get; set; }
     [ForeignKey(nameof(AccountId))]
@@ -23,8 +24,8 @@ public abstract class User: TrackingEntity {
 }
 
 public enum Gender {
-    [Display(Name ="Male")]
+    [Display(Name = "Male")]
     Male,
-    [Display(Name ="Female")]
+    [Display(Name = "Female")]
     Female
 }
