@@ -16,6 +16,7 @@ public sealed class FoodItem: TrackedEntity {
         }
     }
     public int ChefId { get; set; } //Prepares by
+    [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; private set; } = decimal.Zero;
 
 
