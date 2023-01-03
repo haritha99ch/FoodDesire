@@ -24,4 +24,20 @@ public class FoodDesireContext: DbContext {
     public DbSet<Delivery> Delivery { get; set; }
     public DbSet<Supply> Supply { get; set; }
     public FoodDesireContext(DbContextOptions<FoodDesireContext> options) : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<FoodItem>().OwnsMany(
+            e => e.Ingredients, navigationBuilder => {
+                navigationBuilder.ToJson();
+            });
+        modelBuilder.Entity<Order>().OwnsMany(
+            e => e.FoodItems, navigationBuilder => {
+                navigationBuilder.ToJson();
+            });
+        modelBuilder.Entity<Delivery>().OwnsOne(
+            e => e.Address, navigationBuilder => {
+                navigationBuilder.ToJson();
+            });
+    }
 }
