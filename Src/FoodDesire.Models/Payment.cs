@@ -37,6 +37,7 @@ public sealed class Payment: Entity {
     [Required, NotNull]
     public int? ManagedBy { get; set; }
     [Required, NotNull]
+    [Column(TypeName = "Decimal(18,2)")]
     public decimal Value { get; set; } = decimal.Zero;
 
 

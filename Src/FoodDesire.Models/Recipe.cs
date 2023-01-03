@@ -7,8 +7,10 @@ public sealed class Recipe: TrackedEntity {
     [Required, NotNull]
     public string? Description { get; set; }
     [Required, NotNull]
+    [Column(TypeName = "Decimal(18,2)")]
     public decimal MinimumPrice { get; private set; } = decimal.Zero;
     [Required, NotNull]
+    [Column(TypeName = "Decimal(18,2)")]
     public decimal FixedPrice { get; set; } = decimal.Zero;
     [Required, NotNull]
     public int ImageId { get; set; }
