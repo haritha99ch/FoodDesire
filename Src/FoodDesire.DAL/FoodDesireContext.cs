@@ -23,21 +23,10 @@ public class FoodDesireContext: DbContext {
     public DbSet<Payment> Payment { get; set; }
     public DbSet<Delivery> Delivery { get; set; }
     public DbSet<Supply> Supply { get; set; }
-    public FoodDesireContext(DbContextOptions<FoodDesireContext> options) : base(options) { }
+    public FoodDesireContext() { }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<FoodItem>().OwnsMany(
-            e => e.Ingredients, navigationBuilder => {
-                navigationBuilder.ToJson();
-            });
-        modelBuilder.Entity<Order>().OwnsMany(
-            e => e.FoodItems, navigationBuilder => {
-                navigationBuilder.ToJson();
-            });
-        modelBuilder.Entity<Delivery>().OwnsOne(
-            e => e.Address, navigationBuilder => {
-                navigationBuilder.ToJson();
-            });
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=fddb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;");
     }
 }
