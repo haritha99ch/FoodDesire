@@ -8,4 +8,6 @@ public sealed class Account: Entity {
     [MaxLength(15, ErrorMessage = "Password must be 15 characters or less")]
     public string? Password { get; set; }
     public string? VerifyCode { get; set; }
+
+    public User? User { get; set; }
 }

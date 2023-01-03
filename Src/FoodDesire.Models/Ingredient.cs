@@ -7,7 +7,7 @@ public sealed class Ingredient: TrackingEntity {
     [Required, NotNull]
     public Measurement Measurement { get; set; }
     [Required, NotNull]
-    public double CurrentPricePerUnit { get; set; } //Automatically update the price when a new supply made: Totalprice/Units
+    public double CurrentPricePerUnit { get; set; } //TODO: Automatically update the price when a new supply made: Totalprice/Units
     [Required, NotNull]
     public double QuantityPerUnit { get; set; }
     [Required, NotNull]
@@ -18,6 +18,7 @@ public sealed class Ingredient: TrackingEntity {
     public int ImageId { get; set; }
     [Required, NotNull]
     public int IngredientCategoryId { get; set; }
+
 
     [ForeignKey(nameof(ImageId))]
     public Image? Image { get; set; }

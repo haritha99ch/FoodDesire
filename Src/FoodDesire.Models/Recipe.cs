@@ -1,5 +1,7 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Recipe : TrackingEntity {
+public sealed class Recipe: TrackingEntity {
+    [Required, NotNull]
+    public int ChefId { get; set; } //Created by
     [Required, NotNull]
     public string? Name { get; set; }
     [Required, NotNull]
@@ -16,6 +18,8 @@ public sealed class Recipe : TrackingEntity {
     public string Tags { get; set; } = "";
 
 
+    [ForeignKey(nameof(ChefId))]
+    public Chef? Chef { get; set; }
     [ForeignKey(nameof(FoodCategoryId))]
     public FoodCategory? FoodCategory { get; set; }
     private ICollection<RecipeIngredient>? _recipeIngredients { get; set; }
