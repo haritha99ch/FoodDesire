@@ -25,14 +25,14 @@ public sealed class Payment: Entity {
     public int? _employeeId;
 
     [AllowNull]
-    public int SupplyId {
+    public int? SupplyId {
         get => _supplyId;
         set {
             PaymentType = PaymentType.Supply;
             _supplyId = value;
         }
     }
-    private int _supplyId;
+    private int? _supplyId;
 
     [Required, NotNull]
     public int? ManagedBy { get; set; }
