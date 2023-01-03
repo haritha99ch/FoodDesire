@@ -1,9 +1,4 @@
-﻿using FoodDesire.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Linq.Expressions;
-
-namespace FoodDesire.DAL;
+﻿namespace FoodDesire.DAL;
 public class Repository<T>: IRepository<T> where T : Entity {
     protected readonly FoodDesireContext _context;
     public Repository(FoodDesireContext context) {
