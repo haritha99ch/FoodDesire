@@ -7,6 +7,7 @@ public sealed class FoodItem: TrackedEntity {
     public ICollection<FoodItemIngredient>? FoodItemIngredients {
         get => _foodItemIngredients!;
         set {
+            _foodItemIngredients = value;
             value?.ToList().ForEach(fi => {
                 decimal? pricePerMultiplier = Recipe?.RecipeIngredients?
                     .FirstOrDefault(ri => ri.Id == fi.RecipeIngredientId)?.PricePerMultiplier;
@@ -18,8 +19,21 @@ public sealed class FoodItem: TrackedEntity {
     public decimal Price { get; private set; } = decimal.Zero;
 
 
+    private Recipe? _recipe { get; set; }
     [ForeignKey(nameof(RecipeId))]
-    public Recipe? Recipe { get; set; }
+    public Recipe? Recipe {
+        get => _recipe;
+        set {
+            _recipe = value;
+            if(FoodItemIngredients != null) return;
+            value?.RecipeIngredients.ToList()
+                .ForEach(ri => {
+                    FoodItemIngredients?.Add(new FoodItemIngredient() {
+                        RecipeIngredientId = ri.Id,
+                    });
+                });
+        }
+    }
     [ForeignKey(nameof(ChefId))]
     public Chef? Chef { get; set; }
 }
