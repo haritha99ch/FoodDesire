@@ -10,7 +10,10 @@ public class RecipeIngredient : Entity {
     public double RecommendedAmount { get; set; }
     [Required, NotNull]
     public bool IsRequired { get; set; } = true;
+    [Required, NotNull]
     public int Multiplier { get; set; } = 1;
+    [Required, NotNull]
+    [Column(TypeName = "Decimal(18,2)")]
     public decimal PricePerMultiplier { get; set; }
 
     [ForeignKey(nameof(RecipeId))]
