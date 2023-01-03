@@ -25,8 +25,21 @@ public class FoodDesireContext: DbContext {
     public DbSet<Supply> Supply { get; set; }
     public FoodDesireContext() { }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=fddb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<FoodItem>()
+            .OwnsMany(e => e.FoodItemIngredients, navigationBuilder => {
+                navigationBuilder.ToJson();
+            });
+        modelBuilder.Entity<Delivery>()
+            .HasOne(e => e.Order)
+            .WithOne()
+            .OnDelete(DeleteBehavior.ClientSetNull);
+        modelBuilder.Entity<FoodItem>()
+            .HasOne(e => e.Recipe)
+            .WithOne()
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }
