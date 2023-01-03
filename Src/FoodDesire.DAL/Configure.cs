@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace FoodDesire.DAL;
+﻿namespace FoodDesire.DAL;
 public static class Configure {
     public static void ConfigureServices(
         IServiceCollection services, string dbConnectionString

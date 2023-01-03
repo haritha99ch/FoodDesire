@@ -1,7 +1,4 @@
-﻿using FoodDesire.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace FoodDesire.DAL;
+﻿namespace FoodDesire.DAL;
 public class TrackingRepository<T>: Repository<T>, ITrackingRepository<T> where T : TrackedEntity {
 
     public TrackingRepository(FoodDesireContext context) : base(context) { }
