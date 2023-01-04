@@ -1,7 +1,4 @@
-﻿using FoodDesire.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace FoodDesire.DAL;
+﻿namespace FoodDesire.DAL;
 public class FoodDesireContext: DbContext {
     public DbSet<User> User { get; set; }
     public DbSet<Account> Account { get; set; }
@@ -23,9 +20,8 @@ public class FoodDesireContext: DbContext {
     public DbSet<Payment> Payment { get; set; }
     public DbSet<Delivery> Delivery { get; set; }
     public DbSet<Supply> Supply { get; set; }
+    public FoodDesireContext(DbContextOptions<FoodDesireContext> options) : base(options) { }
     public FoodDesireContext() { }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
