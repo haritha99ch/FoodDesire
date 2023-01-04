@@ -25,6 +25,10 @@ public class Repository<T>: IRepository<T> where T : Entity {
         List<T>? entities = await _context.Set<T>().Where(filter).OrderBy(order).ToListAsync();
         return entities;
     }
+    public async Task<T> GetOne(Expression<Func<T, bool>> filter) {
+        T? entity = await _context.Set<T>().SingleOrDefaultAsync(filter);
+        return entity!;
+    }
 
     public async Task<List<T>> GetAll() {
         List<T>? entities = await _context.Set<T>().AsNoTracking().ToListAsync();
