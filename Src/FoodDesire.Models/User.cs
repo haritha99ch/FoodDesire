@@ -5,10 +5,16 @@ public sealed class User: TrackedEntity {
     [Required, NotNull]
     public string? LastName { get; set; }
     [Required, NotNull]
-    public DateTime DateOfBirth { get; set; }
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime DateOfBirth {
+        get => _dateOfBirth;
+        set {
+            _dateOfBirth = value;
+            Age = DateTime.Now.AddYears(-value.Year).Year;
+        }
+    }
+    private DateTime _dateOfBirth { get; set; }
     [Required, NotNull]
-    public int Age { get; set; }
+    public int Age { get; private set; } = 0;
     [Required, NotNull]
     public Gender Gender { get; set; }
     [Required, NotNull]
