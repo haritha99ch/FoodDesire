@@ -4,7 +4,7 @@ public interface IRepository<T> where T : Entity {
     Task<T> GetByID(int Id);
     Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>> order); //For filtering
     Task<T> GetOne(Expression<Func<T, bool>> filter);
-    Task<T> Save(T entity);
+    Task<T> Update(T entity);
     Task<T> Add(T entity);
     Task SaveAll(IEnumerable<T> entities);
     Task AddAll(IEnumerable<T> entities);
