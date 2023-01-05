@@ -7,6 +7,5 @@ public interface IRepository<T> where T : Entity {
     Task<List<T>> GetAll();
     Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>> order); //For filtering
     Task<T> Update(T entity);
-    Task<bool> UpdateAll(List<T> entities);
     Task<bool> Delete(int Id);
 }
