@@ -13,19 +13,16 @@ public class Repository<T>: IRepository<T> where T : Entity {
         return addedEntity.Entity;
     }
 
-    public async Task AddAll(IEnumerable<T> entities) {
+    public async Task<List<T>> AddAll(List<T> entities) {
         await entitySet.AddRangeAsync(entities);
         await _context.SaveChangesAsync();
+        return entities.ToList();
     }
 
-    public async Task<bool> Delete(int Id) {
-        EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
-        throw new NotImplementedException();
-    }
-
-    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>> order) {
-        List<T>? entities = await entitySet.AsNoTracking().Where(filter).OrderBy(order).ToListAsync();
-        return entities;
+    public async Task<T> GetByID(int Id) {
+        T? entity = await entitySet.FindAsync(Id);
+        if(entity != null) _context.Entry(entity).State = EntityState.Detached;
+        return entity!;
     }
     public async Task<T> GetOne(Expression<Func<T, bool>> filter) {
         T? entity = await entitySet.AsNoTracking().SingleOrDefaultAsync(filter);
@@ -37,10 +34,9 @@ public class Repository<T>: IRepository<T> where T : Entity {
         return entities;
     }
 
-    public async Task<T> GetByID(int Id) {
-        T? entity = await entitySet.FindAsync(Id);
-        if(entity != null) _context.Entry(entity).State = EntityState.Detached;
-        return entity!;
+    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>> order) {
+        List<T>? entities = await entitySet.AsNoTracking().Where(filter).OrderBy(order).ToListAsync();
+        return entities;
     }
 
     public async Task<T> Update(T entity) {
@@ -49,8 +45,14 @@ public class Repository<T>: IRepository<T> where T : Entity {
         return updatedEntity.Entity;
     }
 
-    public async Task SaveAll(IEnumerable<T> entities) {
+    public async Task<bool> UpdateAll(List<T> entities) {
         _context.UpdateRange(entities);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync()!;
+        return true;
+    }
+
+    public async Task<bool> Delete(int Id) {
+        EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
+        throw new NotImplementedException();
     }
 }

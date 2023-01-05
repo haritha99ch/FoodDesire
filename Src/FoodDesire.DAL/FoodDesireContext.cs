@@ -37,5 +37,8 @@ public class FoodDesireContext: DbContext {
             .HasOne(e => e.Recipe)
             .WithOne()
             .OnDelete(DeleteBehavior.ClientSetNull);
+        modelBuilder.Entity<Account>()
+            .HasIndex(e => e.Email)
+            .IsUnique();
     }
 }

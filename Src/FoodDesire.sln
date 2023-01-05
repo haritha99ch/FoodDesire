@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33209.295
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.Models", "FoodDesire.Models\FoodDesire.Models.csproj", "{927258F6-806F-4811-8B28-DCE5D4D0A214}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDesire.DAL", "FoodDesire.DAL\FoodDesire.DAL.csproj", "{F95CC0AC-82D2-4976-BF73-18175A8E3A8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.DAL", "FoodDesire.DAL\FoodDesire.DAL.csproj", "{F95CC0AC-82D2-4976-BF73-18175A8E3A8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDesire.DAL.Test", "FoodDesire.DAL.Test\FoodDesire.DAL.Test.csproj", "{1E8E0A44-B9DD-4344-9325-D0668FFA17C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F95CC0AC-82D2-4976-BF73-18175A8E3A8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F95CC0AC-82D2-4976-BF73-18175A8E3A8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F95CC0AC-82D2-4976-BF73-18175A8E3A8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E8E0A44-B9DD-4344-9325-D0668FFA17C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E8E0A44-B9DD-4344-9325-D0668FFA17C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E8E0A44-B9DD-4344-9325-D0668FFA17C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8E0A44-B9DD-4344-9325-D0668FFA17C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
