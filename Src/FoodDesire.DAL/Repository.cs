@@ -24,11 +24,11 @@ public class Repository<T>: IRepository<T> where T : Entity {
     }
 
     public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>> order) {
-        List<T>? entities = await entitySet.Where(filter).OrderBy(order).ToListAsync();
+        List<T>? entities = await entitySet.AsNoTracking().Where(filter).OrderBy(order).ToListAsync();
         return entities;
     }
     public async Task<T> GetOne(Expression<Func<T, bool>> filter) {
-        T? entity = await entitySet.SingleOrDefaultAsync(filter);
+        T? entity = await entitySet.AsNoTracking().SingleOrDefaultAsync(filter);
         return entity!;
     }
 
@@ -39,6 +39,7 @@ public class Repository<T>: IRepository<T> where T : Entity {
 
     public async Task<T> GetByID(int Id) {
         T? entity = await entitySet.FindAsync(Id);
+        if(entity != null) _context.Entry(entity).State = EntityState.Detached;
         return entity!;
     }
 
