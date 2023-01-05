@@ -45,12 +45,6 @@ public class Repository<T>: IRepository<T> where T : Entity {
         return updatedEntity.Entity;
     }
 
-    public async Task<bool> UpdateAll(List<T> entities) {
-        _context.UpdateRange(entities);
-        await _context.SaveChangesAsync()!;
-        return true;
-    }
-
     public async Task<bool> Delete(int Id) {
         EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
         throw new NotImplementedException();
