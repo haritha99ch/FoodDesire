@@ -47,6 +47,8 @@ public class Repository<T>: IRepository<T> where T : Entity {
 
     public async Task<bool> Delete(int Id) {
         EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
+        if(await GetByID(Id) == null) return true;
+        return false;
     }
 }
