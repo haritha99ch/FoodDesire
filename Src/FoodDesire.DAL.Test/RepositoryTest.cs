@@ -245,4 +245,14 @@ public class RepositoryTest {
         Assert.That(orderedUserList.Count, Is.EqualTo(6));
 
     }
+
+    [Test, Order(12)]
+    public async Task DeleteById() {
+        List<Customer> customers = await customerRepository.GetAll();
+
+        bool entityDeleted = await customerRepository.Delete(customers[1].Id);
+
+        Assert.That(entityDeleted, Is.EqualTo(true));
+
+    }
 }
