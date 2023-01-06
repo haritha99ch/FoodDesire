@@ -1,13 +1,16 @@
 ﻿namespace FoodDesire.Core;
-public class AdminService<Admin>: IAdminService<Admin>, IUserService<Admin> where Admin : User {
-    private readonly ITrackingRepository<Admin> _adminRepository;
+public class AdminService: IAdminService, IUserService<Admin> {
+    private readonly IRepository<Admin> _adminRepository;
+    private readonly ITrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;
     public AdminService(
         FoodDesireContext context,
-        ITrackingRepository<Admin> adminRepository
+        IRepository<Admin> adminRepository,
+        ITrackingRepository<User> userRepository
         ) {
         _context = context;
         _adminRepository = adminRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<Admin> CreateAccount(Admin user) {
@@ -17,22 +20,29 @@ public class AdminService<Admin>: IAdminService<Admin>, IUserService<Admin> wher
     }
 
     public async Task<bool> DeleteAccountById(int id) {
-        bool adminDeleted = await _adminRepository.SoftDelete(id);
+        Admin admin = await _adminRepository.GetByID(id);
+        bool adminDeleted = await _userRepository.SoftDelete(admin.UserId);
         return adminDeleted;
     }
 
     public async Task<Admin> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Admin, bool>> filter =
-            e => e.Account!.Email.Equals(email) &&
-            e.Account.Password.Equals(password);
+            e => e.User!.Account!.Email.Equals(email) &&
+            e.User!.Account.Password.Equals(password);
         Admin? admin = await _context.Set<Admin>()
-            .AsNoTracking().Include(e => e.Account)
+            .AsNoTracking()
+            .Include(e => e.User)
+            .ThenInclude(u => u!.Account)
             .SingleAsync(filter);
         return admin!;
     }
 
-    public async Task<Admin> GetById(int id) {
-        Admin admin = await _adminRepository.GetByID(id);
+    public async Task<Admin> GetByIdPopulated(int id) {
+        Admin admin = await _context.Set<Admin>()
+            .AsNoTracking()
+            .Include(e => e.User)
+            .ThenInclude(u => u!.Account)
+            .SingleAsync(e => e.Id == id);
         return admin;
     }
 

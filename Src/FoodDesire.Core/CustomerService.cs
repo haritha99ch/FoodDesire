@@ -1,16 +1,16 @@
 ﻿namespace FoodDesire.Core;
-public class CustomerService<Customer>: IUserService<Customer>, ICustomerService<Customer> where Customer : User {
-    private readonly ITrackingRepository<Customer> _customerRepository;
-    private readonly ITrackingRepository<Order> _orderRepository;
+public class CustomerService: ICustomerService, IUserService<Customer> {
+    private readonly IRepository<Customer> _customerRepository;
+    private readonly ITrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;
     public CustomerService(
         FoodDesireContext context,
-        ITrackingRepository<Customer> customerRepository,
-        ITrackingRepository<Order> orderRepository
+        IRepository<Customer> customerRepository,
+        ITrackingRepository<User> userRepository
         ) {
         _context = context;
         _customerRepository = customerRepository;
-        _orderRepository = orderRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<Customer> CreateAccount(Customer user) {
@@ -18,8 +18,13 @@ public class CustomerService<Customer>: IUserService<Customer>, ICustomerService
         await _context.SaveChangesAsync();
         return newCustomer;
     }
-    public async Task<Customer> GetById(int id) {
-        Customer customer = await _customerRepository.GetByID(id);
+    public async Task<Customer> GetByIdPopulated(int id) {
+        Customer customer = await _context.Set<Customer>()
+            .AsNoTracking()
+            .Include(e => e.User)
+            .ThenInclude(u => u!.Account)
+            .Include(e => e.User!.Address)
+            .SingleAsync(e => e.Id == id);
         return customer;
     }
     public async Task<List<Customer>> GetAll() {
@@ -28,47 +33,22 @@ public class CustomerService<Customer>: IUserService<Customer>, ICustomerService
     }
     public async Task<Customer> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Customer, bool>> filter =
-            e => e.Account!.Email.Equals(email) &&
-            e.Account.Password.Equals(password);
+            e => e.User!.Account!.Email.Equals(email) &&
+            e.User!.Account!.Password.Equals(password);
+
         Customer? customer = await _context.Set<Customer>()
-            .AsNoTracking().Include(e => e.Account)
+            .AsNoTracking().Include(e => e.User)
+            .ThenInclude(u => u!.Account)
             .SingleAsync(filter);
         return customer!;
     }
     public async Task<bool> DeleteAccountById(int id) {
-        bool customerDeleted = await _customerRepository.SoftDelete(id);
+        Customer customer = await _customerRepository.GetByID(id);
+        bool customerDeleted = await _userRepository.SoftDelete(customer.UserId);
         return customerDeleted;
     }
     public async Task<Customer> UpdateAccount(Customer user) {
         Customer updatedCustomer = await _customerRepository.Update(user);
         return updatedCustomer;
-    }
-    public async Task<Order> CreateOrder(Order order) {
-        Order newOrder = await _orderRepository.Add(order);
-        return newOrder;
-    }
-    public async Task<Order> AddFoodItemToOrder(int orderId, FoodItem foodItem) {
-        Order? order = await _context.Set<Order>()
-            .AsNoTracking().Include(e => e.FoodItems)
-            .SingleOrDefaultAsync(e => e.Id == orderId);
-        if(order == null) return new Order();
-        order.FoodItems!.Add(foodItem);
-        Order UpdatedOrder = await _orderRepository.Update(order);
-        return UpdatedOrder;
-    }
-    public async Task<Order> RemoveFoodItemFromOrder(int orderId, int foodItemId) {
-        Order? order = await _context.Set<Order>()
-            .AsNoTracking().Include(e => e.FoodItems)
-            .SingleOrDefaultAsync(e => e.Id == orderId)!;
-        order!.FoodItems!.Remove(
-            order.FoodItems.Single(e => e.Id != foodItemId)!
-            );
-        Order UpdatedOrder = await _orderRepository.Update(order);
-        return UpdatedOrder;
-    }
-    public async Task<bool> PayForOrder(int orderId) {
-        bool orderPayed = await _orderRepository.SoftDelete(orderId);
-        //TODO: Implement payment service
-        return orderPayed;
     }
 }

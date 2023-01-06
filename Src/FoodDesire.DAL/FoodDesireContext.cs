@@ -21,7 +21,6 @@ public class FoodDesireContext: DbContext {
     public DbSet<Delivery> Delivery { get; set; }
     public DbSet<Supply> Supply { get; set; }
     public FoodDesireContext(DbContextOptions<FoodDesireContext> options) : base(options) { }
-    public FoodDesireContext() { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
