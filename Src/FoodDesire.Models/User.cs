@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class User: TrackedEntity {
+public class User: TrackedEntity {
     [Required, NotNull]
     public string? FirstName { get; set; }
     [Required, NotNull]
