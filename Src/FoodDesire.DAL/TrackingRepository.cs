@@ -4,15 +4,18 @@ public class TrackingRepository<T>: Repository<T>, ITrackingRepository<T> where 
     public TrackingRepository(FoodDesireContext context) : base(context) { }
 
     public async Task<List<T>> GetAllTracked() {
-        List<T>? entities = await _context.Set<T>().Where(e => !e.Deleted).ToListAsync();
+        List<T>? entities = await _context.Set<T>().AsNoTracking().Where(e => !e.Deleted).ToListAsync();
         return entities;
     }
-    public async Task<T> SoftDelete(int Id) {
+    public async Task<bool> SoftDelete(int Id) {
         T? entity = await GetByID(Id);
-        if(entity == null) return null!;
+
+        if(entity == null) return false;
         entity.Deleted = true;
+
+        T? updatedEntity = await Update(entity);
         await _context.SaveChangesAsync();
-        return entity;
-        throw new NotImplementedException();
+
+        return updatedEntity.Deleted;
     }
 }

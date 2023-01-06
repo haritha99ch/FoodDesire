@@ -8,7 +8,7 @@ public class RepositoryTest {
     private IRepository<Deliverer> delivererRepository;
     private IRepository<User> userRepository;
     private IRepository<Account> accountRepository;
-
+    private ITrackingRepository<User> userTrackingRepository;
     private protected FoodDesireContext _context;
 
     [OneTimeSetUp]
@@ -22,6 +22,7 @@ public class RepositoryTest {
         delivererRepository = new Repository<Deliverer>(_context);
         accountRepository = new Repository<Account>(_context);
         userRepository = new Repository<User>(_context);
+        userTrackingRepository = new TrackingRepository<User>(_context);
     }
 
     [OneTimeTearDown]
@@ -254,5 +255,21 @@ public class RepositoryTest {
 
         Assert.That(entityDeleted, Is.EqualTo(true));
 
+    }
+
+    [Test, Order(13)]
+    public async Task SotDelete() {
+        List<User> users = await userTrackingRepository.GetAll();
+
+        bool entityDeleted = await userTrackingRepository.SoftDelete(users[1].Id);
+
+        Assert.IsTrue(entityDeleted);
+    }
+
+    [Test, Order(14)]
+    public async Task GetAllTracking() {
+        List<User> users = await userTrackingRepository.GetAllTracked();
+
+        Assert.That(users.Count, Is.EqualTo(5));
     }
 }
