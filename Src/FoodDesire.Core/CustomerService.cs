@@ -36,8 +36,8 @@ public class CustomerService<Customer>: IUserService<Customer>, ICustomerService
         return customer!;
     }
     public async Task<bool> DeleteAccountById(int id) {
-        bool customerDelered = await _customerRepository.SoftDelete(id);
-        return customerDelered;
+        bool customerDeleted = await _customerRepository.SoftDelete(id);
+        return customerDeleted;
     }
     public async Task<Customer> UpdateAccount(Customer user) {
         Customer updatedCustomer = await _customerRepository.Update(user);
