@@ -1,16 +1,16 @@
 ﻿namespace FoodDesire.Core;
-public class SupplierService<Supplier>: ISupplierService<Supplier>, IUserService<Supplier> where Supplier : User {
-    private readonly ITrackingRepository<Supplier> _supplierRepository;
-    private readonly IRepository<Supply> _supplyRepository;
+public class SupplierService: ISupplierService, IUserService<Supplier> {
+    private readonly IRepository<Supplier> _supplierRepository;
+    private readonly TrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;
     public SupplierService(
         FoodDesireContext context,
-        ITrackingRepository<Supplier> supplierRepository,
-        IRepository<Supply> supplyRepository
+        IRepository<Supplier> supplierRepository,
+        TrackingRepository<User> userRepository,
         ) {
         _context = context;
         _supplierRepository = supplierRepository;
-        _supplyRepository = supplyRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<Supplier> CreateAccount(Supplier user) {
@@ -20,7 +20,8 @@ public class SupplierService<Supplier>: ISupplierService<Supplier>, IUserService
     }
 
     public async Task<bool> DeleteAccountById(int id) {
-        bool supplierDeleted = await _supplierRepository.SoftDelete(id);
+        Supplier supplire = await GetByIdPopulated(id);
+        bool supplierDeleted = await _userRepository.SoftDelete(supplire!.Employee!.UserId);
         return supplierDeleted;
     }
 
@@ -31,23 +32,25 @@ public class SupplierService<Supplier>: ISupplierService<Supplier>, IUserService
 
     public async Task<Supplier> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Supplier, bool>> filter =
-            e => e.Account!.Email.Equals(email) &&
-            e.Account.Password.Equals(password);
+            e => e.Employee!.User!.Account!.Email.Equals(email) &&
+            e.Employee!.User!.Account.Password.Equals(password);
         Supplier? supplier = await _context.Set<Supplier>()
-            .AsNoTracking().Include(e => e.Account)
+            .AsNoTracking().Include(e => e.Employee)
+            .ThenInclude(e => e!.User)
+            .ThenInclude(u => u!.Account)
             .SingleAsync(filter);
         return supplier!;
     }
 
-    public async Task<Supplier> GetById(int id) {
-        Supplier supplier = await _supplierRepository.GetByID(id);
+    public async Task<Supplier> GetByIdPopulated(int id) {
+        Supplier supplier = await _context.Set<Supplier>()
+            .AsNoTracking()
+            .Include(e => e.Employee)
+            .ThenInclude(e => e!.User)
+            .ThenInclude(u => u!.Account)
+            .Include(e => e.Employee!.User!.Address)
+            .SingleAsync(e => e.Id == id);
         return supplier;
-    }
-
-    public async Task<Supply> NewSupply(Supply supply) {
-        Supply newSupply = await _supplyRepository.Add(supply);
-        //TODO: Update Ingredeitns inventory with the supplied ammount
-        throw new NotImplementedException();
     }
 
     public async Task<Supplier> UpdateAccount(Supplier user) {
