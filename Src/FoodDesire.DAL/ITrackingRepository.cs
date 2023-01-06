@@ -1,6 +1,5 @@
-﻿using FoodDesire.Models;
-
-namespace FoodDesire.DAL;
-public interface ITrackingRepository<T> where T : TrackedEntity {
-    Task<T> SoftDelete(int Id);
+﻿namespace FoodDesire.DAL;
+public interface ITrackingRepository<T>: IRepository<T> where T : TrackedEntity {
+    Task<List<T>> GetAllTracked();
+    Task<bool> SoftDelete(int Id);
 }
