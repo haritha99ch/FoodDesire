@@ -227,8 +227,8 @@ public class RepositoryTest {
 
     [Test, Order(10)]
     public async Task UpdateUser() {
-        User user = new User();
-        user.Id = 1;
+        List<User> users = await userRepository.GetAll();
+        User user = users[0];
         user.FirstName = "Haritha";
         user.LastName = "Rathnayake";
 
