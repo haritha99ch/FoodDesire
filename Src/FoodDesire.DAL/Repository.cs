@@ -51,4 +51,8 @@ public class Repository<T>: IRepository<T> where T : Entity {
         if(await GetByID(Id) == null) return true;
         return false;
     }
+
+    public Task<IDbContextTransaction> StartTransaction() {
+        return _context.Database.BeginTransactionAsync();
+    }
 }
