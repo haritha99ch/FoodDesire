@@ -3,7 +3,7 @@ public sealed class Payment: Entity {
     [Required, NotNull]
     public PaymentType PaymentType { get; private set; }
     [Required, NotNull]
-    public DateTime DateTime { get; set; } = DateTime.Now;
+    public DateTime DateTime { get; private set; } = DateTime.Now;
     [AllowNull]
     public int? OrderId {
         get => _orderId;
