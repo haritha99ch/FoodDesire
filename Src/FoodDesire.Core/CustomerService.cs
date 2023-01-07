@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core;
-public class CustomerService: ICustomerService, IUserService<Customer> {
+public class CustomerService: ICustomerService {
     private readonly IRepository<Customer> _customerRepository;
     private readonly ITrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;

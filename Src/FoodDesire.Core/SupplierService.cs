@@ -1,12 +1,12 @@
 ﻿namespace FoodDesire.Core;
-public class SupplierService: ISupplierService, IUserService<Supplier> {
+public class SupplierService: ISupplierService {
     private readonly IRepository<Supplier> _supplierRepository;
     private readonly TrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;
     public SupplierService(
         FoodDesireContext context,
         IRepository<Supplier> supplierRepository,
-        TrackingRepository<User> userRepository,
+        TrackingRepository<User> userRepository
         ) {
         _context = context;
         _supplierRepository = supplierRepository;
