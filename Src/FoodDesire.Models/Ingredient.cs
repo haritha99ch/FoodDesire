@@ -24,12 +24,11 @@ public sealed class Ingredient: TrackedEntity {
     public Image? Image { get; set; }
     [ForeignKey(nameof(IngredientCategoryId))]
     public IngredientCategory? IngredientCategory { get; set; }
-    public ICollection<Recipe>? Recipes { get; set; }
 }
 
 public enum Measurement {
-    [Display(Name ="mg")]
+    [Display(Name = "mg")]
     Mass,
-    [Display(Name ="ml")]
+    [Display(Name = "ml")]
     Liquid
 }
