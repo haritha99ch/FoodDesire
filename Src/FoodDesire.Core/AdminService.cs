@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core;
-public class AdminService: IAdminService, IUserService<Admin> {
+public class AdminService: IAdminService {
     private readonly IRepository<Admin> _adminRepository;
     private readonly ITrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;
