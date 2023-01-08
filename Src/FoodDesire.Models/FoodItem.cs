@@ -19,7 +19,7 @@ public sealed class FoodItem: TrackedEntity {
     public int OrderId { get; set; }
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; private set; } = decimal.Zero;
-
+    //Delete property = food has been prepared
 
     private Recipe? _recipe { get; set; }
     [ForeignKey(nameof(RecipeId))]
