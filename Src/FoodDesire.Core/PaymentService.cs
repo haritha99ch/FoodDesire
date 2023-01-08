@@ -21,6 +21,12 @@ public class PaymentService: IPaymentService {
         return payment;
     }
 
+    public async Task<Payment> SalaryForEmployee(Payment payment) {
+        Payment newPayment = await _paymentRepository.Add(payment);
+        await SavePayment();
+        return newPayment;
+    }
+
     public async Task SavePayment() {
         await _paymentRepository.SaveChanges();
     }
