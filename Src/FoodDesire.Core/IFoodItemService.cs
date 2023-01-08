@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Core;
 public interface IFoodItemService {
-    Task<FoodItem> NewFoodItemFromRecipe(Recipe recipe, int orderId);
+    Task<FoodItem> NewFoodItemForOrder(FoodItem foodItem);
     Task<bool> RemoveFoodItem(int foodItemId);
     Task<FoodItem> UpdateFoodItem(FoodItem foodItem);
     Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId);
