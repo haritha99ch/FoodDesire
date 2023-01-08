@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Payment: Entity {
+public sealed class Payment: TrackedEntity {
     [Required, NotNull]
     public PaymentType PaymentType { get; private set; }
     [Required, NotNull]
