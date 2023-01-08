@@ -1,10 +1,10 @@
 ﻿namespace FoodDesire.Core;
 public class PaymentService: IPaymentService {
-    private readonly IRepository<Payment> _paymentRepository;
+    private readonly ITrackingRepository<Payment> _paymentRepository;
     private readonly FoodDesireContext _context;
 
     public PaymentService(
-        IRepository<Payment> paymentRepository,
+        ITrackingRepository<Payment> paymentRepository,
         FoodDesireContext context
         ) {
         _paymentRepository = paymentRepository;
@@ -19,5 +19,9 @@ public class PaymentService: IPaymentService {
         };
         payment = await _paymentRepository.Add(payment);
         return payment;
+    }
+
+    public async Task SavePayment() {
+        await _paymentRepository.SaveChanges();
     }
 }
