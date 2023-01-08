@@ -16,6 +16,7 @@ public sealed class FoodItem: TrackedEntity {
         }
     }
     public int ChefId { get; set; } //Prepares by
+    public int OrderId { get; set; }
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; private set; } = decimal.Zero;
 
@@ -37,4 +38,6 @@ public sealed class FoodItem: TrackedEntity {
     }
     [ForeignKey(nameof(ChefId))]
     public Chef? Chef { get; set; }
+    [ForeignKey(nameof(OrderId))]
+    public Order? Order { get; set; }
 }
