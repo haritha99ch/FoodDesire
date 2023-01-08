@@ -2,13 +2,13 @@
 namespace FoodDesire.Core;
 public class IngredientSupplyService: IIngredientSupplyService {
     private readonly ITrackingRepository<Supply> _supplyRepository;
-    private readonly ITrackingRepository<Ingredient> _ingredientRepository;
+    private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly PaymentService _paymentService;
     private readonly FoodDesireContext _context;
 
     public IngredientSupplyService(
         ITrackingRepository<Supply> supplyRepository,
-        ITrackingRepository<Ingredient> ingredientRepository,
+        IRepository<Ingredient> ingredientRepository,
         FoodDesireContext context
 ,
         PaymentService paymentService) {
@@ -34,7 +34,17 @@ public class IngredientSupplyService: IIngredientSupplyService {
     }
 
     public async Task<Supply> NewSupply(Supply supply, decimal value) {
-        
-        return supply;
+        Payment payment = new();
+        using(IDbContextTransaction? transaction = await _supplyRepository.BeginTransaction()) {
+            payment = await _paymentService.PaymentForSupply(supply, value);
+            await _paymentService.SavePayment();
+            Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
+            ingredient.CurrentQuantity += supply.Amount;
+            ingredient.CurrentPricePerUnit = Convert.ToDouble(value) / supply.Amount;
+            ingredient = await _ingredientRepository.Update(ingredient);
+            await transaction.CommitAsync();
+
+        }
+        return payment.Supply!;
     }
 }
