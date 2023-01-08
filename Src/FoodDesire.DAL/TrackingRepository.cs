@@ -61,6 +61,7 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
 
     public async Task<T> Update(T entity) {
         EntityEntry<T>? updatedEntity = entitySet.Update(entity);
+        await SaveChanges();
         return updatedEntity.Entity;
     }
 
