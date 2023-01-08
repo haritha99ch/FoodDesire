@@ -9,4 +9,5 @@ public sealed class Order: TrackedEntity {
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }
+    public Delivery? Delivery { get; set; }
 }
