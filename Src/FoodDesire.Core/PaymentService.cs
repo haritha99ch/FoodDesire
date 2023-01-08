@@ -11,6 +11,24 @@ public class PaymentService: IPaymentService {
         _context = context;
     }
 
+    public async Task<Payment> PaymentForOrder(int orderId) {
+        Order? order = await _context.Set<Order>()
+            .Include(e => e.FoodItems)
+            .SingleAsync(e => e.Id == orderId);
+
+        decimal value = decimal.Zero;
+        order.FoodItems!.ToList().ForEach(e => {
+            value += e.Price;
+        });
+        Payment payment = new() {
+            Order = order,
+            Value = value
+        };
+        payment = await _paymentRepository.Add(payment);
+        await SavePayment();
+        return payment;
+    }
+
     public async Task<Payment> PaymentForSupply(Supply supply, decimal value) {
         Admin? admin = await _context.Set<Admin>().FirstOrDefaultAsync();
         Payment payment = new() {
