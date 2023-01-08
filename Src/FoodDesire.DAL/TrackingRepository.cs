@@ -73,4 +73,8 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         await _context.SaveChangesAsync();
 
     }
+
+    public async Task<IDbContextTransaction> BeginTransaction() {
+        return await _context.Database.BeginTransactionAsync();
+    }
 }
