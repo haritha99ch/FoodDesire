@@ -9,9 +9,9 @@ public class IngredientSupplyService: IIngredientSupplyService {
     public IngredientSupplyService(
         ITrackingRepository<Supply> supplyRepository,
         IRepository<Ingredient> ingredientRepository,
-        FoodDesireContext context
-,
-        PaymentService paymentService) {
+        FoodDesireContext context,
+        PaymentService paymentService
+        ) {
         _supplyRepository = supplyRepository;
         _ingredientRepository = ingredientRepository;
         _context = context;

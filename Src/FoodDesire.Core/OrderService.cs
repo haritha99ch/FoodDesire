@@ -23,28 +23,6 @@ public class OrderService: IOrderService {
         return orders;
     }
 
-    public async Task<List<Order>> GetAllDeliveredOrders() {
-        Expression<Func<Order, bool>> filter = e => e.Delivery!.IsDelivered;
-
-        List<Order> orders = await _context.Set<Order>()
-            .AsNoTracking()
-            .Include(e => e.Delivery)
-            .Where(filter)
-            .ToListAsync();
-        return orders;
-    }
-
-    public async Task<List<Order>> GetAllOrdersToDeliver() {
-        Expression<Func<Order, bool>> filter = e => e.Delivery == null || !e.Delivery.IsDelivered;
-
-        List<Order> orders = await _context.Set<Order>()
-            .AsNoTracking()
-            .Include(e => e.Delivery)
-            .Where(filter)
-            .ToListAsync();
-        return orders;
-    }
-
     public async Task<bool> DeleteOrderById(int orderId) {
         bool orderDeleted = await _orderRepository.Delete(orderId);
         return orderDeleted;
