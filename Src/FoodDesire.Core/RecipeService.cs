@@ -2,19 +2,19 @@
 public class RecipeService: IRecipeService {
     private readonly IRepository<Recipe> _recipeRepository;
     private readonly IRepository<RecipeIngredient> _recipeIngredientRepository;
-    private readonly IRepository<FoodCategory> _foodCategoryRepository;
+    private readonly IRepository<RecipeCategory> _foodCategoryRepository;
     private readonly FoodDesireContext _context;
 
     public RecipeService(
         IRepository<Recipe> recipeRepository,
         IRepository<RecipeIngredient> recipeIngredientRepository,
         FoodDesireContext context,
-        IRepository<FoodCategory> foodCategoryRepository
+        IRepository<RecipeCategory> recipeCategoryRepository
         ) {
         _recipeRepository = recipeRepository;
         _recipeIngredientRepository = recipeIngredientRepository;
         _context = context;
-        _foodCategoryRepository = foodCategoryRepository;
+        _foodCategoryRepository = recipeCategoryRepository;
     }
 
     public async Task<Recipe> NewRecipe(Recipe recipe) {
@@ -48,9 +48,9 @@ public class RecipeService: IRecipeService {
     }
 
     public async Task<List<Recipe>> GetAllRecipeByCategory(string category) {
-        Expression<Func<FoodCategory, bool>> categoryFilter = e => e.Name == category;
+        Expression<Func<RecipeCategory, bool>> categoryFilter = e => e.Name == category;
 
-        FoodCategory foodCategory = await _foodCategoryRepository.GetOne(categoryFilter);
+        RecipeCategory foodCategory = await _foodCategoryRepository.GetOne(categoryFilter);
         int categoryId = foodCategory.Id;
 
         Expression<Func<Recipe, bool>> filter = e => e.FoodCategoryId == categoryId;
