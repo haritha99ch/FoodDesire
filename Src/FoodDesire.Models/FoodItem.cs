@@ -20,6 +20,7 @@ public sealed class FoodItem: TrackedEntity {
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; private set; } = decimal.Zero;
     //Delete property = food has been prepared
+    public FoodItemStatus Status { get; set; } = FoodItemStatus.Queued;
 
     private Recipe? _recipe { get; set; }
     [ForeignKey(nameof(RecipeId))]
@@ -40,4 +41,13 @@ public sealed class FoodItem: TrackedEntity {
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(OrderId))]
     public Order? Order { get; set; }
+}
+
+public enum FoodItemStatus {
+    [Display(Name = "Queued")]
+    Queued,
+    [Display(Name = "Preparing")]
+    Preparing,
+    [Display(Name = "Prepared")]
+    Prepared
 }
