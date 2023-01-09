@@ -21,7 +21,6 @@ public class Repository<T>: IRepository<T> where T : Entity {
 
     public async Task<T> GetByID(int Id) {
         T? entity = await entitySet.FindAsync(Id);
-        if(entity != null) _context.Entry(entity).State = EntityState.Detached;
         return entity!;
     }
     public async Task<T> GetOne(Expression<Func<T, bool>> filter) {
