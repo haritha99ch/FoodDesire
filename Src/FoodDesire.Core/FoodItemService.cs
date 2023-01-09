@@ -33,13 +33,19 @@ public class FoodItemService: IFoodItemService {
         FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
         foodItem.ChefId = chefId;
         foodItem = await _foodItemRepository.Update(foodItem);
+        Order order = await _orderRepository.GetByID(foodItem.OrderId);
+        order.Status = OrderStatus.Preparing;
+        await _orderRepository.Update(order);
         return foodItem;
     }
 
     public async Task<bool> FoodItemPrepared(int foodItemId) {
-        bool foodItemIsPrepared = await _foodItemTrackingRepository.SoftDelete(foodItemId); //Soft deleting means the food item has been prepared
-        await _foodItemTrackingRepository.SaveChanges();
-        return foodItemIsPrepared;
+        FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
+        foodItem.Status = FoodItemStatus.Prepared;
+        foodItem.Deleted = true;
+        foodItem = await _foodItemRepository.Update(foodItem);
+        if(foodItem.Status == FoodItemStatus.Prepared) return true;
+        return false;
     }
 
     public async Task<bool> RemoveFoodItem(int foodItemId) {
