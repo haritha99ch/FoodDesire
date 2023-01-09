@@ -4,5 +4,5 @@ public interface IFoodItemService {
     Task<bool> RemoveFoodItem(int foodItemId);
     Task<FoodItem> UpdateFoodItem(FoodItem foodItem);
     Task<FoodItem> PrepareFoodItem(int foodItemId, int chefId);
-    Task<bool> FoodItemPrepared(int foodItemId);
+    Task<FoodItem> FoodItemPrepared(int foodItemId);
 }

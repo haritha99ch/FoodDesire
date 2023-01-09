@@ -39,13 +39,12 @@ public class FoodItemService: IFoodItemService {
         return foodItem;
     }
 
-    public async Task<bool> FoodItemPrepared(int foodItemId) {
+    public async Task<FoodItem> FoodItemPrepared(int foodItemId) {
         FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
         foodItem.Status = FoodItemStatus.Prepared;
         foodItem.Deleted = true;
         foodItem = await _foodItemRepository.Update(foodItem);
-        if(foodItem.Status == FoodItemStatus.Prepared) return true;
-        return false;
+        return foodItem;
     }
 
     public async Task<bool> RemoveFoodItem(int foodItemId) {
