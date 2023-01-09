@@ -23,7 +23,7 @@ public sealed class Recipe: TrackedEntity {
     [ForeignKey(nameof(ChefId))]
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(FoodCategoryId))]
-    public FoodCategory? FoodCategory { get; set; }
+    public RecipeCategory? FoodCategory { get; set; }
     private ICollection<RecipeIngredient>? _recipeIngredients { get; set; }
     public ICollection<RecipeIngredient> RecipeIngredients {
         get {
