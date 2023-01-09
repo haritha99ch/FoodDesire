@@ -7,21 +7,6 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         _context = context;
     }
 
-    public async Task<List<T>> GetAllTracked() {
-        List<T>? entities = await entitySet.AsNoTracking().Where(e => !e.Deleted).ToListAsync();
-        return entities;
-    }
-    public async Task<bool> SoftDelete(int Id) {
-        T? entity = await GetByID(Id);
-
-        if(entity == null) return false;
-        entity.Deleted = true;
-
-        T? updatedEntity = await Update(entity);
-
-        return updatedEntity.Deleted;
-    }
-
     public async Task<T> Add(T entity) {
         EntityEntry<T> newEntity = await entitySet.AddAsync(entity);
         return newEntity.Entity;
@@ -33,8 +18,7 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
     }
 
     public async Task<T> GetByID(int id) {
-        T? entity = await entitySet.AsNoTracking().SingleAsync(e => !e.Deleted && e.Id == id);
-        if(entity != null) _context.Entry(entity).State = EntityState.Detached;
+        T? entity = await entitySet.SingleAsync(e => !e.Deleted && e.Id == id);
         return entity!;
     }
 
@@ -55,24 +39,30 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
         BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
         Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
-        List<T>? entities = await entitySet.AsNoTracking().Where(entityFilter).OrderBy(order).ToListAsync();
+        List<T>? entities = await entitySet.AsNoTracking().Where(filter).OrderBy(order).ToListAsync();
         return entities;
     }
 
-    public async Task<T> Update(T entity) {
+    public Task SaveChanges() {
+        return _context.SaveChangesAsync();
+
+    }
+
+    public Task<T> Update(T entity) {
         EntityEntry<T>? updatedEntity = entitySet.Update(entity);
-        await SaveChanges();
-        return updatedEntity.Entity;
+        return Task.FromResult(updatedEntity.Entity);
+    }
+    public async Task<bool> SoftDelete(int Id) {
+        T? entity = await GetByID(Id);
+        if(entity == null) return false;
+        entity.Deleted = true;
+        T? updatedEntity = await Update(entity);
+        return updatedEntity.Deleted;
     }
 
     public async Task<bool> Delete(int Id) {
         EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
         return true;
-    }
-
-    public async Task SaveChanges() {
-        await _context.SaveChangesAsync();
-
     }
 
     public async Task<IDbContextTransaction> BeginTransaction() {

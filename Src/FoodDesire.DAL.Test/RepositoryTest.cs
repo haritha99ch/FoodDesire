@@ -6,9 +6,9 @@ public class RepositoryTest {
     private IRepository<Chef> chefRepository;
     private IRepository<Supplier> supplierRepository;
     private IRepository<Deliverer> delivererRepository;
+    private ITrackingRepository<User> userTrackingRepository;
     private IRepository<User> userRepository;
     private IRepository<Account> accountRepository;
-    private ITrackingRepository<User> userTrackingRepository;
     private protected FoodDesireContext _context;
 
     [OneTimeSetUp]
@@ -21,8 +21,8 @@ public class RepositoryTest {
         supplierRepository = new Repository<Supplier>(_context);
         delivererRepository = new Repository<Deliverer>(_context);
         accountRepository = new Repository<Account>(_context);
-        userRepository = new Repository<User>(_context);
         userTrackingRepository = new TrackingRepository<User>(_context);
+        userRepository = new Repository<User>(_context);
     }
 
     [OneTimeTearDown]
@@ -191,7 +191,7 @@ public class RepositoryTest {
 
     [Test, Order(6)]
     public async Task GetAllUsers() {
-        List<User> users = await userRepository.GetAll();
+        List<User> users = await userTrackingRepository.GetAll();
 
         Assert.That(users.Count, Is.EqualTo(6));
     }
@@ -218,22 +218,26 @@ public class RepositoryTest {
 
     [Test, Order(9)]
     public async Task GetUserById() {
-        List<User>? users = await userRepository.GetAll();
+        List<User>? users = await userTrackingRepository.GetAll();
         User user = users.FirstOrDefault()!;
 
-        User getUser = await userRepository.GetByID(user!.Id);
+        User getUser = await userTrackingRepository.GetByID(user!.Id);
         Assert.That(user.Id, Is.EqualTo(getUser.Id));
     }
 
     [Test, Order(10)]
     public async Task UpdateUser() {
-        List<User> users = await userRepository.GetAll();
-        User user = users[0];
-        user.FirstName = "Haritha";
-        user.LastName = "Rathnayake";
+        List<User> users = await userTrackingRepository.GetAll();
+        User user = users.FirstOrDefault()!;
 
-        User updatedUser = await userRepository.Update(user);
-        Assert.That(user.FirstName, Is.EqualTo(updatedUser.FirstName));
+        User getUser = await userTrackingRepository.GetByID(user!.Id);
+        getUser.FirstName = "Haritha";
+        getUser.LastName = "Rathnayake";
+
+        User updatedUser = await userTrackingRepository.Update(getUser);
+        await userTrackingRepository.SaveChanges();
+        getUser = await userTrackingRepository.GetByID(user!.Id);
+        Assert.That(getUser.FirstName, Is.EqualTo(updatedUser.FirstName));
     }
 
     [Test, Order(11)]
@@ -241,7 +245,7 @@ public class RepositoryTest {
         Expression<Func<User, bool>> filter = e => !e.Deleted;
         Expression<Func<User, string>> order = e => e.FirstName;
 
-        List<User> orderedUserList = await userRepository.Get(filter, order);
+        List<User> orderedUserList = await userTrackingRepository.Get(filter, order);
 
         Assert.That(orderedUserList.Count, Is.EqualTo(6));
 
@@ -262,13 +266,14 @@ public class RepositoryTest {
         List<User> users = await userTrackingRepository.GetAll();
 
         bool entityDeleted = await userTrackingRepository.SoftDelete(users[1].Id);
-
-        Assert.IsTrue(entityDeleted);
+        await userTrackingRepository.SaveChanges();
+        User user = await userRepository.GetByID(users[1].Id);
+        Assert.IsTrue(user.Deleted);
     }
 
     [Test, Order(14)]
     public async Task GetAllTracking() {
-        List<User> users = await userTrackingRepository.GetAllTracked();
+        List<User> users = await userTrackingRepository.GetAll();
 
         Assert.That(users.Count, Is.EqualTo(5));
     }
