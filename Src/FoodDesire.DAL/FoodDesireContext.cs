@@ -11,7 +11,7 @@ public class FoodDesireContext: DbContext {
     public DbSet<Supplier> Supplier { get; set; }
     public DbSet<IngredientCategory> IngredientCategory { get; set; }
     public DbSet<Ingredient> Ingredient { get; set; }
-    public DbSet<FoodCategory> FoodCategory { get; set; }
+    public DbSet<RecipeCategory> FoodCategory { get; set; }
     public DbSet<Recipe> Recipe { get; set; }
     public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     public DbSet<FoodItem> FoodItem { get; set; }
