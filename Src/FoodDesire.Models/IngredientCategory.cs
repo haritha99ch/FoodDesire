@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class IngredientCategory: Entity {
+public sealed class IngredientCategory: TrackedEntity {
     [Required, NotNull]
     public string? Name { get; set; }
 
