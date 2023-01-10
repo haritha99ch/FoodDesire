@@ -20,7 +20,6 @@ public class CustomerService: ICustomerService {
     }
     public async Task<Customer> GetByIdPopulated(int id) {
         Customer customer = await _context.Set<Customer>()
-            .AsNoTracking()
             .Include(e => e.User)
             .ThenInclude(u => u!.Account)
             .Include(e => e.User!.Address)
@@ -37,7 +36,8 @@ public class CustomerService: ICustomerService {
             e.User!.Account!.Password.Equals(password);
 
         Customer? customer = await _context.Set<Customer>()
-            .AsNoTracking().Include(e => e.User)
+            .AsNoTracking()
+            .Include(e => e.User)
             .ThenInclude(u => u!.Account)
             .SingleAsync(filter);
         return customer!;
@@ -49,7 +49,7 @@ public class CustomerService: ICustomerService {
     }
     public async Task<Customer> UpdateAccount(Customer user) {
         Customer updatedCustomer = await _customerRepository.Update(user);
-        await _userRepository.SaveChanges();
+        await _context.SaveChangesAsync();
         return updatedCustomer;
     }
 }

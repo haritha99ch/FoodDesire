@@ -52,7 +52,6 @@ public class DelivererService: IDelivererService {
 
     public async Task<Deliverer> GetByIdPopulated(int id) {
         Deliverer deliverer = await _context.Set<Deliverer>()
-            .AsNoTracking()
             .Include(e => e.Employee)
             .ThenInclude(e => e!.User)
             .ThenInclude(u => u!.Account)
@@ -64,7 +63,7 @@ public class DelivererService: IDelivererService {
 
     public async Task<Deliverer> UpdateAccount(Deliverer user) {
         Deliverer updatedDeliverer = await _delivererRepository.Update(user);
-        await _userRepository.SaveChanges();
+        await _context.SaveChangesAsync();
         return updatedDeliverer;
     }
 }

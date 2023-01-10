@@ -36,7 +36,8 @@ public class SupplierService: ISupplierService {
             e => e.Employee!.User!.Account!.Email.Equals(email) &&
             e.Employee!.User!.Account.Password.Equals(password);
         Supplier? supplier = await _context.Set<Supplier>()
-            .AsNoTracking().Include(e => e.Employee)
+            .AsNoTracking()
+            .Include(e => e.Employee)
             .ThenInclude(e => e!.User)
             .ThenInclude(u => u!.Account)
             .SingleAsync(filter);
@@ -45,7 +46,6 @@ public class SupplierService: ISupplierService {
 
     public async Task<Supplier> GetByIdPopulated(int id) {
         Supplier supplier = await _context.Set<Supplier>()
-            .AsNoTracking()
             .Include(e => e.Employee)
             .ThenInclude(e => e!.User)
             .ThenInclude(u => u!.Account)
@@ -56,7 +56,7 @@ public class SupplierService: ISupplierService {
 
     public async Task<Supplier> UpdateAccount(Supplier user) {
         Supplier updatedSupplier = await _supplierRepository.Update(user);
-        await _userRepository.SaveChanges();
+        await _context.SaveChangesAsync();
         return updatedSupplier;
     }
 }

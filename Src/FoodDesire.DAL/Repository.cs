@@ -39,6 +39,7 @@ public class Repository<T>: IRepository<T> where T : Entity {
     }
 
     public async Task<T> Update(T entity) {
+        //_context.Entry(entity).State = EntityState.Modified;
         EntityEntry<T>? updatedEntity = entitySet.Update(entity);
         await _context.SaveChangesAsync();
         return updatedEntity.Entity;

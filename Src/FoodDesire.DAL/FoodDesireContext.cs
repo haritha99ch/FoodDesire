@@ -28,6 +28,10 @@ public class FoodDesireContext: DbContext {
             .OwnsMany(e => e.FoodItemIngredients, navigationBuilder => {
                 navigationBuilder.ToJson();
             });
+        modelBuilder.Entity<FoodItem>()
+            .HasOne(e => e.Order)
+            .WithOne()
+            .OnDelete(DeleteBehavior.ClientSetNull);
         modelBuilder.Entity<Delivery>()
             .HasOne(e => e.Order)
             .WithOne()

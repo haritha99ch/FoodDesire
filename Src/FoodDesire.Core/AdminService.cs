@@ -40,7 +40,6 @@ public class AdminService: IAdminService {
 
     public async Task<Admin> GetByIdPopulated(int id) {
         Admin admin = await _context.Set<Admin>()
-            .AsNoTracking()
             .Include(e => e.User)
             .ThenInclude(u => u!.Account)
             .SingleAsync(e => e.Id == id);
@@ -49,6 +48,7 @@ public class AdminService: IAdminService {
 
     public async Task<Admin> UpdateAccount(Admin user) {
         Admin updatedAdmin = await _adminRepository.Update(user);
+        await _context.SaveChangesAsync();
         return updatedAdmin;
     }
 

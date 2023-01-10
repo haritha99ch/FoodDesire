@@ -50,7 +50,6 @@ public class ChefService: IChefService {
 
     public async Task<Chef> GetByIdPopulated(int id) {
         Chef chef = await _context.Set<Chef>()
-            .AsNoTracking()
             .Include(e => e.Employee)
             .ThenInclude(e => e!.User)
             .ThenInclude(u => u!.Account)
@@ -58,7 +57,9 @@ public class ChefService: IChefService {
         return chef;
     }
 
-    public Task<Chef> UpdateAccount(Chef user) {
-        throw new NotImplementedException();
+    public async Task<Chef> UpdateAccount(Chef user) {
+        Chef updatedChef = await _chefRepository.Update(user);
+        await _context.SaveChangesAsync();
+        return updatedChef;
     }
 }
