@@ -5,7 +5,7 @@ public sealed class Deliverer: Entity {
     [Required, NotNull]
     public VehicleType VehicleType { get; set; } = VehicleType.Bike;
     [Required, NotNull]
-    public string? LicenseNo { get; set; }
+    public required string LicenseNo { get; set; }
 
 
     [ForeignKey(nameof(EmployeeId))]
