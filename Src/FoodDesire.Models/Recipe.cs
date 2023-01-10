@@ -3,9 +3,9 @@ public sealed class Recipe: TrackedEntity {
     [Required, NotNull]
     public int ChefId { get; set; } //Created by
     [Required, NotNull]
-    public string? Name { get; set; }
+    public required string Name { get; set; }
     [Required, NotNull]
-    public string? Description { get; set; }
+    public required string Description { get; set; }
     [Required, NotNull]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal MinimumPrice { get; private set; } = decimal.Zero;
