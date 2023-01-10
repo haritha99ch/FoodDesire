@@ -64,6 +64,7 @@ public class DelivererService: IDelivererService {
 
     public async Task<Deliverer> UpdateAccount(Deliverer user) {
         Deliverer updatedDeliverer = await _delivererRepository.Update(user);
+        await _userRepository.SaveChanges();
         return updatedDeliverer;
     }
 }

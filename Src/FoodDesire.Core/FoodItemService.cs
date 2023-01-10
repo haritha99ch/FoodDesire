@@ -1,15 +1,12 @@
 ﻿namespace FoodDesire.Core;
 public class FoodItemService: IFoodItemService {
-    private readonly ITrackingRepository<FoodItem> _foodItemTrackingRepository;
     private readonly IRepository<FoodItem> _foodItemRepository;
     private readonly IRepository<Order> _orderRepository;
 
     public FoodItemService(
-        ITrackingRepository<FoodItem> foodItemTrackingRepository,
-        IRepository<FoodItem> foodItemRepository
-,
-        IRepository<Order> orderRepository) {
-        _foodItemTrackingRepository = foodItemTrackingRepository;
+        IRepository<FoodItem> foodItemRepository,
+        IRepository<Order> orderRepository
+        ) {
         _foodItemRepository = foodItemRepository;
         _orderRepository = orderRepository;
     }

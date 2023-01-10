@@ -24,6 +24,7 @@ public class ChefService: IChefService {
             .SingleAsync(e => e.Id == id);
 
         bool chefDeleted = await _userRepository.SoftDelete(chef.Employee!.UserId);
+        await _userRepository.SaveChanges();
         return chefDeleted;
     }
 

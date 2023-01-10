@@ -22,6 +22,7 @@ public class SupplierService: ISupplierService {
     public async Task<bool> DeleteAccountById(int id) {
         Supplier supplire = await GetByIdPopulated(id);
         bool supplierDeleted = await _userRepository.SoftDelete(supplire!.Employee!.UserId);
+        await _userRepository.SaveChanges();
         return supplierDeleted;
     }
 
@@ -55,6 +56,7 @@ public class SupplierService: ISupplierService {
 
     public async Task<Supplier> UpdateAccount(Supplier user) {
         Supplier updatedSupplier = await _supplierRepository.Update(user);
+        await _userRepository.SaveChanges();
         return updatedSupplier;
     }
 }
