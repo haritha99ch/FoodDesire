@@ -49,6 +49,7 @@ public class CustomerService: ICustomerService {
     }
     public async Task<Customer> UpdateAccount(Customer user) {
         Customer updatedCustomer = await _customerRepository.Update(user);
+        await _userRepository.SaveChanges();
         return updatedCustomer;
     }
 }

@@ -36,6 +36,7 @@ public class PaymentService: IPaymentService {
             Supply = supply,
         };
         payment = await _paymentRepository.Add(payment);
+        await SavePayment();
         return payment;
     }
 

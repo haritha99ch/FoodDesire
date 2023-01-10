@@ -22,6 +22,7 @@ public class AdminService: IAdminService {
     public async Task<bool> DeleteAccountById(int id) {
         Admin admin = await _adminRepository.GetByID(id);
         bool adminDeleted = await _userRepository.SoftDelete(admin.UserId);
+        await _userRepository.SaveChanges();
         return adminDeleted;
     }
 
