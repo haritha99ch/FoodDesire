@@ -14,7 +14,7 @@ public class FoodItemService: IFoodItemService {
         _orderRepository = orderRepository;
     }
 
-    public async Task<FoodItem> NewFoodItemForOrder(FoodItem foodItem) {
+    public async Task<FoodItem> NewFoodItem(FoodItem foodItem) {
         FoodItem newFoodItem = await _foodItemRepository.Add(foodItem);
         return newFoodItem;
     }
