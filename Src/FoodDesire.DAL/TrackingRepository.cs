@@ -22,12 +22,18 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         return entity!;
     }
 
-    public async Task<T> GetOne(Expression<Func<T, bool>> filter) {
+    public async Task<T> GetOne(Expression<Func<T, bool>> filter, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
         BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
         Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
-        T? entity = await entitySet.AsNoTracking().SingleAsync(entityFilter);
-        return entity!;
+        T entity;
+        IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
+        if(includes != null) {
+            entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleAsync();
+            return entity;
+        }
+        entity = await query.SingleAsync();
+        return entity;
     }
 
     public async Task<List<T>> GetAll() {
@@ -35,11 +41,18 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         return entities;
     }
 
-    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>> order) {
+    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
         BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
         Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
-        List<T>? entities = await entitySet.AsNoTracking().Where(filter).OrderBy(order).ToListAsync();
+        List<T>? entities = new List<T>();
+        IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
+        if(order != null) query.OrderBy(order);
+        if(includes != null) {
+            entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
+            return entities;
+        }
+        entities = await query.ToListAsync();
         return entities;
     }
 
