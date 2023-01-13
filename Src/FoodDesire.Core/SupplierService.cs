@@ -44,13 +44,7 @@ public class SupplierService: ISupplierService {
     }
 
     public async Task<Supplier> GetByIdPopulated(int id) {
-        Supplier supplier = await _context.Set<Supplier>()
-            .AsNoTracking()
-            .Include(e => e.Employee)
-            .ThenInclude(e => e!.User)
-            .ThenInclude(u => u!.Account)
-            .Include(e => e.Employee!.User!.Address)
-            .SingleAsync(e => e.Id == id);
+        Supplier supplier = await _supplierRepository.GetByID(id);
         return supplier;
     }
 
