@@ -2,13 +2,10 @@
 public class ChefService: IChefService {
     private readonly IRepository<Chef> _chefRepository;
     private readonly ITrackingRepository<User> _userRepository;
-    private readonly FoodDesireContext _context;
     public ChefService(
-        FoodDesireContext context,
         IRepository<Chef> chefRepository,
         ITrackingRepository<User> userRepository
         ) {
-        _context = context;
         _userRepository = userRepository;
         _chefRepository = chefRepository;
     }
@@ -18,11 +15,7 @@ public class ChefService: IChefService {
     }
 
     public async Task<bool> DeleteAccountById(int id) {
-        Chef chef = await _context.Set<Chef>()
-            .AsNoTracking()
-            .Include(e => e.Employee)
-            .SingleAsync(e => e.Id == id);
-
+        Chef chef = await _chefRepository.GetByID(id);
         bool chefDeleted = await _userRepository.SoftDelete(chef.Employee!.UserId);
         await _userRepository.SaveChanges();
         return chefDeleted;
@@ -38,13 +31,7 @@ public class ChefService: IChefService {
             e => e.Employee!.User!.Account!.Email.Equals(email) &&
             e.Employee.User.Account.Password.Equals(password);
 
-        Chef chef = await _context.Set<Chef>()
-            .AsNoTracking()
-            .Include(e => e.Employee)
-            .ThenInclude(e => e!.User)
-            .ThenInclude(u => u!.Account)
-            .SingleAsync(filter);
-
+        Chef chef = await _chefRepository.GetOne(filter);
         return chef;
     }
 

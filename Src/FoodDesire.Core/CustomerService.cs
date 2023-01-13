@@ -2,24 +2,20 @@
 public class CustomerService: ICustomerService {
     private readonly IRepository<Customer> _customerRepository;
     private readonly ITrackingRepository<User> _userRepository;
-    private readonly FoodDesireContext _context;
     public CustomerService(
-        FoodDesireContext context,
         IRepository<Customer> customerRepository,
         ITrackingRepository<User> userRepository
         ) {
-        _context = context;
         _customerRepository = customerRepository;
         _userRepository = userRepository;
     }
 
     public async Task<Customer> CreateAccount(Customer user) {
         Customer newCustomer = await _customerRepository.Add(user);
-        await _context.SaveChangesAsync();
         return newCustomer;
     }
     public async Task<Customer> GetByIdPopulated(int id) {
-        Customer customer = await _customerRepository.GetOne(e => e.Id == id);
+        Customer customer = await _customerRepository.GetByID(id);
         return customer;
     }
     public async Task<List<Customer>> GetAll() {
@@ -31,10 +27,7 @@ public class CustomerService: ICustomerService {
             e => e.User!.Account!.Email.Equals(email) &&
             e.User!.Account!.Password.Equals(password);
 
-        Customer? customer = await _context.Set<Customer>()
-            .AsNoTracking().Include(e => e.User)
-            .ThenInclude(u => u!.Account)
-            .SingleAsync(filter);
+        Customer? customer = await _customerRepository.GetOne(filter);
         return customer!;
     }
     public async Task<bool> DeleteAccountById(int id) {

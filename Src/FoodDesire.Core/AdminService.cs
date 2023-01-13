@@ -2,20 +2,16 @@
 public class AdminService: IAdminService {
     private readonly IRepository<Admin> _adminRepository;
     private readonly ITrackingRepository<User> _userRepository;
-    private readonly FoodDesireContext _context;
     public AdminService(
-        FoodDesireContext context,
         IRepository<Admin> adminRepository,
         ITrackingRepository<User> userRepository
         ) {
-        _context = context;
         _adminRepository = adminRepository;
         _userRepository = userRepository;
     }
 
     public async Task<Admin> CreateAccount(Admin user) {
         Admin newAdmin = await _adminRepository.Add(user);
-        await _context.SaveChangesAsync();
         return newAdmin;
     }
 
@@ -30,7 +26,7 @@ public class AdminService: IAdminService {
         Expression<Func<Admin, bool>> filter =
             e => e.User!.Account!.Email.Equals(email) &&
             e.User!.Account.Password.Equals(password);
-        Admin? admin = await _context.Set<Admin>().AsNoTracking().SingleAsync(filter);
+        Admin? admin = await _adminRepository.GetOne(filter);
         return admin!;
     }
 
