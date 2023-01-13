@@ -2,16 +2,13 @@
 public class DelivererService: IDelivererService {
     private readonly IRepository<Deliverer> _delivererRepository;
     private readonly ITrackingRepository<User> _userRepository;
-    private readonly FoodDesireContext _context;
 
     public DelivererService(
-        FoodDesireContext foodDesireContext,
         IRepository<Deliverer> delivererRepository,
         ITrackingRepository<User> userRepository
         ) {
         _delivererRepository = delivererRepository;
         _userRepository = userRepository;
-        _context = foodDesireContext;
     }
 
     public async Task<Deliverer> CreateAccount(Deliverer user) {
@@ -20,12 +17,7 @@ public class DelivererService: IDelivererService {
     }
 
     public async Task<bool> DeleteAccountById(int id) {
-        Deliverer deliverer = await _context.Set<Deliverer>()
-            .AsNoTracking()
-            .Include(e => e.Employee)
-            .ThenInclude(e => e!.User)
-            .SingleAsync(e => e.Id == id);
-
+        Deliverer deliverer = await _delivererRepository.GetByID(id);
         bool delivererDeleted = await _userRepository.SoftDelete(deliverer.Employee!.UserId);
         return delivererDeleted;
     }
@@ -40,13 +32,7 @@ public class DelivererService: IDelivererService {
             e => e.Employee!.User!.Account!.Email.Equals(email) &&
             e.Employee.User.Account.Password.Equals(password);
 
-        Deliverer deliverer = await _context.Set<Deliverer>()
-            .AsNoTracking()
-            .Include(e => e.Employee)
-            .ThenInclude(e => e!.User)
-            .ThenInclude(u => u!.Account)
-            .SingleAsync(filter);
-
+        Deliverer deliverer = await _delivererRepository.GetOne(filter);
         return deliverer;
     }
 

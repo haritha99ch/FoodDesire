@@ -2,20 +2,16 @@
 public class SupplierService: ISupplierService {
     private readonly IRepository<Supplier> _supplierRepository;
     private readonly ITrackingRepository<User> _userRepository;
-    private readonly FoodDesireContext _context;
     public SupplierService(
-        FoodDesireContext context,
         IRepository<Supplier> supplierRepository,
         ITrackingRepository<User> userRepository
         ) {
-        _context = context;
         _supplierRepository = supplierRepository;
         _userRepository = userRepository;
     }
 
     public async Task<Supplier> CreateAccount(Supplier user) {
         Supplier newSupplier = await _supplierRepository.Add(user);
-        await _context.SaveChangesAsync();
         return newSupplier;
     }
 
@@ -35,11 +31,7 @@ public class SupplierService: ISupplierService {
         Expression<Func<Supplier, bool>> filter =
             e => e.Employee!.User!.Account!.Email.Equals(email) &&
             e.Employee!.User!.Account.Password.Equals(password);
-        Supplier? supplier = await _context.Set<Supplier>()
-            .AsNoTracking().Include(e => e.Employee)
-            .ThenInclude(e => e!.User)
-            .ThenInclude(u => u!.Account)
-            .SingleAsync(filter);
+        Supplier? supplier = await _supplierRepository.GetOne(filter);
         return supplier!;
     }
 
