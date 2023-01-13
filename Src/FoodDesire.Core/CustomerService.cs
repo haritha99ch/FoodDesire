@@ -19,12 +19,7 @@ public class CustomerService: ICustomerService {
         return newCustomer;
     }
     public async Task<Customer> GetByIdPopulated(int id) {
-        Customer customer = await _context.Set<Customer>()
-            .AsNoTracking()
-            .Include(e => e.User)
-            .ThenInclude(u => u!.Account)
-            .Include(e => e.User!.Address)
-            .SingleAsync(e => e.Id == id);
+        Customer customer = await _customerRepository.GetOne(e => e.Id == id);
         return customer;
     }
     public async Task<List<Customer>> GetAll() {
@@ -49,7 +44,6 @@ public class CustomerService: ICustomerService {
     }
     public async Task<Customer> UpdateAccount(Customer user) {
         Customer updatedCustomer = await _customerRepository.Update(user);
-        await _userRepository.SaveChanges();
         return updatedCustomer;
     }
 }
