@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.DAL", "FoodDesir
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.DAL.Test", "FoodDesire.DAL.Test\FoodDesire.DAL.Test.csproj", "{1E8E0A44-B9DD-4344-9325-D0668FFA17C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDesire.Core", "FoodDesire.Core\FoodDesire.Core.csproj", "{C73780DB-D5B4-4F3B-B221-103489A40259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.Core", "FoodDesire.Core\FoodDesire.Core.csproj", "{C73780DB-D5B4-4F3B-B221-103489A40259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDesire.Core.Test", "FoodDesire.Core.Test\FoodDesire.Core.Test.csproj", "{104B69AD-05B3-4AF5-9AA9-06E7DB199F56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C73780DB-D5B4-4F3B-B221-103489A40259}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C73780DB-D5B4-4F3B-B221-103489A40259}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C73780DB-D5B4-4F3B-B221-103489A40259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104B69AD-05B3-4AF5-9AA9-06E7DB199F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104B69AD-05B3-4AF5-9AA9-06E7DB199F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104B69AD-05B3-4AF5-9AA9-06E7DB199F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104B69AD-05B3-4AF5-9AA9-06E7DB199F56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

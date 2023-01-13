@@ -1,13 +1,13 @@
 ﻿namespace FoodDesire.Core;
 public class DelivererService: IDelivererService {
     private readonly IRepository<Deliverer> _delivererRepository;
-    private readonly TrackingRepository<User> _userRepository;
+    private readonly ITrackingRepository<User> _userRepository;
     private readonly FoodDesireContext _context;
 
     public DelivererService(
+        FoodDesireContext foodDesireContext,
         IRepository<Deliverer> delivererRepository,
-        TrackingRepository<User> userRepository,
-        FoodDesireContext foodDesireContext
+        ITrackingRepository<User> userRepository
         ) {
         _delivererRepository = delivererRepository;
         _userRepository = userRepository;
