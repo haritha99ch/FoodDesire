@@ -30,20 +30,12 @@ public class AdminService: IAdminService {
         Expression<Func<Admin, bool>> filter =
             e => e.User!.Account!.Email.Equals(email) &&
             e.User!.Account.Password.Equals(password);
-        Admin? admin = await _context.Set<Admin>()
-            .AsNoTracking()
-            .Include(e => e.User)
-            .ThenInclude(u => u!.Account)
-            .SingleAsync(filter);
+        Admin? admin = await _context.Set<Admin>().AsNoTracking().SingleAsync(filter);
         return admin!;
     }
 
     public async Task<Admin> GetByIdPopulated(int id) {
-        Admin admin = await _context.Set<Admin>()
-            .AsNoTracking()
-            .Include(e => e.User)
-            .ThenInclude(u => u!.Account)
-            .SingleAsync(e => e.Id == id);
+        Admin admin = await _adminRepository.GetOne(e => e.Id == id);
         return admin;
     }
 
