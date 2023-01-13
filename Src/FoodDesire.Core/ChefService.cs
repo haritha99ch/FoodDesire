@@ -5,8 +5,8 @@ public class ChefService: IChefService {
     private readonly FoodDesireContext _context;
     public ChefService(
         FoodDesireContext context,
-        ITrackingRepository<User> userRepository,
-        IRepository<Chef> chefRepository
+        IRepository<Chef> chefRepository,
+        ITrackingRepository<User> userRepository
         ) {
         _context = context;
         _userRepository = userRepository;
