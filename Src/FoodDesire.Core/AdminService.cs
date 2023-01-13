@@ -31,7 +31,7 @@ public class AdminService: IAdminService {
     }
 
     public async Task<Admin> GetByIdPopulated(int id) {
-        Admin admin = await _adminRepository.GetOne(e => e.Id == id);
+        Admin admin = await _adminRepository.GetByID(id);
         return admin;
     }
 

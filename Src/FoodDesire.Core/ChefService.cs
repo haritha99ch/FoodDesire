@@ -36,13 +36,12 @@ public class ChefService: IChefService {
     }
 
     public async Task<Chef> GetByIdPopulated(int id) {
-        Chef chef = await _chefRepository.GetOne(e => e.Id == id);
+        Chef chef = await _chefRepository.GetByID(id);
         return chef;
     }
 
     public async Task<Chef> UpdateAccount(Chef user) {
         Chef updatedChef = await _chefRepository.Update(user);
-        await _userRepository.SaveChanges();
         return updatedChef;
     }
 }

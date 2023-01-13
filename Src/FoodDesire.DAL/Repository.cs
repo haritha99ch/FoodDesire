@@ -24,14 +24,14 @@ public class Repository<T>: IRepository<T> where T : Entity {
         return entity!;
     }
     public async Task<T> GetOne(Expression<Func<T, bool>> filter, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
-        T entity;
-        IQueryable<T>? query = entitySet.Where(filter);
+        T? entity;
+        IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
         if(includes != null) {
-            entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleAsync();
-            return entity;
+            entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleOrDefaultAsync();
+            return entity!;
         }
-        entity = await query.SingleAsync();
-        return entity;
+        entity = await query.SingleOrDefaultAsync();
+        return entity!;
     }
 
     public async Task<List<T>> GetAll() {
@@ -52,9 +52,9 @@ public class Repository<T>: IRepository<T> where T : Entity {
     }
 
     public async Task<T> Update(T entity) {
-        EntityEntry<T>? updatedEntity = entitySet.Update(entity);
+        var updatedEntity = entitySet.Update(entity);
         await _context.SaveChangesAsync();
-        return updatedEntity.Entity;
+        return entity;
     }
 
     public async Task<bool> Delete(int Id) {
