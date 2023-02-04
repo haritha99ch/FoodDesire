@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace FoodDesire.Core.Test;
+﻿namespace FoodDesire.Core.Test;
 [TestFixture]
 public class IngredientServicesHosting {
     private IngredientServices _testRunner;
+
     public IngredientServicesHosting() {
         var hostBuilder = Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) => {
@@ -21,7 +19,5 @@ public class IngredientServicesHosting {
 
 
     [Test, Order(1)]
-    public async Task NewIngredient() {
-        await _testRunner.NewIngredient();
-    }
+    public async Task NewIngredientCategory() => await _testRunner.NewIngredientCategory();
 }

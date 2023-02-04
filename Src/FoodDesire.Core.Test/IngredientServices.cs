@@ -9,7 +9,7 @@ public class IngredientServices {
         _ingredientService = ingredientService;
     }
 
-    public async Task NewIngredient() {
+    public async Task NewIngredientCategory() {
         IngredientCategory? ingredientCategory = await _ingredientService.NewIngredientCategory(new IngredientCategory() {
             Name = "Key Ingredients",
             Description = "Key Ingredients",
