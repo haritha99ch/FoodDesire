@@ -1,39 +1,27 @@
-﻿using FoodDesire.Core.Contracts.Services;
-using FoodDesire.DAL.Context;
-using FoodDesire.DAL.Contracts.Repositories;
-
-namespace FoodDesire.Core.Services;
-public class OrderService : IOrderService
-{
+﻿namespace FoodDesire.Core.Services;
+public class OrderService: IOrderService {
     private readonly IRepository<Order> _orderRepository;
-    private readonly FoodDesireContext _context;
 
-    public OrderService(IRepository<Order> orderRepository, FoodDesireContext context)
-    {
+    public OrderService(IRepository<Order> orderRepository) {
         _orderRepository = orderRepository;
-        _context = context;
     }
 
-    public async Task<Order> NewOrder(Order order)
-    {
+    public async Task<Order> NewOrder(Order order) {
         Order newOrder = await _orderRepository.Add(order);
         return newOrder;
     }
 
-    public async Task<Order> GetOrderById(int orderId)
-    {
+    public async Task<Order> GetOrderById(int orderId) {
         Order order = await _orderRepository.GetByID(orderId);
         return order;
     }
 
-    public async Task<List<Order>> GetAllOrders()
-    {
+    public async Task<List<Order>> GetAllOrders() {
         List<Order> orders = await _orderRepository.GetAll();
         return orders;
     }
 
-    public async Task<bool> DeleteOrderById(int orderId)
-    {
+    public async Task<bool> DeleteOrderById(int orderId) {
         bool orderDeleted = await _orderRepository.Delete(orderId);
         return orderDeleted;
     }

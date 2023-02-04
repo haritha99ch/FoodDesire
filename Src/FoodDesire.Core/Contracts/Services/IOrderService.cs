@@ -1,6 +1,5 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-public interface IOrderService
-{
+public interface IOrderService {
     Task<Order> NewOrder(Order order);
     Task<List<Order>> GetAllOrders();
     Task<Order> GetOrderById(int orderId);

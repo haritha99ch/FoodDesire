@@ -1,5 +1,4 @@
-﻿using FoodDesire.Core.Contracts.Services;
-using FoodDesire.Core.Services;
+﻿using FoodDesire.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FoodDesire.Core;

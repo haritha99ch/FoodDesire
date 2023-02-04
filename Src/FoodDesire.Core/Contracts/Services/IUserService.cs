@@ -1,6 +1,5 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-public interface IUserService<T>
-{
+public interface IUserService<T> {
     Task<T> CreateAccount(T user);
     Task<T> GetByIdPopulated(int id);
     Task<List<T>> GetAll();

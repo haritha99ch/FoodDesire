@@ -1,6 +1,5 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-public interface IIngredientService
-{
+public interface IIngredientService {
     Task<Ingredient> NewIngredient(Ingredient ingredient);
     Task<IngredientCategory> NewIngredientCategory(IngredientCategory ingredientCategory);
     Task<bool> DeleteIngredientCategoryById(int ingredientCategoryId);

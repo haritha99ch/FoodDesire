@@ -1,6 +1,5 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-public interface IFoodItemService
-{
+public interface IFoodItemService {
     Task<FoodItem> NewFoodItem(FoodItem foodItem);
     Task<bool> RemoveFoodItem(int foodItemId);
     Task<FoodItem> UpdateFoodItem(FoodItem foodItem);
