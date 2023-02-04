@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Core.Test;
+﻿using FoodDesire.DAL.Context;
+
+namespace FoodDesire.Core.Test;
 [TestFixture]
 public class IngredientServicesHosting {
     private IngredientServices _testRunner;

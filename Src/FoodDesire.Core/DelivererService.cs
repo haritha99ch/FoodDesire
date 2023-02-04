@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class DelivererService: IDelivererService {
     private readonly IRepository<Deliverer> _delivererRepository;
     private readonly ITrackingRepository<User> _userRepository;

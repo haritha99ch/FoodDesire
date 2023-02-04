@@ -1,4 +1,7 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Context;
+using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class PaymentService: IPaymentService {
     private readonly ITrackingRepository<Payment> _paymentRepository;
     private readonly FoodDesireContext _context;

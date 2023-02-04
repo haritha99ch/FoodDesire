@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using FoodDesire.DAL.Repositories;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace FoodDesire.DAL;
 public static class Configure {

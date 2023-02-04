@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class ChefService: IChefService {
     private readonly IRepository<Chef> _chefRepository;
     private readonly ITrackingRepository<User> _userRepository;

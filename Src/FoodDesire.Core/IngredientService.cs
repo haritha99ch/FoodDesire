@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class IngredientService: IIngredientService {
     private readonly ITrackingRepository<Supply> _supplyRepository;
     private readonly IRepository<Ingredient> _ingredientRepository;

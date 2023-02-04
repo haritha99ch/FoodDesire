@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class FoodItemService: IFoodItemService {
     private readonly IRepository<FoodItem> _foodItemRepository;
     private readonly IRepository<Order> _orderRepository;

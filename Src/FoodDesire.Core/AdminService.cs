@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class AdminService: IAdminService {
     private readonly IRepository<Admin> _adminRepository;
     private readonly ITrackingRepository<User> _userRepository;

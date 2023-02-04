@@ -1,4 +1,7 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Context;
+using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class RecipeService: IRecipeService {
     private readonly IRepository<Recipe> _recipeRepository;
     private readonly IRepository<RecipeIngredient> _recipeIngredientRepository;

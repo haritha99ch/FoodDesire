@@ -1,4 +1,7 @@
-﻿namespace FoodDesire.Core;
+﻿using FoodDesire.DAL.Context;
+using FoodDesire.DAL.Contracts.Repositories;
+
+namespace FoodDesire.Core;
 public class OrderDeliveryService: IOrderDeliveryService {
     private readonly IRepository<Delivery> _deliveryRepository;
     private readonly FoodDesireContext _context;
