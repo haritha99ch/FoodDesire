@@ -4,12 +4,12 @@ public class IngredientService: IIngredientService {
     private readonly ITrackingRepository<Supply> _supplyRepository;
     private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly ITrackingRepository<IngredientCategory> _ingredientCategoryTRepository;
-    private readonly PaymentService _paymentService;
+    private readonly IPaymentService _paymentService;
 
     public IngredientService(
         ITrackingRepository<Supply> supplyRepository,
         IRepository<Ingredient> ingredientRepository,
-        PaymentService paymentService,
+        IPaymentService paymentService,
         ITrackingRepository<IngredientCategory> categoryRepository
         ) {
         _supplyRepository = supplyRepository;
