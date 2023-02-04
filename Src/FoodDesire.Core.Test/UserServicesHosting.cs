@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace FoodDesire.Core.Test;
+﻿namespace FoodDesire.Core.Test;
 public class UserServicesHosting {
     private UserServices _testRunner;
     public UserServicesHosting() {

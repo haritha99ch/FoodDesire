@@ -1,5 +1,4 @@
-﻿
-namespace FoodDesire.Core;
+﻿namespace FoodDesire.Core;
 public class IngredientService: IIngredientService {
     private readonly ITrackingRepository<Supply> _supplyRepository;
     private readonly IRepository<Ingredient> _ingredientRepository;
