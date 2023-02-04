@@ -1,4 +1,5 @@
-﻿using FoodDesire.DAL.Context;
+﻿using FoodDesire.Core.Contracts.Services;
+using FoodDesire.DAL.Context;
 using FoodDesire.DAL.Contracts.Repositories;
 
 namespace FoodDesire.Core;

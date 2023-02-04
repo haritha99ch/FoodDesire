@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FoodDesire.Core.Contracts.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FoodDesire.Core;
 public static class Configure {

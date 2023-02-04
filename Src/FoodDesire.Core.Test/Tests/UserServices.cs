@@ -1,3 +1,5 @@
+using FoodDesire.Core.Contracts.Services;
+
 namespace FoodDesire.Core.Test.Tests;
 [TestFixture]
 public class UserServices {

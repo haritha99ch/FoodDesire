@@ -1,4 +1,5 @@
-﻿using FoodDesire.DAL.Contracts.Repositories;
+﻿using FoodDesire.Core.Contracts.Services;
+using FoodDesire.DAL.Contracts.Repositories;
 
 namespace FoodDesire.Core;
 public class CustomerOrderService: ICustomerOrderService {
