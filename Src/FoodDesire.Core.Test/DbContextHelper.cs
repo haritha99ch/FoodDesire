@@ -7,4 +7,8 @@ public static class DbContextHelper {
                 .UseInMemoryDatabase(name).Options;
         return new FoodDesireContext(dbOptions);
     }
+
+    public static void ConfigureDbContextOptions(string name, DbContextOptionsBuilder options) {
+        options.UseInMemoryDatabase(name);
+    }
 }
