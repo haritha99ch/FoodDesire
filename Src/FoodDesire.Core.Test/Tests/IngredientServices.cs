@@ -1,4 +1,4 @@
-﻿namespace FoodDesire.Core.Test;
+﻿namespace FoodDesire.Core.Test.Tests;
 [TestFixture]
 public class IngredientServices {
     private ISupplierService _supplierService;
