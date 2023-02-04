@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public class RecipeIngredient : Entity {
+public class RecipeIngredient: Entity {
     [Required, NotNull]
     public int RecipeId { get; set; }
     [Required, NotNull]

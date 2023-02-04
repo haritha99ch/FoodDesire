@@ -1,35 +1,28 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace FoodDesire.DAL.Migrations
-{
+namespace FoodDesire.DAL.Migrations {
     /// <inheritdoc />
-    public partial class Initial : Migration
-    {
+    public partial class Initial: Migration {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.CreateTable(
                 name: "Account",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     VerifyCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Account", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Address",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     No = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -38,56 +31,48 @@ namespace FoodDesire.DAL.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Address", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "FoodCategory",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_FoodCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Image",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Data = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Image", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "IngredientCategory",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_IngredientCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "User",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -99,8 +84,7 @@ namespace FoodDesire.DAL.Migrations
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
                         name: "FK_User_Account_AccountId",
@@ -118,8 +102,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Ingredient",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -133,8 +116,7 @@ namespace FoodDesire.DAL.Migrations
                     IngredientCategoryId = table.Column<int>(type: "int", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Ingredient", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Ingredient_Image_ImageId",
@@ -152,14 +134,12 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Admin",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Admin", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Admin_User_UserId",
@@ -171,14 +151,12 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Customer",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Customer", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Customer_User_UserId",
@@ -190,15 +168,13 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Employee",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     RegisteredDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Employee", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Employee_User_UserId",
@@ -210,16 +186,14 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Order",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Order", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Order_Customer_CustomerId",
@@ -231,14 +205,12 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Chef",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Chef", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Chef_Employee_EmployeeId",
@@ -250,16 +222,14 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Deliverer",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     VehicleType = table.Column<int>(type: "int", nullable: false),
                     LicenseNo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Deliverer", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Deliverer_Employee_EmployeeId",
@@ -271,15 +241,13 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Supplier",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Supplier", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Supplier_Employee_EmployeeId",
@@ -291,8 +259,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Recipe",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ChefId = table.Column<int>(type: "int", nullable: false),
@@ -306,8 +273,7 @@ namespace FoodDesire.DAL.Migrations
                     IngredientId = table.Column<int>(type: "int", nullable: true),
                     Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Recipe", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Recipe_Chef_ChefId",
@@ -330,8 +296,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Delivery",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
@@ -339,8 +304,7 @@ namespace FoodDesire.DAL.Migrations
                     IsDelivered = table.Column<bool>(type: "bit", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Delivery", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Delivery_Address_AddressId",
@@ -362,8 +326,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Supply",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SupplierId = table.Column<int>(type: "int", nullable: false),
@@ -371,8 +334,7 @@ namespace FoodDesire.DAL.Migrations
                     Amount = table.Column<double>(type: "float", nullable: false),
                     SuppliedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Supply", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Supply_Ingredient_IngredientId",
@@ -390,8 +352,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "FoodItem",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeId = table.Column<int>(type: "int", nullable: false),
@@ -401,8 +362,7 @@ namespace FoodDesire.DAL.Migrations
                     Deleted = table.Column<bool>(type: "bit", nullable: false),
                     FoodItemIngredients = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_FoodItem", x => x.Id);
                     table.ForeignKey(
                         name: "FK_FoodItem_Chef_ChefId",
@@ -424,8 +384,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "RecipeIngredient",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeId = table.Column<int>(type: "int", nullable: false),
@@ -435,8 +394,7 @@ namespace FoodDesire.DAL.Migrations
                     IsRequired = table.Column<bool>(type: "bit", nullable: false),
                     PricePerMultiplier = table.Column<decimal>(type: "Decimal(18,2)", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_RecipeIngredient", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RecipeIngredient_Ingredient_IngredeintId",
@@ -454,8 +412,7 @@ namespace FoodDesire.DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Payment",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
@@ -466,8 +423,7 @@ namespace FoodDesire.DAL.Migrations
                     ManagedBy = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<decimal>(type: "Decimal(18,2)", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Payment", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Payment_Admin_ManagedBy",
@@ -637,8 +593,7 @@ namespace FoodDesire.DAL.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropTable(
                 name: "Delivery");
 
