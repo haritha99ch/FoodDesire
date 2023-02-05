@@ -30,27 +30,9 @@ public class UserServices {
 
     [Test, Order(1)]
     public async Task CreateAdmin() {
-        Admin admin = new Admin() {
-            User = new User() {
-                FirstName = "Admin",
-                LastName = "Nimda",
-                DateOfBirth = new DateTime(1999, 5, 2),
-                Account = new Account() {
-                    Email = "admin@fooddesire.com",
-                    Password = "1234",
-                },
-                Address = new Address() {
-                    No = "2",
-                    Street1 = "Street1",
-                    Street2 = "Street2",
-                    City = "Diyatalawa",
-                    PostalCode = 1290
-                },
-                Gender = Gender.Male,
-            },
-        };
+        Admin admin = UserDataHelpers.GetAdminPayload();
         Admin saveAdmin = await _adminService.CreateAccount(admin);
-        Assert.That(admin.User.FirstName, Is.EqualTo(saveAdmin.User!.FirstName));
+        Assert.That(admin.User!.FirstName, Is.EqualTo(saveAdmin.User!.FirstName));
     }
 
     [Test, Order(2)]
@@ -70,30 +52,9 @@ public class UserServices {
 
     [Test, Order(4)]
     public async Task CreateSupplier() {
-        Supplier supplier = new() {
-            Employee = new Employee {
-                User = new User() {
-                    FirstName = "Supplier",
-                    LastName = "Reilppus",
-                    DateOfBirth = new DateTime(1999, 5, 2),
-                    Account = new Account() {
-                        Email = "supplier@fooddesire.com",
-                        Password = "1234",
-                    },
-                    Address = new Address() {
-                        No = "2",
-                        Street1 = "Street1",
-                        Street2 = "Street2",
-                        City = "Diyatalawa",
-                        PostalCode = 1290
-                    },
-                    Gender = Gender.Male,
-                },
-            },
-            City = "Diyatalawa"
-        };
+        Supplier supplier = UserDataHelpers.GetSupplierPayload();
         Supplier saveSupplier = await _supplierService.CreateAccount(supplier);
-        Assert.That(supplier.Employee.User.FirstName, Is.EqualTo(saveSupplier.Employee!.User!.FirstName));
+        Assert.That(supplier!.Employee!.User!.FirstName, Is.EqualTo(saveSupplier.Employee!.User!.FirstName));
     }
 
     [Test, Order(5)]

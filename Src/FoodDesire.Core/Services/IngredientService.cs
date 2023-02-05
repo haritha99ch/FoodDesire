@@ -79,17 +79,14 @@ public class IngredientService: IIngredientService {
 
 
     public async Task<Supply> NewSupply(Supply supply, decimal value) {
-        Payment payment = new();
-        using(IDbContextTransaction? transaction = await _supplyRepository.BeginTransaction()) {
-            payment = await _paymentService.PaymentForSupply(supply, value);
-            await _paymentService.SavePayment();
-            Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
-            ingredient.CurrentQuantity += supply.Amount;
-            ingredient.CurrentPricePerUnit = Convert.ToDouble(value) / supply.Amount;
-            ingredient = await _ingredientRepository.Update(ingredient);
-            await transaction.CommitAsync();
+        Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
+        ingredient.CurrentQuantity += supply.Amount;
+        ingredient.CurrentPricePerUnit = Convert.ToDouble(value) / supply.Amount;
+        await _ingredientRepository.Update(ingredient);
 
-        }
+        Payment payment = await _paymentService.PaymentForSupply(supply, value);
+        await _paymentService.SavePayment();
+
         return payment.Supply!;
     }
 }
