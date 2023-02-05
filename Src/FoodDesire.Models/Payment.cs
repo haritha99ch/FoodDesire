@@ -1,24 +1,19 @@
-﻿namespace FoodDesire.Models;
+﻿using FoodDesire.Models.Helpers;
+
+namespace FoodDesire.Models;
 public sealed class Payment: TrackedEntity {
     [Required, NotNull]
-    public PaymentType PaymentType { get; private set; }
+    public PaymentType PaymentType;
     [Required, NotNull]
     public DateTime DateTime { get; private set; } = DateTime.Now;
     [AllowNull]
-
-    private int? _orderId;
-
+    public int? OrderId { get; set; }
     [AllowNull]
     public int? EmployeeId {
         get => _employeeId;
-        set {
-            _employeeId = value;
-            if(value == null) return;
-            PaymentType = PaymentType.Salary;
-        }
+        set => PaymentModelHelper.SetEmployee(value, ref _employeeId, ref PaymentType);
     }
-    public int? _employeeId;
-
+    private int? _employeeId;
     [AllowNull]
     public int? SupplyId { get; set; }
     [Required, NotNull]
@@ -31,11 +26,7 @@ public sealed class Payment: TrackedEntity {
     [ForeignKey(nameof(OrderId))]
     public Order? Order {
         get => _order;
-        set {
-            _order = value;
-            if(value == null) return;
-            PaymentType = PaymentType.Order;
-        }
+        set => PaymentModelHelper.SetOrder(value!, ref _order!, ref PaymentType);
     }
     private Order? _order;
     [ForeignKey(nameof(EmployeeId))]
@@ -43,11 +34,7 @@ public sealed class Payment: TrackedEntity {
     [ForeignKey(nameof(SupplyId))]
     public Supply? Supply {
         get => _supply;
-        set {
-            _supply = value;
-            if(value == null) return;
-            PaymentType = PaymentType.Supply;
-        }
+        set => PaymentModelHelper.SetSupply(value!, ref _supply!, ref PaymentType);
     }
     private Supply? _supply;
     [ForeignKey(nameof(ManagedBy))]
