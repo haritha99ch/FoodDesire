@@ -27,9 +27,18 @@ public class IngredientServices {
     [Test, Order(1)]
     public async Task NewIngredientCategory() {
         IngredientCategory? ingredientCategory = await _ingredientService.NewIngredientCategory(new IngredientCategory() {
-            Name = "Key Ingredients",
+            Name = "Key",
             Description = "Key Ingredients",
         });
         Assert.That(ingredientCategory.Name, Is.EqualTo("Key Ingredients"));
+    }
+
+    [Test, Order(2)]
+    public async Task NewIngredient() {
+        Ingredient newIngredient = new Ingredient() {
+            Name = "Salt",
+            Description = "Salt",
+            IngredientCategory = _ingredientService.
+        }
     }
 }
