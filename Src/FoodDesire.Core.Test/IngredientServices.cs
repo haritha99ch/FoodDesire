@@ -30,15 +30,23 @@ public class IngredientServices {
             Name = "Key",
             Description = "Key Ingredients",
         });
-        Assert.That(ingredientCategory.Name, Is.EqualTo("Key Ingredients"));
+        Assert.That(ingredientCategory.Name, Is.EqualTo("Key"));
     }
 
     [Test, Order(2)]
     public async Task NewIngredient() {
+        IngredientCategory? ingredientCategory = await _ingredientService.GetIngredientCategoryByName("Key");
         Ingredient newIngredient = new Ingredient() {
             Name = "Salt",
             Description = "Salt",
-            IngredientCategory = _ingredientService.
-        }
+            IngredientCategoryId = ingredientCategory.Id,
+            CurrentPricePerUnit = 0,
+            CurrentQuantity = 0,
+            Image = new Image() { Data = "Image data" },
+            MaximumQuantity = 1000,
+            Measurement = Measurement.Mass
+        };
+        Ingredient savedIngredient = await _ingredientService.NewIngredient(newIngredient);
+        Assert.That(savedIngredient.Name, Is.EqualTo(newIngredient.Name));
     }
 }
