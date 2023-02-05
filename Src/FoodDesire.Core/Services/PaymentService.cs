@@ -36,6 +36,7 @@ public class PaymentService: IPaymentService {
         Payment payment = new() {
             ManagedBy = admin!.Id,
             Supply = supply,
+            Value = value
         };
         payment = await _paymentRepository.Add(payment);
         await SavePayment();
