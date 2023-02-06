@@ -1,21 +1,16 @@
-﻿using FoodDesire.DAL.Context;
-
-namespace FoodDesire.Core.Services;
+﻿namespace FoodDesire.Core.Services;
 public class RecipeService: IRecipeService {
     private readonly IRepository<Recipe> _recipeRepository;
     private readonly IRepository<RecipeIngredient> _recipeIngredientRepository;
     private readonly IRepository<RecipeCategory> _foodCategoryRepository;
-    private readonly FoodDesireContext _context;
 
     public RecipeService(
         IRepository<Recipe> recipeRepository,
         IRepository<RecipeIngredient> recipeIngredientRepository,
-        FoodDesireContext context,
         IRepository<RecipeCategory> recipeCategoryRepository
         ) {
         _recipeRepository = recipeRepository;
         _recipeIngredientRepository = recipeIngredientRepository;
-        _context = context;
         _foodCategoryRepository = recipeCategoryRepository;
     }
 
@@ -27,12 +22,8 @@ public class RecipeService: IRecipeService {
     public async Task<Recipe> AddRecipeIngredientToRecipe(
         int recipeId, RecipeIngredient recipeIngredient
         ) {
-        Recipe recipe = await _context.Set<Recipe>()
-            .AsNoTracking()
-            .Include(e => e.RecipeIngredients)
-            .SingleAsync(e => e.Id == recipeId);
+        Recipe recipe = await _recipeRepository.GetByID(recipeId);
         recipe.RecipeIngredients.Add(recipeIngredient);
-
         recipe = await _recipeRepository.Update(recipe);
         return recipe;
     }
