@@ -35,7 +35,7 @@ public class RecipeService: IRecipeService {
         return recipe;
     }
 
-    public async Task<List<Recipe>> GetAllRecipe() {
+    public async Task<List<Recipe>> GetAllRecipes() {
         List<Recipe> recipes = await _recipeRepository.GetAll();
         return recipes;
     }

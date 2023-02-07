@@ -3,7 +3,7 @@ public class RecipeIngredient: Entity {
     [Required, NotNull]
     public int RecipeId { get; set; }
     [Required, NotNull]
-    public int IngredeintId { get; set; }
+    public int IngredientId { get; set; }
     [Required, NotNull]
     public double Amount { get; set; }
     [Required, NotNull]
@@ -16,6 +16,6 @@ public class RecipeIngredient: Entity {
 
     [ForeignKey(nameof(RecipeId))]
     public Recipe? Recipe { get; set; }
-    [ForeignKey(nameof(IngredeintId))]
+    [ForeignKey(nameof(IngredientId))]
     public Ingredient? Ingredient { get; set; }
 }

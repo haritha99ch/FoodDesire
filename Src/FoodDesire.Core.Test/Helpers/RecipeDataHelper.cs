@@ -23,7 +23,7 @@ internal static class RecipeDataHelper {
     }
     internal static RecipeIngredient GetRecipeIngredientPayload(int ingredientId) {
         return new RecipeIngredient() {
-            IngredeintId = ingredientId,
+            IngredientId = ingredientId,
             Amount = 50,
             PricePerMultiplier = 10,
             RecommendedAmount = 50,

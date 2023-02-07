@@ -21,7 +21,7 @@ public class RecipeServices {
 
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
         await _ingredientService.NewIngredientCategory(IngredientDataHelper.GetIngredientCategoryPayload());
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 3; i++) {
             await _ingredientService.NewIngredient(IngredientDataHelper.GetIngredientPayLoad(1));
         }
     }
@@ -48,6 +48,18 @@ public class RecipeServices {
             Assert.That(newRecipe.RecipeIngredients, Has.Count.EqualTo(2));
         });
     }
+
+    [Test, Order(4)]
+    public async Task GetRecipes() {
+        Recipe recipe = await _recipeService.GetRecipeById(1);
+        List<Recipe> recipes = await _recipeService.GetAllRecipes();
+
+        Assert.Multiple(() => {
+            Assert.That(recipe.Name, Is.EqualTo(RecipeDataHelper.GetRecipePayload().Name));
+            Assert.That(recipes, Has.Count.EqualTo(1));
+        });
+    }
+
 
     [Test, Order(3)]
     public async Task AddIngredientToRecipe() {

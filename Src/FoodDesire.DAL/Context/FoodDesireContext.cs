@@ -43,5 +43,11 @@ public class FoodDesireContext: DbContext {
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
+        modelBuilder.Entity<RecipeIngredient>()
+            .HasOne(ri => ri.Recipe)
+            .WithMany(r => r.RecipeIngredients)
+            .HasForeignKey(ri => ri.RecipeId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
     }
 }

@@ -24,7 +24,7 @@ public sealed class Recipe: TrackedEntity {
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(FoodCategoryId))]
     public RecipeCategory? FoodCategory { get; set; }
-    private List<RecipeIngredient>? _recipeIngredients = new List<RecipeIngredient>();
+    private List<RecipeIngredient>? _recipeIngredients = new();
     public List<RecipeIngredient> RecipeIngredients {
         get {
             return _recipeIngredients!;
