@@ -9,7 +9,7 @@ public interface IRecipeService {
     Task<RecipeCategory> GetRecipeCategoryByName(string categoryName);
     Task<List<Recipe>> GetAllRecipesByCategoryName(string categoryName);
     Task<List<Recipe>> GetAllRecipesByCategoryId(int categoryId);
-    Task<List<RecipeIngredient>> GetAllRecipeIngredientsOfRecipe(int recipeId);
+    Task<List<RecipeIngredient>> GetAllRecipeIngredientsForRecipe(int recipeId);
     Task<Recipe> UpdateRecipe(Recipe recipe);
     Task<Recipe> AddRecipeIngredientToRecipe(int recipeId, RecipeIngredient recipeIngredient);
     Task<bool> RemoveRecipeIngredientById(int recipeIngredientId);

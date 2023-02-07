@@ -24,13 +24,13 @@ public class RecipeService: IRecipeService {
         ) {
         Recipe recipe = await _recipeRepository.GetByID(recipeId);
         recipe.RecipeIngredients.Add(recipeIngredient);
-        recipe = await _recipeRepository.Update(recipe);
+        recipe = await UpdateRecipe(recipe);
         return recipe;
     }
 
     public async Task<Recipe> GetRecipeById(int recipeId) {
         Recipe recipe = await _recipeRepository.GetByID(recipeId);
-        List<RecipeIngredient> recipeIngredients = await GetAllRecipeIngredientsOfRecipe(recipeId);
+        List<RecipeIngredient> recipeIngredients = await GetAllRecipeIngredientsForRecipe(recipeId);
         recipe.RecipeIngredients = recipeIngredients;
         return recipe;
     }
@@ -40,20 +40,45 @@ public class RecipeService: IRecipeService {
         return recipes;
     }
 
-    public async Task<List<Recipe>> GetAllRecipeByCategory(string category) {
-        Expression<Func<RecipeCategory, bool>> categoryFilter = e => e.Name == category;
+    public async Task<List<RecipeCategory>> GetAllRecipeCategories() {
+        List<RecipeCategory> recipeCategories = await _recipeCategoryRepository.GetAll();
+        return recipeCategories;
+    }
+
+    public async Task<RecipeCategory> GetRecipeCategoryById(int categoryId) {
+        RecipeCategory recipeCategory = await _recipeCategoryRepository.GetByID(categoryId);
+        return recipeCategory;
+    }
+
+    public async Task<RecipeCategory> GetRecipeCategoryByName(string categoryName) {
+        Expression<Func<RecipeCategory, bool>> filter = e => e.Name == categoryName;
+        RecipeCategory recipeCategory = await _recipeCategoryRepository.GetOne(filter);
+
+        return recipeCategory;
+    }
+
+    public async Task<List<Recipe>> GetAllRecipesByCategoryName(string categoryName) {
+        Expression<Func<RecipeCategory, bool>> categoryFilter = e => e.Name == categoryName;
 
         RecipeCategory foodCategory = await _recipeCategoryRepository.GetOne(categoryFilter);
         int categoryId = foodCategory.Id;
 
-        Expression<Func<Recipe, bool>> filter = e => e.FoodCategoryId == categoryId;
-        Expression<Func<Recipe, int>> order = e => e.FoodCategoryId;
+        Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
+        Expression<Func<Recipe, int>> order = e => e.RecipeCategoryId;
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order);
         return recipes;
     }
 
-    public async Task<List<RecipeIngredient>> GetAllRecipeIngredientsOfRecipe(int recipeId) {
+    public async Task<List<Recipe>> GetAllRecipesByCategoryId(int categoryId) {
+        Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
+        Expression<Func<Recipe, int>> order = e => e.RecipeCategoryId;
+
+        List<Recipe> recipes = await _recipeRepository.Get(filter, order);
+        return recipes;
+    }
+
+    public async Task<List<RecipeIngredient>> GetAllRecipeIngredientsForRecipe(int recipeId) {
         Expression<Func<RecipeIngredient, bool>> filter = e => e.RecipeId == recipeId;
         Expression<Func<RecipeIngredient, bool>> order = e => e.IsRequired;
 
@@ -80,4 +105,5 @@ public class RecipeService: IRecipeService {
         RecipeCategory newRecipeCategory = await _recipeCategoryRepository.Add(recipeCategory);
         return newRecipeCategory;
     }
+
 }
