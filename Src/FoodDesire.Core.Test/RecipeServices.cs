@@ -49,7 +49,7 @@ public class RecipeServices {
         });
     }
 
-    [Test, Order(4)]
+    [Test, Order(3)]
     public async Task GetRecipes() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
         List<Recipe> recipes = await _recipeService.GetAllRecipes();
@@ -60,8 +60,21 @@ public class RecipeServices {
         });
     }
 
+    [Test, Order(4), Description("Should run through all category related methods")]
+    public async Task GetRecipesByCategory() {
+        List<RecipeCategory> recipeCategories = await _recipeService.GetAllRecipeCategories();
+        RecipeCategory recipeCategory = await _recipeService.GetRecipeCategoryById(recipeCategories[0].Id);
+        recipeCategory = await _recipeService.GetRecipeCategoryByName(recipeCategory.Name);
 
-    [Test, Order(3)]
+        List<Recipe> recipesByCatId = await _recipeService.GetAllRecipesByCategoryId(recipeCategories[0].Id);
+        List<Recipe> recipesByCatName = await _recipeService.GetAllRecipesByCategoryName(recipeCategories[0].Name);
+
+        Assert.Multiple(() => {
+            Assert.That(recipesByCatId, Is.EqualTo(recipesByCatName));
+        });
+    }
+
+    [Test, Order(5)]
     public async Task AddIngredientToRecipe() {
         Recipe recipe = await _recipeService
             .AddRecipeIngredientToRecipe(1, RecipeDataHelper.GetRecipeIngredientPayload(3));

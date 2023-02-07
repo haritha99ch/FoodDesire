@@ -4,7 +4,11 @@ public interface IRecipeService {
     Task<RecipeCategory> NewRecipeCategory(RecipeCategory recipeCategory);
     Task<Recipe> GetRecipeById(int recipeId);
     Task<List<Recipe>> GetAllRecipes();
-    Task<List<Recipe>> GetAllRecipeByCategory(string category);
+    Task<List<RecipeCategory>> GetAllRecipeCategories();
+    Task<RecipeCategory> GetRecipeCategoryById(int categoryId);
+    Task<RecipeCategory> GetRecipeCategoryByName(string categoryName);
+    Task<List<Recipe>> GetAllRecipesByCategoryName(string categoryName);
+    Task<List<Recipe>> GetAllRecipesByCategoryId(int categoryId);
     Task<List<RecipeIngredient>> GetAllRecipeIngredientsOfRecipe(int recipeId);
     Task<Recipe> UpdateRecipe(Recipe recipe);
     Task<Recipe> AddRecipeIngredientToRecipe(int recipeId, RecipeIngredient recipeIngredient);
