@@ -30,8 +30,6 @@ public class RecipeService: IRecipeService {
 
     public async Task<Recipe> GetRecipeById(int recipeId) {
         Recipe recipe = await _recipeRepository.GetByID(recipeId);
-        List<RecipeIngredient> recipeIngredients = await GetAllRecipeIngredientsForRecipe(recipeId);
-        recipe.RecipeIngredients = recipeIngredients;
         return recipe;
     }
 
