@@ -47,7 +47,7 @@ public class FoodDesireContext: DbContext {
             .HasOne(ri => ri.Recipe)
             .WithMany(r => r.RecipeIngredients)
             .HasForeignKey(ri => ri.RecipeId)
-            .OnDelete(DeleteBehavior.ClientSetNull);
+            .OnDelete(DeleteBehavior.ClientCascade);
 
     }
 }
