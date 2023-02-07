@@ -74,13 +74,30 @@ public class RecipeServices {
         });
     }
 
-    [Test, Order(5)]
+    [Test, Order(5), Description("Should Remove an ingredient from the recipe and Get all the ingredient for the recipe")]
+    public async Task RemoveRecipeIngredient() {
+        Recipe recipe = await _recipeService.GetRecipeById(1);
+        bool recipeIngredientDeleted = await _recipeService.RemoveRecipeIngredientById(recipe.RecipeIngredients[1].Id);
+        List<Recipe>? recipes = await _recipeService.GetAllRecipes();
+        List<RecipeIngredient>? ingredients = await _recipeService.GetAllRecipeIngredientsForRecipe(recipes[0].Id);
+
+        Assert.That(ingredients, Has.Count.EqualTo(1));
+    }
+
+    [Test, Order(6), Description("Should add an ingredient. The method will use the UpdatedRecipe")]
     public async Task AddIngredientToRecipe() {
         Recipe recipe = await _recipeService
             .AddRecipeIngredientToRecipe(1, RecipeDataHelper.GetRecipeIngredientPayload(3));
+        recipe = await _recipeService.GetRecipeById(1);
 
-        Assert.That(recipe.RecipeIngredients, Has.Count.EqualTo(3));
+        Assert.That(recipe.RecipeIngredients, Has.Count.EqualTo(2));
     }
 
+    [Test, Order(7)]
+    public async Task RemoveRecipe() {
+        bool recipeRemoved = await _recipeService.RemoveRecipeById(1);
+        Recipe recipe = await _recipeService.GetRecipeById(1);
 
+        Assert.That(recipe, Is.Null);
+    }
 }

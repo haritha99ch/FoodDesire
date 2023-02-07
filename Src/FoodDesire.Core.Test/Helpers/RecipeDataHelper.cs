@@ -11,7 +11,7 @@ internal static class RecipeDataHelper {
             Name = "Fried Rice",
             Description = "A rice fried in oil",
             ChefId = 1,
-            FoodCategoryId = 1,
+            RecipeCategoryId = 1,
             RecipeIngredients = {
                 GetRecipeIngredientPayload(1),
                 GetRecipeIngredientPayload(2)
