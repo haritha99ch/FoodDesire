@@ -2,7 +2,7 @@
 public class RecipeService: IRecipeService {
     private readonly IRepository<Recipe> _recipeRepository;
     private readonly IRepository<RecipeIngredient> _recipeIngredientRepository;
-    private readonly IRepository<RecipeCategory> _foodCategoryRepository;
+    private readonly IRepository<RecipeCategory> _recipeCategoryRepository;
 
     public RecipeService(
         IRepository<Recipe> recipeRepository,
@@ -11,7 +11,7 @@ public class RecipeService: IRecipeService {
         ) {
         _recipeRepository = recipeRepository;
         _recipeIngredientRepository = recipeIngredientRepository;
-        _foodCategoryRepository = recipeCategoryRepository;
+        _recipeCategoryRepository = recipeCategoryRepository;
     }
 
     public async Task<Recipe> NewRecipe(Recipe recipe) {
@@ -43,7 +43,7 @@ public class RecipeService: IRecipeService {
     public async Task<List<Recipe>> GetAllRecipeByCategory(string category) {
         Expression<Func<RecipeCategory, bool>> categoryFilter = e => e.Name == category;
 
-        RecipeCategory foodCategory = await _foodCategoryRepository.GetOne(categoryFilter);
+        RecipeCategory foodCategory = await _recipeCategoryRepository.GetOne(categoryFilter);
         int categoryId = foodCategory.Id;
 
         Expression<Func<Recipe, bool>> filter = e => e.FoodCategoryId == categoryId;
@@ -76,4 +76,8 @@ public class RecipeService: IRecipeService {
         return recipeDeleted;
     }
 
+    public async Task<RecipeCategory> NewRecipeCategory(RecipeCategory recipeCategory) {
+        RecipeCategory newRecipeCategory = await _recipeCategoryRepository.Add(recipeCategory);
+        return newRecipeCategory;
+    }
 }

@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Core.Test.Helpers;
-public static class IngredientDataHelper {
-    public static Ingredient GetIngredientPayLoad(int ingredientCategoryId) {
+internal static class IngredientDataHelper {
+    internal static Ingredient GetIngredientPayLoad(int ingredientCategoryId) {
         return new Ingredient() {
             Name = "Salt",
             Description = "Salt",
@@ -10,6 +10,12 @@ public static class IngredientDataHelper {
             Image = new Image() { Data = "Image data" },
             MaximumQuantity = 1000,
             Measurement = Measurement.Mass
+        };
+    }
+    internal static IngredientCategory GetIngredientCategoryPayload() {
+        return new IngredientCategory() {
+            Name = "Key",
+            Description = "Key Ingredients",
         };
     }
 }

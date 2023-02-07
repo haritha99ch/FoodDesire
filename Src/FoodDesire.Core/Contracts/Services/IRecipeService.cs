@@ -1,6 +1,7 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
 public interface IRecipeService {
     Task<Recipe> NewRecipe(Recipe recipe);
+    Task<RecipeCategory> NewRecipeCategory(RecipeCategory recipeCategory);
     Task<Recipe> GetRecipeById(int recipeId);
     Task<List<Recipe>> GetAllRecipe();
     Task<List<Recipe>> GetAllRecipeByCategory(string category);

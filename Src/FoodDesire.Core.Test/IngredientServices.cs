@@ -19,26 +19,26 @@ public class IngredientServices {
     public async Task SetUp() {
         await _context.Database.EnsureCreatedAsync();
 
-        await _supplierService.CreateAccount(UserDataHelpers.GetSupplierPayload());
+        await _supplierService.CreateAccount(UserDataHelper.GetSupplierPayload());
         //To make NewSupply service work an admin should be registered in the system.
-        await _adminService.CreateAccount(UserDataHelpers.GetAdminPayload());
+        await _adminService.CreateAccount(UserDataHelper.GetAdminPayload());
     }
 
     [OneTimeTearDown]
-    public void TearDown() {
-        //await _context.Database.EnsureDeletedAsync();
+    public async Task TearDown() {
+        await _context.Database.EnsureDeletedAsync();
         ApplicationHostHelper.TearDownHost();
     }
 
     [Test, Order(1), Description("Should create a new Ingredient category")]
     public async Task NewIngredientCategory() {
-        IngredientCategory? ingredientCategory = await _ingredientService.NewIngredientCategory(new IngredientCategory() {
-            Name = "Key",
-            Description = "Key Ingredients",
-        });
+        IngredientCategory? ingredientCategory = await _ingredientService
+            .NewIngredientCategory(IngredientDataHelper.GetIngredientCategoryPayload());
         Assert.That(ingredientCategory.Name, Is.EqualTo("Key"));
 
     }
+
+
 
     [Test, Order(2)]
     public async Task NewIngredient() {

@@ -24,8 +24,8 @@ public sealed class Recipe: TrackedEntity {
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(FoodCategoryId))]
     public RecipeCategory? FoodCategory { get; set; }
-    private ICollection<RecipeIngredient>? _recipeIngredients { get; set; }
-    public ICollection<RecipeIngredient> RecipeIngredients {
+    private List<RecipeIngredient>? _recipeIngredients = new List<RecipeIngredient>();
+    public List<RecipeIngredient> RecipeIngredients {
         get {
             return _recipeIngredients!;
         }
@@ -35,7 +35,10 @@ public sealed class Recipe: TrackedEntity {
                 .ForEach((recipeIngredient) => {
                     MinimumPrice += Convert.ToDecimal(recipeIngredient.Amount * recipeIngredient.Ingredient!.CurrentPricePerUnit);
                 });
+            if(FixedPrice > MinimumPrice) return;
             FixedPrice = MinimumPrice;
         }
     }
+    [ForeignKey(nameof(ImageId))]
+    public Image? Image { get; set; }
 }

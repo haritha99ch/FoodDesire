@@ -30,7 +30,7 @@ public class UserServices {
 
     [Test, Order(1)]
     public async Task CreateAdmin() {
-        Admin admin = UserDataHelpers.GetAdminPayload();
+        Admin admin = UserDataHelper.GetAdminPayload();
         Admin saveAdmin = await _adminService.CreateAccount(admin);
         Assert.That(admin.User!.FirstName, Is.EqualTo(saveAdmin.User!.FirstName));
     }
@@ -52,7 +52,7 @@ public class UserServices {
 
     [Test, Order(4)]
     public async Task CreateSupplier() {
-        Supplier supplier = UserDataHelpers.GetSupplierPayload();
+        Supplier supplier = UserDataHelper.GetSupplierPayload();
         Supplier saveSupplier = await _supplierService.CreateAccount(supplier);
         Assert.That(supplier!.Employee!.User!.FirstName, Is.EqualTo(saveSupplier.Employee!.User!.FirstName));
     }
@@ -74,29 +74,9 @@ public class UserServices {
 
     [Test, Order(7)]
     public async Task CreateChef() {
-        Chef chef = new() {
-            Employee = new Employee {
-                User = new User() {
-                    FirstName = "Chef",
-                    LastName = "Fehc",
-                    DateOfBirth = new DateTime(1999, 5, 2),
-                    Account = new Account() {
-                        Email = "chef@fooddesire.com",
-                        Password = "1234",
-                    },
-                    Address = new Address() {
-                        No = "2",
-                        Street1 = "Street1",
-                        Street2 = "Street2",
-                        City = "Diyatalawa",
-                        PostalCode = 1290
-                    },
-                    Gender = Gender.Male,
-                },
-            },
-        };
+        Chef chef = UserDataHelper.GetChefPayload();
         Chef saveChef = await _chefService.CreateAccount(chef);
-        Assert.That(chef.Employee.User.FirstName, Is.EqualTo(saveChef.Employee!.User!.FirstName));
+        Assert.That(chef.Employee!.User!.FirstName, Is.EqualTo(saveChef.Employee!.User!.FirstName));
     }
 
     [Test, Order(8)]
