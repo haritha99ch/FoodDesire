@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.DAL.Context;
+﻿using Newtonsoft.Json;
+
+namespace FoodDesire.DAL.Context;
 public class FoodDesireContext: DbContext {
     public DbSet<User> User { get; set; }
     public DbSet<Account> Account { get; set; }
@@ -13,7 +15,7 @@ public class FoodDesireContext: DbContext {
     public DbSet<Ingredient> Ingredient { get; set; }
     public DbSet<RecipeCategory> FoodCategory { get; set; }
     public DbSet<Recipe> Recipe { get; set; }
-    public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
+    ////public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     public DbSet<FoodItem> FoodItem { get; set; }
     public DbSet<Image> Image { get; set; }
     public DbSet<Order> Order { get; set; }
@@ -43,11 +45,11 @@ public class FoodDesireContext: DbContext {
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
-        modelBuilder.Entity<RecipeIngredient>()
-            .HasOne(ri => ri.Recipe)
-            .WithMany(r => r.RecipeIngredients)
-            .HasForeignKey(ri => ri.RecipeId)
-            .OnDelete(DeleteBehavior.ClientCascade);
-
+        modelBuilder.Entity<Recipe>()
+            .Property(r => r.RecipeIngredients)
+            .HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)
+            );
     }
 }

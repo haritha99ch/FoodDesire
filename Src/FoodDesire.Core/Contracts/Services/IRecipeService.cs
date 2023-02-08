@@ -12,6 +12,7 @@ public interface IRecipeService {
     Task<List<RecipeIngredient>> GetAllRecipeIngredientsForRecipe(int recipeId);
     Task<Recipe> UpdateRecipe(Recipe recipe);
     Task<Recipe> AddRecipeIngredientToRecipe(int recipeId, RecipeIngredient recipeIngredient);
-    Task<bool> RemoveRecipeIngredientById(int recipeIngredientId);
+    Task<Recipe> RemoveRecipeIngredientById(int recipeId, int recipeIngredientId);
     Task<bool> RemoveRecipeById(int recipeId);
+    Task<decimal> SetMinimumPricePerMultiplier(RecipeIngredient recipeIngredient);
 }

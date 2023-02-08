@@ -8,10 +8,10 @@ public sealed class Recipe: TrackedEntity {
     public required string Description { get; set; }
     [Required, NotNull]
     [Column(TypeName = "Decimal(18,2)")]
-    public decimal MinimumPrice { get; private set; } = decimal.Zero;
+    public decimal MinimumPrice { get; set; }
     [Required, NotNull]
     [Column(TypeName = "Decimal(18,2)")]
-    public decimal FixedPrice { get; set; } = decimal.Zero;
+    public decimal FixedPrice { get; set; }
     [Required, NotNull]
     public int ImageId { get; set; }
     [Required, NotNull]
@@ -24,21 +24,8 @@ public sealed class Recipe: TrackedEntity {
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(RecipeCategoryId))]
     public RecipeCategory? FoodCategory { get; set; }
-    private List<RecipeIngredient>? _recipeIngredients = new();
-    public List<RecipeIngredient> RecipeIngredients {
-        get {
-            return _recipeIngredients!;
-        }
-        set {
-            _recipeIngredients = value;
-            value.ToList()
-                .ForEach((recipeIngredient) => {
-                    MinimumPrice += Convert.ToDecimal(recipeIngredient.Amount * recipeIngredient.Ingredient!.CurrentPricePerUnit);
-                });
-            if(FixedPrice > MinimumPrice) return;
-            FixedPrice = MinimumPrice;
-        }
-    }
+    [NotMapped]
+    public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
     [ForeignKey(nameof(ImageId))]
     public Image? Image { get; set; }
 }

@@ -17,6 +17,7 @@ public class RecipeServices {
 
     [OneTimeSetUp]
     public async Task SetUp() {
+        await _context.Database.EnsureDeletedAsync();
         await _context.Database.EnsureCreatedAsync();
 
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
@@ -28,7 +29,7 @@ public class RecipeServices {
 
     [OneTimeTearDown]
     public async Task TearDown() {
-        await _context.Database.EnsureDeletedAsync();
+        //await _context.Database.EnsureDeletedAsync();
         ApplicationHostHelper.TearDownHost();
     }
 
@@ -56,6 +57,7 @@ public class RecipeServices {
 
         Assert.Multiple(() => {
             Assert.That(recipe.Name, Is.EqualTo(RecipeDataHelper.GetRecipePayload().Name));
+            Assert.That(recipe.MinimumPrice, Is.EqualTo(1000));
             Assert.That(recipes, Has.Count.EqualTo(1));
         });
     }
@@ -77,11 +79,10 @@ public class RecipeServices {
     [Test, Order(5), Description("Should Remove an ingredient from the recipe and Get all the ingredient for the recipe")]
     public async Task RemoveRecipeIngredient() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
-        bool recipeIngredientDeleted = await _recipeService.RemoveRecipeIngredientById(recipe.RecipeIngredients[1].Id);
+        recipe = await _recipeService.RemoveRecipeIngredientById(recipe.Id, recipe.RecipeIngredients[1].Id);
         List<Recipe>? recipes = await _recipeService.GetAllRecipes();
-        List<RecipeIngredient>? ingredients = await _recipeService.GetAllRecipeIngredientsForRecipe(recipes[0].Id);
 
-        Assert.That(ingredients, Has.Count.EqualTo(1));
+        Assert.That(recipes[0].RecipeIngredients, Has.Count.EqualTo(1));
     }
 
     [Test, Order(6), Description("Should add an ingredient. The method will use the UpdatedRecipe")]

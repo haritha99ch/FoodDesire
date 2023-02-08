@@ -5,7 +5,7 @@ internal static class IngredientDataHelper {
             Name = "Salt",
             Description = "Salt",
             IngredientCategoryId = ingredientCategoryId,
-            CurrentPricePerUnit = 0,
+            CurrentPricePerUnit = 10,
             CurrentQuantity = 0,
             Image = new Image() { Data = "Image data" },
             MaximumQuantity = 1000,

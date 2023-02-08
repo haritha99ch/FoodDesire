@@ -1,6 +1,4 @@
-﻿using FoodDesire.Models.Helpers;
-
-namespace FoodDesire.Models;
+﻿namespace FoodDesire.Models;
 public sealed class Payment: TrackedEntity {
     [Required, NotNull]
     public PaymentType PaymentType;

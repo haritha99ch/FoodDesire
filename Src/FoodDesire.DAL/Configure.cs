@@ -41,7 +41,7 @@ public static class Configure {
         services.AddScoped<ITrackingRepository<Payment>, TrackingRepository<Payment>>();
         services.AddScoped<ITrackingRepository<User>, TrackingRepository<User>>();
         services.AddScoped<IRepository<RecipeCategory>, Repository<RecipeCategory>>();
-        services.AddScoped<IRepository<RecipeIngredient>, Repository<RecipeIngredient>>();
+        //services.AddScoped<IRepository<RecipeIngredient>, Repository<RecipeIngredient>>();
         services.AddScoped<IRepository<Recipe>, Repository<Recipe>>();
     }
 
@@ -54,7 +54,7 @@ public static class Configure {
         services.AddScoped<ITrackingRepository<Payment>, TrackingRepository<Payment>>();
         services.AddScoped<ITrackingRepository<User>, TrackingRepository<User>>();
         services.AddScoped<IRepository<RecipeCategory>, Repository<RecipeCategory>>();
-        services.AddScoped<IRepository<RecipeIngredient>, Repository<RecipeIngredient>>();
+        //services.AddScoped<IRepository<RecipeIngredient>, Repository<RecipeIngredient>>();
         services.AddScoped<IRepository<Recipe>, Repository<Recipe>>();
         services.AddScoped<IRepository<Customer>, Repository<Customer>>();
         services.AddScoped<IRepository<Admin>, Repository<Admin>>();

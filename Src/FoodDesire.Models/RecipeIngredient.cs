@@ -14,8 +14,8 @@ public class RecipeIngredient: Entity {
     [Column(TypeName = "Decimal(18,2)")]
     public decimal PricePerMultiplier { get; set; }
 
-    [ForeignKey(nameof(RecipeId))]
-    public Recipe? Recipe { get; set; }
-    [ForeignKey(nameof(IngredientId))]
-    public Ingredient? Ingredient { get; set; }
+    //[ForeignKey(nameof(RecipeId))]
+    //public Recipe? Recipe { get; set; }
+    //[ForeignKey(nameof(IngredientId))]
+    //public Ingredient? Ingredient { get; set; }
 }

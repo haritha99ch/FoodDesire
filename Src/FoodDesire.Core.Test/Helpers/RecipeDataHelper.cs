@@ -25,7 +25,7 @@ internal static class RecipeDataHelper {
         return new RecipeIngredient() {
             IngredientId = ingredientId,
             Amount = 50,
-            PricePerMultiplier = 10,
+            PricePerMultiplier = 1,
             RecommendedAmount = 50,
             IsRequired = true,
         };
