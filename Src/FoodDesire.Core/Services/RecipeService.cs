@@ -77,11 +77,6 @@ public class RecipeService: IRecipeService {
         return recipes;
     }
 
-    public async Task<List<RecipeIngredient>> GetAllRecipeIngredientsForRecipe(int recipeId) {
-
-        return null;
-    }
-
     public async Task<Recipe> RemoveRecipeIngredientById(int recipeId, int recipeIngredientId) {
         Recipe recipe = await _recipeRepository.GetByID(recipeId);
         RecipeIngredient? ingredientToRemove = recipe.RecipeIngredients.FirstOrDefault(e => e.Id == recipeIngredientId);

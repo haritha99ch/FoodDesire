@@ -1,17 +1,14 @@
 ﻿namespace FoodDesire.Core.Services;
 public class IngredientService: IIngredientService {
-    private readonly ITrackingRepository<Supply> _supplyRepository;
     private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly ITrackingRepository<IngredientCategory> _ingredientCategoryTRepository;
     private readonly IPaymentService _paymentService;
 
     public IngredientService(
-        ITrackingRepository<Supply> supplyRepository,
         IRepository<Ingredient> ingredientRepository,
         IPaymentService paymentService,
         ITrackingRepository<IngredientCategory> categoryRepository
         ) {
-        _supplyRepository = supplyRepository;
         _ingredientRepository = ingredientRepository;
         _paymentService = paymentService;
         _ingredientCategoryTRepository = categoryRepository;
