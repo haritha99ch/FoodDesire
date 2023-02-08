@@ -7,7 +7,6 @@ internal static class IngredientDataHelper {
             IngredientCategoryId = ingredientCategoryId,
             CurrentPricePerUnit = 10,
             CurrentQuantity = 0,
-            Image = new Image() { Data = "Image data" },
             MaximumQuantity = 1000,
             Measurement = Measurement.Mass
         };
