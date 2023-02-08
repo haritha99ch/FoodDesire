@@ -8,7 +8,7 @@ internal static class IngredientDataHelper {
             CurrentPricePerUnit = 10,
             CurrentQuantity = 0,
             MaximumQuantity = 1000,
-            Measurement = Measurement.Mass
+            Measurement = Measurement.Grams
         };
     }
     internal static IngredientCategory GetIngredientCategoryPayload() {

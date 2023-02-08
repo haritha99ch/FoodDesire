@@ -14,7 +14,7 @@ public sealed class Payment: TrackedEntity {
     private int? _employeeId;
     [AllowNull]
     public int? SupplyId { get; set; }
-    [Required, NotNull]
+    [AllowNull]
     public int? ManagedBy { get; set; }
     [Required, NotNull]
     [Column(TypeName = "Decimal(18,2)")]

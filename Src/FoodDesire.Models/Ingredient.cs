@@ -22,7 +22,9 @@ public sealed class Ingredient: TrackedEntity {
 
 public enum Measurement {
     [Display(Name = "mg")]
-    Mass,
+    Grams,
     [Display(Name = "ml")]
-    Liquid
+    Liquid,
+    [Display(Name = "each")]
+    Each
 }
