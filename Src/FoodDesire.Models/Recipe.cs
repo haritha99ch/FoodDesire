@@ -13,8 +13,6 @@ public sealed class Recipe: TrackedEntity {
     [Column(TypeName = "Decimal(18,2)")]
     public decimal FixedPrice { get; set; }
     [Required, NotNull]
-    public int ImageId { get; set; }
-    [Required, NotNull]
     public int RecipeCategoryId { get; set; }
     [NotNull]
     public string Tags { get; set; } = "";
@@ -26,6 +24,6 @@ public sealed class Recipe: TrackedEntity {
     public RecipeCategory? FoodCategory { get; set; }
     [NotMapped]
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
-    [ForeignKey(nameof(ImageId))]
+    [NotMapped]
     public Image? Image { get; set; }
 }

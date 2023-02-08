@@ -13,13 +13,9 @@ public sealed class Ingredient: TrackedEntity {
     [Required, NotNull]
     public double CurrentQuantity { get; set; }
     [Required, NotNull]
-    public int ImageId { get; set; }
-    [Required, NotNull]
     public int IngredientCategoryId { get; set; }
 
 
-    [ForeignKey(nameof(ImageId))]
-    public Image? Image { get; set; }
     [ForeignKey(nameof(IngredientCategoryId))]
     public IngredientCategory? IngredientCategory { get; set; }
 }

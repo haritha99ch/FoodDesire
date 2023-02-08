@@ -2,13 +2,13 @@
 public sealed class FoodItem: TrackedEntity {
     [Required, NotNull]
     public int RecipeId { get; set; }
-    private ICollection<FoodItemIngredient>? _foodItemIngredients { get; set; } ////TODO: Json column
+    private List<FoodItemIngredient>? _foodItemIngredients = new();
     [Required, NotNull]
-    public ICollection<FoodItemIngredient>? FoodItemIngredients {
+    public List<FoodItemIngredient>? FoodItemIngredients {
         get => _foodItemIngredients!;
         set {
             _foodItemIngredients = value;
-            value?.ToList().ForEach(fi => {
+            value?.ForEach(fi => {
                 decimal? pricePerMultiplier = Recipe?.RecipeIngredients?
                     .FirstOrDefault(ri => ri.Id == fi.RecipeIngredientId)?.PricePerMultiplier;
                 Price += Convert.ToDecimal(Convert.ToDouble(pricePerMultiplier) * fi.Multiplier);

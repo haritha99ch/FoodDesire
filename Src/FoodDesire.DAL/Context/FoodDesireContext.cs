@@ -17,7 +17,7 @@ public class FoodDesireContext: DbContext {
     public DbSet<Recipe> Recipe { get; set; }
     ////public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     public DbSet<FoodItem> FoodItem { get; set; }
-    public DbSet<Image> Image { get; set; }
+    //public DbSet<Image> Image { get; set; }
     public DbSet<Order> Order { get; set; }
     public DbSet<Payment> Payment { get; set; }
     public DbSet<Delivery> Delivery { get; set; }
@@ -27,9 +27,10 @@ public class FoodDesireContext: DbContext {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<FoodItem>()
-            .OwnsMany(e => e.FoodItemIngredients, navigationBuilder => {
-                navigationBuilder.ToJson();
-            });
+            .Property(r => r.FoodItemIngredients)
+            .HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!);
         modelBuilder.Entity<Delivery>()
             .HasOne(e => e.Order)
             .WithOne()
@@ -49,7 +50,11 @@ public class FoodDesireContext: DbContext {
             .Property(r => r.RecipeIngredients)
             .HasConversion(
                 v => JsonConvert.SerializeObject(v),
-                v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)
-            );
+                v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)!);
+        modelBuilder.Entity<Recipe>()
+            .Property(r => r.Image)
+            .HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<Image>(v));
     }
 }
