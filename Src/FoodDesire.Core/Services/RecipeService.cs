@@ -95,7 +95,7 @@ public class RecipeService: IRecipeService {
             if(recipeIngredient.IsRecipe) {
                 Recipe recipeFromIngredient = await _recipeRepository.GetByID(recipeIngredient.RecipeId!.Value);
                 recipeIngredient.PricePerMultiplier = recipeFromIngredient.FixedPrice;
-                recipe.MinimumPrice += recipeFromIngredient.MinimumPrice;
+                recipe.MinimumPrice += Convert.ToDecimal(Convert.ToDouble(recipeFromIngredient.FixedPrice) * recipeIngredient.Amount);
                 return;
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.IngredientId!.Value);

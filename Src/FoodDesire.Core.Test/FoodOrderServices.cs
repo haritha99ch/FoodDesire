@@ -27,7 +27,9 @@ public class FoodOrderServices {
         foreach(var ingredient in RecipeDataHelper.GetIngredients()) {
             await _ingredientService.NewIngredient(ingredient);
         }
-        await _recipeService.NewRecipe(RecipeDataHelper.GetRecipe());
+        foreach(var recipe in RecipeDataHelper.GetRecipes()) {
+            await _recipeService.NewRecipe(recipe);
+        }
     }
 
     [OneTimeTearDown]
@@ -39,7 +41,7 @@ public class FoodOrderServices {
     [Test]
     public async Task NewFoodItem() {
         FoodItem foodItem = new FoodItem {
-            RecipeId = 1,
+            RecipeId = 2,
             Order = new Order() {
                 Customer = UserDataHelper.GetCustomerPayload(),
             }

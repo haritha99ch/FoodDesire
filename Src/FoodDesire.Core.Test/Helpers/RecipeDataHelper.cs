@@ -1,4 +1,5 @@
 ﻿namespace FoodDesire.Core.Test.Helpers;
+
 internal static class RecipeDataHelper {
     internal static RecipeCategory GetRecipeCategoryPayload() {
         return new RecipeCategory() {
@@ -6,21 +7,18 @@ internal static class RecipeDataHelper {
             Description = "Main meals for breakfast, Lunch, Dinner",
         };
     }
+
     internal static Recipe GetRecipePayload() {
         return new Recipe() {
             Name = "Fried Rice",
             Description = "A rice fried in oil",
             ChefId = 1,
             RecipeCategoryId = 1,
-            RecipeIngredients = {
-                GetRecipeIngredientPayload(1),
-                GetRecipeIngredientPayload(2)
-            },
-            Image = new Image() {
-                Data = "Image data"
-            },
+            RecipeIngredients = { GetRecipeIngredientPayload(1), GetRecipeIngredientPayload(2) },
+            Image = new Image() { Data = "Image data" },
         };
     }
+
     internal static RecipeIngredient GetRecipeIngredientPayload(int ingredientId) {
         return new RecipeIngredient() {
             IngredientId = ingredientId,
@@ -32,7 +30,7 @@ internal static class RecipeDataHelper {
     }
 
     internal static List<Ingredient> GetIngredients() {
-        return new List<Ingredient>{
+        return new List<Ingredient> {
             new Ingredient {
                 Name = "Flour",
                 Description = "All-purpose flour",
@@ -72,43 +70,84 @@ internal static class RecipeDataHelper {
         };
     }
 
-    internal static Recipe GetRecipe() {
-        return new Recipe {
-            ChefId = 1,
-            Name = "Chocolate Chip Cookies",
-            Description = "Soft and chewy chocolate chip cookies",
-            MinimumPrice = 3.0m,
-            FixedPrice = 3.5m,
-            RecipeCategoryId = 1,
-            Tags = "dessert, sweet, snack",
-            RecipeIngredients = new List<RecipeIngredient>{
-                new RecipeIngredient {
-                    IngredientId = 1,
-                    Amount = 200,
-                    RecommendedAmount = 200,
-                    IsRequired = true,
-                    PricePerMultiplier = 0.5m
-                },
-                new RecipeIngredient {
-                    IngredientId = 2,
-                    Amount = 100,
-                    RecommendedAmount = 100,
-                    IsRequired = true,
-                    PricePerMultiplier = 0.75m
-                },
-                new RecipeIngredient {
-                    IngredientId = 3,
-                    Amount = 2,
-                    RecommendedAmount = 2,
-                    IsRequired = true,
-                    PricePerMultiplier = 0.25m
-                },
-                new RecipeIngredient {
-                    IngredientId = 4,
-                    Amount = 150,
-                    RecommendedAmount = 150,
-                    IsRequired = true,
-                    PricePerMultiplier = 1.0m
+    internal static List<Recipe> GetRecipes() {
+        return new List<Recipe> {
+            new Recipe {
+                ChefId = 1,
+                Name = "Double Chocolate Cookies",
+                Description = "Rich and fudgy double chocolate cookies",
+                MinimumPrice = 7.0m,
+                FixedPrice = 7.5m,
+                RecipeCategoryId = 1,
+                Tags = "dessert, sweet, chocolate",
+                RecipeIngredients = new List<RecipeIngredient> {
+                    new RecipeIngredient {
+                        IngredientId = 1,
+                        Amount = 200,
+                        RecommendedAmount = 200,
+                        IsRequired = true,
+                        PricePerMultiplier = 0.5m
+                    },
+                    new RecipeIngredient {
+                        IngredientId = 2,
+                        Amount = 100,
+                        RecommendedAmount = 100,
+                        IsRequired = true,
+                        PricePerMultiplier = 0.75m
+                    },
+                    new RecipeIngredient {
+                        IngredientId = 3,
+                        Amount = 2,
+                        RecommendedAmount = 2,
+                        IsRequired = true,
+                        PricePerMultiplier = 0.25m
+                    },
+                    new RecipeIngredient {
+                        IngredientId = 4,
+                        Amount = 150,
+                        RecommendedAmount = 150,
+                        IsRequired = true,
+                        PricePerMultiplier = 1.0m
+                    }
+                }
+            },
+            new Recipe {
+                ChefId = 1,
+                Name = "Fruit Cake",
+                Description = "A classic fruit cake with mixed dried fruit",
+                MinimumPrice = 10.0m,
+                FixedPrice = 12.0m,
+                RecipeCategoryId = 1,
+                Tags = "cake, fruit, holiday",
+                RecipeIngredients = new List<RecipeIngredient> {
+                    new RecipeIngredient {
+                        RecipeId = 1,
+                        Amount = 8,
+                        RecommendedAmount = 8,
+                        IsRequired = true,
+                        PricePerMultiplier = 7.5m
+                    },
+                    new RecipeIngredient {
+                        IngredientId = 2,
+                        Amount = 200,
+                        RecommendedAmount = 200,
+                        IsRequired = true,
+                        PricePerMultiplier = 0.75m
+                    },
+                    new RecipeIngredient {
+                        IngredientId = 3,
+                        Amount = 4,
+                        RecommendedAmount = 4,
+                        IsRequired = true,
+                        PricePerMultiplier = 0.25m
+                    },
+                    new RecipeIngredient {
+                        IngredientId = 4,
+                        Amount = 300,
+                        RecommendedAmount = 300,
+                        IsRequired = true,
+                        PricePerMultiplier = 1.0m
+                    }
                 }
             }
         };

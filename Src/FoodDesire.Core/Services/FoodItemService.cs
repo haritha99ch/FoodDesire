@@ -19,6 +19,7 @@ public class FoodItemService: IFoodItemService {
         recipe.RecipeIngredients.ForEach(e => {
             foodItem.FoodItemIngredients
                 .Add(new FoodItemIngredient {
+                    RecipeId = e.RecipeId,
                     IngredientId = e.IngredientId,
                     Amount = e.Amount,
                     IsRequired = e.IsRequired,
