@@ -79,7 +79,7 @@ public class RecipeServices {
     [Test, Order(5), Description("Should Remove an ingredient from the recipe and Get all the ingredient for the recipe")]
     public async Task RemoveRecipeIngredient() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
-        recipe = await _recipeService.RemoveRecipeIngredientById(recipe.Id, recipe.RecipeIngredients[1].Id);
+        recipe = await _recipeService.RemoveRecipeIngredientById(recipe.Id, recipe.RecipeIngredients[1]);
         List<Recipe>? recipes = await _recipeService.GetAllRecipes();
 
         Assert.That(recipes[0].RecipeIngredients, Has.Count.EqualTo(1));

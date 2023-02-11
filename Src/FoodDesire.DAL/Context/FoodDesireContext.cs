@@ -46,6 +46,7 @@ public class FoodDesireContext: DbContext {
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
+        modelBuilder.Entity<RecipeIngredient>().HasKey(ri => ri.Id);
         modelBuilder.Entity<Recipe>()
             .Property(r => r.RecipeIngredients)
             .HasConversion(
@@ -56,5 +57,16 @@ public class FoodDesireContext: DbContext {
             .HasConversion(
                 v => JsonConvert.SerializeObject(v),
                 v => JsonConvert.DeserializeObject<Image>(v));
+
+        //modelBuilder.Entity<Recipe>()
+        //    .OwnsMany(
+        //e => e.RecipeIngredients, ownedNavigationBuilder => {
+        //    ownedNavigationBuilder.ToJson();
+        //});
+        //modelBuilder.Entity<Recipe>()
+        //    .OwnsOne(
+        //e => e.Image, ownedNavigationBuilder => {
+        //    ownedNavigationBuilder.ToJson();
+        //});
     }
 }
