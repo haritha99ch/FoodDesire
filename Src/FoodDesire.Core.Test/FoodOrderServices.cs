@@ -24,10 +24,9 @@ public class FoodOrderServices {
         await _recipeService.NewRecipeCategory(RecipeDataHelper.GetRecipeCategoryPayload());
         await _ingredientService.NewIngredientCategory(IngredientDataHelper.GetIngredientCategoryPayload());
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
-        RecipeDataHelper.GetIngredients()
-            .ForEach(async x => {
-                await _ingredientService.NewIngredient(x);
-            });
+        foreach(var ingredient in RecipeDataHelper.GetIngredients()) {
+            await _ingredientService.NewIngredient(ingredient);
+        }
         await _recipeService.NewRecipe(RecipeDataHelper.GetRecipe());
     }
 
@@ -37,8 +36,14 @@ public class FoodOrderServices {
         ApplicationHostHelper.TearDownHost();
     }
 
-    [Test, Order(1)]
+    [Test]
     public async Task NewFoodItem() {
-
+        FoodItem foodItem = new FoodItem {
+            RecipeId = 1,
+            Order = new Order() {
+                Customer = UserDataHelper.GetCustomerPayload(),
+            }
+        };
+        foodItem = await _foodItemService.NewFoodItem(foodItem);
     }
 }

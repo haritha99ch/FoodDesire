@@ -17,6 +17,7 @@ public class IngredientServices {
 
     [OneTimeSetUp]
     public async Task SetUp() {
+        await _context.Database.EnsureDeletedAsync();
         await _context.Database.EnsureCreatedAsync();
 
         await _supplierService.CreateAccount(UserDataHelper.GetSupplierPayload());

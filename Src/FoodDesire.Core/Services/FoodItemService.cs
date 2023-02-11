@@ -1,18 +1,35 @@
 ﻿namespace FoodDesire.Core.Services;
 public class FoodItemService: IFoodItemService {
     private readonly IRepository<FoodItem> _foodItemRepository;
+    private readonly IRecipeService _recipeService;
     private readonly IRepository<Order> _orderRepository;
 
     public FoodItemService(
         IRepository<FoodItem> foodItemRepository,
-        IRepository<Order> orderRepository
+        IRepository<Order> orderRepository,
+        IRecipeService recipeService
         ) {
         _foodItemRepository = foodItemRepository;
         _orderRepository = orderRepository;
+        _recipeService = recipeService;
     }
 
     public async Task<FoodItem> NewFoodItem(FoodItem foodItem) {
+        Recipe recipe = await _recipeService.GetRecipeById(foodItem.RecipeId);
+        recipe.RecipeIngredients.ForEach(e => {
+            foodItem.FoodItemIngredients
+                .Add(new FoodItemIngredient {
+                    IngredientId = e.IngredientId,
+                    Amount = e.Amount,
+                    IsRequired = e.IsRequired,
+                    RecommendedMultiplier = e.RecommendedAmount / e.Amount,
+                    PricePerMultiplier = e.PricePerMultiplier,
+                    Multiplier = e.IsRequired ? 1 : 0
+                });
+
+        });
         FoodItem newFoodItem = await _foodItemRepository.Add(foodItem);
+        foodItem = await UpdateFoodItem(newFoodItem);
         return newFoodItem;
     }
 
@@ -22,6 +39,23 @@ public class FoodItemService: IFoodItemService {
         return foodItems;
     }
     public async Task<FoodItem> UpdateFoodItem(FoodItem foodItem) {
+        Recipe recipe = await _recipeService.GetRecipeById(foodItem.RecipeId);
+        foodItem.Price = recipe.FixedPrice;
+        foodItem.FoodItemIngredients
+            .ForEach(e => {
+                decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
+                if(!e.IsRequired) {
+                    foodItem.Price += multiplierPrice;
+                    return;
+                }
+                foodItem.Price += (e.Multiplier != 1) ? multiplierPrice - e.PricePerMultiplier : 0;
+
+
+                //if(e.Multiplier != 1 && e.IsRequired)
+                //    foodItem.Price += Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * (e.Multiplier - 1));
+                //if(e.IsRequired) return;
+                //foodItem.Price += Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
+            });
         FoodItem updatedFoodItem = await _foodItemRepository.Update(foodItem);
         return updatedFoodItem;
     }

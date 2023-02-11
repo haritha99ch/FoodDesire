@@ -8,9 +8,9 @@ public static class ApplicationHostHelper {
                 services.AddDbContext<FoodDesireContext>(options => {
                     DbContextHelper.ConfigureDbContextOptions(contextName, options);
                 });
+                services.AddScoped<FoodDesireContext>();
                 DAL.Configure.ConfigureAllForTesting(services);
                 Core.Configure.ConfigureAllForTesting(services);
-                services.AddTransient<IngredientServices>();
             }).Build();
         return _host;
     }

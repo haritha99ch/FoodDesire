@@ -69,4 +69,26 @@ public static class UserDataHelper {
             },
         };
     }
+
+    public static Customer GetCustomerPayload() {
+        return new() {
+            User = new User() {
+                FirstName = "Customer",
+                LastName = "Remotsuc",
+                DateOfBirth = new DateTime(1999, 5, 2),
+                Account = new Account() {
+                    Email = "customer@gmail.com",
+                    Password = "1234",
+                },
+                Address = new Address() {
+                    No = "2",
+                    Street1 = "Street1",
+                    Street2 = "Street2",
+                    City = "Diyatalawa",
+                    PostalCode = 1290
+                },
+                Gender = Gender.Male,
+            },
+        };
+    }
 }

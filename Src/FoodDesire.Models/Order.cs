@@ -20,10 +20,13 @@ public sealed class Order: TrackedEntity {
             });
         }
     }
+    [AllowNull]
+    public int? DeliveryId { get; set; }
 
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }
+    [ForeignKey(nameof(DeliveryId))]
     public Delivery? Delivery { get; set; }
 }
 

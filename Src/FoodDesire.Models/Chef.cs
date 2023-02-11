@@ -6,6 +6,6 @@ public sealed class Chef: Entity {
 
     [ForeignKey(nameof(EmployeeId))]
     public Employee? Employee { get; set; }
-    public ICollection<FoodItem>? FoodItems { get; set; }   //Chef prepares Foods
-    public ICollection<Recipe>? Recipes { get; set; }       //Chef creates Recipes
+    public List<FoodItem>? FoodItems { get; set; }   //Chef prepares Foods
+    public List<Recipe>? Recipes { get; set; }       //Chef creates Recipes
 }

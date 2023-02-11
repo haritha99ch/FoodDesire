@@ -33,6 +33,7 @@ public static class Configure {
         services.AddDbContext<FoodDesireContext>(
             options =>
                 options.AddInterceptors(IgnoringIdentityResolutionInterceptor).UseSqlServer(dbConnectionString));
+        services.AddScoped<FoodDesireContext>();
         services.AddScoped<IRepository<Ingredient>, Repository<Ingredient>>();
         services.AddScoped<IRepository<FoodItem>, Repository<FoodItem>>();
         services.AddScoped<IRepository<Delivery>, Repository<Delivery>>();

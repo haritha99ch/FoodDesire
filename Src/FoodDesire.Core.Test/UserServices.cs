@@ -19,6 +19,7 @@ public class UserServices {
 
     [OneTimeSetUp]
     public async Task SetUp() {
+        await _context.Database.EnsureDeletedAsync();
         await _context.Database.EnsureCreatedAsync();
     }
 
