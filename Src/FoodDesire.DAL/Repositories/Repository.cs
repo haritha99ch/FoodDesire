@@ -19,7 +19,7 @@ public class Repository<T>: IRepository<T> where T : Entity {
         return entities.ToList();
     }
 
-    public async Task<T> GetByID(int Id) {
+    public async Task<T> GetByID(int? Id) {
         T? entity = await entitySet.FindAsync(Id);
         return entity!;
     }

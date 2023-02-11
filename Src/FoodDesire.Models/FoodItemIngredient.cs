@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.Models;
 public sealed class FoodItemIngredient {
-    [AllowNull]
+    [EitherIdExists]
     public int? RecipeId { get; set; }
-    [AllowNull]
+    [EitherIdExists]
     public int? IngredientId { get; set; }
     [Required, NotNull]
     public double Amount { get; set; }
@@ -10,6 +10,8 @@ public sealed class FoodItemIngredient {
     public double RecommendedMultiplier { get; set; }
     [Required, NotNull]
     public bool IsRequired { get; set; } = true;
+    [Required]
+    public bool CanModify { get; set; } = false;
     [Required, NotNull]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal PricePerMultiplier { get; set; }

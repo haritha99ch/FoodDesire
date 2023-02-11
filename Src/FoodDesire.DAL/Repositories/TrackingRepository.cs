@@ -17,7 +17,7 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         return entities.ToList();
     }
 
-    public async Task<T> GetByID(int id) {
+    public async Task<T> GetByID(int? id) {
         T? entity = await entitySet.SingleAsync(e => !e.Deleted && e.Id == id);
         return entity!;
     }

@@ -83,7 +83,6 @@ internal static class RecipeDataHelper {
             Tags = "dessert, sweet, snack",
             RecipeIngredients = new List<RecipeIngredient>{
                 new RecipeIngredient {
-                    RecipeId = 1,
                     IngredientId = 1,
                     Amount = 200,
                     RecommendedAmount = 200,
@@ -91,7 +90,6 @@ internal static class RecipeDataHelper {
                     PricePerMultiplier = 0.5m
                 },
                 new RecipeIngredient {
-                    RecipeId = 1,
                     IngredientId = 2,
                     Amount = 100,
                     RecommendedAmount = 100,
@@ -99,7 +97,6 @@ internal static class RecipeDataHelper {
                     PricePerMultiplier = 0.75m
                 },
                 new RecipeIngredient {
-                    RecipeId = 1,
                     IngredientId = 3,
                     Amount = 2,
                     RecommendedAmount = 2,
@@ -107,7 +104,6 @@ internal static class RecipeDataHelper {
                     PricePerMultiplier = 0.25m
                 },
                 new RecipeIngredient {
-                    RecipeId = 1,
                     IngredientId = 4,
                     Amount = 150,
                     RecommendedAmount = 150,
