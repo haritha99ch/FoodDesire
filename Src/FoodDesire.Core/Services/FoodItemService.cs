@@ -43,6 +43,7 @@ public class FoodItemService: IFoodItemService {
         foodItem.Price = recipe.FixedPrice;
         foodItem.FoodItemIngredients
             .ForEach(e => {
+                if(!e.CanModify) return;
                 decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
                 if(!e.IsRequired) {
                     foodItem.Price += multiplierPrice;
