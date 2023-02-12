@@ -15,7 +15,7 @@ public class FoodDesireContext: DbContext {
     public DbSet<Ingredient> Ingredient { get; set; }
     public DbSet<RecipeCategory> FoodCategory { get; set; }
     public DbSet<Recipe> Recipe { get; set; }
-    ////public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
+    //public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     public DbSet<FoodItem> FoodItem { get; set; }
     //public DbSet<Image> Image { get; set; }
     public DbSet<Order> Order { get; set; }
@@ -27,10 +27,15 @@ public class FoodDesireContext: DbContext {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<FoodItem>()
-            .Property(r => r.FoodItemIngredients)
-            .HasConversion(
-                v => JsonConvert.SerializeObject(v),
-                v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!);
+            .OwnsMany(
+                e => e.FoodItemIngredients, ownedNavigationBuilder => {
+                    ownedNavigationBuilder.ToJson();
+                });
+        //modelBuilder.Entity<FoodItem>()
+        //    .Property(r => r.FoodItemIngredients)
+        //    .HasConversion(
+        //        v => JsonConvert.SerializeObject(v),
+        //        v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!);
         modelBuilder.Entity<Delivery>()
             .HasOne(e => e.Order)
             .WithOne()
@@ -46,23 +51,23 @@ public class FoodDesireContext: DbContext {
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
-        modelBuilder.Entity<RecipeIngredient>().HasKey(ri => ri.Id);
-        modelBuilder.Entity<Recipe>()
-            .Property(r => r.RecipeIngredients)
-            .HasConversion(
-                v => JsonConvert.SerializeObject(v),
-                v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)!);
+        //modelBuilder.Entity<Recipe>()
+        //    .Property(r => r.RecipeIngredients)
+        //    .HasConversion(
+        //        v => JsonConvert.SerializeObject(v),
+        //        v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)!);
         modelBuilder.Entity<Recipe>()
             .Property(r => r.Image)
             .HasConversion(
                 v => JsonConvert.SerializeObject(v),
                 v => JsonConvert.DeserializeObject<Image>(v));
 
-        //modelBuilder.Entity<Recipe>()
-        //    .OwnsMany(
-        //e => e.RecipeIngredients, ownedNavigationBuilder => {
-        //    ownedNavigationBuilder.ToJson();
-        //});
+        modelBuilder.Entity<Recipe>()
+            .OwnsMany(
+        e => e.RecipeIngredients, ownedNavigationBuilder => {
+            ownedNavigationBuilder.ToJson();
+        });
+
         //modelBuilder.Entity<Recipe>()
         //    .OwnsOne(
         //e => e.Image, ownedNavigationBuilder => {

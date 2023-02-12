@@ -21,7 +21,7 @@ internal static class RecipeDataHelper {
 
     internal static RecipeIngredient GetRecipeIngredientPayload(int ingredientId) {
         return new RecipeIngredient() {
-            IngredientId = ingredientId,
+            Ingredient_Id = ingredientId,
             Amount = 50,
             PricePerMultiplier = 1,
             RecommendedAmount = 50,
@@ -82,28 +82,28 @@ internal static class RecipeDataHelper {
                 Tags = "dessert, sweet, chocolate",
                 RecipeIngredients = new List<RecipeIngredient> {
                     new RecipeIngredient {
-                        IngredientId = 1,
+                        Ingredient_Id = 1,
                         Amount = 200,
                         RecommendedAmount = 200,
                         IsRequired = true,
                         PricePerMultiplier = 0.5m
                     },
                     new RecipeIngredient {
-                        IngredientId = 2,
+                        Ingredient_Id = 2,
                         Amount = 100,
                         RecommendedAmount = 100,
                         IsRequired = true,
                         PricePerMultiplier = 0.75m
                     },
                     new RecipeIngredient {
-                        IngredientId = 3,
+                        Ingredient_Id = 3,
                         Amount = 2,
                         RecommendedAmount = 2,
                         IsRequired = true,
                         PricePerMultiplier = 0.25m
                     },
                     new RecipeIngredient {
-                        IngredientId = 4,
+                        Ingredient_Id = 4,
                         Amount = 150,
                         RecommendedAmount = 150,
                         IsRequired = true,
@@ -121,28 +121,28 @@ internal static class RecipeDataHelper {
                 Tags = "cake, fruit, holiday",
                 RecipeIngredients = new List<RecipeIngredient> {
                     new RecipeIngredient {
-                        RecipeId = 1,
+                        Recipe_Id = 1,
                         Amount = 8,
                         RecommendedAmount = 8,
                         IsRequired = true,
                         PricePerMultiplier = 7.5m
                     },
                     new RecipeIngredient {
-                        IngredientId = 2,
+                        Ingredient_Id = 2,
                         Amount = 200,
                         RecommendedAmount = 200,
                         IsRequired = true,
                         PricePerMultiplier = 0.75m
                     },
                     new RecipeIngredient {
-                        IngredientId = 3,
+                        Ingredient_Id = 3,
                         Amount = 4,
                         RecommendedAmount = 4,
                         IsRequired = true,
                         PricePerMultiplier = 0.25m
                     },
                     new RecipeIngredient {
-                        IngredientId = 4,
+                        Ingredient_Id = 4,
                         Amount = 300,
                         RecommendedAmount = 300,
                         IsRequired = true,
