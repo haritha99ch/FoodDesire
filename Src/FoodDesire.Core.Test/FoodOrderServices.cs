@@ -47,6 +47,6 @@ public class FoodOrderServices {
             }
         };
         foodItem = await _foodItemService.NewFoodItem(foodItem);
-        Assert.That(foodItem.Price, Is.EqualTo(1));
+        Assert.That(foodItem.Price, Is.EqualTo(foodItem.Recipe!.FixedPrice));
     }
 }
