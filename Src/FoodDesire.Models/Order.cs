@@ -5,8 +5,8 @@ public sealed class Order: TrackedEntity {
     [Required]
     public DateTime DateTime { get; set; } = DateTime.Now;
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
-    private ICollection<FoodItem>? _foodItems { get; set; }
-    public ICollection<FoodItem>? FoodItems {
+    private List<FoodItem>? _foodItems { get; set; }
+    public List<FoodItem>? FoodItems {
         get => _foodItems;
         set {
             _foodItems = value;

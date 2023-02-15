@@ -125,6 +125,7 @@ internal static class RecipeDataHelper {
                         Amount = 8,
                         RecommendedAmount = 8,
                         IsRequired = true,
+                        CanModify = true,
                         PricePerMultiplier = 7.5m
                     },
                     new RecipeIngredient {
@@ -132,6 +133,7 @@ internal static class RecipeDataHelper {
                         Amount = 200,
                         RecommendedAmount = 200,
                         IsRequired = true,
+                        CanModify = true,
                         PricePerMultiplier = 0.75m
                     },
                     new RecipeIngredient {

@@ -23,6 +23,7 @@ public class FoodItemService: IFoodItemService {
                     Ingredient_Id = e.Ingredient_Id,
                     Amount = e.Amount,
                     IsRequired = e.IsRequired,
+                    CanModify = e.CanModify,
                     RecommendedMultiplier = e.RecommendedAmount / e.Amount,
                     PricePerMultiplier = e.PricePerMultiplier,
                     Multiplier = e.IsRequired ? 1 : 0

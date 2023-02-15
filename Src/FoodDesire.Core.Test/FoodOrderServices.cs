@@ -72,4 +72,28 @@ public class FoodOrderServices {
         Order order = await _orderService.GetOrderById(1);
         Assert.That(order.FoodItems!, Has.Count.EqualTo(2));
     }
+
+    [Test, Order(4)]
+    public async Task ModifyFoodItem() {
+        Order order = await _orderService.GetOrderById(1);
+        /*
+        [{"Recipe_Id":1,"Ingredient_Id":null,"Amount":8.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":325.5,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":2,"Amount":200.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":150.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":3,"Amount":4.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":1.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":4,"Amount":300.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":300.0,"Multiplier":1.0}]
+         */
+        FoodItem? selectedFoodItem = order.FoodItems![0];
+        selectedFoodItem.FoodItemIngredients[0].Multiplier = 2;     //Add 325.5 (recipe as an ingredient recipeId = 1)
+        selectedFoodItem.FoodItemIngredients[1].Multiplier = 0.5;   //Sub 150/2 (ingredientId = 2)
+
+        FoodItem updatedFoodItem = await _foodItemService.UpdateFoodItem(selectedFoodItem);
+        Assert.That(updatedFoodItem.Price, Is.EqualTo(3055m + 325.5m - (150.0m / 2)));
+
+        /*  After Update
+        [{"Recipe_Id":1,"Ingredient_Id":null,"Amount":8.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":true,"PricePerMultiplier":325.5,"Multiplier":2.0},
+        {"Recipe_Id":null,"Ingredient_Id":2,"Amount":200.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":true,"PricePerMultiplier":150.0,"Multiplier":0.5},
+        {"Recipe_Id":null,"Ingredient_Id":3,"Amount":4.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":1.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":4,"Amount":300.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":300.0,"Multiplier":1.0}]
+         */
+    }
 }
