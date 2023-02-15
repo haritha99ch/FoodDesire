@@ -43,36 +43,33 @@ public class FoodOrderServices {
         ApplicationHostHelper.TearDownHost();
     }
 
-    //[Test, Order(1)]
-    //public async Task NewOrder() {
-    //    Order order = new Order {
-    //        CustomerId = 1,
-    //    };
-    //    order = await _orderService.NewOrder(order);
-    //    Assert.That(order, Is.Not.Null);
-    //}
+    [Test, Order(1)]
+    public async Task NewOrder() {
+        Order order = new Order {
+            CustomerId = 1,
+        };
+        order = await _orderService.NewOrder(order);
+        Assert.That(order, Is.Not.Null);
+    }
 
     [Test, Order(2)]
     public async Task NewFoodItem() {
         FoodItem foodItem = new FoodItem {
             RecipeId = 2,
-            Order = new Order {
-                CustomerId = 1,
-            },
+            OrderId = 1,
         };
         foodItem = await _foodItemService.NewFoodItem(foodItem);
         Assert.That(foodItem.Price, Is.EqualTo(foodItem.Recipe!.FixedPrice));
     }
 
-    //[Test, Order(3)]
-    //public async Task AddNewFoodItemToOrder() {
-    //    FoodItem foodItem = new FoodItem {
-    //        RecipeId = 1,
-    //        OrderId = 1,
-    //    };
-    //    //foodItem = await _foodItemService.NewFoodItem(foodItem);
-    //    Order order = await _orderService.GetOrderById(1);
-
-    //    Assert.That(order.FoodItems.Count, Is.EqualTo(1));
-    //}
+    [Test, Order(3)]
+    public async Task AddNewFoodItemToOrder() {
+        FoodItem foodItem = new FoodItem {
+            RecipeId = 1,
+            OrderId = 1,
+        };
+        await _foodItemService.NewFoodItem(foodItem);
+        Order order = await _orderService.GetOrderById(1);
+        Assert.That(order.FoodItems!, Has.Count.EqualTo(2));
+    }
 }
