@@ -15,9 +15,7 @@ public class FoodDesireContext: DbContext {
     public DbSet<Ingredient> Ingredient { get; set; }
     public DbSet<RecipeCategory> FoodCategory { get; set; }
     public DbSet<Recipe> Recipe { get; set; }
-    //public DbSet<RecipeIngredient> RecipeIngredient { get; set; }
     public DbSet<FoodItem> FoodItem { get; set; }
-    //public DbSet<Image> Image { get; set; }
     public DbSet<Order> Order { get; set; }
     public DbSet<Payment> Payment { get; set; }
     public DbSet<Delivery> Delivery { get; set; }
@@ -39,10 +37,6 @@ public class FoodDesireContext: DbContext {
             .HasOne(e => e.Recipe)
             .WithOne()
             .OnDelete(DeleteBehavior.ClientSetNull);
-        //modelBuilder.Entity<FoodItem>()
-        //    .HasOne(e => e.Order)
-        //    .WithOne()
-        //    .OnDelete(DeleteBehavior.ClientSetNull);
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
