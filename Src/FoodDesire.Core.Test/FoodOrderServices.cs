@@ -5,6 +5,8 @@ public class FoodOrderServices {
     private readonly IIngredientService _ingredientService;
     private readonly IRecipeService _recipeService;
     private readonly IChefService _chefService;
+    private readonly ICustomerService _customerService;
+    private readonly IOrderService _orderService;
     private readonly FoodDesireContext _context;
     public FoodOrderServices() {
         ApplicationHostHelper.ConfigureHost("FoodOrderServices");
@@ -13,6 +15,8 @@ public class FoodOrderServices {
         _ingredientService = ApplicationHostHelper.GetService<IIngredientService>();
         _recipeService = ApplicationHostHelper.GetService<IRecipeService>();
         _chefService = ApplicationHostHelper.GetService<IChefService>();
+        _customerService = ApplicationHostHelper.GetService<ICustomerService>();
+        _orderService = ApplicationHostHelper.GetService<IOrderService>();
         _context = ApplicationHostHelper.GetService<FoodDesireContext>();
     }
 
@@ -24,6 +28,7 @@ public class FoodOrderServices {
         await _recipeService.NewRecipeCategory(RecipeDataHelper.GetRecipeCategoryPayload());
         await _ingredientService.NewIngredientCategory(IngredientDataHelper.GetIngredientCategoryPayload());
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
+        await _customerService.CreateAccount(UserDataHelper.GetCustomerPayload());
         foreach(var ingredient in RecipeDataHelper.GetIngredients()) {
             await _ingredientService.NewIngredient(ingredient);
         }
@@ -38,15 +43,36 @@ public class FoodOrderServices {
         ApplicationHostHelper.TearDownHost();
     }
 
-    [Test]
+    //[Test, Order(1)]
+    //public async Task NewOrder() {
+    //    Order order = new Order {
+    //        CustomerId = 1,
+    //    };
+    //    order = await _orderService.NewOrder(order);
+    //    Assert.That(order, Is.Not.Null);
+    //}
+
+    [Test, Order(2)]
     public async Task NewFoodItem() {
         FoodItem foodItem = new FoodItem {
             RecipeId = 2,
-            Order = new Order() {
-                Customer = UserDataHelper.GetCustomerPayload(),
-            }
+            Order = new Order {
+                CustomerId = 1,
+            },
         };
         foodItem = await _foodItemService.NewFoodItem(foodItem);
         Assert.That(foodItem.Price, Is.EqualTo(foodItem.Recipe!.FixedPrice));
     }
+
+    //[Test, Order(3)]
+    //public async Task AddNewFoodItemToOrder() {
+    //    FoodItem foodItem = new FoodItem {
+    //        RecipeId = 1,
+    //        OrderId = 1,
+    //    };
+    //    //foodItem = await _foodItemService.NewFoodItem(foodItem);
+    //    Order order = await _orderService.GetOrderById(1);
+
+    //    Assert.That(order.FoodItems.Count, Is.EqualTo(1));
+    //}
 }
