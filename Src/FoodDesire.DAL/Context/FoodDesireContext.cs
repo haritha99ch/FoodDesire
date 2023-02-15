@@ -27,15 +27,10 @@ public class FoodDesireContext: DbContext {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<FoodItem>()
-            .OwnsMany(
-                e => e.FoodItemIngredients, ownedNavigationBuilder => {
-                    ownedNavigationBuilder.ToJson();
-                });
-        //modelBuilder.Entity<FoodItem>()
-        //    .Property(r => r.FoodItemIngredients)
-        //    .HasConversion(
-        //        v => JsonConvert.SerializeObject(v),
-        //        v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!);
+            .Property(r => r.FoodItemIngredients)
+            .HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!);
         modelBuilder.Entity<Delivery>()
             .HasOne(e => e.Order)
             .WithOne()
@@ -51,27 +46,15 @@ public class FoodDesireContext: DbContext {
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
-        //modelBuilder.Entity<Recipe>()
-        //    .Property(r => r.RecipeIngredients)
-        //    .HasConversion(
-        //        v => JsonConvert.SerializeObject(v),
-        //        v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)!);
+        modelBuilder.Entity<Recipe>()
+            .Property(r => r.RecipeIngredients)
+            .HasConversion(
+                v => JsonConvert.SerializeObject(v),
+                v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)!);
         modelBuilder.Entity<Recipe>()
             .Property(r => r.Image)
             .HasConversion(
                 v => JsonConvert.SerializeObject(v),
                 v => JsonConvert.DeserializeObject<Image>(v));
-
-        modelBuilder.Entity<Recipe>()
-            .OwnsMany(
-        e => e.RecipeIngredients, ownedNavigationBuilder => {
-            ownedNavigationBuilder.ToJson();
-        });
-
-        //modelBuilder.Entity<Recipe>()
-        //    .OwnsOne(
-        //e => e.Image, ownedNavigationBuilder => {
-        //    ownedNavigationBuilder.ToJson();
-        //});
     }
 }
