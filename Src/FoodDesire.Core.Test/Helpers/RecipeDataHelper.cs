@@ -8,27 +8,6 @@ internal static class RecipeDataHelper {
         };
     }
 
-    internal static Recipe GetRecipePayload() {
-        return new Recipe() {
-            Name = "Fried Rice",
-            Description = "A rice fried in oil",
-            ChefId = 1,
-            RecipeCategoryId = 1,
-            RecipeIngredients = { GetRecipeIngredientPayload(1), GetRecipeIngredientPayload(2) },
-            Image = new Image() { Data = "Image data" },
-        };
-    }
-
-    internal static RecipeIngredient GetRecipeIngredientPayload(int ingredientId) {
-        return new RecipeIngredient() {
-            Ingredient_Id = ingredientId,
-            Amount = 50,
-            PricePerMultiplier = 1,
-            RecommendedAmount = 50,
-            IsRequired = true,
-        };
-    }
-
     internal static List<Ingredient> GetIngredients() {
         return new List<Ingredient> {
             new Ingredient {
