@@ -86,7 +86,6 @@ public class RecipeService: IRecipeService {
 
     public async Task<Recipe> UpdateRecipe(Recipe recipe) {
         if(recipe.RecipeIngredients.Count == 0) return await _recipeRepository.Update(recipe);
-        recipe.FixedPrice = decimal.Zero;
         recipe.MinimumPrice = decimal.Zero;
         recipe.RecipeIngredients.ForEach(async (recipeIngredient) => {
             if(recipeIngredient.Recipe_Id != null) {

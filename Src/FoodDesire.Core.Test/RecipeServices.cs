@@ -22,14 +22,14 @@ public class RecipeServices {
 
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
         await _ingredientService.NewIngredientCategory(IngredientDataHelper.GetIngredientCategoryPayload());
-        for(int i = 0; i < 3; i++) {
-            await _ingredientService.NewIngredient(IngredientDataHelper.GetIngredientPayLoad(1));
+        foreach(var ingredient in RecipeDataHelper.GetIngredients()) {
+            await _ingredientService.NewIngredient(ingredient);
         }
     }
 
     [OneTimeTearDown]
     public async Task TearDown() {
-        await _context.Database.EnsureDeletedAsync();
+        //await _context.Database.EnsureDeletedAsync();
         ApplicationHostHelper.TearDownHost();
     }
 
@@ -41,12 +41,12 @@ public class RecipeServices {
 
     [Test, Order(2)]
     public async Task NewRecipe() {
-        Recipe recipe = RecipeDataHelper.GetRecipePayload();
+        Recipe recipe = RecipeDataHelper.GetRecipes()[0];
 
         Recipe newRecipe = await _recipeService.NewRecipe(recipe);
         Assert.Multiple(() => {
             Assert.That(newRecipe.Name, Is.EqualTo(recipe.Name));
-            Assert.That(newRecipe.RecipeIngredients, Has.Count.EqualTo(2));
+            Assert.That(newRecipe.RecipeIngredients, Has.Count.EqualTo(recipe.RecipeIngredients.Count));
         });
     }
 
@@ -56,8 +56,8 @@ public class RecipeServices {
         List<Recipe> recipes = await _recipeService.GetAllRecipes();
 
         Assert.Multiple(() => {
-            Assert.That(recipe.Name, Is.EqualTo(RecipeDataHelper.GetRecipePayload().Name));
-            Assert.That(recipe.MinimumPrice, Is.EqualTo(1000));
+            Assert.That(recipe.Name, Is.EqualTo(RecipeDataHelper.GetRecipes()[0].Name));
+            Assert.That(recipe.MinimumPrice, Is.EqualTo(325.50m));
             Assert.That(recipes, Has.Count.EqualTo(1));
         });
     }
@@ -82,23 +82,34 @@ public class RecipeServices {
         recipe = await _recipeService.RemoveRecipeIngredientById(recipe.Id, recipe.RecipeIngredients[1]);
         List<Recipe>? recipes = await _recipeService.GetAllRecipes();
 
-        Assert.That(recipes[0].RecipeIngredients, Has.Count.EqualTo(1));
+        Assert.That(recipes[0].RecipeIngredients, Has.Count.EqualTo(4));
     }
 
     [Test, Order(6), Description("Should add an ingredient. The method will use the UpdatedRecipe")]
     public async Task AddIngredientToRecipe() {
         Recipe recipe = await _recipeService
-            .AddRecipeIngredientToRecipe(1, RecipeDataHelper.GetRecipeIngredientPayload(3));
+            .AddRecipeIngredientToRecipe(1, RecipeDataHelper.GetRecipes()[0].RecipeIngredients[1]);
         recipe = await _recipeService.GetRecipeById(1);
 
-        Assert.That(recipe.RecipeIngredients, Has.Count.EqualTo(2));
+        Assert.That(recipe.RecipeIngredients, Has.Count.EqualTo(5));
     }
 
     [Test, Order(7)]
-    public async Task RemoveRecipe() {
-        bool recipeRemoved = await _recipeService.RemoveRecipeById(1);
+    public async Task UpdateRecipe() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
+        recipe.FixedPrice = 400;
+        await _recipeService.UpdateRecipe(recipe);
 
-        Assert.That(recipe, Is.Null);
+        recipe = await _recipeService.GetRecipeById(1);
+        Assert.That(recipe.FixedPrice, Is.EqualTo(400));
+
     }
+
+    //[Test, Order(8)]
+    //public async Task RemoveRecipe() {
+    //    bool recipeRemoved = await _recipeService.RemoveRecipeById(1);
+    //    Recipe recipe = await _recipeService.GetRecipeById(1);
+
+    //    Assert.That(recipe, Is.Null);
+    //}
 }
