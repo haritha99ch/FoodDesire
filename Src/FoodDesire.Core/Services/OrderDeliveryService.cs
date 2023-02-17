@@ -1,16 +1,14 @@
-﻿using FoodDesire.DAL.Context;
-
-namespace FoodDesire.Core.Services;
+﻿namespace FoodDesire.Core.Services;
 public class OrderDeliveryService: IOrderDeliveryService {
     private readonly IRepository<Delivery> _deliveryRepository;
-    private readonly FoodDesireContext _context;
+    private readonly IRepository<Order> _orderRepository;
 
     public OrderDeliveryService(
         IRepository<Delivery> deliveryRepository,
-        FoodDesireContext context
+        IRepository<Order> orderRepository
         ) {
         _deliveryRepository = deliveryRepository;
-        _context = context;
+        _orderRepository = orderRepository;
     }
 
     public async Task<Delivery> GetDeliveryById(int deliveryId) {
@@ -25,23 +23,21 @@ public class OrderDeliveryService: IOrderDeliveryService {
 
     public async Task<List<Order>> GetAllDeliveredOrders() {
         Expression<Func<Order, bool>> filter = e => e.Delivery!.IsDelivered;
+        Func<IQueryable<Order>, IQueryable<Order>> include = e => {
+            return e.Include(e => e.Delivery);
+        };
 
-        List<Order> orders = await _context.Set<Order>()
-            .AsNoTracking()
-            .Include(e => e.Delivery)
-            .Where(filter)
-            .ToListAsync();
+        List<Order> orders = await _orderRepository.Get(filter, filter, include);
         return orders;
     }
 
     public async Task<List<Order>> GetAllOrdersToDeliver() {
         Expression<Func<Order, bool>> filter = e => e.Delivery == null || !e.Delivery.IsDelivered;
+        Func<IQueryable<Order>, IQueryable<Order>> include = e => {
+            return e.Include(e => e.Delivery);
+        };
 
-        List<Order> orders = await _context.Set<Order>()
-            .AsNoTracking()
-            .Include(e => e.Delivery)
-            .Where(filter)
-            .ToListAsync();
+        List<Order> orders = await _orderRepository.Get(filter, filter, include);
         return orders;
     }
 
