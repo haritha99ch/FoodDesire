@@ -97,4 +97,28 @@ public class FoodOrderServices {
         {"Recipe_Id":null,"Ingredient_Id":4,"Amount":300.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":300.0,"Multiplier":1.0}]
          */
     }
+
+    [Test, Order(5)]
+    public async Task AddOptionalIngredientToFoodItem() {
+        Order order = await _orderService.GetOrderById(1);
+        /*
+        [{"Recipe_Id":null,"Ingredient_Id":1,"Amount":200.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":100.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":2,"Amount":100.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":75.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":3,"Amount":2.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":0.5,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":4,"Amount":150.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":150.0,"Multiplier":1.0},    
+{"Recipe_Id":null,"Ingredient_Id":5,"Amount":150.0,"RecommendedMultiplier":1.3333333333333333,"IsRequired":false,"CanModify":true,"PricePerMultiplier":187.5,"Multiplier":0.0}]
+         */
+        FoodItem selectedFoodItem = order.FoodItems![1];
+        selectedFoodItem.FoodItemIngredients[4].Multiplier = 2; //Add 187.5 x 2 (IngredientId = 5)
+
+        FoodItem updatedFoodItem = await _foodItemService.UpdateFoodItem(selectedFoodItem);
+        Assert.That(updatedFoodItem.Price, Is.EqualTo(325.50m + (187.5m * 2)));
+        /*  After Update
+        [{"Recipe_Id":null,"Ingredient_Id":1,"Amount":200.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":100.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":2,"Amount":100.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":75.0,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":3,"Amount":2.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":0.5,"Multiplier":1.0},
+        {"Recipe_Id":null,"Ingredient_Id":4,"Amount":150.0,"RecommendedMultiplier":1.0,"IsRequired":true,"CanModify":false,"PricePerMultiplier":150.0,"Multiplier":1.0},
+{"Recipe_Id":null,"Ingredient_Id":5,"Amount":150.0,"RecommendedMultiplier":1.3333333333333333,"IsRequired":false,"CanModify":true,"PricePerMultiplier":187.5,"Multiplier":2.0}]
+         */
+    }
 }
