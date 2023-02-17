@@ -67,6 +67,15 @@ internal static class RecipeDataHelper {
                 CurrentQuantity = 300,
                 IngredientCategoryId = 1,
             },
+            new Ingredient {
+                Name = "Cocoa powder",
+                Description = "Cocoa powder no sugar",
+                Measurement = Measurement.Grams,
+                CurrentPricePerUnit = 1.25,
+                MaximumQuantity = 500,
+                CurrentQuantity = 200,
+                IngredientCategoryId = 1,
+            }
         };
     }
 
@@ -108,7 +117,15 @@ internal static class RecipeDataHelper {
                         RecommendedAmount = 150,
                         IsRequired = true,
                         PricePerMultiplier = 1.0m
-                    }
+                    },
+                    new RecipeIngredient {
+                        Ingredient_Id = 5,
+                        Amount = 150,
+                        RecommendedAmount = 200,
+                        IsRequired = false,
+                        CanModify = true,
+                        PricePerMultiplier = 0.5m
+                    },
                 }
             },
             new Recipe {
