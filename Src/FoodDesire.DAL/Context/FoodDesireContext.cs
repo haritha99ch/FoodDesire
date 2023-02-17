@@ -41,14 +41,19 @@ public class FoodDesireContext: DbContext {
             .HasIndex(e => e.Email)
             .IsUnique();
         modelBuilder.Entity<Recipe>()
-            .Property(r => r.RecipeIngredients)
+            .Property(e => e.RecipeIngredients)
             .HasConversion(
-                v => JsonConvert.SerializeObject(v),
-                v => JsonConvert.DeserializeObject<List<RecipeIngredient>>(v)!);
+                e => JsonConvert.SerializeObject(e),
+                e => JsonConvert.DeserializeObject<List<RecipeIngredient>>(e)!);
         modelBuilder.Entity<Recipe>()
-            .Property(r => r.Image)
+            .Property(e => e.Image)
             .HasConversion(
-                v => JsonConvert.SerializeObject(v),
-                v => JsonConvert.DeserializeObject<Image>(v));
+                e => JsonConvert.SerializeObject(e),
+                e => JsonConvert.DeserializeObject<Image>(e));
+        modelBuilder.Entity<Delivery>()
+            .Property(e => e.Address)
+            .HasConversion(
+                e => JsonConvert.SerializeObject(e),
+                e => JsonConvert.DeserializeObject<Address>(e));
     }
 }
