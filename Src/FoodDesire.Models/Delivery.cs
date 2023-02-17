@@ -6,7 +6,7 @@ public sealed class Delivery: Entity {
     public int DelivererId { get; set; }
     [Required, NotNull]
     public bool IsDelivered { get; set; } = false;
-    public Address? Address { get; set; }   ////TODO: Json column
+    public Address? Address { get; set; }
 
 
     [ForeignKey(nameof(OrderId))]
