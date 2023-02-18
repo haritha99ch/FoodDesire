@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Src/FoodDesire.Core.Test/FoodDesire.Core.Test.csproj",
+                "${workspaceFolder}/FoodDesire.Core.Test/FoodDesire.Core.Test.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Src/FoodDesire.Core.Test/FoodDesire.Core.Test.csproj",
+                "${workspaceFolder}/FoodDesire.Core.Test/FoodDesire.Core.Test.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/Src/FoodDesire.Core.Test/FoodDesire.Core.Test.csproj"
+                "${workspaceFolder}/FoodDesire.Core.Test/FoodDesire.Core.Test.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
