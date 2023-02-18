@@ -1,15 +1,15 @@
 ﻿namespace FoodDesire.DAL.Test;
 [TestFixture]
 public class RepositoryTest {
-    private IRepository<Customer> customerRepository;
-    private IRepository<Admin> adminRepository;
-    private IRepository<Chef> chefRepository;
-    private IRepository<Supplier> supplierRepository;
-    private IRepository<Deliverer> delivererRepository;
-    private ITrackingRepository<User> userTrackingRepository;
-    private IRepository<User> userRepository;
-    private IRepository<Account> accountRepository;
-    private protected FoodDesireContext _context;
+    private IRepository<Customer>? customerRepository;
+    private IRepository<Admin>? adminRepository;
+    private IRepository<Chef>? chefRepository;
+    private IRepository<Supplier>? supplierRepository;
+    private IRepository<Deliverer>? delivererRepository;
+    private ITrackingRepository<User>? userTrackingRepository;
+    private IRepository<User>? userRepository;
+    private IRepository<Account>? accountRepository;
+    private protected FoodDesireContext? _context;
 
     [OneTimeSetUp]
     public void Setup() {
@@ -27,7 +27,7 @@ public class RepositoryTest {
 
     [OneTimeTearDown]
     public void TearDown() {
-        _context.Database.EnsureDeleted();
+        _context!.Database.EnsureDeleted();
     }
 
     [Test, Order(1)]
@@ -71,7 +71,7 @@ public class RepositoryTest {
             },
         }
         };
-        List<Customer> newCustomers = await customerRepository.AddAll(customers);
+        List<Customer> newCustomers = await customerRepository!.AddAll(customers);
 
         Assert.That(newCustomers.Count, Is.EqualTo(customers.Count));
     }
@@ -97,7 +97,7 @@ public class RepositoryTest {
                 },
             },
         };
-        Admin newAdmin = await adminRepository.Add(admin);
+        Admin newAdmin = await adminRepository!.Add(admin);
 
         Assert.That(newAdmin!, Is.EqualTo(admin!));
     }
@@ -125,7 +125,7 @@ public class RepositoryTest {
                 },
             },
         };
-        Chef newChef = await chefRepository.Add(chef);
+        Chef newChef = await chefRepository!.Add(chef);
 
         Assert.That(newChef!, Is.EqualTo(chef!));
     }
@@ -154,7 +154,7 @@ public class RepositoryTest {
             },
             City = "Diyatalawa"
         };
-        Supplier newSupplier = await supplierRepository.Add(supplier);
+        Supplier newSupplier = await supplierRepository!.Add(supplier);
 
         Assert.That(newSupplier!, Is.EqualTo(supplier!));
     }
@@ -184,14 +184,14 @@ public class RepositoryTest {
             VehicleType = VehicleType.Bike,
             LicenseNo = "ASD 2314"
         };
-        Deliverer newDeliverer = await delivererRepository.Add(deliverer);
+        Deliverer newDeliverer = await delivererRepository!.Add(deliverer);
 
         Assert.That(newDeliverer!, Is.EqualTo(deliverer!));
     }
 
     [Test, Order(6)]
     public async Task GetAllUsers() {
-        List<User> users = await userTrackingRepository.GetAll();
+        List<User> users = await userTrackingRepository!.GetAll();
 
         Assert.That(users.Count, Is.EqualTo(6));
     }
@@ -201,7 +201,7 @@ public class RepositoryTest {
         Expression<Func<Account, bool>> filter =
             e => e.Email.Equals("deliverer@outlook.com") && e.Password.Equals("asd123");
 
-        Account? account = await accountRepository.GetOne(filter);
+        Account? account = await accountRepository!.GetOne(filter);
 
         Assert.That(account.Email, Is.EqualTo("deliverer@outlook.com"));
     }
@@ -211,23 +211,23 @@ public class RepositoryTest {
         Expression<Func<Account, bool>> filter =
             e => e.Email.Equals("deliverer@outlook.com") && e.Password.Equals("asdd123");
 
-        Account? account = await accountRepository.GetOne(filter);
+        Account? account = await accountRepository!.GetOne(filter);
 
         Assert.IsNull(account);
     }
 
     [Test, Order(9)]
     public async Task GetUserById() {
-        List<User>? users = await userTrackingRepository.GetAll();
+        List<User>? users = await userTrackingRepository!.GetAll();
         User user = users.FirstOrDefault()!;
 
-        User getUser = await userTrackingRepository.GetByID(user!.Id);
+        User getUser = await userTrackingRepository!.GetByID(user!.Id);
         Assert.That(user.Id, Is.EqualTo(getUser.Id));
     }
 
     [Test, Order(10)]
     public async Task UpdateUser() {
-        List<User> users = await userTrackingRepository.GetAll();
+        List<User> users = await userTrackingRepository!.GetAll();
         User user = users.FirstOrDefault()!;
 
         User getUser = await userTrackingRepository.GetByID(user!.Id);
@@ -245,7 +245,7 @@ public class RepositoryTest {
         Expression<Func<User, bool>> filter = e => !e.Deleted;
         Expression<Func<User, string>> order = e => e.FirstName;
 
-        List<User> orderedUserList = await userTrackingRepository.Get(filter, order);
+        List<User> orderedUserList = await userTrackingRepository!.Get(filter, order);
 
         Assert.That(orderedUserList.Count, Is.EqualTo(6));
 
@@ -253,7 +253,7 @@ public class RepositoryTest {
 
     [Test, Order(12)]
     public async Task DeleteById() {
-        List<Customer> customers = await customerRepository.GetAll();
+        List<Customer> customers = await customerRepository!.GetAll();
 
         bool entityDeleted = await customerRepository.Delete(customers[1].Id);
 
@@ -263,17 +263,17 @@ public class RepositoryTest {
 
     [Test, Order(13)]
     public async Task SotDelete() {
-        List<User> users = await userTrackingRepository.GetAll();
+        List<User> users = await userTrackingRepository!.GetAll();
 
         bool entityDeleted = await userTrackingRepository.SoftDelete(users[1].Id);
         await userTrackingRepository.SaveChanges();
-        User user = await userRepository.GetByID(users[1].Id);
+        User user = await userRepository!.GetByID(users[1].Id);
         Assert.IsTrue(user.Deleted);
     }
 
     [Test, Order(14)]
     public async Task GetAllTracking() {
-        List<User> users = await userTrackingRepository.GetAll();
+        List<User> users = await userTrackingRepository!.GetAll();
 
         Assert.That(users.Count, Is.EqualTo(5));
     }
