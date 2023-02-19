@@ -53,13 +53,8 @@ public class FoodItemService : IFoodItemService {
                     return;
                 }
                 foodItem.Price += (e.Multiplier != 1) ? multiplierPrice - e.PricePerMultiplier : 0;
-
-
-                //if(e.Multiplier != 1 && e.IsRequired)
-                //    foodItem.Price += Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * (e.Multiplier - 1));
-                //if(e.IsRequired) return;
-                //foodItem.Price += Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
             });
+        foodItem.Order!.Price = foodItem.Order.FoodItems!.Sum(e => e.Price);
         FoodItem updatedFoodItem = await _foodItemRepository.Update(foodItem);
         return updatedFoodItem;
     }
