@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Services;
-public class OrderDeliveryService: IOrderDeliveryService {
+public class OrderDeliveryService : IOrderDeliveryService {
     private readonly IRepository<Delivery> _deliveryRepository;
     private readonly IRepository<Order> _orderRepository;
 

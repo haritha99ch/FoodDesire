@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Delivery: Entity {
+public sealed class Delivery : Entity {
     [Required, NotNull]
     public int OrderId { get; set; }
     [Required, NotNull]

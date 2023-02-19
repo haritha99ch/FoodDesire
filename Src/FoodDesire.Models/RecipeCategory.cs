@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class RecipeCategory: Entity {
+public sealed class RecipeCategory : Entity {
     [Required, NotNull]
     public required string Name { get; set; }
     [Required, NotNull]

@@ -14,7 +14,8 @@ public class RepositoryTest {
     [OneTimeSetUp]
     public void Setup() {
         _context = DbContextHelper.GetContext("Repository");
-        if(!_context.Database.EnsureCreated()) return;
+        if(!_context.Database.EnsureCreated())
+            return;
         customerRepository = new Repository<Customer>(_context);
         adminRepository = new Repository<Admin>(_context);
         chefRepository = new Repository<Chef>(_context);

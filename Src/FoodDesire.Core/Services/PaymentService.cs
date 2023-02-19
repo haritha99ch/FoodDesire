@@ -1,7 +1,7 @@
 ﻿using FoodDesire.DAL.Context;
 
 namespace FoodDesire.Core.Services;
-public class PaymentService: IPaymentService {
+public class PaymentService : IPaymentService {
     private readonly ITrackingRepository<Payment> _paymentRepository;
     private readonly FoodDesireContext _context;
 

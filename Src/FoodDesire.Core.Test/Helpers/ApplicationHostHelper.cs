@@ -15,7 +15,8 @@ public static class ApplicationHostHelper {
     }
 
     public static T GetService<T>() where T : class {
-        if(!(_host!.Services.GetRequiredService(typeof(T)) is not T service)) return service;
+        if(!(_host!.Services.GetRequiredService(typeof(T)) is not T service))
+            return service;
 
         throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within DAL.Configure or Core.Configure");
     }

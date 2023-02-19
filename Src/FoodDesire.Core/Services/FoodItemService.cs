@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Services;
-public class FoodItemService: IFoodItemService {
+public class FoodItemService : IFoodItemService {
     private readonly IRepository<FoodItem> _foodItemRepository;
     private readonly IRecipeService _recipeService;
     private readonly IRepository<Order> _orderRepository;
@@ -45,7 +45,8 @@ public class FoodItemService: IFoodItemService {
         foodItem.Price = recipe.FixedPrice;
         foodItem.FoodItemIngredients
             .ForEach(e => {
-                if(!e.CanModify) return;
+                if(!e.CanModify)
+                    return;
                 decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
                 if(!e.IsRequired) {
                     foodItem.Price += multiplierPrice;

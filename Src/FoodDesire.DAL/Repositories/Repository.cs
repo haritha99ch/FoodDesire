@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.DAL.Repositories;
-public class Repository<T>: IRepository<T> where T : Entity {
+public class Repository<T> : IRepository<T> where T : Entity {
     protected readonly FoodDesireContext _context;
     private DbSet<T> entitySet => _context.Set<T>();
 
@@ -42,7 +42,8 @@ public class Repository<T>: IRepository<T> where T : Entity {
     public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
         List<T>? entities = new List<T>();
         IQueryable<T>? query = entitySet.Where(filter);
-        if(order != null) query.OrderBy(order);
+        if(order != null)
+            query.OrderBy(order);
         if(includes != null) {
             entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
             return entities;
@@ -60,7 +61,8 @@ public class Repository<T>: IRepository<T> where T : Entity {
     public async Task<bool> Delete(int Id) {
         EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
         await _context.SaveChangesAsync();
-        if(await GetByID(Id) == null) return true;
+        if(await GetByID(Id) == null)
+            return true;
         return false;
     }
 }

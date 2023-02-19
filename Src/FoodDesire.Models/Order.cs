@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Order: TrackedEntity {
+public sealed class Order : TrackedEntity {
     [Required]
     public int CustomerId { get; set; }
     [Required]
@@ -10,7 +10,8 @@ public sealed class Order: TrackedEntity {
         get => _foodItems;
         set {
             _foodItems = value;
-            if(Status != OrderStatus.Preparing) return;
+            if(Status != OrderStatus.Preparing)
+                return;
             value!.ToList().ForEach(e => {
                 if(e.Status != FoodItemStatus.Prepared) {
                     Status = OrderStatus.Preparing;

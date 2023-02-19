@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Services;
-public class RecipeService: IRecipeService {
+public class RecipeService : IRecipeService {
     private readonly IRepository<Recipe> _recipeRepository;
     private readonly IRepository<RecipeCategory> _recipeCategoryRepository;
     private readonly IRepository<Ingredient> _ingredientRepository;
@@ -85,7 +85,8 @@ public class RecipeService: IRecipeService {
     }
 
     public async Task<Recipe> UpdateRecipe(Recipe recipe) {
-        if(recipe.RecipeIngredients.Count == 0) return await _recipeRepository.Update(recipe);
+        if(recipe.RecipeIngredients.Count == 0)
+            return await _recipeRepository.Update(recipe);
         recipe.MinimumPrice = decimal.Zero;
         recipe.RecipeIngredients.ForEach(async (recipeIngredient) => {
             if(recipeIngredient.Recipe_Id != null) {
@@ -99,7 +100,9 @@ public class RecipeService: IRecipeService {
             recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
 
         });
-        if(recipe.FixedPrice < recipe.MinimumPrice) recipe.FixedPrice = recipe.MinimumPrice; ;
+        if(recipe.FixedPrice < recipe.MinimumPrice)
+            recipe.FixedPrice = recipe.MinimumPrice;
+        ;
         return await _recipeRepository.Update(recipe);
     }
 
@@ -117,7 +120,8 @@ public class RecipeService: IRecipeService {
         Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
         decimal pricePerMultiplier = Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
 
-        if(pricePerMultiplier < recipeIngredient.PricePerMultiplier) return recipeIngredient.PricePerMultiplier;
+        if(pricePerMultiplier < recipeIngredient.PricePerMultiplier)
+            return recipeIngredient.PricePerMultiplier;
         recipeIngredient.PricePerMultiplier = pricePerMultiplier;
         return recipeIngredient.PricePerMultiplier;
     }

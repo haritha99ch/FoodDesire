@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Services;
-public class DelivererService: IDelivererService {
+public class DelivererService : IDelivererService {
     private readonly IRepository<Deliverer> _delivererRepository;
     private readonly ITrackingRepository<User> _userRepository;
 

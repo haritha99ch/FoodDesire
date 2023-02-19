@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.DAL.Repositories;
-public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEntity {
+public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEntity {
     private readonly FoodDesireContext _context;
     private DbSet<T> entitySet => _context.Set<T>();
 
@@ -47,7 +47,8 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
         Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
         List<T>? entities = new List<T>();
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if(order != null) query.OrderBy(order);
+        if(order != null)
+            query.OrderBy(order);
         if(includes != null) {
             entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
             return entities;
@@ -67,7 +68,8 @@ public class TrackingRepository<T>: ITrackingRepository<T> where T : TrackedEnti
     }
     public async Task<bool> SoftDelete(int Id) {
         T? entity = await GetByID(Id);
-        if(entity == null) return false;
+        if(entity == null)
+            return false;
         entity.Deleted = true;
         T? updatedEntity = await Update(entity);
         return updatedEntity.Deleted;

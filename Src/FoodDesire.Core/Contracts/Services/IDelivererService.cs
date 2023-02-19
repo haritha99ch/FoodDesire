@@ -1,2 +1,2 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-public interface IDelivererService: IUserService<Deliverer> { }
+public interface IDelivererService : IUserService<Deliverer> { }

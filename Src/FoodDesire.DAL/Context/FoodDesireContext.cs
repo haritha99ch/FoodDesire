@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace FoodDesire.DAL.Context;
-public class FoodDesireContext: DbContext {
+public class FoodDesireContext : DbContext {
     public DbSet<User>? User { get; set; }
     public DbSet<Account>? Account { get; set; }
     public DbSet<Address>? Address { get; set; }

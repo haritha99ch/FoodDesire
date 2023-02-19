@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Models;
 [Serializable]
-public class RecipeIngredient: Entity {
+public class RecipeIngredient : Entity {
     [AllowNull]
     public int? Recipe_Id { get; set; }
     [AllowNull]

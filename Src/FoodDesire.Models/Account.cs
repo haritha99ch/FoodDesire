@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Account: Entity {
+public sealed class Account : Entity {
     [Required, NotNull]
     [EmailAddress(ErrorMessage = "Please enter a valid email")]
     public required string Email { get; set; }

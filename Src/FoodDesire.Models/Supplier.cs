@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Supplier: Entity {
+public sealed class Supplier : Entity {
     [Required, NotNull]
     public int EmployeeId { get; set; }
     [Required, NotNull]

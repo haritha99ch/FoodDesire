@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Services;
-public class ChefService: IChefService {
+public class ChefService : IChefService {
     private readonly IRepository<Chef> _chefRepository;
     private readonly ITrackingRepository<User> _userRepository;
     public ChefService(

@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Services;
-public class IngredientService: IIngredientService {
+public class IngredientService : IIngredientService {
     private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly ITrackingRepository<IngredientCategory> _ingredientCategoryTRepository;
     private readonly IPaymentService _paymentService;
@@ -73,7 +73,6 @@ public class IngredientService: IIngredientService {
         List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order);
         return ingredients;
     }
-
 
     public async Task<Supply> NewSupply(Supply supply, decimal value) {
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
