@@ -91,4 +91,30 @@ public static class UserDataHelper {
             },
         };
     }
+
+    public static Deliverer GetDelivererPayload() {
+        return new Deliverer() {
+            Employee = new Employee() {
+                User = new User() {
+                    FirstName = "Deliverer",
+                    LastName = "Rerevilved",
+                    DateOfBirth = new DateTime(1999, 6, 18),
+                    Gender = Gender.Male,
+                    Address = new Address() {
+                        No = "1/156",
+                        Street1 = "Nilmini",
+                        Street2 = "Kahagolla",
+                        City = "Diyatalawa",
+                        PostalCode = 19150
+                    },
+                    Account = new Account() {
+                        Email = "deliverer@outlook.com",
+                        Password = "asd123",
+                    },
+                },
+            },
+            VehicleType = VehicleType.Bike,
+            LicenseNo = "ASD 2314"
+        };
+    }
 }
