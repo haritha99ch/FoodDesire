@@ -23,7 +23,7 @@ public sealed class Order : TrackedEntity {
     }
     [AllowNull]
     public int? DeliveryId { get; set; }
-
+    public decimal Price { get; set; } = decimal.Zero;
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }
