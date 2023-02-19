@@ -26,7 +26,7 @@ public class Repository<T> : IRepository<T> where T : Entity {
     public async Task<T> GetOne(Expression<Func<T, bool>> filter, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
         T? entity;
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if(includes != null) {
+        if (includes != null) {
             entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleOrDefaultAsync();
             return entity!;
         }
@@ -42,9 +42,9 @@ public class Repository<T> : IRepository<T> where T : Entity {
     public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
         List<T>? entities = new List<T>();
         IQueryable<T>? query = entitySet.Where(filter);
-        if(order != null)
+        if (order != null)
             query.OrderBy(order);
-        if(includes != null) {
+        if (includes != null) {
             entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
             return entities;
         }
@@ -61,7 +61,7 @@ public class Repository<T> : IRepository<T> where T : Entity {
     public async Task<bool> Delete(int Id) {
         EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
         await _context.SaveChangesAsync();
-        if(await GetByID(Id) == null)
+        if (await GetByID(Id) == null)
             return true;
         return false;
     }

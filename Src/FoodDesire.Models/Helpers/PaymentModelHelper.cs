@@ -2,13 +2,13 @@
 public class PaymentModelHelper {
     public static void SetSupply(Supply supply, ref Supply _supply, ref PaymentType paymentType) {
         _supply = supply;
-        if(supply == null)
+        if (supply == null)
             return;
         paymentType = PaymentType.Supply;
     }
     public static void SetOrder(Order order, ref Order _order, ref PaymentType paymentType) {
         _order = order;
-        if(order == null)
+        if (order == null)
             return;
         paymentType = PaymentType.Order;
     }

@@ -10,10 +10,10 @@ public sealed class Order : TrackedEntity {
         get => _foodItems;
         set {
             _foodItems = value;
-            if(Status != OrderStatus.Preparing)
+            if (Status != OrderStatus.Preparing)
                 return;
             value!.ToList().ForEach(e => {
-                if(e.Status != FoodItemStatus.Prepared) {
+                if (e.Status != FoodItemStatus.Prepared) {
                     Status = OrderStatus.Preparing;
                     return;
                 }

@@ -33,13 +33,13 @@ public class OrderDeliveryServices {
         );
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
         await _customerService.CreateAccount(UserDataHelper.GetCustomerPayload());
-        foreach(var ingredient in RecipeDataHelper.GetIngredients()) {
+        foreach (var ingredient in RecipeDataHelper.GetIngredients()) {
             await _ingredientService.NewIngredient(ingredient);
         }
-        foreach(var recipe in RecipeDataHelper.GetRecipes()) {
+        foreach (var recipe in RecipeDataHelper.GetRecipes()) {
             await _recipeService.NewRecipe(recipe);
         }
-        foreach(var foodItem in RecipeDataHelper.GetRecipes()) { }
+        foreach (var foodItem in RecipeDataHelper.GetRecipes()) { }
     }
 
     [OneTimeTearDown]

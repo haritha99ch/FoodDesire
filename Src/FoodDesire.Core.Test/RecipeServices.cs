@@ -22,7 +22,7 @@ public class RecipeServices {
 
         await _chefService.CreateAccount(UserDataHelper.GetChefPayload());
         await _ingredientService.NewIngredientCategory(IngredientDataHelper.GetIngredientCategoryPayload());
-        foreach(var ingredient in RecipeDataHelper.GetIngredients()) {
+        foreach (var ingredient in RecipeDataHelper.GetIngredients()) {
             await _ingredientService.NewIngredient(ingredient);
         }
     }

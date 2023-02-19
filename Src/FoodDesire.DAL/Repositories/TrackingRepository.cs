@@ -28,7 +28,7 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
         T entity;
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if(includes != null) {
+        if (includes != null) {
             entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleAsync();
             return entity;
         }
@@ -47,9 +47,9 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
         List<T>? entities = new List<T>();
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if(order != null)
+        if (order != null)
             query.OrderBy(order);
-        if(includes != null) {
+        if (includes != null) {
             entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
             return entities;
         }
@@ -68,7 +68,7 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
     }
     public async Task<bool> SoftDelete(int Id) {
         T? entity = await GetByID(Id);
-        if(entity == null)
+        if (entity == null)
             return false;
         entity.Deleted = true;
         T? updatedEntity = await Update(entity);
