@@ -23,14 +23,12 @@ public class Repository<T> : IRepository<T> where T : Entity {
         T? entity = await entitySet.FindAsync(Id);
         return entity!;
     }
-    public async Task<T> GetOne(Expression<Func<T, bool>> filter, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
-        T? entity;
+    public async Task<T> GetOne(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IQueryable<T>>? includes = null) {
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if (includes != null) {
-            entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleOrDefaultAsync();
-            return entity!;
-        }
-        entity = await query.SingleOrDefaultAsync();
+
+        if (includes != null) query = includes(query);
+
+        T? entity = await query.SingleOrDefaultAsync();
         return entity!;
     }
 
@@ -39,16 +37,13 @@ public class Repository<T> : IRepository<T> where T : Entity {
         return entities;
     }
 
-    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
-        List<T>? entities = new List<T>();
+    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order = null, Func<IQueryable<T>, IQueryable<T>>? includes = null) {
         IQueryable<T>? query = entitySet.Where(filter);
-        if (order != null)
-            query.OrderBy(order);
-        if (includes != null) {
-            entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
-            return entities;
-        }
-        entities = await query.ToListAsync();
+
+        if (order != null) query = query.OrderBy(order);
+        if (includes != null) query = includes(query);
+
+        List<T> entities = await query.ToListAsync();
         return entities;
     }
 

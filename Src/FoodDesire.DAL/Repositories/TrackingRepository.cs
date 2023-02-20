@@ -18,22 +18,19 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
     }
 
     public async Task<T> GetByID(int? id) {
-        T? entity = await entitySet.SingleAsync(e => !e.Deleted && e.Id == id);
+        T? entity = await entitySet.SingleOrDefaultAsync(e => !e.Deleted && e.Id == id);
         return entity!;
     }
 
-    public async Task<T> GetOne(Expression<Func<T, bool>> filter, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
+    public async Task<T> GetOne(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IQueryable<T>>? includes = null) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
-        BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
-        Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
-        T entity;
+
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if (includes != null) {
-            entity = await includes.Aggregate(query, (e, ee) => ee(e)).SingleAsync();
-            return entity;
-        }
-        entity = await query.SingleAsync();
-        return entity;
+
+        if (includes != null) query = includes(query);
+
+        T? entity = await query.SingleOrDefaultAsync();
+        return entity!;
     }
 
     public async Task<List<T>> GetAll() {
@@ -41,25 +38,21 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         return entities;
     }
 
-    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, params Func<IQueryable<T>, IQueryable<T>>[]? includes) {
+    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, Func<IQueryable<T>, IQueryable<T>>? includes = null) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
         BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
-        Expression<Func<T, bool>> entityFilter = Expression.Lambda<Func<T, bool>>(body, filter.Parameters[0]);
-        List<T>? entities = new List<T>();
+
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-        if (order != null)
-            query.OrderBy(order);
-        if (includes != null) {
-            entities = await includes.Aggregate(query, (e, ee) => ee(e)).ToListAsync();
-            return entities;
-        }
-        entities = await query.ToListAsync();
+
+        if (order != null) query = query.OrderBy(order);
+        if (includes != null) query = includes(query);
+
+        List<T> entities = await query.ToListAsync();
         return entities;
     }
 
     public Task SaveChanges() {
         return _context.SaveChangesAsync();
-
     }
 
     public Task<T> Update(T entity) {
@@ -68,8 +61,8 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
     }
     public async Task<bool> SoftDelete(int Id) {
         T? entity = await GetByID(Id);
-        if (entity == null)
-            return false;
+        if (entity == null) return false;
+
         entity.Deleted = true;
         T? updatedEntity = await Update(entity);
         return updatedEntity.Deleted;
