@@ -55,5 +55,9 @@ public class FoodDesireContext : DbContext {
             .HasConversion(
                 e => JsonConvert.SerializeObject(e),
                 e => JsonConvert.DeserializeObject<Address>(e));
+        modelBuilder.Entity<FoodItem>()
+            .HasOne(fi => fi.Recipe)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
