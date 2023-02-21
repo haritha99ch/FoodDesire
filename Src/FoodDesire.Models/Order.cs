@@ -8,12 +8,16 @@ public sealed class Order : TrackedEntity {
     public List<FoodItem>? FoodItems { get; set; }
     [AllowNull]
     public int? DeliveryId { get; set; }
+    [AllowNull]
+    public int? PaymentId { get; set; }
     public decimal Price { get; set; } = decimal.Zero;
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }
     [ForeignKey(nameof(DeliveryId))]
     public Delivery? Delivery { get; set; }
+    [ForeignKey(nameof(PaymentId))]
+    public Payment? Payment { get; set; }
 }
 
 public enum OrderStatus {
