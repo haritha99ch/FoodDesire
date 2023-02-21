@@ -45,8 +45,7 @@ public class FoodItemService : IFoodItemService {
         foodItem.Price = recipe.FixedPrice;
         foodItem.FoodItemIngredients
             .ForEach(e => {
-                if (!e.CanModify)
-                    return;
+                if (!e.CanModify) return;
                 decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
                 if (!e.IsRequired) {
                     foodItem.Price += multiplierPrice;
@@ -62,18 +61,24 @@ public class FoodItemService : IFoodItemService {
     public async Task<FoodItem> PrepareFoodItem(int foodItemId, int chefId) {
         FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
         foodItem.ChefId = chefId;
+        foodItem.Status = FoodItemStatus.Preparing;
         foodItem = await _foodItemRepository.Update(foodItem);
-        Order order = await _orderRepository.GetByID(foodItem.OrderId);
-        order.Status = OrderStatus.Preparing;
-        await _orderRepository.Update(order);
         return foodItem;
     }
 
     public async Task<FoodItem> FoodItemPrepared(int foodItemId) {
-        FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
+        FoodItem foodItem = await GetFoodItemById(foodItemId);
         foodItem.Status = FoodItemStatus.Prepared;
         foodItem.Deleted = true;
         foodItem = await _foodItemRepository.Update(foodItem);
+
+        Order order = await _orderRepository.GetByID(foodItem.OrderId);
+        order.Status = OrderStatus.Prepared;
+        order.FoodItems!.ForEach(e => {
+            if (e.Status == FoodItemStatus.Preparing) order.Status = OrderStatus.Preparing;
+        });
+        await _orderRepository.Update(order);
+
         return foodItem;
     }
 
@@ -82,4 +87,8 @@ public class FoodItemService : IFoodItemService {
         return foodItemDeleted;
     }
 
+    public async Task<FoodItem> GetFoodItemById(int foodItemId) {
+        FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
+        return foodItem;
+    }
 }

@@ -121,4 +121,35 @@ public class FoodOrderServices {
         {"Recipe_Id":null,"Ingredient_Id":5,"Amount":150.0,"RecommendedMultiplier":1.33,"IsRequired":false,"CanModify":true,"PricePerMultiplier":187.5,"Multiplier":2.0}]
          */
     }
+
+    [Test, Order(6)]
+    public async Task PrepareFoodItem() {
+        // Food item is being prepared by chef with id 1
+        FoodItem foodItem = await _foodItemService.PrepareFoodItem(1, 1);
+        foodItem = await _foodItemService.GetFoodItemById(1);
+        Assert.That(foodItem.Status, Is.EqualTo(FoodItemStatus.Preparing));
+    }
+
+    [Test, Order(7)]
+    public async Task PrepatedFoodItem() {
+        FoodItem foodItem = await _foodItemService.FoodItemPrepared(1);
+        foodItem = await _foodItemService.GetFoodItemById(1);
+        Assert.That(foodItem.Status, Is.EqualTo(FoodItemStatus.Prepared));
+    }
+
+    [Test, Order(8)]
+    public async Task OrderIsPrepared() {
+        FoodItem foodItem = await _foodItemService.FoodItemPrepared(2);
+
+        Order order = await _orderService.GetOrderById(1);
+        Assert.That(order.Status, Is.EqualTo(OrderStatus.Prepared));
+    }
+
+    [Test, Order(9)]
+    public async Task RemoveAFoodItem() {
+        bool removed = await _foodItemService.RemoveFoodItem(1);
+
+        FoodItem foodItem = await _foodItemService.GetFoodItemById(1);
+        Assert.That(foodItem, Is.Null);
+    }
 }
