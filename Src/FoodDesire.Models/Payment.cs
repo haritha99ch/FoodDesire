@@ -7,11 +7,7 @@ public sealed class Payment : TrackedEntity {
     [AllowNull]
     public int? OrderId { get; set; }
     [AllowNull]
-    public int? EmployeeId {
-        get => _employeeId;
-        set => PaymentModelHelper.SetEmployee(value, ref _employeeId, ref PaymentType);
-    }
-    private int? _employeeId;
+    public int? EmployeeId { get; set;}
     [AllowNull]
     public int? SupplyId { get; set; }
     [AllowNull]
@@ -22,19 +18,11 @@ public sealed class Payment : TrackedEntity {
 
 
     [ForeignKey(nameof(OrderId))]
-    public Order? Order {
-        get => _order;
-        set => PaymentModelHelper.SetOrder(value!, ref _order!, ref PaymentType);
-    }
-    private Order? _order;
+    public Order? Order { get; set;}
     [ForeignKey(nameof(EmployeeId))]
     public Employee? Employee { get; set; }
     [ForeignKey(nameof(SupplyId))]
-    public Supply? Supply {
-        get => _supply;
-        set => PaymentModelHelper.SetSupply(value!, ref _supply!, ref PaymentType);
-    }
-    private Supply? _supply;
+    public Supply? Supply { get; set;}
     [ForeignKey(nameof(ManagedBy))]
     public Admin? Admin { get; set; }
 }
