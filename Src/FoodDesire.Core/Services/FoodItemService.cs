@@ -31,6 +31,7 @@ public class FoodItemService : IFoodItemService {
 
         });
         FoodItem newFoodItem = await _foodItemRepository.Add(foodItem);
+        newFoodItem.Order!.Status = OrderStatus.Pending;
         foodItem = await UpdateFoodItem(newFoodItem);
         return newFoodItem;
     }
