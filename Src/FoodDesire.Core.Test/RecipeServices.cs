@@ -93,11 +93,11 @@ public class RecipeServices : Services {
 
     }
 
-    //[Test, Order(8)]
-    //public async Task RemoveRecipe() {
-    //    bool recipeRemoved = await _recipeService.RemoveRecipeById(1);
-    //    Recipe recipe = await _recipeService.GetRecipeById(1);
+    [Test, Order(8)]
+    public async Task RemoveRecipe() {
+        bool recipeRemoved = await _recipeService.RemoveRecipeById(1);
+        Recipe recipe = await _recipeService.GetRecipeById(1);
 
-    //    Assert.That(recipe, Is.Null);
-    //}
+        Assert.That(recipe, Is.Null);
+    }
 }

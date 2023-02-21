@@ -32,7 +32,10 @@ public class FoodOrderServices : Services {
             CustomerId = 1,
         };
         order = await _orderService.NewOrder(order);
+        List<Order> orders = await _orderService.GetAllOrders();
+
         Assert.That(order, Is.Not.Null);
+        Assert.That(orders[0], Is.Not.Null);
     }
 
     [Test, Order(2)]
@@ -134,5 +137,13 @@ public class FoodOrderServices : Services {
 
         FoodItem foodItem = await _foodItemService.GetFoodItemById(1);
         Assert.That(foodItem, Is.Null);
+    }
+
+    [Test, Order(10)]
+    public async Task RemoveAnOrder() {
+        bool removed = await _orderService.DeleteOrderById(1);
+
+        Order order = await _orderService.GetOrderById(1);
+        Assert.That(order, Is.Null);
     }
 }
