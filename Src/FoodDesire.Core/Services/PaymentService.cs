@@ -1,42 +1,41 @@
-﻿using FoodDesire.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FoodDesire.Core.Services;
 public class PaymentService : IPaymentService {
     private readonly ITrackingRepository<Payment> _paymentRepository;
-    private readonly FoodDesireContext _context;
+    private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<Admin> _adminRepository;
 
     public PaymentService(
         ITrackingRepository<Payment> paymentRepository,
-        FoodDesireContext context
+        IRepository<Order> orderRepository,
+        IRepository<Admin> adminRepository
         ) {
         _paymentRepository = paymentRepository;
-        _context = context;
+        _orderRepository = orderRepository;
+        _adminRepository = adminRepository;
     }
 
     public async Task<Payment> PaymentForOrder(int orderId) {
-        Order? order = await _context.Set<Order>()
-            .Include(e => e.FoodItems)
-            .SingleAsync(e => e.Id == orderId);
-
-        decimal value = decimal.Zero;
-        order.FoodItems!.ToList().ForEach(e => {
-            value += e.Price;
-        });
-        Payment payment = new() {
-            Order = order,
-            Value = value
+        Order? order = await _orderRepository.GetByID(orderId);
+        order.Payment = new Payment() {
+            OrderId = orderId,
+            Value = order.Price + order.Delivery!.Fee,
+            PaymentType = PaymentType.Order
         };
-        payment = await _paymentRepository.Add(payment);
-        await SavePayment();
-        return payment;
+        order = await _orderRepository.Update(order);
+        return order.Payment!;
     }
 
     public async Task<Payment> PaymentForSupply(Supply supply, decimal value) {
-        Admin? admin = await _context.Set<Admin>().FirstOrDefaultAsync();
+        List<Admin> admins = await _adminRepository.GetAll();
+        Admin? admin = admins.FirstOrDefault();
+        if (admin == null) throw new Exception("No admin found");
         Payment payment = new() {
             ManagedBy = admin!.Id,
             Supply = supply,
-            Value = value
+            Value = value,
+            PaymentType = PaymentType.Supply
         };
         payment = await _paymentRepository.Add(payment);
         await SavePayment();

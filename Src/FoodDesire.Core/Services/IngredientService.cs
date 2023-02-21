@@ -78,11 +78,8 @@ public class IngredientService : IIngredientService {
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
         ingredient.CurrentQuantity += supply.Amount;
         ingredient.CurrentPricePerUnit = Convert.ToDouble(value) / supply.Amount;
-        await _ingredientRepository.Update(ingredient);
-
         Payment payment = await _paymentService.PaymentForSupply(supply, value);
-        await _paymentService.SavePayment();
-
+        await _ingredientRepository.Update(ingredient);
         return payment.Supply!;
     }
 }

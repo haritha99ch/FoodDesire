@@ -23,7 +23,10 @@ public class Repository<T> : IRepository<T> where T : Entity {
         T? entity = await entitySet.FindAsync(Id);
         return entity!;
     }
-    public async Task<T> GetOne(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null) {
+    public async Task<T> GetOne(
+        Expression<Func<T, bool>> filter,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
+        ) {
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
 
         if (includes != null) query = includes(query);
@@ -42,7 +45,7 @@ public class Repository<T> : IRepository<T> where T : Entity {
         Expression<Func<T, object>>? order = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
         ) {
-        IQueryable<T>? query = entitySet.Where(filter);
+        IQueryable<T> query = entitySet.Where(filter);
 
         if (order != null) query = query.OrderBy(order);
         if (includes != null) query = includes(query);

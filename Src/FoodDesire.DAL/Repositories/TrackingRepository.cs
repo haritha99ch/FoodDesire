@@ -22,7 +22,10 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         return entity!;
     }
 
-    public async Task<T> GetOne(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null) {
+    public async Task<T> GetOne(
+        Expression<Func<T, bool>> filter,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
+        ) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
 
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
