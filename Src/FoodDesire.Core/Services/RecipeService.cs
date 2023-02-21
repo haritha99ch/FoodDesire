@@ -116,7 +116,7 @@ public class RecipeService : IRecipeService {
         return newRecipeCategory;
     }
 
-    public async Task<decimal> SetMinimumPricePerMultiplier(RecipeIngredient recipeIngredient) {
+    private async Task<decimal> SetMinimumPricePerMultiplier(RecipeIngredient recipeIngredient) {
         Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
         decimal pricePerMultiplier = Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
 
