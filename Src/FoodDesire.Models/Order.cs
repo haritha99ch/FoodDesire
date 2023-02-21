@@ -5,22 +5,7 @@ public sealed class Order : TrackedEntity {
     [Required]
     public DateTime DateTime { get; set; } = DateTime.Now;
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
-    private List<FoodItem>? _foodItems { get; set; }
-    public List<FoodItem>? FoodItems {
-        get => _foodItems;
-        set {
-            _foodItems = value;
-            if (Status != OrderStatus.Preparing)
-                return;
-            value!.ToList().ForEach(e => {
-                if (e.Status != FoodItemStatus.Prepared) {
-                    Status = OrderStatus.Preparing;
-                    return;
-                }
-                Status = OrderStatus.Prepared;
-            });
-        }
-    }
+    public List<FoodItem>? FoodItems { get; set; }
     [AllowNull]
     public int? DeliveryId { get; set; }
     public decimal Price { get; set; } = decimal.Zero;

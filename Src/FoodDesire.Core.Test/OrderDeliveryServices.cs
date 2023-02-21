@@ -1,5 +1,4 @@
 namespace FoodDesire.Core.Test;
-
 [TestFixture]
 public class OrderDeliveryServices {
     private readonly IOrderDeliveryService _orderDeliveryServices;
@@ -44,15 +43,15 @@ public class OrderDeliveryServices {
         foreach (var recipe in RecipeDataHelper.GetRecipes()) {
             await _recipeService.NewRecipe(recipe);
         }
-        // Create ann order and add a fooditem
+        // Create ann order and add a foodItem
 
-        FoodItem fooditem = new() {
+        FoodItem foodItem = new() {
             RecipeId = 1,
             Order = new() {
                 CustomerId = 1
             }
         };
-        await _foodItemService.NewFoodItem(fooditem);
+        await _foodItemService.NewFoodItem(foodItem);
         await _foodItemService.NewFoodItem(new FoodItem() {
             RecipeId = 2,
             OrderId = 1
@@ -61,7 +60,7 @@ public class OrderDeliveryServices {
 
     [OneTimeTearDown]
     public async Task TearDown() {
-        // await _context.Database.EnsureDeletedAsync();
+        await _context.Database.EnsureDeletedAsync();
         ApplicationHostHelper.TearDownHost();
     }
 
@@ -84,4 +83,31 @@ public class OrderDeliveryServices {
         Assert.That(newDelivery, Is.Not.Null);
     }
 
+    [Test, Order(2)]
+    public async Task GetOrderToDeliver() {
+        FoodItem foodItem = new() {
+            RecipeId = 1,
+            Order = new() {
+                CustomerId = 1
+            }
+        };
+        await _foodItemService.NewFoodItem(foodItem);
+        List<Order> orders = await _orderDeliveryServices.GetAllOrdersToDeliver();
+        Assert.That(orders, Has.Count.EqualTo(2));
+    }
+
+    [Test, Order(3)]
+    public async Task SetAsDelivered() {
+        Delivery? delivered = await _orderDeliveryServices.OrderIsDelivered(1);
+        Assert.That(delivered!.IsDelivered, Is.True);
+
+        List<Order> orders = await _orderDeliveryServices.GetAllOrdersToDeliver();
+        Assert.That(orders, Has.Count.EqualTo(1));
+    }
+
+    [Test, Order(4)]
+    public async Task GetAllDeliveredOrders() {
+        List<Order> orders = await _orderDeliveryServices.GetAllDeliveredOrders();
+        Assert.That(orders, Has.Count.EqualTo(1));
+    }
 }
