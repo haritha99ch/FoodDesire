@@ -1,19 +1,7 @@
 ﻿namespace FoodDesire.Core.Test;
 [TestFixture]
-public class IngredientServices {
-    private readonly ISupplierService _supplierService;
-    private readonly IIngredientService _ingredientService;
-    private readonly IAdminService _adminService;
-    private readonly FoodDesireContext _context;
-
-    public IngredientServices() {
-        ApplicationHostHelper.ConfigureHost("IngredientServices");
-
-        _ingredientService = ApplicationHostHelper.GetService<IIngredientService>();
-        _supplierService = ApplicationHostHelper.GetService<ISupplierService>();
-        _adminService = ApplicationHostHelper.GetService<IAdminService>();
-        _context = ApplicationHostHelper.GetService<FoodDesireContext>();
-    }
+public class IngredientServices : Services {
+    public IngredientServices() : base("IngredientServices") { }
 
     [OneTimeSetUp]
     public async Task SetUp() {
