@@ -3,15 +3,18 @@
 namespace FoodDesire.Core.Services;
 public class PaymentService : IPaymentService {
     private readonly ITrackingRepository<Payment> _paymentRepository;
+    private readonly ITrackingRepository<Supply> _supplyRepository;
     private readonly IRepository<Order> _orderRepository;
     private readonly IRepository<Admin> _adminRepository;
 
     public PaymentService(
         ITrackingRepository<Payment> paymentRepository,
+        ITrackingRepository<Supply> supplyRepository,
         IRepository<Order> orderRepository,
         IRepository<Admin> adminRepository
         ) {
         _paymentRepository = paymentRepository;
+        _supplyRepository = supplyRepository;
         _orderRepository = orderRepository;
         _adminRepository = adminRepository;
     }
@@ -31,15 +34,14 @@ public class PaymentService : IPaymentService {
         List<Admin> admins = await _adminRepository.GetAll();
         Admin? admin = admins.FirstOrDefault();
         if (admin == null) throw new Exception("No admin found");
-        Payment payment = new() {
+        supply.Payment = new Payment() {
             ManagedBy = admin!.Id,
-            Supply = supply,
             Value = value,
             PaymentType = PaymentType.Supply
         };
-        payment = await _paymentRepository.Add(payment);
-        await SavePayment();
-        return payment;
+        supply = await _supplyRepository.Update(supply);
+        await _supplyRepository.SaveChanges();
+        return supply.Payment!;
     }
 
     public async Task<Payment> SalaryForEmployee(Payment payment) {
