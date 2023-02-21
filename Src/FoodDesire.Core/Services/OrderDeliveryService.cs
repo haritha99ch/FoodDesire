@@ -17,8 +17,10 @@ public class OrderDeliveryService : IOrderDeliveryService {
     }
 
     public async Task<Delivery> NewDeliveryForOrder(Delivery delivery) {
-        Delivery newDelivery = await _deliveryRepository.Add(delivery);
-        return newDelivery;
+        Order order = await _orderRepository.GetByID(delivery.OrderId);
+        order.Delivery = delivery;
+        order = await _orderRepository.Update(order);
+        return order.Delivery!;
     }
 
     public async Task<List<Order>> GetAllDeliveredOrders() {
@@ -37,7 +39,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
             return e.Include(e => e.Delivery);
         };
 
-        List<Order> orders = await _orderRepository.Get(filter, filter, include);
+        List<Order> orders = await _orderRepository.Get<Order>(filter, null, include);
         return orders;
     }
 
