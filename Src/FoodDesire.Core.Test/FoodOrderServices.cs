@@ -117,7 +117,7 @@ public class FoodOrderServices : Services {
     }
 
     [Test, Order(7)]
-    public async Task PrepatedFoodItem() {
+    public async Task PreparedFoodItem() {
         FoodItem foodItem = await _foodItemService.FoodItemPrepared(1);
         foodItem = await _foodItemService.GetFoodItemById(1);
         Assert.That(foodItem.Status, Is.EqualTo(FoodItemStatus.Prepared));
