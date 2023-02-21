@@ -120,8 +120,7 @@ public class RecipeService : IRecipeService {
         Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
         decimal pricePerMultiplier = Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
 
-        if (pricePerMultiplier < recipeIngredient.PricePerMultiplier)
-            return recipeIngredient.PricePerMultiplier;
+        if (pricePerMultiplier < recipeIngredient.PricePerMultiplier) return recipeIngredient.PricePerMultiplier;
         recipeIngredient.PricePerMultiplier = pricePerMultiplier;
         return recipeIngredient.PricePerMultiplier;
     }

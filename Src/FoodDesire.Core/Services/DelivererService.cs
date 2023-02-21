@@ -29,8 +29,7 @@ public class DelivererService : IDelivererService {
 
     public async Task<Deliverer> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Deliverer, bool>> filter =
-            e => e.Employee!.User!.Account!.Email.Equals(email) &&
-            e.Employee.User.Account.Password.Equals(password);
+            e => e.Employee!.User!.Account!.Email.Equals(email) && e.Employee.User.Account.Password.Equals(password);
 
         Deliverer deliverer = await _delivererRepository.GetOne(filter);
         return deliverer;

@@ -32,6 +32,7 @@ public class IngredientService : IIngredientService {
 
     public async Task<IngredientCategory> GetIngredientCategoryByName(string ingredientCategoryName) {
         Expression<Func<IngredientCategory, bool>> categoryFilter = e => e.Name.Equals(ingredientCategoryName);
+
         IngredientCategory ingredientCategory = await _ingredientCategoryTRepository.GetOne(categoryFilter);
         return ingredientCategory;
     }
@@ -55,6 +56,7 @@ public class IngredientService : IIngredientService {
 
     public async Task<Ingredient> GetIngredientByName(string ingredientName) {
         Expression<Func<Ingredient, bool>> ingredientFilter = e => e.Name.Equals(ingredientName);
+
         Ingredient ingredient = await _ingredientRepository.GetOne(ingredientFilter);
         return ingredient;
     }
@@ -70,6 +72,7 @@ public class IngredientService : IIngredientService {
 
         Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategoryId == category.Id;
         Expression<Func<Ingredient, object>> order = e => e.IngredientCategoryId;
+
         List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order);
         return ingredients;
     }

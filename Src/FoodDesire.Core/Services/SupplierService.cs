@@ -16,8 +16,8 @@ public class SupplierService : ISupplierService {
     }
 
     public async Task<bool> DeleteAccountById(int id) {
-        Supplier supplire = await GetByIdPopulated(id);
-        bool supplierDeleted = await _userRepository.SoftDelete(supplire!.Employee!.UserId);
+        Supplier supplier = await GetByIdPopulated(id);
+        bool supplierDeleted = await _userRepository.SoftDelete(supplier!.Employee!.UserId);
         await _userRepository.SaveChanges();
         return supplierDeleted;
     }
@@ -29,8 +29,8 @@ public class SupplierService : ISupplierService {
 
     public async Task<Supplier> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Supplier, bool>> filter =
-            e => e.Employee!.User!.Account!.Email.Equals(email) &&
-            e.Employee!.User!.Account.Password.Equals(password);
+            e => e.Employee!.User!.Account!.Email.Equals(email) && e.Employee!.User!.Account.Password.Equals(password);
+
         Supplier? supplier = await _supplierRepository.GetOne(filter);
         return supplier!;
     }

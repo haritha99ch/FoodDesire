@@ -28,8 +28,7 @@ public class ChefService : IChefService {
 
     public async Task<Chef> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Chef, bool>> filter =
-            e => e.Employee!.User!.Account!.Email.Equals(email) &&
-            e.Employee.User.Account.Password.Equals(password);
+            e => e.Employee!.User!.Account!.Email.Equals(email) && e.Employee.User.Account.Password.Equals(password);
 
         Chef chef = await _chefRepository.GetOne(filter);
         return chef;

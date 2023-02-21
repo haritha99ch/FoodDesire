@@ -11,6 +11,7 @@ public abstract class Services {
     internal readonly IOrderService _orderService;
     internal readonly ICustomerOrderService _customerOrderService;
     internal readonly IOrderDeliveryService _orderDeliveryServices;
+    internal readonly IPaymentService _paymentService;
     internal readonly FoodDesireContext _context;
 
     public Services(string hostName) {
@@ -27,6 +28,7 @@ public abstract class Services {
         _orderService = ApplicationHostHelper.GetService<IOrderService>();
         _customerOrderService = ApplicationHostHelper.GetService<ICustomerOrderService>();
         _orderDeliveryServices = ApplicationHostHelper.GetService<IOrderDeliveryService>();
+        _paymentService = ApplicationHostHelper.GetService<IPaymentService>();
         _context = ApplicationHostHelper.GetService<FoodDesireContext>();
     }
 }
