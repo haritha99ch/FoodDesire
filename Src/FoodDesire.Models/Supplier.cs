@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Supplier : Entity {
-    [Required, NotNull]
+    [Required]
     public int EmployeeId { get; set; }
-    [Required, NotNull]
+    [Required]
     public string? City { get; set; }
 
     [ForeignKey(nameof(EmployeeId))]

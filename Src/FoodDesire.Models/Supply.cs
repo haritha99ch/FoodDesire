@@ -1,10 +1,10 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Supply : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public int SupplierId { get; set; }
-    [Required, NotNull]
+    [Required]
     public int IngredientId { get; set; }
-    [Required, NotNull]
+    [Required]
     public double Amount { get; set; } = 0;
     public DateTime SuppliedDate { get; set; } = DateTime.Now;
 

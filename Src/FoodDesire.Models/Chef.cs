@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Chef : Entity {
-    [Required, NotNull]
+    [Required]
     public int EmployeeId { get; set; }
 
 

@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Payment : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public PaymentType PaymentType;
-    [Required, NotNull]
+    [Required]
     public DateTime DateTime { get; private set; } = DateTime.Now;
     [AllowNull]
     public int? OrderId { get; set; }
@@ -16,7 +16,7 @@ public sealed class Payment : TrackedEntity {
     public int? SupplyId { get; set; }
     [AllowNull]
     public int? ManagedBy { get; set; }
-    [Required, NotNull]
+    [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Value { get; set; } = decimal.Zero;
 

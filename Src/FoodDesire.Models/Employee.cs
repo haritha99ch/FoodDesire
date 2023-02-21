@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Employee : Entity {
-    [Required, NotNull]
+    [Required]
     public int UserId { get; set; }
-    [Required, NotNull]
+    [Required]
     public DateTime RegisteredDate { get; set; } = DateTime.Now;
 
 

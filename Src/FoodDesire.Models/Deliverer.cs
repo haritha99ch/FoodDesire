@@ -1,10 +1,10 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Deliverer : Entity {
-    [Required, NotNull]
+    [Required]
     public int EmployeeId { get; set; }
-    [Required, NotNull]
+    [Required]
     public VehicleType VehicleType { get; set; } = VehicleType.Bike;
-    [Required, NotNull]
+    [Required]
     public required string LicenseNo { get; set; }
 
 

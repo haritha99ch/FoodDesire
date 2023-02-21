@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.Models;
 public sealed class IngredientCategory : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public required string Name { get; set; }
-    [Required, NotNull]
+    [Required]
     public required string Description { get; set; }
 
     public ICollection<Ingredient>? Ingredients { get; set; }

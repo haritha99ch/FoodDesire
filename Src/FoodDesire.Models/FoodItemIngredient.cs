@@ -4,15 +4,15 @@ public sealed class FoodItemIngredient {
     public int? Recipe_Id { get; set; }
     [AllowNull]
     public int? Ingredient_Id { get; set; }
-    [Required, NotNull]
+    [Required]
     public double Amount { get; set; }
-    [Required, NotNull]
+    [Required]
     public double RecommendedMultiplier { get; set; }
-    [Required, NotNull]
+    [Required]
     public bool IsRequired { get; set; } = true;
     [Required]
     public bool CanModify { get; set; } = false;
-    [Required, NotNull]
+    [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal PricePerMultiplier { get; set; }
     public double Multiplier { get; set; } = 1;

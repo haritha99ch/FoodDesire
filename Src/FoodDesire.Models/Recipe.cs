@@ -1,19 +1,19 @@
 ﻿namespace FoodDesire.Models;
 [Serializable]
 public sealed class Recipe : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public int ChefId { get; set; } //Created by
-    [Required, NotNull]
+    [Required]
     public required string Name { get; set; }
-    [Required, NotNull]
+    [Required]
     public required string Description { get; set; }
-    [Required, NotNull]
+    [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal MinimumPrice { get; set; }
-    [Required, NotNull]
+    [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal FixedPrice { get; set; }
-    [Required, NotNull]
+    [Required]
     public int RecipeCategoryId { get; set; }
     [NotNull]
     public string Tags { get; set; } = "";

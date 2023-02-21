@@ -1,18 +1,18 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Ingredient : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public required string Name { get; set; }
-    [Required, NotNull]
+    [Required]
     public required string Description { get; set; }
-    [Required, NotNull]
+    [Required]
     public Measurement Measurement { get; set; }
-    [Required, NotNull]
+    [Required]
     public double CurrentPricePerUnit { get; set; } //TODO: Automatically update the price when a new supply made: Totalprice/Units
-    [Required, NotNull]
+    [Required]
     public double MaximumQuantity { get; set; }
-    [Required, NotNull]
+    [Required]
     public double CurrentQuantity { get; set; }
-    [Required, NotNull]
+    [Required]
     public int IngredientCategoryId { get; set; }
 
 

@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.Models;
 public sealed class RecipeCategory : Entity {
-    [Required, NotNull]
+    [Required]
     public required string Name { get; set; }
-    [Required, NotNull]
+    [Required]
     public required string Description { get; set; }
 
     public ICollection<Recipe>? Recipes { get; set; }

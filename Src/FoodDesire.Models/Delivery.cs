@@ -1,10 +1,10 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Delivery : Entity {
-    [Required, NotNull]
+    [Required]
     public int OrderId { get; set; }
-    [Required, NotNull]
+    [Required]
     public int DelivererId { get; set; }
-    [Required, NotNull]
+    [Required]
     public bool IsDelivered { get; set; } = false;
     public Address? Address { get; set; }
 

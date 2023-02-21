@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Models;
 public sealed class FoodItem : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public int RecipeId { get; set; }
     [AllowNull]
     public int? OrderId { get; set; }

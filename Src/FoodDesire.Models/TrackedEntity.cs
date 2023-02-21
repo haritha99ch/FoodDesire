@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
 public abstract class TrackedEntity : Entity {
-    [Required, NotNull]
+    [Required]
     public bool Deleted { get; set; } = false;
 }

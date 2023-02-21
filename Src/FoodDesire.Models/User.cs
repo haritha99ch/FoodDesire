@@ -1,10 +1,10 @@
 ﻿namespace FoodDesire.Models;
 public class User : TrackedEntity {
-    [Required, NotNull]
+    [Required]
     public required string FirstName { get; set; }
-    [Required, NotNull]
+    [Required]
     public required string LastName { get; set; }
-    [Required, NotNull]
+    [Required]
     public DateTime DateOfBirth {
         get => _dateOfBirth;
         set {
@@ -13,13 +13,13 @@ public class User : TrackedEntity {
         }
     }
     private DateTime _dateOfBirth { get; set; }
-    [Required, NotNull]
+    [Required]
     public int Age { get; private set; } = 0;
-    [Required, NotNull]
+    [Required]
     public Gender Gender { get; set; }
-    [Required, NotNull]
+    [Required]
     public int AddressId { get; set; }
-    [Required, NotNull]
+    [Required]
     public int AccountId { get; set; }
 
 
