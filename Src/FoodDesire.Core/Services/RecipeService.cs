@@ -63,7 +63,7 @@ public class RecipeService : IRecipeService {
         int categoryId = foodCategory.Id;
 
         Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
-        Expression<Func<Recipe, int>> order = e => e.RecipeCategoryId;
+        Expression<Func<Recipe, object>> order = e => e.RecipeCategoryId;
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order);
         return recipes;
@@ -71,7 +71,7 @@ public class RecipeService : IRecipeService {
 
     public async Task<List<Recipe>> GetAllRecipesByCategoryId(int categoryId) {
         Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
-        Expression<Func<Recipe, int>> order = e => e.RecipeCategoryId;
+        Expression<Func<Recipe, object>> order = e => e.RecipeCategoryId;
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order);
         return recipes;

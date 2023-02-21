@@ -25,21 +25,17 @@ public class OrderDeliveryService : IOrderDeliveryService {
 
     public async Task<List<Order>> GetAllDeliveredOrders() {
         Expression<Func<Order, bool>> filter = e => e.Delivery!.IsDelivered;
-        Func<IQueryable<Order>, IQueryable<Order>> include = e => {
-            return e.Include(e => e.Delivery);
-        };
+        Func<IQueryable<Order>, IIncludableQueryable<Order, object?>> include = e => e.Include(o => o.Delivery);
 
-        List<Order> orders = await _orderRepository.Get(filter, filter, include);
+        List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;
     }
 
     public async Task<List<Order>> GetAllOrdersToDeliver() {
         Expression<Func<Order, bool>> filter = e => e.Delivery == null || !e.Delivery.IsDelivered;
-        Func<IQueryable<Order>, IQueryable<Order>> include = e => {
-            return e.Include(e => e.Delivery);
-        };
+        Func<IQueryable<Order>, IIncludableQueryable<Order, object?>> include = e => e.Include(e => e.Delivery);
 
-        List<Order> orders = await _orderRepository.Get<Order>(filter, null, include);
+        List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;
     }
 

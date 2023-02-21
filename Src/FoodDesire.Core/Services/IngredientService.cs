@@ -69,7 +69,7 @@ public class IngredientService : IIngredientService {
         IngredientCategory category = await _ingredientCategoryTRepository.GetOne(categoryFilter);
 
         Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategoryId == category.Id;
-        Expression<Func<Ingredient, int>> order = e => e.IngredientCategoryId;
+        Expression<Func<Ingredient, object>> order = e => e.IngredientCategoryId;
         List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order);
         return ingredients;
     }

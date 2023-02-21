@@ -22,7 +22,7 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         return entity!;
     }
 
-    public async Task<T> GetOne(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IQueryable<T>>? includes = null) {
+    public async Task<T> GetOne(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
 
         IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
@@ -38,7 +38,11 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         return entities;
     }
 
-    public async Task<List<T>> Get<T2>(Expression<Func<T, bool>> filter, Expression<Func<T, T2>>? order, Func<IQueryable<T>, IQueryable<T>>? includes = null) {
+    public async Task<List<T>> Get(
+        Expression<Func<T, bool>> filter,
+        Expression<Func<T, object>>? order,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
+        ) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
         BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
 

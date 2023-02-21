@@ -244,7 +244,7 @@ public class RepositoryTest {
     [Test, Order(11)]
     public async Task GetByFilteringAndOrdering() {
         Expression<Func<User, bool>> filter = e => !e.Deleted;
-        Expression<Func<User, string>> order = e => e.FirstName;
+        Expression<Func<User, object>> order = e => e.FirstName;
 
         List<User> orderedUserList = await userTrackingRepository!.Get(filter, order);
 
