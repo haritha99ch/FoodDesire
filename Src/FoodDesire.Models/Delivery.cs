@@ -7,6 +7,8 @@ public sealed class Delivery : Entity {
     [Required]
     public bool IsDelivered { get; set; } = false;
     public Address? Address { get; set; }
+    [Required]
+    public decimal Fee { get; set; } = 100;
 
 
     [ForeignKey(nameof(OrderId))]
