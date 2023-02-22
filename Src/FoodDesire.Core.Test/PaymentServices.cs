@@ -35,6 +35,12 @@ public class PaymentServices : Services {
         });
     }
 
+    [OneTimeTearDown]
+    public async Task TearDown() {
+        await _context.Database.EnsureDeletedAsync();
+        ApplicationHostHelper.TearDownHost();
+    }
+
     [Test, Order(1)]
     public async Task MakePaymentForOrder() {
         Payment payment = await _paymentService.PaymentForOrder(1);

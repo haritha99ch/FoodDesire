@@ -7,7 +7,7 @@ public sealed class Ingredient : TrackedEntity {
     [Required]
     public Measurement Measurement { get; set; }
     [Required]
-    public double CurrentPricePerUnit { get; set; } //TODO: Automatically update the price when a new supply made: Totalprice/Units
+    public double CurrentPricePerUnit { get; set; }
     [Required]
     public double MaximumQuantity { get; set; }
     [Required]
