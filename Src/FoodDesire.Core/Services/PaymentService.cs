@@ -53,15 +53,31 @@ public class PaymentService : IPaymentService {
         return newPayment;
     }
 
-    public async Task<Payment> PaymentForMaintenance(Payment payment) {
+    public async Task<Payment> PaymentForMaintenance(decimal value, string description) {
         List<Admin> admins = await _adminRepository.GetAll();
         Admin? admin = admins.FirstOrDefault();
         if (admin == null) throw new Exception("No admin found");
-        payment.ManagedBy = admin.Id;
-        payment.PaymentType = PaymentType.Maintenance;
+        Payment payment = new Payment() {
+            ManagedBy = admin.Id,
+            Value = value,
+            Description = description,
+            PaymentType = PaymentType.Maintenance
+        };
         Payment newPayment = await _paymentRepository.Add(payment);
         await SavePayment();
         return newPayment;
+    }
+
+    public async Task<List<Payment>> GetIncome() {
+        Expression<Func<Payment, bool>> filter = p => p.PaymentType == PaymentType.Order;
+        List<Payment> payments = await _paymentRepository.Get(filter);
+        return payments;
+    }
+
+    public async Task<List<Payment>> GetExpenses() {
+        Expression<Func<Payment, bool>> filter = p => p.PaymentType != PaymentType.Order;
+        List<Payment> payments = await _paymentRepository.Get(filter);
+        return payments;
     }
 
     public async Task SavePayment() {
