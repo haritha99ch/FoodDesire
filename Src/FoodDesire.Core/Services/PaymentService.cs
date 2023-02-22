@@ -33,7 +33,7 @@ public class PaymentService : IPaymentService {
         Admin? admin = admins.FirstOrDefault();
         if (admin == null) throw new Exception("No admin found");
         supply.Payment = new Payment() {
-            ManagedBy = admin!.Id,
+            ManagedBy = admin.Id,
             Value = value,
             PaymentType = PaymentType.Supply
         };
@@ -43,6 +43,22 @@ public class PaymentService : IPaymentService {
     }
 
     public async Task<Payment> SalaryForEmployee(Payment payment) {
+        List<Admin> admins = await _adminRepository.GetAll();
+        Admin? admin = admins.FirstOrDefault();
+        if (admin == null) throw new Exception("No admin found");
+        payment.ManagedBy = admin.Id;
+        payment.PaymentType = PaymentType.Salary;
+        Payment newPayment = await _paymentRepository.Add(payment);
+        await SavePayment();
+        return newPayment;
+    }
+
+    public async Task<Payment> PaymentForMaintenance(Payment payment) {
+        List<Admin> admins = await _adminRepository.GetAll();
+        Admin? admin = admins.FirstOrDefault();
+        if (admin == null) throw new Exception("No admin found");
+        payment.ManagedBy = admin.Id;
+        payment.PaymentType = PaymentType.Maintenance;
         Payment newPayment = await _paymentRepository.Add(payment);
         await SavePayment();
         return newPayment;
