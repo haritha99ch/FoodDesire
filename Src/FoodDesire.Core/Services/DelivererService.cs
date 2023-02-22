@@ -35,7 +35,7 @@ public class DelivererService : IDelivererService {
         return deliverer;
     }
 
-    public async Task<Deliverer> GetByIdPopulated(int id) {
+    public async Task<Deliverer> GetById(int id) {
         Deliverer deliverer = await _delivererRepository.GetByID(id);
         return deliverer;
     }

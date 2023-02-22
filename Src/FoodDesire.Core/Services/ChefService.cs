@@ -34,7 +34,7 @@ public class ChefService : IChefService {
         return chef;
     }
 
-    public async Task<Chef> GetByIdPopulated(int id) {
+    public async Task<Chef> GetById(int id) {
         Chef chef = await _chefRepository.GetByID(id);
         return chef;
     }

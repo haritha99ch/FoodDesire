@@ -25,12 +25,12 @@ public class AdminService : IAdminService {
     public async Task<Admin> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Admin, bool>> filter = e =>
             e.User!.Account!.Email.Equals(email) && e.User!.Account.Password.Equals(password);
-            
+
         Admin? admin = await _adminRepository.GetOne(filter);
         return admin!;
     }
 
-    public async Task<Admin> GetByIdPopulated(int id) {
+    public async Task<Admin> GetById(int id) {
         Admin admin = await _adminRepository.GetByID(id);
         return admin;
     }

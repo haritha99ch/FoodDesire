@@ -14,7 +14,7 @@ public class CustomerService : ICustomerService {
         Customer newCustomer = await _customerRepository.Add(user);
         return newCustomer;
     }
-    public async Task<Customer> GetByIdPopulated(int id) {
+    public async Task<Customer> GetById(int id) {
         Customer customer = await _customerRepository.GetByID(id);
         return customer;
     }
