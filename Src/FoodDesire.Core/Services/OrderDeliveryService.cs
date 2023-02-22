@@ -19,6 +19,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
     public async Task<Delivery> NewDeliveryForOrder(Delivery delivery) {
         Order order = await _orderRepository.GetByID(delivery.OrderId);
         order.Delivery = delivery;
+        order.Delivery.Address = (delivery.Address == null) ? order.Customer!.User!.Address : delivery.Address;
         order = await _orderRepository.Update(order);
         return order.Delivery!;
     }
