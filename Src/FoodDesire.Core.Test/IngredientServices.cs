@@ -82,7 +82,7 @@ public class IngredientServices : Services {
         Ingredient ingredient = await _ingredientService.GetIngredientById(1);
         Assert.That(ingredient.CurrentQuantity, Is.EqualTo(1000));
     }
-    
+
     [Test, Order(7)]
     public async Task DeleteIngredientCategory() {
         bool categoryDeleted = await _ingredientService.DeleteIngredientCategoryById(1);
