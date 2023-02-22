@@ -1,5 +1,4 @@
 ﻿namespace FoodDesire.Models;
-[Serializable]
 public sealed class Recipe : TrackedEntity {
     [Required]
     public int ChefId { get; set; } //Created by
