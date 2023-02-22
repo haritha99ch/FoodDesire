@@ -1,13 +1,13 @@
 ﻿namespace FoodDesire.Models;
 public sealed class Payment : TrackedEntity {
     [Required]
-    public PaymentType PaymentType;
+    public PaymentType PaymentType { get; set; }
     [Required]
     public DateTime DateTime { get; private set; } = DateTime.Now;
     [AllowNull]
     public int? OrderId { get; set; }
     [AllowNull]
-    public int? EmployeeId { get; set;}
+    public int? EmployeeId { get; set; }
     [AllowNull]
     public int? SupplyId { get; set; }
     [AllowNull]
@@ -18,11 +18,11 @@ public sealed class Payment : TrackedEntity {
 
 
     [ForeignKey(nameof(OrderId))]
-    public Order? Order { get; set;}
+    public Order? Order { get; set; }
     [ForeignKey(nameof(EmployeeId))]
     public Employee? Employee { get; set; }
     [ForeignKey(nameof(SupplyId))]
-    public Supply? Supply { get; set;}
+    public Supply? Supply { get; set; }
     [ForeignKey(nameof(ManagedBy))]
     public Admin? Admin { get; set; }
 }
