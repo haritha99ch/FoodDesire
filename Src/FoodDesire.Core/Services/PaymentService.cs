@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-
-namespace FoodDesire.Core.Services;
+﻿namespace FoodDesire.Core.Services;
 public class PaymentService : IPaymentService {
     private readonly ITrackingRepository<Payment> _paymentRepository;
     private readonly ITrackingRepository<Supply> _supplyRepository;
@@ -23,7 +21,7 @@ public class PaymentService : IPaymentService {
         Order? order = await _orderRepository.GetByID(orderId);
         order.Payment = new Payment() {
             OrderId = orderId,
-            Value = order.Price + order.Delivery!.Fee,
+            Value = (order.Delivery == null) ? order.Price : order.Price + order.Delivery.Fee,
             PaymentType = PaymentType.Order
         };
         order = await _orderRepository.Update(order);
