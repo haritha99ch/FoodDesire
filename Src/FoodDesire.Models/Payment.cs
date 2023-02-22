@@ -15,6 +15,7 @@ public sealed class Payment : TrackedEntity {
     [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Value { get; set; } = decimal.Zero;
+    public string? Description { get; set; }
 
 
     [ForeignKey(nameof(OrderId))]
