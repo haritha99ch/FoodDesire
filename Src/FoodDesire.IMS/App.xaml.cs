@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.UI.Xaml;
 
 namespace FoodDesire.IMS;
 /// <summary>
 /// The App.xaml.cs will uses Microsoft.Extensions.DependencyInjection to register the DbContext and other domain services.
 /// </summary>
 public partial class App : Application {
+    public static WindowEx MainWindow = new MainWindow();
     public IHost Host { get; }
 
     public App() {
@@ -28,8 +28,7 @@ public partial class App : Application {
                 //Pages
 
                 //ViewModels
-            })
-            .Build();
+            }).Build();
     }
 
     public static T GetService<T>() where T : class {
@@ -38,9 +37,6 @@ public partial class App : Application {
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args) {
-        m_window = new MainWindow();
-        m_window.Activate();
+        MainWindow.Activate();
     }
-
-    private Window m_window;
 }
