@@ -4,7 +4,7 @@ public static class ApplicationHostHelper {
     //This helper method will register all the services using Dependency injection
     public static IHost ConfigureHost(string contextName) {
         _host = Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) => {
+            .ConfigureServices(services => {
                 services.AddDbContext<FoodDesireContext>(options => {
                     DbContextHelper.ConfigureDbContextOptions(contextName, options);
                 });
