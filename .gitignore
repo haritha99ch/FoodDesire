@@ -5,6 +5,10 @@
 
 # Environment variables
 appsettings.Development.json
+appsettings.Migrations.json
+
+# Migrations
+Migrations/
 
 
 # User-specific files

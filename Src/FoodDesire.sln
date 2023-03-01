@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.Core", "FoodDesi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.Core.Test", "FoodDesire.Core.Test\FoodDesire.Core.Test.csproj", "{104B69AD-05B3-4AF5-9AA9-06E7DB199F56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDesire.IMS", "FoodDesire.IMS\FoodDesire.IMS.csproj", "{7FE3F048-61AD-4FCD-8F66-24062B2807E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.IMS", "FoodDesire.IMS\FoodDesire.IMS.csproj", "{7FE3F048-61AD-4FCD-8F66-24062B2807E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
