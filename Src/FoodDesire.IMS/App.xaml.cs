@@ -50,6 +50,8 @@ public partial class App : Application {
     }
 
     protected override void OnLaunched(LaunchActivatedEventArgs args) {
+        MainWindow.Content = GetService<ShellPage>();
         MainWindow.Activate();
+        INavigationService navigationService = GetService<INavigationService>();
     }
 }
