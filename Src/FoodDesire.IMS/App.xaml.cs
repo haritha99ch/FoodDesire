@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FoodDesire.IMS.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace FoodDesire.IMS;
@@ -14,17 +16,25 @@ public partial class App : Application {
         Host = Microsoft.Extensions.Hosting.Host
             .CreateDefaultBuilder()
             .ConfigureAppConfiguration(config => {
-                config.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
+                try {
+                    config.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
+                } catch (Exception ex) {
+                    throw new Exception($"Configure FoodDesire.IMS/appsettings.Development.json.\n{ex}");
+                }
                 config.AddEnvironmentVariables();
                 config.AddUserSecrets<App>();
             })
             .ConfigureServices((context, services) => {
                 //Configure Domain services here
-                string connectionString = context.Configuration.GetConnectionString("DefaultConnectionString");
+                string connectionString = context.Configuration.GetConnectionString("DefaultConnectionString")!;
                 DAL.Configure.ConfigureServices(services, connectionString);
                 Core.Configure.ConfigureServices(services);
 
                 //Configure IMS services here
+                services.AddTransient<INavigationViewService, NavigationViewService>();
+                services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<IPageService, PageService>();
+
                 //Pages
 
                 //ViewModels
