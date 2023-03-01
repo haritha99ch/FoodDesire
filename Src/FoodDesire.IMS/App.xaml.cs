@@ -1,4 +1,5 @@
 ﻿using FoodDesire.IMS.Services;
+using FoodDesire.IMS.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,8 +37,10 @@ public partial class App : Application {
                 services.AddSingleton<IPageService, PageService>();
 
                 //Pages
+                services.AddTransient<ShellPage>();
 
                 //ViewModels
+                services.AddTransient<ShellViewModel>();
             }).Build();
     }
 

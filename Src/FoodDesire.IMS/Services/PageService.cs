@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Controls;
+﻿using FoodDesire.IMS.Views;
 using System.Collections.Concurrent;
 
 namespace FoodDesire.IMS.Services;
@@ -7,6 +6,7 @@ public class PageService : IPageService {
     private readonly ConcurrentDictionary<string, Type> _pages = new ConcurrentDictionary<string, Type>();
     public PageService() {
         //Configure pages and view models here
+        Configure<ShellViewModel, ShellPage>();
     }
 
     public Type GetPageType(string pageKey) {
