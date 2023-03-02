@@ -17,6 +17,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Show secrets
+      run: |
+        echo "APPSETTINGS_DEVELOPMENT: ${{ secrets.APPSETTINGS_DEVELOPMENT }}"
+        echo "APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}"
+    
     - name: Checkout
       uses: actions/checkout@v2
 
