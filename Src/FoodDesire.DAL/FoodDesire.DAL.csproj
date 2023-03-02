@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.Migrations.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.Migrations.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -36,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
     <ProjectReference Include="..\FoodDesire.Models\FoodDesire.Models.csproj" />
   </ItemGroup>
 

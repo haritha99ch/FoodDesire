@@ -10,7 +10,7 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
-	  <!--<WindowsPackageType>None</WindowsPackageType>-->
+    <WindowsPackageType>None</WindowsPackageType>
     <EnableMsixTooling>true</EnableMsixTooling>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
@@ -26,9 +26,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="appsettings.Development.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +50,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
     <ProjectReference Include="..\FoodDesire.Core\FoodDesire.Core.csproj" />
     <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
   </ItemGroup>

@@ -16,18 +16,14 @@ public partial class App : Application {
         InitializeComponent();
         Host = Microsoft.Extensions.Hosting.Host
             .CreateDefaultBuilder()
-            .ConfigureAppConfiguration(config => {
-                try {
-                    config.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
-                } catch (Exception ex) {
-                    throw new Exception($"Configure FoodDesire.IMS/appsettings.Development.json.\n{ex}");
-                }
-                config.AddEnvironmentVariables();
+            .ConfigureAppConfiguration((context, config) => {
+                string environmentName = context.HostingEnvironment.EnvironmentName;
+                AppSettings.Configure.ConfigureEnvironment(config, environmentName);
                 config.AddUserSecrets<App>();
             })
             .ConfigureServices((context, services) => {
                 //Configure Domain services here
-                string connectionString = context.Configuration.GetConnectionString("DefaultConnectionString")!;
+                string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
                 DAL.Configure.ConfigureServices(services, connectionString);
                 Core.Configure.ConfigureServices(services);
 

@@ -1,9 +1,6 @@
 {
   "profiles": {
-    "FoodDesire.IMS (Package)": {
-      "commandName": "MsixPackage"
-    },
-    "FoodDesire.IMS (Unpackaged)": {
+    "FoodDesire.DAL": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
