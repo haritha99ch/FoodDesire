@@ -132,6 +132,13 @@ public class FoodOrderServices : Services {
     }
 
     [Test, Order(9)]
+    public async Task GetPendingOrders() {
+        List<Order> orders = await _orderService.GetPendingOrders();
+
+        Assert.That(orders.Count, Is.EqualTo(1));
+    }
+
+    [Test, Order(10)]
     public async Task RemoveAFoodItem() {
         bool removed = await _foodItemService.RemoveFoodItem(1);
 
@@ -139,11 +146,13 @@ public class FoodOrderServices : Services {
         Assert.That(foodItem, Is.Null);
     }
 
-    [Test, Order(10)]
+    [Test, Order(11)]
     public async Task RemoveAnOrder() {
         bool removed = await _orderService.DeleteOrderById(1);
 
         Order order = await _orderService.GetOrderById(1);
         Assert.That(order, Is.Null);
     }
+
+
 }

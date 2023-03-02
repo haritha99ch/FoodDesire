@@ -21,6 +21,18 @@ public class OrderService : IOrderService {
         return orders;
     }
 
+    public async Task<List<Order>> GetPendingOrders() {
+        Expression<Func<Order, bool>> filter = e => e.Status != OrderStatus.Delivered;
+        Func<IQueryable<Order>, IIncludableQueryable<Order, object?>> include =
+            e => e
+                .Include(e => e.Delivery)
+                .Include(e => e.Customer)
+                .Include(e => e.FoodItems);
+
+        List<Order> orders = await _orderRepository.Get(filter, null, include);
+        return orders;
+    }
+
     public async Task<bool> DeleteOrderById(int orderId) {
         bool orderDeleted = await _orderRepository.Delete(orderId);
         return orderDeleted;
