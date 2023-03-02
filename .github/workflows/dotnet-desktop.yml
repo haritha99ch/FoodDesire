@@ -17,6 +17,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Save appsettings.Development.json as file
+      run: echo "$APPSETTINGS_DEVELOPMENT"
+
+    
     - name: Checkout
       uses: actions/checkout@v2
 
