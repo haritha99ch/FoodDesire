@@ -32,6 +32,8 @@ public partial class App : Application {
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddSingleton<IPageService, PageService>();
 
+                services.AddTransient<IHomeService, HomeService>();
+
                 //Pages
                 services.AddTransient<ShellPage>();
 
