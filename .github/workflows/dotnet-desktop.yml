@@ -17,6 +17,17 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Save appsettings.Development.json as file
+      run: echo "${{ secrets.APPSETTINGS_DEVELOPMENT }}"
+      
+    - name: Save appsettings.Development.json as file
+      run: |
+        $secret = "${{ secrets.APPSETTINGS_DEVELOPMENT }}"
+        Set-Content -Path "appsettings.Development.json" -Value $secret
+      shell: pwsh
+
+
+    
     - name: Checkout
       uses: actions/checkout@v2
 
