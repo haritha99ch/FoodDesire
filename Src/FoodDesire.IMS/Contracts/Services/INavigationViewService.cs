@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System.Collections.Generic;
-
-namespace FoodDesire.IMS.Contracts.Services;
+﻿namespace FoodDesire.IMS.Contracts.Services;
 public interface INavigationViewService {
     IList<object>? MenuItems {
         get;

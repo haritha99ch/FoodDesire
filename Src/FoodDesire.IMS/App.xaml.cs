@@ -1,55 +1,65 @@
-﻿using FoodDesire.IMS.Services;
-using FoodDesire.IMS.Views;
-using Microsoft.Extensions.Configuration;
+﻿using FoodDesire.IMS.Activation;
+using FoodDesire.IMS.Core.Services;
+using FoodDesire.IMS.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace FoodDesire.IMS;
-/// <summary>
-/// The App.xaml.cs will uses Microsoft.Extensions.DependencyInjection to register the DbContext and other domain services.
-/// </summary>
 public partial class App : Application {
-    public static WindowEx MainWindow = new MainWindow();
     public IHost Host { get; }
+    public static WindowEx MainWindow { get; } = new MainWindow();
 
     public App() {
         InitializeComponent();
-        Host = Microsoft.Extensions.Hosting.Host
-            .CreateDefaultBuilder()
-            .ConfigureAppConfiguration((context, config) => {
-                string environmentName = context.HostingEnvironment.EnvironmentName;
-                AppSettings.Configure.ConfigureEnvironment(config, environmentName);
-                config.AddUserSecrets<App>();
-            })
-            .ConfigureServices((context, services) => {
-                //Configure Domain services here
-                string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
-                DAL.Configure.ConfigureServices(services, connectionString);
-                Core.Configure.ConfigureServices(services);
 
-                //Configure IMS services here
-                services.AddTransient<INavigationViewService, NavigationViewService>();
-                services.AddSingleton<INavigationService, NavigationService>();
-                services.AddSingleton<IPageService, PageService>();
+        Host = Microsoft.Extensions.Hosting.Host.
+        CreateDefaultBuilder().
+        UseContentRoot(AppContext.BaseDirectory).
+        ConfigureServices((context, services) => {
+            // Default Activation Handler
+            services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-                services.AddTransient<IHomeService, HomeService>();
+            // Other Activation Handlers
 
-                //Pages
-                services.AddTransient<ShellPage>();
+            // Services
+            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+            services.AddTransient<INavigationViewService, NavigationViewService>();
 
-                //ViewModels
-                services.AddTransient<ShellViewModel>();
-            }).Build();
+            services.AddSingleton<IActivationService, ActivationService>();
+            services.AddSingleton<IPageService, PageService>();
+            services.AddSingleton<INavigationService, NavigationService>();
+
+            // Core Services
+            services.AddSingleton<IFileService, FileService>();
+
+            // Views and ViewModels
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<SettingsPage>();
+            services.AddTransient<HomeViewModel>();
+            services.AddTransient<HomePage>();
+            services.AddTransient<ShellPage>();
+            services.AddTransient<ShellViewModel>();
+
+            // Configuration
+            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+        }).Build();
+
+        UnhandledException += App_UnhandledException;
+    }
+
+    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e) {
+        // TODO: Log and handle exceptions as appropriate.
+        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
     public static T GetService<T>() where T : class {
-        if (!((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)) return service;
+        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is T service) return service;
         throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args) {
-        MainWindow.Content = GetService<ShellPage>();
-        MainWindow.Activate();
-        INavigationService navigationService = GetService<INavigationService>();
+    protected async override void OnLaunched(LaunchActivatedEventArgs args) {
+        base.OnLaunched(args);
+        await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }

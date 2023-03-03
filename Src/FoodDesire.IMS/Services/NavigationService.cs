@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.UI.Xaml.Navigation;
 
 namespace FoodDesire.IMS.Services;
 public class NavigationService : INavigationService {

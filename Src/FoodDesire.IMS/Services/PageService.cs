@@ -1,21 +1,39 @@
-﻿using FoodDesire.IMS.Views;
-using System.Collections.Concurrent;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace FoodDesire.IMS.Services;
 public class PageService : IPageService {
-    private readonly ConcurrentDictionary<string, Type> _pages = new ConcurrentDictionary<string, Type>();
+    private readonly Dictionary<string, Type> _pages = new();
+
     public PageService() {
-        //Configure pages and view models here
-        Configure<ShellViewModel, ShellPage>();
+        Configure<HomeViewModel, HomePage>();
+        Configure<SettingsViewModel, SettingsPage>();
     }
 
-    public Type GetPageType(string pageKey) {
-        if (_pages.TryGetValue(pageKey, out Type? pageType)) return pageType;
-        throw new ArgumentException($"Page not found: {pageKey}. Configure page by calling Configure().");
+    public Type GetPageType(string key) {
+        Type? pageType;
+        lock (_pages) {
+            if (!_pages.TryGetValue(key, out pageType)) {
+                throw new ArgumentException($"Page not found: {key}. Did you forget to call PageService.Configure?");
+            }
+        }
+        return pageType;
     }
 
-    private void Configure<VM, V>() where VM : ObservableObject where V : Page {
-        string pageKey = nameof(VM);
-        if (!_pages.TryAdd(pageKey, typeof(V))) throw new ArgumentException($"The key {pageKey} is already configured.");
+    private void Configure<VM, V>()
+        where VM : ObservableObject
+        where V : Page {
+        lock (_pages) {
+            var key = typeof(VM).FullName!;
+            if (_pages.ContainsKey(key)) {
+                throw new ArgumentException($"The key {key} is already configured in PageService");
+            }
+
+            var type = typeof(V);
+            if (_pages.Any(p => p.Value == type)) {
+                throw new ArgumentException($"This type is already configured with key {_pages.First(p => p.Value == type).Key}");
+            }
+
+            _pages.Add(key, type);
+        }
     }
 }

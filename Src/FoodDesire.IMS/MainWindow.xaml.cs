@@ -1,7 +1,10 @@
-namespace FoodDesire.IMS;
+﻿namespace FoodDesire.IMS;
 public sealed partial class MainWindow : WindowEx {
     public MainWindow() {
         InitializeComponent();
-        Title = "FoodDesire";
+
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
+        Content = null;
+        Title = "AppDisplayName".GetLocalized();
     }
 }
