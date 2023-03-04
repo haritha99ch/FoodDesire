@@ -14,6 +14,7 @@
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
     <ProjectReference Include="..\FoodDesire.IMS.Core\FoodDesire.IMS.Core.csproj" />
   </ItemGroup>
   <ItemGroup>

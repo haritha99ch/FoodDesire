@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>FoodDesire.IMS.Core</RootNamespace>
-    <Platforms>AnyCPU;x64;x86</Platforms>
     <Platforms>x86;x64;arm64;AnyCPU</Platforms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -13,5 +12,11 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoodDesire.Core\FoodDesire.Core.csproj" />
+    <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
+    <ProjectReference Include="..\FoodDesire.Models\FoodDesire.Models.csproj" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿using FoodDesire.IMS.Activation;
-using FoodDesire.IMS.Core.Services;
 using FoodDesire.IMS.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,38 +12,43 @@ public partial class App : Application {
     public App() {
         InitializeComponent();
 
-        Host = Microsoft.Extensions.Hosting.Host.
-        CreateDefaultBuilder().
-        UseContentRoot(AppContext.BaseDirectory).
-        ConfigureServices((context, services) => {
-            // Default Activation Handler
-            services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+        Host = Microsoft.Extensions.Hosting.Host
+            .CreateDefaultBuilder()
+            .UseContentRoot(AppContext.BaseDirectory)
+            .ConfigureAppConfiguration((context, config) => {
+                string environmentName = context.HostingEnvironment.EnvironmentName;
+                AppSettings.Configure.ConfigureEnvironment(config, environmentName);
+            })
+            .ConfigureServices((context, services) => {
+                // Default Activation Handler
+                services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-            // Other Activation Handlers
+                // Other Activation Handlers
 
-            // Services
-            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
-            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
+                // Services
+                services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+                services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+                services.AddTransient<INavigationViewService, NavigationViewService>();
 
-            services.AddSingleton<IActivationService, ActivationService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<IActivationService, ActivationService>();
+                services.AddSingleton<IPageService, PageService>();
+                services.AddSingleton<INavigationService, NavigationService>();
 
-            // Core Services
-            services.AddSingleton<IFileService, FileService>();
+                // Core Services
+                string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
+                Core.Configure.ConfigureServices(services, connectionString);
 
-            // Views and ViewModels
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<SettingsPage>();
-            services.AddTransient<HomeViewModel>();
-            services.AddTransient<HomePage>();
-            services.AddTransient<ShellPage>();
-            services.AddTransient<ShellViewModel>();
+                // Views and ViewModels
+                services.AddTransient<SettingsViewModel>();
+                services.AddTransient<SettingsPage>();
+                services.AddTransient<HomeViewModel>();
+                services.AddTransient<HomePage>();
+                services.AddTransient<ShellPage>();
+                services.AddTransient<ShellViewModel>();
 
-            // Configuration
-            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-        }).Build();
+                // Configuration
+                services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+            }).Build();
 
         UnhandledException += App_UnhandledException;
     }
