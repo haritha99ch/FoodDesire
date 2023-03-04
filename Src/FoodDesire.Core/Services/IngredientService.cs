@@ -44,7 +44,8 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> GetAllIngredients() {
-        List<Ingredient> ingredients = await _ingredientRepository.GetAll();
+        Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object?>> include = e => e.Include(i => i.IngredientCategory);
+        List<Ingredient> ingredients = await _ingredientRepository.Get(null, null, include);
         return ingredients;
     }
 
