@@ -1,10 +1,13 @@
-﻿{
-    "profiles": {
-      "FoodDesire.IMS (Unpackaged)": {
-        "commandName": "Project"
-      },
-      "FoodDesire.IMS (Package)": {
-        "commandName": "MsixPackage"
+{
+  "profiles": {
+    "FoodDesire.IMS (Unpackaged)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
       }
+    },
+    "FoodDesire.IMS (Package)": {
+      "commandName": "MsixPackage"
     }
+  }
 }

@@ -1,13 +1,11 @@
-﻿using Microsoft.UI.Xaml.Navigation;
-
-namespace FoodDesire.IMS.Services;
+﻿namespace FoodDesire.IMS.Services;
 public class NavigationService : INavigationService {
     private readonly IPageService _pageService;
     private object? _lastParameterUsed;
     [MemberNotNullWhen(true, nameof(Frame), nameof(_frame))]
     public bool CanGoBack => Frame != null && Frame.CanGoBack;
     private Frame? _frame;
-    public Frame Frame {
+    public Frame? Frame {
         get {
             if (_frame != null) return _frame;
             _frame = App.MainWindow.Content as Frame;
