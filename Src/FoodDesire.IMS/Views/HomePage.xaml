@@ -6,7 +6,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left panel with inventory summary -->
+        <StackPanel Margin="20">
+            <TextBlock Text="Inventory Summary" FontSize="24" Margin="0,0,0,10"/>
+
+            <!-- Displaying total ingredients -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Total Ingredients: " FontSize="18"/>
+                <TextBlock Text="{x:Bind ViewModel.InventorySummary.TotalCapacity}" FontSize="18"/>
+            </StackPanel>
+
+            <!-- Displaying total food items -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Total Food Items: " FontSize="18"/>
+                <TextBlock Text="{x:Bind ViewModel.InventorySummary.TotalCurrentQuantity}" FontSize="18"/>
+            </StackPanel>
+
+            <!-- Displaying total cost of ingredients -->
+          
+
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+        </Grid>
     </Grid>
 </Page>

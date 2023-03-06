@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
     <ProjectReference Include="..\FoodDesire.IMS.Core\FoodDesire.IMS.Core.csproj" />
-    <ProjectReference Include="..\FoodDesire.Models\FoodDesire.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">

@@ -23,7 +23,6 @@ public class HomeService : IHomeService {
         InventorySummary summaryDTO = new() {
             TotalCapacity = totalCapacity,
             TotalCurrentQuantity = totalCurrentQuantity,
-            AvailableSpace = availableSpace,
             LowInventoryCount = lowInventoryCount
         };
         return summaryDTO;
