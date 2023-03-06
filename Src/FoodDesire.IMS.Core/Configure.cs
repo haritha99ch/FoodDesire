@@ -9,6 +9,8 @@ public static class Configure {
 
         services.AddSingleton<IFileService, FileService>();
 
-        services.AddScoped<IHomeService, HomeService>();
+        services.AddTransient<IHomeService, HomeService>();
+        services.AddTransient<IIngredientsPageService, IngredientsPageService>();
+
     }
 }

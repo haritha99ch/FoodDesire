@@ -78,6 +78,16 @@ public class IngredientService : IIngredientService {
         return ingredients;
     }
 
+    public async Task<Ingredient> EditIngredient(Ingredient ingredient) {
+        Ingredient updatedIngredient = await _ingredientRepository.Update(ingredient);
+        return updatedIngredient;
+    }
+
+    public async Task<bool> DeleteIngredientById(int ingredientCategoryId) {
+        bool deleted = await _ingredientRepository.Delete(ingredientCategoryId);
+        return deleted;
+    }
+
     public async Task<Supply> NewSupply(Supply supply, decimal value) {
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
         ingredient.CurrentQuantity += supply.Amount;
