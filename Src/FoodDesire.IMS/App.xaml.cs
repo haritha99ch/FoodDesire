@@ -24,6 +24,9 @@ public partial class App : Application {
                 services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
                 // Other Activation Handlers
+                // Core Services
+                string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
+                Core.Configure.ConfigureServices(services, connectionString);
 
                 // Services
                 services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -34,30 +37,35 @@ public partial class App : Application {
                 services.AddSingleton<IPageService, PageService>();
                 services.AddSingleton<INavigationService, NavigationService>();
 
-                // Core Services
-                string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
-                Core.Configure.ConfigureServices(services, connectionString);
-
                 // Views and ViewModels
                 services.AddTransient<SettingsViewModel>();
                 services.AddTransient<SettingsPage>();
                 services.AddTransient<HomeViewModel>();
                 services.AddTransient<HomePage>();
-                services.AddTransient<ShellPage>();
                 services.AddTransient<ShellViewModel>();
+                services.AddTransient<ShellPage>();
 
                 // Configuration
                 services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-            }).
-        Build();
+            }).Build();
 
         UnhandledException += App_UnhandledException;
     }
 
     public static T GetService<T>()
     where T : class {
-        if ((Current as App)!.Host.Services.GetService(typeof(T)) is T service) return service;
-        throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
+        if ((Current as App)!.Host.Services.GetRequiredService(typeof(T)) is not T service) {
+            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
+        }
+        return service;
+    }
+
+    public static T GetScoped<T>() where T : class {
+        using (IServiceScope? scope = (Current as App)!.Host.Services.CreateScope()) {
+            T? service = scope.ServiceProvider.GetService<T>()
+                ?? throw new ArgumentException($"Service {typeof(T)} needs to be registered.");
+            return service;
+        }
     }
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e) {

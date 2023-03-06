@@ -1,9 +1,9 @@
 ﻿namespace FoodDesire.IMS.Views;
 public sealed partial class HomePage : Page {
-    public HomeViewModel ViewModel { get; }
+    public HomeViewModel ViewModel { get; set; }
 
     public HomePage() {
-        ViewModel = App.GetService<HomeViewModel>();
+        ViewModel = App.GetScoped<HomeViewModel>();
         InitializeComponent();
     }
 }
