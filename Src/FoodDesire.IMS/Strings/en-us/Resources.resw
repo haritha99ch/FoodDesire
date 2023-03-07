@@ -156,4 +156,7 @@
   <data name="Shell_Ingredients.Content" xml:space="preserve">
     <value>Ingredients</value>
   </data>
+  <data name="Home_AvailableSpace.Text" xml:space="preserve">
+    <value>Available Space: </value>
+  </data>
 </root>

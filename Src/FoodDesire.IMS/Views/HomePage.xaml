@@ -18,14 +18,8 @@
 
             <!-- Displaying total ingredients -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Total Ingredients: " FontSize="18"/>
-                <TextBlock Text="{x:Bind ViewModel.InventorySummary.TotalCapacity, Mode=OneWay}" FontSize="18"/>
-            </StackPanel>
-
-            <!-- Displaying total food items -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="Total Food Items: " FontSize="18"/>
-                <TextBlock Text="{x:Bind ViewModel.InventorySummary.TotalCurrentQuantity, Mode=OneWay}" FontSize="18"/>
+                <TextBlock x:Uid="Home_AvailableSpace" FontSize="18"/>
+                <TextBlock Text="{x:Bind ViewModel.InventorySummary.AvailableSpace, Mode=OneWay}" FontSize="18"/>
             </StackPanel>
 
             <!-- Displaying total cost of ingredients -->
