@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>FoodDesire.IMS</value>
+    <value>Food Desire</value>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>FoodDesire.IMS</value>
+    <value>An Online Food Ordering System</value>
   </data>
   <data name="Shell_Home.Content" xml:space="preserve">
     <value>Home</value>
@@ -145,12 +145,12 @@
     <value>About this application</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>TODO: Replace with your app description.</value>
+    <value>TODO: IMS description.</value>
   </data>
-  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
-    <value>Privacy Statement</value>
+  <data name="SettingsPage_SourceCodeLink.Content" xml:space="preserve">
+    <value>Food Desire Source Code</value>
   </data>
-  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+  <data name="SettingsPage_SourceCodeLink.NavigateUri" xml:space="preserve">
     <value>https://github.com/haritha99ch/FoodDesire/blob/main/README.md</value>
   </data>
   <data name="Shell_Ingredients.Content" xml:space="preserve">
