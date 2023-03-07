@@ -1,5 +1,6 @@
 ﻿using FoodDesire.IMS.Activation;
 using FoodDesire.IMS.Services;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,19 +43,19 @@ public partial class App : Application {
                 services.AddTransient<SettingsPage>();
                 services.AddTransient<HomeViewModel>();
                 services.AddTransient<HomePage>();
+                services.AddTransient<IngredientsViewModel>();
+                services.AddTransient<IngredientsPage>();
                 services.AddTransient<ShellViewModel>();
                 services.AddTransient<ShellPage>();
 
                 // Configuration
                 services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
             }).Build();
-
-        UnhandledException += App_UnhandledException;
     }
 
     public static T GetService<T>()
     where T : class {
-        if ((Current as App)!.Host.Services.GetRequiredService(typeof(T)) is not T service) {
+        if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service) {
             throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
         }
         return service;
@@ -66,11 +67,6 @@ public partial class App : Application {
                 ?? throw new ArgumentException($"Service {typeof(T)} needs to be registered.");
             return service;
         }
-    }
-
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e) {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args) {

@@ -10,10 +10,10 @@ public class HomeViewModel : ObservableRecipient {
 
     public HomeViewModel(IHomeService homeService) {
         _homeService = homeService;
-        _ = LoadInventorySummaryAsync();
+        _ = OnInit();
     }
 
-    private async Task LoadInventorySummaryAsync() {
-        _inventorySummary = await _homeService.GetInventorySummery();
+    public async Task OnInit() {
+        InventorySummary = await _homeService.GetInventorySummery();
     }
 }

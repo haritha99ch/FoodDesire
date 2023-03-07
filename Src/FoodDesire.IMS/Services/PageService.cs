@@ -1,11 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace FoodDesire.IMS.Services;
+﻿namespace FoodDesire.IMS.Services;
 public class PageService : IPageService {
     private readonly Dictionary<string, Type> _pages = new();
 
     public PageService() {
         Configure<HomeViewModel, HomePage>();
+        Configure<IngredientsViewModel, IngredientsPage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 

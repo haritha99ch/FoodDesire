@@ -3,7 +3,7 @@ public sealed partial class HomePage : Page {
     public HomeViewModel ViewModel { get; set; }
 
     public HomePage() {
-        ViewModel = App.GetScoped<HomeViewModel>();
+        ViewModel = App.GetService<HomeViewModel>();
         InitializeComponent();
     }
 }
