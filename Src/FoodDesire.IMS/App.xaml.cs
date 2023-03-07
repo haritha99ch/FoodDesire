@@ -9,6 +9,7 @@ namespace FoodDesire.IMS;
 public partial class App : Application {
     public IHost Host { get; }
     public static WindowEx MainWindow { get; } = new MainWindow();
+    public static IConfiguration Configuration { get; } = (Current as App)!.Host.Services.GetRequiredService<IConfiguration>();
 
     public App() {
         InitializeComponent();
