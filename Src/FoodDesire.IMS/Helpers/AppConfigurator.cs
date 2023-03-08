@@ -1,4 +1,5 @@
-﻿using FoodDesire.IMS.Activation;
+﻿using AutoMapper;
+using FoodDesire.IMS.Activation;
 using FoodDesire.IMS.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,11 @@ internal static class AppConfigurator {
         services.AddSingleton<IPageService, PageService>();
         services.AddSingleton<INavigationService, NavigationService>();
 
+        // AutoMapper
+        MapperConfiguration? configuration = new(DtoConfigurator.Configure);
+        IMapper? mapper = configuration.CreateMapper();
+        services.AddSingleton(mapper);
+
         // Views and ViewModels
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<SettingsPage>();
@@ -43,4 +49,6 @@ internal static class AppConfigurator {
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
     }
+
+
 }
