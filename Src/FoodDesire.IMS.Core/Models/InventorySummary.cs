@@ -2,6 +2,6 @@
 public class InventorySummary {
     public double TotalCapacity { get; set; }
     public double TotalCurrentQuantity { get; set; }
-    public string AvailableSpace => $"\t{(TotalCurrentQuantity / TotalCapacity * 100):F2}%";
+    public string AvailableSpace => $"\t{(100 - (TotalCurrentQuantity / TotalCapacity * 100)):F2}%";
     public int LowInventoryCount { get; set; }
 }

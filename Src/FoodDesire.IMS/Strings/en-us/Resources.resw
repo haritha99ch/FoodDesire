@@ -159,4 +159,7 @@
   <data name="Home_AvailableSpace.Text" xml:space="preserve">
     <value>Available Space: </value>
   </data>
+  <data name="Currency.Text" xml:space="preserve">
+    <value>Rs. </value>
+  </data>
 </root>

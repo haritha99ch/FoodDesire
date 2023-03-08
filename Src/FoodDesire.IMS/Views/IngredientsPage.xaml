@@ -4,16 +4,79 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:FoodDesire.IMS.Core.Models" 
+    xmlns:helpers="using:FoodDesire.IMS.Helpers"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <helpers:StringConcatConverter x:Key="StringConcatConverter" />
+        <DataTemplate x:DataType="models:IngredientDetail" x:Key="IngredientItemTemplate">
+            <Grid Width="350" Height="Auto"
+                  Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+                  CornerRadius="5"
+                  Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                           x:Name="IngredientName" 
+                           Text="{x:Bind Name, Mode=OneWay}" 
+                           TextWrapping="Wrap" 
+                           Margin="15,0,10,0"  
+                           Style="{StaticResource SubtitleTextBlockStyle}"/>
+                <TextBlock Grid.Row="0" 
+                           x:Name="IngredientCategory" 
+                           Text="{x:Bind IngredientCategory, Mode=OneWay}"
+                           HorizontalAlignment="Right"
+                           TextWrapping="Wrap" 
+                           Margin="15,0,10,0"  
+                           Style="{StaticResource CaptionTextBlockStyle}"/>
+                <TextBlock Grid.Row="1"
+                           x:Name="IngredientDescription" 
+                           Text="{x:Bind Description, Mode=OneWay}" 
+                           TextWrapping="Wrap" 
+                           Margin="15,0,10,0"  
+                           Style="{StaticResource BodyTextStyle}"/>
+                <TextBlock Grid.Row="2"
+                           x:Name="IngredientValue"
+                           TextWrapping="Wrap"
+                           Margin="15,0,10,0"
+                           Style="{StaticResource BodyTextStyle}">
+                    <Run x:Uid="Currency"/>
+                    <Run Text="{x:Bind CurrentPricePerUnit, Mode=OneWay}" />
+                    <Run Text="{x:Bind DisplayMeasurement, Mode=OneWay, 
+                        Converter={StaticResource StringConcatConverter},
+                        ConverterParameter='/{0}'}" />
+                </TextBlock>
+                <Grid Grid.Row="3" VerticalAlignment="Bottom" Margin="5">
+                    <TextBlock x:Name="currentQuantity"
+                               HorizontalAlignment="Left">
+                        <Run Text="{x:Bind DisplayCurrentQuantity, Mode=OneWay}"/>
+                        <Run Text="{x:Bind AvailableSpacePerCent, Mode=OneWay, 
+                            Converter={StaticResource StringConcatConverter}, 
+                            ConverterParameter='({0}%)'}"/>
+                    </TextBlock>
+                    <TextBlock x:Name="maximumQuantity"
+                               HorizontalAlignment="Right"
+                               Text="{x:Bind DisplayMaximumQuantity}"/>
+                </Grid >
+                <ProgressBar Grid.Row="4" Value="{x:Bind AvailableSpacePerCent, Mode=OneWay}"
+                             ShowPaused="{x:Bind IsMediumInventory}"
+                             ShowError="{x:Bind IsLowInventory}"
+                             VerticalAlignment="Bottom"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <StackPanel>
-        <Image Source="image.jpg" Width="200" Height="200" />
-        <TextBlock Text="Line 1" />
-        <TextBlock Text="Line 2" />
-        <TextBlock Text="Line 3" />
-        <ProgressRing Width="60" 
-                      Height="60" 
-                      Value="82" 
-                      IsIndeterminate="False"/>
+        <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=TwoWay}" Background="Transparent"/>
+
+        <GridView x:Name="IngredientList"
+              ItemsSource="{x:Bind ViewModel.IngredientsDetail, Mode=OneWay}"
+              ItemTemplate="{StaticResource IngredientItemTemplate}"/>
     </StackPanel>
 </Page>

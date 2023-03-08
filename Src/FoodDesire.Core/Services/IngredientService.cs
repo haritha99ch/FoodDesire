@@ -91,7 +91,7 @@ public class IngredientService : IIngredientService {
     public async Task<Supply> NewSupply(Supply supply, decimal value) {
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
         ingredient.CurrentQuantity += supply.Amount;
-        ingredient.CurrentPricePerUnit = Convert.ToDouble(value) / supply.Amount;
+        ingredient.CurrentPricePerUnit = (decimal)(Convert.ToDouble(value) / supply.Amount);
         Payment payment = await _paymentService.PaymentForSupply(supply, value);
         await _ingredientRepository.Update(ingredient);
         return payment.Supply!;

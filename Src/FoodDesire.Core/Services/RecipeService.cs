@@ -97,7 +97,7 @@ public class RecipeService : IRecipeService {
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
             recipeIngredient.PricePerMultiplier = await SetMinimumPricePerMultiplier(recipeIngredient);
-            recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
+            recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
 
         });
         if (recipe.FixedPrice < recipe.MinimumPrice)
@@ -118,7 +118,7 @@ public class RecipeService : IRecipeService {
 
     private async Task<decimal> SetMinimumPricePerMultiplier(RecipeIngredient recipeIngredient) {
         Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
-        decimal pricePerMultiplier = Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
+        decimal pricePerMultiplier = (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
 
         if (pricePerMultiplier < recipeIngredient.PricePerMultiplier) return recipeIngredient.PricePerMultiplier;
         recipeIngredient.PricePerMultiplier = pricePerMultiplier;
