@@ -1,7 +1,6 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-public class HomeViewModel : ObservableRecipient {
+public class HomeViewModel : ObservableRecipient, IInitializable {
     private readonly IHomeService _homeService;
-
     private InventorySummary _inventorySummary = new();
     public InventorySummary InventorySummary {
         get => _inventorySummary;

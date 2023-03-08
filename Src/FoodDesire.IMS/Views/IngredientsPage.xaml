@@ -6,7 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        
-    </Grid>
+    <StackPanel>
+        <Image Source="image.jpg" Width="200" Height="200" />
+        <TextBlock Text="Line 1" />
+        <TextBlock Text="Line 2" />
+        <TextBlock Text="Line 3" />
+        <ProgressRing Width="60" 
+                      Height="60" 
+                      Value="82" 
+                      IsIndeterminate="False"/>
+    </StackPanel>
 </Page>
