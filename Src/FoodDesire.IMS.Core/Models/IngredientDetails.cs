@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.IMS.Core.Models;
-public class IngredientDetail {
+public class IngredientDetails {
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
@@ -18,6 +18,7 @@ public class IngredientDetail {
         Measurement.Each => "each",
         _ => "",
     };
+    public decimal TotalValue => (decimal)(CurrentQuantity * Convert.ToDouble(CurrentPricePerUnit));
     public int AvailableSpacePerCent => (int)(CurrentQuantity / MaximumQuantity * 100);
     public bool IsLowInventory => CurrentQuantity / MaximumQuantity < 0.2;
     public bool IsMediumInventory => CurrentQuantity / MaximumQuantity > 0.2 && CurrentQuantity / MaximumQuantity < 0.5;

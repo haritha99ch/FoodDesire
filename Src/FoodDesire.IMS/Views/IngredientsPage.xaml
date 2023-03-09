@@ -9,68 +9,11 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <helpers:StringConcatConverter x:Key="StringConcatConverter" />
-        <DataTemplate x:DataType="models:IngredientDetail" x:Key="IngredientItemTemplate">
-            <Grid Width="350" Height="Auto"
-                  Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
-                  CornerRadius="5"
-                  Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" 
-                           x:Name="IngredientName" 
-                           Text="{x:Bind Name, Mode=OneWay}" 
-                           TextWrapping="Wrap" 
-                           Margin="15,0,10,0"  
-                           Style="{StaticResource SubtitleTextBlockStyle}"/>
-                <TextBlock Grid.Row="0" 
-                           x:Name="IngredientCategory" 
-                           Text="{x:Bind IngredientCategory, Mode=OneWay}"
-                           HorizontalAlignment="Right"
-                           TextWrapping="Wrap" 
-                           Margin="15,0,10,0"  
-                           Style="{StaticResource CaptionTextBlockStyle}"/>
-                <TextBlock Grid.Row="1"
-                           x:Name="IngredientDescription" 
-                           Text="{x:Bind Description, Mode=OneWay}" 
-                           TextWrapping="Wrap" 
-                           Margin="15,0,10,0"  
-                           Style="{StaticResource BodyTextStyle}"/>
-                <TextBlock Grid.Row="2"
-                           x:Name="IngredientValue"
-                           TextWrapping="Wrap"
-                           Margin="15,0,10,0"
-                           Style="{StaticResource BodyTextStyle}">
-                    <Run x:Uid="Currency"/>
-                    <Run Text="{x:Bind CurrentPricePerUnit, Mode=OneWay}" />
-                    <Run Text="{x:Bind DisplayMeasurement, Mode=OneWay, 
-                        Converter={StaticResource StringConcatConverter},
-                        ConverterParameter='/{0}'}" />
-                </TextBlock>
-                <Grid Grid.Row="3" VerticalAlignment="Bottom" Margin="5">
-                    <TextBlock x:Name="currentQuantity"
-                               HorizontalAlignment="Left">
-                        <Run Text="{x:Bind DisplayCurrentQuantity, Mode=OneWay}"/>
-                        <Run Text="{x:Bind AvailableSpacePerCent, Mode=OneWay, 
-                            Converter={StaticResource StringConcatConverter}, 
-                            ConverterParameter='({0}%)'}"/>
-                    </TextBlock>
-                    <TextBlock x:Name="maximumQuantity"
-                               HorizontalAlignment="Right"
-                               Text="{x:Bind DisplayMaximumQuantity}"/>
-                </Grid >
-                <ProgressBar Grid.Row="4" Value="{x:Bind AvailableSpacePerCent, Mode=OneWay}"
-                             ShowPaused="{x:Bind IsMediumInventory}"
-                             ShowError="{x:Bind IsLowInventory}"
-                             VerticalAlignment="Bottom"/>
-            </Grid>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Components/IngredientDetailsItem.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
     <StackPanel>
         <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=TwoWay}" Background="Transparent"/>

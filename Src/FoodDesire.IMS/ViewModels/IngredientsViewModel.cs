@@ -6,8 +6,8 @@ public class IngredientsViewModel : ObservableRecipient, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private readonly IMapper _mapper;
     private bool _isLoading = true;
-    private List<IngredientDetail> _ingredientsDetail = new();
-    public List<IngredientDetail> IngredientsDetail {
+    private List<IngredientDetails> _ingredientsDetail = new();
+    public List<IngredientDetails> IngredientsDetail {
         get => _ingredientsDetail;
         set => SetProperty(ref _ingredientsDetail, value);
     }
@@ -22,7 +22,10 @@ public class IngredientsViewModel : ObservableRecipient, IInitializable {
 
     public async Task OnInit() {
         Ingredients = await _ingredientsPageService.GetAllIngredients();
-        IngredientsDetail = Ingredients.Select(_mapper.Map<IngredientDetail>).OrderBy(e => e.AvailableSpacePerCent).ToList();
+        IngredientsDetail = Ingredients
+            .Select(_mapper.Map<IngredientDetails>)
+            .OrderBy(e => e.AvailableSpacePerCent)
+            .ToList();
         IsLoading = false;
     }
 }
