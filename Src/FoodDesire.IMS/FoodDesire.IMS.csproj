@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\IngredientListItemControl.xaml" />
+    <None Remove="Controls\ViewIngredientItemControl.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
   </ItemGroup>
 
@@ -40,6 +41,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\ViewIngredientItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles\PrograssBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

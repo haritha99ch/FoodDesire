@@ -22,14 +22,8 @@
         <GridView x:Name="IngredientList"
                   ItemsSource="{x:Bind ViewModel.IngredientsDetail, Mode=TwoWay}"
                   IsItemClickEnabled="True"
-                  SelectedIndex="0"
-                  ItemTemplate="{StaticResource IngrdientItem}">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="ItemClick">
-                    <core:InvokeCommandAction Command="{x:Bind ViewModel.ItemClickCommand}"
-                                              CommandParameter="{x:Bind IngredientList.SelectedValue, Mode=OneWay}" />
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
+                  ItemTemplate="{StaticResource IngrdientItem}"
+                  ItemClick="IngredientList_ItemClick">
         </GridView>
     </StackPanel>
 </Page>

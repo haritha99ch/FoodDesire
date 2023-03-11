@@ -19,7 +19,7 @@ public class IngredientDetails {
         _ => "",
     };
     public decimal TotalValue => (decimal)(CurrentQuantity * Convert.ToDouble(CurrentPricePerUnit));
-    public int AvailableSpacePerCent => (int)(CurrentQuantity / MaximumQuantity * 100);
+    public double AvailableSpacePerCent => (CurrentQuantity / MaximumQuantity * 100);
     public bool IsLowInventory => CurrentQuantity / MaximumQuantity < 0.2;
     public bool IsMediumInventory => CurrentQuantity / MaximumQuantity > 0.2 && CurrentQuantity / MaximumQuantity < 0.5;
 }
