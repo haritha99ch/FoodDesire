@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<UserControl x:Class="FoodDesire.IMS.Controls.ViewIngredientControl"
+<UserControl x:Class="FoodDesire.IMS.Controls.IngredientListItemControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:FoodDesire.IMS.Controls"

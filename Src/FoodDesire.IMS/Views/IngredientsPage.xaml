@@ -11,7 +11,7 @@
       mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="IngrdientItem">
-            <controls:ViewIngredientControl />
+            <controls:IngredientListItemControl />
         </DataTemplate>
     </Page.Resources>
 

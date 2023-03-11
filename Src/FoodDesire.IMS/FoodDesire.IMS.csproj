@@ -16,7 +16,7 @@
 	<WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Controls\ViewIngredientControl.xaml" />
+    <None Remove="Controls\IngredientListItemControl.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
   </ItemGroup>
 
