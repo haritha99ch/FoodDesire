@@ -5,6 +5,11 @@ public sealed partial class IngredientsPage : Page {
 
     public IngredientsPage() {
         ViewModel = App.GetService<IngredientsViewModel>();
+        DataContext = ViewModel;
         InitializeComponent();
+    }
+
+    private void IngredientList_ItemClick(object sender, ItemClickEventArgs e) {
+
     }
 }

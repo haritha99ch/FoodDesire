@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using CommunityToolkit.Mvvm.Input;
 using FoodDesire.Models;
+using System.Diagnostics;
 
 namespace FoodDesire.IMS.ViewModels;
-public class IngredientsViewModel : ObservableRecipient, IInitializable {
+public partial class IngredientsViewModel : ObservableRecipient, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private readonly IMapper _mapper;
     private bool _isLoading = true;
@@ -27,5 +29,11 @@ public class IngredientsViewModel : ObservableRecipient, IInitializable {
             .OrderBy(e => e.AvailableSpacePerCent)
             .ToList();
         IsLoading = false;
+    }
+
+    [RelayCommand]
+    public void OnItemClick(IngredientDetails ingredientDetails) {
+
+        Debug.WriteLine($"Selected item: {ingredientDetails}");
     }
 }

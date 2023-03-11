@@ -3,12 +3,14 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:models="using:FoodDesire.IMS.Core.Models"
       xmlns:controls="using:FoodDesire.IMS.Controls"
+      xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:viewmodels="using:FoodDesire.IMS.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodels:IngredientsViewModel}"
       mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="IngrdientItem"
-                      x:DataType="models:IngredientDetails">
+        <DataTemplate x:Key="IngrdientItem">
             <controls:ViewIngredientControl />
         </DataTemplate>
     </Page.Resources>
@@ -18,8 +20,16 @@
                      Style="{StaticResource LoadingPrograssBar}" />
 
         <GridView x:Name="IngredientList"
-                  ItemsSource="{x:Bind ViewModel.IngredientsDetail, Mode=OneWay}"
+                  ItemsSource="{x:Bind ViewModel.IngredientsDetail, Mode=TwoWay}"
+                  IsItemClickEnabled="True"
+                  SelectedIndex="0"
                   ItemTemplate="{StaticResource IngrdientItem}">
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.ItemClickCommand}"
+                                              CommandParameter="{x:Bind IngredientList.SelectedValue, Mode=OneWay}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
         </GridView>
     </StackPanel>
 </Page>
