@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\IngredientListItemControl.xaml" />
+    <None Remove="Controls\NewIngredientFormControl.xaml" />
     <None Remove="Controls\ViewIngredientItemControl.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
   </ItemGroup>
@@ -27,6 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230217.4" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
@@ -41,6 +43,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\NewIngredientFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\ViewIngredientItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

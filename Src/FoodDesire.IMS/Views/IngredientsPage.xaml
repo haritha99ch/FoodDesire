@@ -18,6 +18,10 @@
     <StackPanel>
         <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
                      Style="{StaticResource LoadingPrograssBar}" />
+        <AppBarButton x:Name="NewIngredient" Icon="Add"
+                      Label="Creat An Ingredient"
+                      Click="NewIngredient_Click">
+        </AppBarButton>
 
         <GridView x:Name="IngredientList"
                   ItemsSource="{x:Bind ViewModel.IngredientsDetail, Mode=TwoWay}"
