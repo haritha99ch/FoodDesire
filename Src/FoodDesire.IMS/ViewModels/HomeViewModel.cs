@@ -12,10 +12,10 @@ public class HomeViewModel : ObservableRecipient, IInitializable {
 
     public HomeViewModel(IHomeService homeService) {
         _homeService = homeService;
-        _ = OnInit();
+        OnInit();
     }
 
-    public async Task OnInit() {
+    public async void OnInit() {
         InventorySummary = await _homeService.GetInventorySummery();
         IsLoading = false;
     }

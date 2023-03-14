@@ -13,7 +13,7 @@
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-	<WindowsPackageType>None</WindowsPackageType>
+	<!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Components\EditIngredientDialog.xaml" />

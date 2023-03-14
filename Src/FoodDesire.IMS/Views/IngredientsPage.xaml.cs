@@ -6,9 +6,9 @@ public sealed partial class IngredientsPage : Page {
     public IngredientsViewModel ViewModel { get; }
 
     public IngredientsPage() {
+        InitializeComponent();
         ViewModel = App.GetService<IngredientsViewModel>();
         DataContext = ViewModel;
-        InitializeComponent();
     }
 
     private async void IngredientList_ItemClick(object sender, ItemClickEventArgs e) {
@@ -27,8 +27,13 @@ public sealed partial class IngredientsPage : Page {
             XamlRoot = XamlRoot,
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
             DefaultButton = ContentDialogButton.Primary,
-
         };
         var result = await dialog.ShowAsync();
+        ViewModel.IsLoading = true;
+        if (result == ContentDialogResult.Primary) {
+            Ingredient? ingredient = await dialog.ViewModel.CreateIngredient();
+            ViewModel.NewIngredient(ingredient);
+        }
+        ViewModel.IsLoading = false;
     }
 }

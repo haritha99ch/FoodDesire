@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CommunityToolkit.Mvvm.Input;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace FoodDesire.IMS.ViewModels;
 public partial class IngredientsViewModel : ObservableRecipient, IInitializable {
@@ -8,31 +7,26 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
     private readonly IMapper _mapper;
     [ObservableProperty]
     private bool _isLoading = true;
-    private List<IngredientDetails> _ingredientsDetail = new();
-    public List<IngredientDetails> IngredientsDetail {
-        get => _ingredientsDetail;
-        set => SetProperty(ref _ingredientsDetail, value);
-    }
-    public List<Ingredient> Ingredients { get; set; } = new();
+    [ObservableProperty]
+    private ObservableCollection<IngredientDetails> _ingredientsDetail = new();
 
     public IngredientsViewModel(IIngredientsPageService ingredientsPageService, IMapper mapper) {
         _mapper = mapper;
         _ingredientsPageService = ingredientsPageService;
-        _ = OnInit();
+        OnInit();
     }
 
-    public async Task OnInit() {
-        Ingredients = await _ingredientsPageService.GetAllIngredients();
-        IngredientsDetail = Ingredients
+    public async void OnInit() {
+        List<Ingredient> ingredients = await _ingredientsPageService.GetAllIngredients();
+        List<IngredientDetails>? ingredientsDetails = ingredients
             .Select(_mapper.Map<IngredientDetails>)
             .OrderBy(e => e.AvailableSpacePerCent)
             .ToList();
+        ingredientsDetails.ForEach(IngredientsDetail.Add);
         IsLoading = false;
     }
 
-    [RelayCommand]
-    public void OnItemClick(IngredientDetails ingredientDetails) {
-
-        Debug.WriteLine($"Selected item: {ingredientDetails}");
+    public void NewIngredient(Ingredient ingredient) {
+        IngredientsDetail.Insert(0, _mapper.Map<IngredientDetails>(ingredient));
     }
 }
