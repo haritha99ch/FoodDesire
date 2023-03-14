@@ -1,9 +1,9 @@
 namespace FoodDesire.IMS.Components;
 public sealed partial class EditIngredientDialog : ContentDialog {
     public EditIngredientViewModel ViewModel { get; }
-    public EditIngredientDialog(Ingredient ingredient) {
-        ViewModel = new EditIngredientViewModel(ingredient);
+    public EditIngredientDialog(int ingredientId) {
+        ViewModel = new EditIngredientViewModel(ingredientId);
         InitializeComponent();
-        FormControl.DataContext = ViewModel;
+        FormControl.ViewModel = ViewModel;
     }
 }

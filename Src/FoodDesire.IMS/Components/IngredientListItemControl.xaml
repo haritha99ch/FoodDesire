@@ -8,81 +8,97 @@
              xmlns:models="using:FoodDesire.IMS.Core.Models"
              d:DataContext="{d:DesignInstance Type=models:IngredientDetails}"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <CommandBarFlyout Placement="Right"
+                          x:Name="CommandBarFlyout">
+            <AppBarButton Label="Edit"
+                          Icon="Edit"
+                          ToolTipService.ToolTip="Edit"
+                          Click="EditButton_Click" />
+        </CommandBarFlyout>
+    </UserControl.Resources>
+    
+    <StackPanel>
+        <ProgressBar IsIndeterminate="{x:Bind IsLoading, Mode=OneWay}"
+                     Style="{StaticResource LoadingPrograssBar}" />
 
-    <Grid MinWidth="350"
-          Width="Auto"
-          Height="Auto"
-          Background="{ThemeResource CardBackgroundFillColorDefault}"
-          CornerRadius="5"
-          Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid x:Name="ContentGrid"
+              MinWidth="350"
+              Width="Auto"
+              Height="Auto"
+              Background="{ThemeResource CardBackgroundFillColorDefault}"
+              CornerRadius="5"
+              Margin="5"
+              ContextRequested="ContentGrid_ContextRequested">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   x:Name="IngredientName"
-                   Text="{Binding Name, Mode=OneWay}"
-                   TextWrapping="Wrap"
-                   Margin="15,0,10,0"
-                   Style="{StaticResource SubtitleTextBlockStyle}" />
-        <TextBlock Grid.Row="0"
-                   x:Name="IngredientCategory"
-                   Text="{Binding IngredientCategory, Mode=OneWay}"
-                   HorizontalAlignment="Right"
-                   TextWrapping="Wrap"
-                   Margin="15,0,10,0"
-                   Style="{StaticResource CaptionTextBlockStyle}" />
-        <TextBlock Grid.Row="1"
-                   x:Name="IngredientDescription"
-                   Text="{Binding Description, Mode=OneWay}"
-                   TextWrapping="Wrap"
-                   Margin="15,0,10,0"
-                   Style="{StaticResource BodyTextStyle}" />
-        <TextBlock Grid.Row="2"
-                   x:Name="IngredientValue"
-                   TextWrapping="Wrap"
-                   Margin="15,0,10,0"
-                   Foreground="Lime"
-                   Style="{StaticResource BodyTextStyle}">
+            <TextBlock Grid.Row="0"
+                       x:Name="IngredientName"
+                       Text="{Binding Name, Mode=TwoWay}"
+                       TextWrapping="Wrap"
+                       Margin="15,0,10,0"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+            <TextBlock Grid.Row="0"
+                       x:Name="IngredientCategory"
+                       Text="{Binding IngredientCategory, Mode=OneWay}"
+                       HorizontalAlignment="Right"
+                       TextWrapping="Wrap"
+                       Margin="15,0,10,0"
+                       Style="{StaticResource CaptionTextBlockStyle}" />
+            <TextBlock Grid.Row="1"
+                       x:Name="IngredientDescription"
+                       Text="{Binding Description, Mode=OneWay}"
+                       TextWrapping="Wrap"
+                       Margin="15,0,10,0"
+                       Style="{StaticResource BodyTextStyle}" />
+            <TextBlock Grid.Row="2"
+                       x:Name="IngredientValue"
+                       TextWrapping="Wrap"
+                       Margin="15,0,10,0"
+                       Foreground="Lime"
+                       Style="{StaticResource BodyTextStyle}">
                     <Run x:Uid="Currency" />
                     <Run Text="{Binding CurrentPricePerUnit, Mode=OneWay}" />
                     <Run Text="{Binding DisplayMeasurement, Mode=OneWay, 
                         Converter={StaticResource StringConcatConverter},
                         ConverterParameter='/{0}'}" />
-        </TextBlock>
-        <TextBlock Grid.Row="2"
-                   x:Name="IngredientTotalValue"
-                   HorizontalAlignment="Right"
-                   TextWrapping="Wrap"
-                   Margin="15,0,10,0"
-                   Foreground="Lime"
-                   Style="{StaticResource BodyTextStyle}">
+            </TextBlock>
+            <TextBlock Grid.Row="2"
+                       x:Name="IngredientTotalValue"
+                       HorizontalAlignment="Right"
+                       TextWrapping="Wrap"
+                       Margin="15,0,10,0"
+                       Foreground="Lime"
+                       Style="{StaticResource BodyTextStyle}">
                     <Run x:Uid="Currency" />
                     <Run Text="{Binding TotalValue, Mode=OneWay}" />
-        </TextBlock>
+            </TextBlock>
 
-        <TextBlock Grid.Row="3"
-                   x:Name="CurrentQuantity"
-                   HorizontalAlignment="Left">
+            <TextBlock Grid.Row="3"
+                       x:Name="CurrentQuantity"
+                       HorizontalAlignment="Left">
             <Run Text="{Binding DisplayCurrentQuantity, Mode=OneWay}" />
             <Run Text="{Binding AvailableSpacePerCent, Mode=OneWay, 
                 Converter={StaticResource StringConcatConverter}, 
                 ConverterParameter='({0}%)'}" />
-        </TextBlock>
-        <TextBlock Grid.Row="3"
-                   x:Name="MaximumQuantity"
-                   HorizontalAlignment="Right"
-                   Text="{Binding DisplayMaximumQuantity}" />
+            </TextBlock>
+            <TextBlock Grid.Row="3"
+                       x:Name="MaximumQuantity"
+                       HorizontalAlignment="Right"
+                       Text="{Binding DisplayMaximumQuantity}" />
 
-        <ProgressBar Grid.Row="4"
-                     Value="{Binding CurrentQuantity, Mode=OneWay}"
-                     Maximum="{Binding MaximumQuantity, Mode=OneWay}"
-                     ShowPaused="{Binding IsMediumInventory, Mode=OneWay}"
-                     ShowError="{Binding IsLowInventory, Mode=OneWay}"
-                     VerticalAlignment="Bottom" />
-    </Grid>
+            <ProgressBar Grid.Row="4"
+                         Value="{Binding CurrentQuantity, Mode=OneWay}"
+                         Maximum="{Binding MaximumQuantity, Mode=OneWay}"
+                         ShowPaused="{Binding IsMediumInventory, Mode=OneWay}"
+                         ShowError="{Binding IsLowInventory, Mode=OneWay}"
+                         VerticalAlignment="Bottom" />
+        </Grid>
+    </StackPanel>
 </UserControl>
