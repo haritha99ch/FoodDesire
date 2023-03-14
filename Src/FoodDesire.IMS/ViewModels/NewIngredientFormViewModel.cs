@@ -3,8 +3,8 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private Ingredient? _ingredient;
 
-    public NewIngredientFormViewModel(IIngredientsPageService ingredientsPageService) {
-        _ingredientsPageService = ingredientsPageService;
+    public NewIngredientFormViewModel() {
+        _ingredientsPageService = App.GetService<IIngredientsPageService>();
         _ = OnInit();
     }
 
