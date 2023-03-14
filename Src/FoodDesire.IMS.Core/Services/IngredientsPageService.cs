@@ -20,4 +20,6 @@ public class IngredientsPageService : IIngredientsPageService {
     public async Task<List<Ingredient>> GetAllIngredients() => await _ingredientService.GetAllIngredients();
 
     public async Task<Ingredient> GetIngredientById(int ingredientId) => await _ingredientService.GetIngredientById(ingredientId);
+
+    public async Task<IngredientCategory> GetIngredientCategoryById(int ingredientCategoryId) => await _ingredientService.GetIngredientCategoryById(ingredientCategoryId);
 }

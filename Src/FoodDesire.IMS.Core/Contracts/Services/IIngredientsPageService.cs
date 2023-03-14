@@ -4,6 +4,7 @@ public interface IIngredientsPageService {
     Task<List<IngredientCategory>> GetAllIngredientCategory();
     Task<Ingredient> GetIngredientById(int ingredientId);
     Task<IngredientCategory> AddIngredientCategory(IngredientCategory ingredientCategory);
+    Task<IngredientCategory> GetIngredientCategoryById(int ingredientCategoryId);
     Task<Ingredient> AddIngredient(Ingredient ingredient);
     Task<Ingredient> EditIngredient(Ingredient ingredient);
     Task<bool> DeleteIngredient(int ingredientId);

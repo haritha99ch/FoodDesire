@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-public partial class NewIngredientFormViewModel : NewIngredient, IInitializable {
+public class NewIngredientFormViewModel : IngredientForm, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private Ingredient? _ingredient;
 
