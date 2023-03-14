@@ -1,27 +1,28 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-public partial class NewIngredientFormViewModel : ObservableObject {
+public partial class NewIngredientFormViewModel : NewIngredient, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanBeCreated))]
-    private Ingredient? ingredient;
-    public bool CanBeCreated {
-        get {
-            // Add your validation logic here
-            if (string.IsNullOrEmpty(Ingredient.Name)) return false;
-            if (string.IsNullOrEmpty(Ingredient.Description)) return false;
-            if (Ingredient.MaximumQuantity <= 0) return false;
+    private Ingredient? _ingredient;
 
-            // If all validation checks pass, return true
-            return true;
-        }
-    }
     public NewIngredientFormViewModel(IIngredientsPageService ingredientsPageService) {
         _ingredientsPageService = ingredientsPageService;
+        _ = OnInit();
     }
 
+    public async Task OnInit() {
+        List<IngredientCategory> ingredientCategories = await _ingredientsPageService.GetAllIngredientCategory();
+        ingredientCategories.ForEach(IngredientCategories.Add);
+        Category = Categories.FirstOrDefault();
+    }
 
     public async Task<Ingredient> CreateIngredient() {
-        Ingredient newIngredient = await _ingredientsPageService.AddIngredient(Ingredient!);
-        return newIngredient;
+        _ingredient = new() {
+            Name = IngredientName!,
+            Description = IngredientDescription!,
+            IngredientCategoryId = (int)_ingredientCategoryId!,
+            MaximumQuantity = (double)IngredientMaximumQuantity!
+        };
+        _ingredient = await _ingredientsPageService.AddIngredient(_ingredient);
+        return _ingredient;
     }
+
 }

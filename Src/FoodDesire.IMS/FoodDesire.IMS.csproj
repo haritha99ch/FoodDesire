@@ -16,9 +16,10 @@
 	<WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Controls\IngredientListItemControl.xaml" />
-    <None Remove="Controls\NewIngredientFormControl.xaml" />
-    <None Remove="Controls\ViewIngredientItemControl.xaml" />
+    <None Remove="Components\IngredientFormDataControl.xaml" />
+    <None Remove="Components\IngredientListItemControl.xaml" />
+    <None Remove="Components\NewIngredientFormDialog.xaml" />
+    <None Remove="Components\RequestIngredientDialog.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
   </ItemGroup>
 
@@ -43,6 +44,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\IngredientFormDataControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\NewIngredientFormControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

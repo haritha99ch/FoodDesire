@@ -8,7 +8,7 @@ public sealed class Ingredient : TrackedEntity {
     public Measurement Measurement { get; set; }
     [Required]
     [Column(TypeName = "Decimal(18,2)")]
-    public decimal CurrentPricePerUnit { get; set; }
+    public decimal CurrentPricePerUnit { get; set; } = decimal.Zero;
     [Required]
     public double MaximumQuantity { get; set; }
     [Required]

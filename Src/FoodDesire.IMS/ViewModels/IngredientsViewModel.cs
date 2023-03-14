@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
-using FoodDesire.Models;
 using System.Diagnostics;
 
 namespace FoodDesire.IMS.ViewModels;
 public partial class IngredientsViewModel : ObservableRecipient, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private readonly IMapper _mapper;
+    [ObservableProperty]
     private bool _isLoading = true;
     private List<IngredientDetails> _ingredientsDetail = new();
     public List<IngredientDetails> IngredientsDetail {
@@ -14,7 +14,6 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
         set => SetProperty(ref _ingredientsDetail, value);
     }
     public List<Ingredient> Ingredients { get; set; } = new();
-    public bool IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
 
     public IngredientsViewModel(IIngredientsPageService ingredientsPageService, IMapper mapper) {
         _mapper = mapper;
