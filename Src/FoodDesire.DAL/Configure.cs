@@ -9,7 +9,7 @@ public static class Configure {
         ) {
         services.AddDbContext<FoodDesireContext>(
             options =>
-                options.UseSqlServer(dbConnectionString), ServiceLifetime.Transient, ServiceLifetime.Transient);
+                options.UseSqlServer(dbConnectionString));
         GetServices(services);
     }
 
@@ -18,21 +18,21 @@ public static class Configure {
     }
 
     private static void GetServices(IServiceCollection services) {
-        services.AddTransient<IRepository<Ingredient>, Repository<Ingredient>>();
-        services.AddTransient<IRepository<FoodItem>, Repository<FoodItem>>();
-        services.AddTransient<IRepository<Delivery>, Repository<Delivery>>();
-        services.AddTransient<IRepository<Order>, Repository<Order>>();
-        services.AddTransient<IRepository<Account>, Repository<Account>>();
-        services.AddTransient<ITrackingRepository<Payment>, TrackingRepository<Payment>>();
-        services.AddTransient<ITrackingRepository<User>, TrackingRepository<User>>();
-        services.AddTransient<IRepository<RecipeCategory>, Repository<RecipeCategory>>();
-        services.AddTransient<IRepository<Recipe>, Repository<Recipe>>();
-        services.AddTransient<IRepository<Customer>, Repository<Customer>>();
-        services.AddTransient<IRepository<Admin>, Repository<Admin>>();
-        services.AddTransient<IRepository<Chef>, Repository<Chef>>();
-        services.AddTransient<IRepository<Deliverer>, Repository<Deliverer>>();
-        services.AddTransient<IRepository<Supplier>, Repository<Supplier>>();
-        services.AddTransient<ITrackingRepository<Supply>, TrackingRepository<Supply>>();
-        services.AddTransient<ITrackingRepository<IngredientCategory>, TrackingRepository<IngredientCategory>>();
+        services.AddScoped<IRepository<Ingredient>, Repository<Ingredient>>();
+        services.AddScoped<IRepository<FoodItem>, Repository<FoodItem>>();
+        services.AddScoped<IRepository<Delivery>, Repository<Delivery>>();
+        services.AddScoped<IRepository<Order>, Repository<Order>>();
+        services.AddScoped<IRepository<Account>, Repository<Account>>();
+        services.AddScoped<ITrackingRepository<Payment>, TrackingRepository<Payment>>();
+        services.AddScoped<ITrackingRepository<User>, TrackingRepository<User>>();
+        services.AddScoped<IRepository<RecipeCategory>, Repository<RecipeCategory>>();
+        services.AddScoped<IRepository<Recipe>, Repository<Recipe>>();
+        services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+        services.AddScoped<IRepository<Admin>, Repository<Admin>>();
+        services.AddScoped<IRepository<Chef>, Repository<Chef>>();
+        services.AddScoped<IRepository<Deliverer>, Repository<Deliverer>>();
+        services.AddScoped<IRepository<Supplier>, Repository<Supplier>>();
+        services.AddScoped<ITrackingRepository<Supply>, TrackingRepository<Supply>>();
+        services.AddScoped<ITrackingRepository<IngredientCategory>, TrackingRepository<IngredientCategory>>();
     }
 }
