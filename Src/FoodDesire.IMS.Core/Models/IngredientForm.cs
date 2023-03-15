@@ -1,5 +1,7 @@
-﻿namespace FoodDesire.IMS.Core.Models;
-public partial class IngredientForm : ObservableObject {
+﻿using CommunityToolkit.Mvvm.Input;
+
+namespace FoodDesire.IMS.Core.Models;
+public abstract partial class IngredientForm : ObservableObject {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanBeCreated))]
     private string? _ingredientName;
@@ -20,6 +22,15 @@ public partial class IngredientForm : ObservableObject {
     [NotifyPropertyChangedFor(nameof(DisplayMeasurement))]
     private Measurement _measurement;
     private IList<Measurement> _measurements = Enum.GetValues(typeof(Measurement)).Cast<Measurement>().ToList();
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
+    private string? _newIngredientCategoryName;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
+    private string? _newIngredientCategoryDescription;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(Categories))]
+    private IngredientCategory? _newIngredientCategory;
 
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
     public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();
@@ -34,10 +45,20 @@ public partial class IngredientForm : ObservableObject {
             return true;
         }
     }
+    public bool CategoryCanBeCreated {
+        get {
+            if (string.IsNullOrEmpty(NewIngredientCategoryName)) return false;
+            if (string.IsNullOrEmpty(NewIngredientCategoryDescription)) return false;
+            return true;
+        }
+    }
     public string DisplayMeasurement => Measurement switch {
         Measurement.Grams => "g",
         Measurement.Liquid => "ml",
         Measurement.Each => "each",
         _ => "",
     };
+
+    [RelayCommand]
+    public abstract void AddNewIngredientCategory(IIngredientsPageService ingredientsPageService);
 }

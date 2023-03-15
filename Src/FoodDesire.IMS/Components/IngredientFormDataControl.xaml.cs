@@ -4,4 +4,8 @@ public sealed partial class IngredientFormDataControl : UserControl {
     public IngredientFormDataControl() {
         InitializeComponent();
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e) {
+        AddIngredientCategoryFlyout.Hide();
+    }
 }

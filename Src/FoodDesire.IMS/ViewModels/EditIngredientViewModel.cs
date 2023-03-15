@@ -33,4 +33,16 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         _ingredient = await _ingredientsPageService.EditIngredient(_ingredient);
         return _ingredient;
     }
+
+    public override async void AddNewIngredientCategory(IIngredientsPageService ingredientsPageService) {
+        IngredientCategory category = new() {
+            Name = NewIngredientCategoryName!,
+            Description = NewIngredientCategoryDescription!
+        };
+        category = await _ingredientsPageService.AddIngredientCategory(category);
+        IngredientCategories.Add(category);
+        NewIngredientCategory = category;
+        NewIngredientCategoryName = "";
+        NewIngredientCategoryDescription = "";
+    }
 }

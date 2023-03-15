@@ -25,4 +25,15 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
         return _ingredient;
     }
 
+    public override async void AddNewIngredientCategory(IIngredientsPageService ingredientsPageService) {
+        IngredientCategory category = new() {
+            Name = NewIngredientCategoryName!,
+            Description = NewIngredientCategoryDescription!
+        };
+        category = await _ingredientsPageService.AddIngredientCategory(category);
+        IngredientCategories.Add(category);
+        NewIngredientCategory = category;
+        NewIngredientCategoryName = "";
+        NewIngredientCategoryDescription = "";
+    }
 }
