@@ -1,9 +1,13 @@
+using AutoMapper;
 using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace FoodDesire.IMS.Components;
 [INotifyPropertyChanged]
 public sealed partial class IngredientListItemControl : UserControl {
-    private IngredientDetails _ingredient => (IngredientDetails)DataContext;
+    private IngredientDetails _ingredient {
+        get => (IngredientDetails)DataContext;
+        set => DataContext = value;
+    }
     [ObservableProperty]
     private bool _isLoading = false;
     public IngredientListItemControl() {
@@ -24,6 +28,10 @@ public sealed partial class IngredientListItemControl : UserControl {
             DefaultButton = ContentDialogButton.Primary,
         };
         var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary) {
+            Ingredient ingredient = await dialog.ViewModel.EditIngredient();
+            _ingredient = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
+        }
         IsLoading = false;
     }
 }

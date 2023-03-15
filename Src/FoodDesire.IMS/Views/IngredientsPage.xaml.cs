@@ -13,7 +13,7 @@ public sealed partial class IngredientsPage : Page {
 
     private async void IngredientList_ItemClick(object sender, ItemClickEventArgs e) {
         IngredientDetails ingredient = (IngredientDetails)e.ClickedItem;
-        RequestIngredientDialog dialog = new RequestIngredientDialog(ingredient) {
+        RequestIngredientDialog dialog = new RequestIngredientDialog(ingredient.Id) {
             XamlRoot = XamlRoot,
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
             DefaultButton = ContentDialogButton.Primary,

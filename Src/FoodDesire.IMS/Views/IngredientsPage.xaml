@@ -25,6 +25,7 @@
 
         <GridView x:Name="IngredientList"
                   ItemsSource="{x:Bind ViewModel.IngredientsDetail, Mode=TwoWay}"
+                  SelectionMode="None"
                   IsItemClickEnabled="True"
                   ItemTemplate="{StaticResource IngrdientItem}"
                   ItemClick="IngredientList_ItemClick">

@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <UserControl x:Class="FoodDesire.IMS.Components.IngredientListItemControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:FoodDesire.IMS.Components"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="using:FoodDesire.IMS.Core.Models"
@@ -81,6 +79,7 @@
             </TextBlock>
 
             <TextBlock Grid.Row="3"
+                       Margin="5 0 0 0"
                        x:Name="CurrentQuantity"
                        HorizontalAlignment="Left">
             <Run Text="{Binding DisplayCurrentQuantity, Mode=OneWay}" />
@@ -89,6 +88,7 @@
                 ConverterParameter='({0}%)'}" />
             </TextBlock>
             <TextBlock Grid.Row="3"
+                       Margin="0 0 5 0"
                        x:Name="MaximumQuantity"
                        HorizontalAlignment="Right"
                        Text="{Binding DisplayMaximumQuantity}" />
