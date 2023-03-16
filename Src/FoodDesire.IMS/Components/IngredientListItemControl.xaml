@@ -6,16 +6,7 @@
              xmlns:models="using:FoodDesire.IMS.Core.Models"
              d:DataContext="{d:DesignInstance Type=models:IngredientDetails}"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <CommandBarFlyout Placement="Right"
-                          x:Name="CommandBarFlyout">
-            <AppBarButton Label="Edit"
-                          Icon="Edit"
-                          ToolTipService.ToolTip="Edit"
-                          Click="EditButton_Click" />
-        </CommandBarFlyout>
-    </UserControl.Resources>
-    
+
     <StackPanel>
         <ProgressBar IsIndeterminate="{x:Bind IsLoading, Mode=OneWay}"
                      Style="{StaticResource LoadingPrograssBar}" />
@@ -26,8 +17,7 @@
               Height="Auto"
               Background="{ThemeResource CardBackgroundFillColorDefault}"
               CornerRadius="5"
-              Margin="5"
-              ContextRequested="ContentGrid_ContextRequested">
+              Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />

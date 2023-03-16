@@ -29,4 +29,12 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
     public void NewIngredient(Ingredient ingredient) {
         IngredientsDetail.Insert(0, _mapper.Map<IngredientDetails>(ingredient));
     }
+
+    public async void DeleteIngredient(int ingredientId) {
+        bool deleted = await _ingredientsPageService.DeleteIngredient(ingredientId);
+        if (deleted) {
+            IngredientDetails ingredientDetails = IngredientsDetail.SingleOrDefault(e => e.Id == ingredientId)!;
+            IngredientsDetail.Remove(ingredientDetails);
+        }
+    }
 }

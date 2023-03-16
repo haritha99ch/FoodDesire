@@ -13,6 +13,21 @@
         <DataTemplate x:Key="IngrdientItem">
             <controls:IngredientListItemControl />
         </DataTemplate>
+        <CommandBarFlyout Placement="BottomEdgeAlignedRight"
+                          x:Name="CommandBarFlyout">
+            <AppBarButton Label="Request"
+                          Icon="Forward"
+                          ToolTipService.ToolTip="Request"
+                          Click="RequestButton_Click"/>
+            <AppBarButton Label="Edit"
+                          Icon="Edit"
+                          ToolTipService.ToolTip="Edit"
+                          Click="EditButton_Click"/>
+            <AppBarButton Label="Delete"
+                          Icon="Delete"
+                          ToolTipService.ToolTip="Delete"
+                          Click="DeleteButton_Click" />
+        </CommandBarFlyout>
     </Page.Resources>
 
     <StackPanel>
@@ -24,8 +39,8 @@
         </AppBarButton>
 
         <GridView x:Name="IngredientList"
-                  ItemsSource="{x:Bind ViewModel.IngredientsDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   SelectionMode="None"
+                  ItemsSource="{x:Bind ViewModel.IngredientsDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   IsItemClickEnabled="True"
                   ItemTemplate="{StaticResource IngrdientItem}"
                   ItemClick="IngredientList_ItemClick">

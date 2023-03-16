@@ -41,6 +41,7 @@ public abstract partial class IngredientForm : ObservableObject {
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
     public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();
     public IList<Measurement> Measurements => _measurements;
+    public bool EditMode => !string.IsNullOrEmpty(IngredientName);
     public bool CanBeCreated {
         get {
             if (string.IsNullOrEmpty(IngredientName)) return false;
