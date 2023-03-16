@@ -14,7 +14,7 @@
 
         <!-- Left panel with inventory summary -->
         <StackPanel>
-            <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=TwoWay}"
+            <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          Background="Transparent" />
             <TextBlock Text="Inventory Summary" FontSize="24" Margin="0,0,0,10"/>
 

@@ -31,7 +31,7 @@
             <Slider Grid.Row="0"
                     x:Name="Amount"
                     HorizontalAlignment="Stretch"
-                    Value="{x:Bind ViewModel.CurrentAmount, Mode=TwoWay}"
+                    Value="{x:Bind ViewModel.CurrentAmount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     Maximum="{x:Bind ViewModel.IngredientDetails.MaximumQuantity, Mode=OneWay}"
                     Minimum="{x:Bind ViewModel.IngredientDetails.CurrentQuantity, Mode=OneWay}" />
             <TextBlock Grid.Row="1"

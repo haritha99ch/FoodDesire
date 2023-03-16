@@ -31,6 +31,8 @@ public abstract partial class IngredientForm : ObservableObject {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Categories))]
     private IngredientCategory? _newIngredientCategory;
+    [ObservableProperty]
+    private bool _isLoading = true;
 
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
     public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();

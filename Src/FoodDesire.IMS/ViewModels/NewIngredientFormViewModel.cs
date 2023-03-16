@@ -12,6 +12,7 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
         List<IngredientCategory> ingredientCategories = await _ingredientsPageService.GetAllIngredientCategory();
         ingredientCategories.ForEach(IngredientCategories.Add);
         Category = Categories.FirstOrDefault();
+        IsLoading = false;
     }
 
     public async Task<Ingredient> CreateIngredient() {

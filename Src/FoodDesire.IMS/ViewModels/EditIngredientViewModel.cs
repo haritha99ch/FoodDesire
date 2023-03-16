@@ -21,6 +21,7 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         IngredientMaximumQuantity = _ingredient.MaximumQuantity;
         Measurement = _ingredient.Measurement;
         Category = IngredientCategories.SingleOrDefault(e => e.Id == _ingredient.IngredientCategoryId)!.Name;
+        IsLoading = false;
     }
 
     public async Task<Ingredient> EditIngredient() {
@@ -44,5 +45,6 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         NewIngredientCategory = category;
         NewIngredientCategoryName = "";
         NewIngredientCategoryDescription = "";
+        await Task.Delay(5000);
     }
 }
