@@ -38,7 +38,7 @@ public class OrderDeliveryServices : Services {
 
     [OneTimeTearDown]
     public async Task TearDown() {
-        //await _context.Database.EnsureDeletedAsync();
+        await _context.Database.EnsureDeletedAsync();
         ApplicationHostHelper.TearDownHost();
     }
 
