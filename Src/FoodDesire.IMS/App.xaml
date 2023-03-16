@@ -1,8 +1,7 @@
-﻿<Application
-    x:Class="FoodDesire.IMS.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:components="using:FoodDesire.IMS.Components"
-             xmlns:helpers="using:FoodDesire.IMS.Helpers">
+﻿<Application x:Class="FoodDesire.IMS.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,7 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="WindowCaptionBackground">Transparent</SolidColorBrush>
             <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Transparent</SolidColorBrush>
-            <helpers:StringConcatConverter x:Key="StringConcatConverter" />
+            <converters:StringFormatConverter x:Key="StringFormatConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -5,7 +5,13 @@
              xmlns:local="using:FoodDesire.IMS.Components"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter  x:Key="BoolToVisibilityConverterInverse"
+                                               FalseValue="Visible"
+                                               TrueValue="Collapsed"/>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -52,8 +58,14 @@
             </Grid.ColumnDefinitions>
             <ComboBox Grid.Column="0"
                       HorizontalAlignment="Stretch"
+                      IsEnabled="{x:Bind ViewModel.IsCategoriesLoaded, Mode=OneWay}"
                       ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                       SelectedItem="{x:Bind ViewModel.Category, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <ProgressBar Grid.Column="0"
+                         VerticalAlignment="Bottom"
+                         IsIndeterminate="True"
+                         Style="{StaticResource LoadingPrograssBar}"
+                         Visibility="{x:Bind ViewModel.IsCategoriesLoaded, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}" />
             <Button Grid.Column="1"
                     HorizontalAlignment="Right">
                 <Button.Flyout>

@@ -35,7 +35,8 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         return _ingredient;
     }
 
-    public override async void AddNewIngredientCategory(IIngredientsPageService ingredientsPageService) {
+    public override async void AddNewIngredientCategory() {
+        IsCategoriesLoaded = false;
         IngredientCategory category = new() {
             Name = NewIngredientCategoryName!,
             Description = NewIngredientCategoryDescription!
@@ -45,6 +46,6 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         NewIngredientCategory = category;
         NewIngredientCategoryName = "";
         NewIngredientCategoryDescription = "";
-        await Task.Delay(5000);
+        IsCategoriesLoaded = true;
     }
 }

@@ -33,6 +33,8 @@ public abstract partial class IngredientForm : ObservableObject {
     private IngredientCategory? _newIngredientCategory;
     [ObservableProperty]
     private bool _isLoading = true;
+    [ObservableProperty]
+    private bool _isCategoriesLoaded = true;
 
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
     public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();
@@ -62,5 +64,5 @@ public abstract partial class IngredientForm : ObservableObject {
     };
 
     [RelayCommand]
-    public abstract void AddNewIngredientCategory(IIngredientsPageService ingredientsPageService);
+    public abstract void AddNewIngredientCategory();
 }

@@ -64,7 +64,7 @@
                     <Run x:Uid="Currency" />
                     <Run Text="{Binding CurrentPricePerUnit, Mode=OneWay}" />
                     <Run Text="{Binding DisplayMeasurement, Mode=OneWay, 
-                        Converter={StaticResource StringConcatConverter},
+                        Converter={StaticResource StringFormatConverter},
                         ConverterParameter='/{0}'}" />
             </TextBlock>
             <TextBlock Grid.Row="2"
@@ -84,7 +84,7 @@
                        HorizontalAlignment="Left">
             <Run Text="{Binding DisplayCurrentQuantity, Mode=OneWay}" />
             <Run Text="{Binding AvailableSpacePerCent, Mode=OneWay, 
-                Converter={StaticResource StringConcatConverter}, 
+                Converter={StaticResource StringFormatConverter}, 
                 ConverterParameter='({0}%)'}" />
             </TextBlock>
             <TextBlock Grid.Row="3"
