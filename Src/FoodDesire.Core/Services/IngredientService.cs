@@ -21,7 +21,8 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<IngredientCategory>> GetAllIngredientCategories() {
-        List<IngredientCategory> ingredientCategories = await _ingredientCategoryTRepository.GetAll();
+        Func<IQueryable<IngredientCategory>, IIncludableQueryable<IngredientCategory, object?>> include = e => e.Include(i => i.Ingredients);
+        List<IngredientCategory> ingredientCategories = await _ingredientCategoryTRepository.Get(null, null, include);
         return ingredientCategories;
     }
 
@@ -95,5 +96,11 @@ public class IngredientService : IIngredientService {
         Payment payment = await _paymentService.PaymentForSupply(supply, value);
         await _ingredientRepository.Update(ingredient);
         return payment.Supply!;
+    }
+
+    public async Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory) {
+        IngredientCategory category = await _ingredientCategoryTRepository.Update(ingredientCategory);
+        await _ingredientCategoryTRepository.SaveChanges();
+        return category;
     }
 }

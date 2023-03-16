@@ -15,4 +15,5 @@ public interface IIngredientService {
     Task<bool> DeleteIngredientById(int ingredientCategoryId);
 
     Task<Supply> NewSupply(Supply supply, decimal value);
+    Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory);
 }

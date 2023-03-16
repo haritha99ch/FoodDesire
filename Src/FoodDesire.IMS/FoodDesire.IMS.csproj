@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Components\EditIngredientDialog.xaml" />
+    <None Remove="Components\IngredientCategoryFormControl.xaml" />
     <None Remove="Components\IngredientFormDataControl.xaml" />
     <None Remove="Components\IngredientListItemControl.xaml" />
     <None Remove="Components\NewIngredientFormDialog.xaml" />
@@ -45,6 +46,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\IngredientCategoryFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Components\EditIngredientDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -55,6 +55,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <ComboBox Grid.Column="0"
                       HorizontalAlignment="Stretch"
@@ -66,55 +68,67 @@
                          IsIndeterminate="True"
                          Style="{StaticResource LoadingPrograssBar}"
                          Visibility="{x:Bind ViewModel.IsCategoriesLoaded, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}" />
-            <Button Grid.Column="1"
-                    HorizontalAlignment="Right">
+            <Button x:Name="NewCategoryButton" Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Click="NewCategoryButton_Click">
                 <Button.Flyout>
                     <Flyout x:Name="AddIngredientCategoryFlyout">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="0"
-                                       Grid.Column="0"
-                                       Margin="2,2"
-                                       HorizontalAlignment="Stretch"
-                                       Text="Name: " />
-                            <TextBox Grid.Row="0"
-                                     Grid.Column="1"
-                                     Margin="2,2"
-                                     Text="{x:Bind ViewModel.NewIngredientCategoryName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-
-                            <TextBlock Grid.Row="1"
-                                       Grid.Column="0"
-                                       Margin="2,2"
-                                       Text="Description: " />
-                            <TextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     Margin="2,2"
-                                     Width="300"
-                                     Height="50"
-                                     Text="{x:Bind ViewModel.NewIngredientCategoryDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-
-                            <Button Grid.Row="2"
-                                    Margin="2,5"
-                                    Grid.Column="1"
+                        <StackPanel>
+                            <local:IngredientCategoryFormControl x:Name="NewIngredientCategoryFormControl" />
+                            <Button Margin="2,5"
                                     Content="Add New Ingredient Category"
                                     IsEnabled="{x:Bind ViewModel.CategoryCanBeCreated, Mode=OneWay}"
                                     Command="{x:Bind ViewModel.AddNewIngredientCategoryCommand, Mode=OneWay}"
-                                    Click="Button_Click"/>
-                        </Grid>
+                                    Click="Button_Click" />
+                        </StackPanel>
                     </Flyout>
                 </Button.Flyout>
-
                 <StackPanel>
                     <SymbolIcon Symbol="Add" />
+                </StackPanel>
+            </Button>
+            
+            <Button x:Name="EditCategoryButton" Grid.Column="2"
+                    IsEnabled="{x:Bind ViewModel.IngredientCategoryCanBeEdited, Mode=OneWay}"
+                    HorizontalAlignment="Right"
+                    Click="EditCategoryButton_Click">
+                <Button.Flyout>
+                    <Flyout x:Name="DeleteIngredientCategoryFlyout">
+                        <StackPanel>
+                            <local:IngredientCategoryFormControl x:Name="EditIngredientCategoryFormControl"/>
+                            <Button Margin="2,5"
+                                    Content="Edit Ingredient Category"
+                                    IsEnabled="{x:Bind ViewModel.CategoryCanBeCreated, Mode=OneWay}"
+                                    Command="{x:Bind ViewModel.EditIngredientCategoryCommand, Mode=OneWay}"
+                                    Click="Button_Click" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <StackPanel>
+                    <SymbolIcon Symbol="Edit" />
+                </StackPanel>
+            </Button>
+
+            <Button Grid.Column="3"
+                    IsEnabled="{x:Bind ViewModel.IngredientCategoryCanBeEdited, Mode=OneWay}"
+                    HorizontalAlignment="Right">
+                <Button.Flyout>
+                    <Flyout x:Name="EditIngredientCategoryFlyout">
+                        <StackPanel>
+                            <RichTextBlock>
+                                <Paragraph>
+                                    Are You Sure You Want To Delete This Ingredient Category?
+                                </Paragraph>
+                            </RichTextBlock>
+                            <Button Margin="2,5"
+                                    Content="Delete Ingredient Category"
+                                    Command="{x:Bind ViewModel.DeleteIngredientCategoryCommand, Mode=OneWay}"
+                                    Click="Button_Click" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <StackPanel>
+                    <SymbolIcon Symbol="Delete" />
                 </StackPanel>
             </Button>
         </Grid>

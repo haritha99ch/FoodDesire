@@ -7,5 +7,7 @@ public interface IIngredientsPageService {
     Task<IngredientCategory> GetIngredientCategoryById(int ingredientCategoryId);
     Task<Ingredient> AddIngredient(Ingredient ingredient);
     Task<Ingredient> EditIngredient(Ingredient ingredient);
+    Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory);
     Task<bool> DeleteIngredient(int ingredientId);
+    Task<bool> DeleteIngredientCategory(int ingredientCategoryId);
 }

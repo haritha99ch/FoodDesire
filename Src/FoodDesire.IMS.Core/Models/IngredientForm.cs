@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FoodDesire.IMS.Core.Models;
 public abstract partial class IngredientForm : ObservableObject {
@@ -12,7 +13,7 @@ public abstract partial class IngredientForm : ObservableObject {
     [NotifyPropertyChangedFor(nameof(Categories))]
     private ObservableCollection<IngredientCategory> _ingredientCategories = new();
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanBeCreated))]
+    [NotifyPropertyChangedFor(nameof(CanBeCreated), nameof(IngredientCategoryCanBeEdited))]
     private string? _category;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanBeCreated))]
@@ -29,12 +30,13 @@ public abstract partial class IngredientForm : ObservableObject {
     [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
     private string? _newIngredientCategoryDescription;
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Categories))]
+    [NotifyPropertyChangedFor(nameof(Categories), nameof(Categories))]
     private IngredientCategory? _newIngredientCategory;
     [ObservableProperty]
     private bool _isLoading = true;
     [ObservableProperty]
     private bool _isCategoriesLoaded = true;
+    public bool IngredientCategoryCanBeEdited => (Category != null) ? IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!.Ingredients.IsNullOrEmpty() : false;
 
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
     public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();
@@ -65,4 +67,14 @@ public abstract partial class IngredientForm : ObservableObject {
 
     [RelayCommand]
     public abstract void AddNewIngredientCategory();
+    [RelayCommand]
+    public abstract void EditIngredientCategory();
+    [RelayCommand]
+    public abstract void DeleteIngredientCategory();
+
+    public void SetIngredientCategoryToEdit() {
+        IngredientCategory category = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
+        NewIngredientCategoryName = category.Name;
+        NewIngredientCategoryDescription = category.Description;
+    }
 }

@@ -48,4 +48,27 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         NewIngredientCategoryDescription = "";
         IsCategoriesLoaded = true;
     }
+
+    public override async void EditIngredientCategory() {
+        IsCategoriesLoaded = false;
+        IngredientCategory category = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
+        IngredientCategories.Remove(category);
+        category.Name = NewIngredientCategoryName!;
+        category.Description = NewIngredientCategoryDescription!;
+        category = await _ingredientsPageService.EditIngredientCategory(category);
+        IngredientCategories.Add(category);
+        NewIngredientCategory = category;
+        NewIngredientCategoryName = "";
+        NewIngredientCategoryDescription = "";
+        IsCategoriesLoaded = true;
+    }
+
+    public override async void DeleteIngredientCategory() {
+        IsCategoriesLoaded = false;
+        bool deleted = await _ingredientsPageService.DeleteIngredientCategory((int)_ingredientCategoryId!);
+        NewIngredientCategory = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
+        IngredientCategories.Remove(NewIngredientCategory);
+        Categories.Remove(Category!);
+        IsCategoriesLoaded = true;
+    }
 }

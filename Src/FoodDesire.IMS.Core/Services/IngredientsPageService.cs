@@ -8,12 +8,15 @@ public class IngredientsPageService : IIngredientsPageService {
 
     public async Task<Ingredient> AddIngredient(Ingredient ingredient) => await _ingredientService.NewIngredient(ingredient);
 
-    public async Task<IngredientCategory> AddIngredientCategory(IngredientCategory ingredientCategory) =>
-        await _ingredientService.NewIngredientCategory(ingredientCategory);
+    public async Task<IngredientCategory> AddIngredientCategory(IngredientCategory ingredientCategory) => await _ingredientService.NewIngredientCategory(ingredientCategory);
 
     public async Task<bool> DeleteIngredient(int ingredientId) => await _ingredientService.DeleteIngredientById(ingredientId);
 
+    public async Task<bool> DeleteIngredientCategory(int ingredientCategoryId) => await _ingredientService.DeleteIngredientCategoryById(ingredientCategoryId);
+
     public async Task<Ingredient> EditIngredient(Ingredient ingredient) => await _ingredientService.EditIngredient(ingredient);
+
+    public async Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory) => await _ingredientService.EditIngredientCategory(ingredientCategory);
 
     public async Task<List<IngredientCategory>> GetAllIngredientCategory() => await _ingredientService.GetAllIngredientCategories();
 

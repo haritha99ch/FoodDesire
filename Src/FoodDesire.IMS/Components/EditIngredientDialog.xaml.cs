@@ -5,5 +5,7 @@ public sealed partial class EditIngredientDialog : ContentDialog {
         ViewModel = new EditIngredientViewModel(ingredientId);
         InitializeComponent();
         FormControl.ViewModel = ViewModel;
+        FormControl.NewCategoryFormControl!.ViewModel = ViewModel;
+        FormControl.EditCategoryFormControl!.ViewModel = ViewModel;
     }
 }
