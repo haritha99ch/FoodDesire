@@ -42,7 +42,7 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
     }
 
     public async Task<List<T>> Get(
-        Expression<Func<T, bool>> filter,
+        Expression<Func<T, bool>>? filter,
         Expression<Func<T, object>>? order,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
         ) {
@@ -61,10 +61,10 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         return _context.SaveChangesAsync();
     }
 
-    public async Task<T> Update(T entity) {
+    public Task<T> Update(T entity) {
         _context.Entry(entity).State = EntityState.Detached;
         var updatedEntity = entitySet.Update(entity);
-        return entity;
+        return Task.FromResult(updatedEntity.Entity);
     }
     public async Task<bool> SoftDelete(int Id) {
         T? entity = await GetByID(Id);
