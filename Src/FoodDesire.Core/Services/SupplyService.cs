@@ -35,10 +35,15 @@ public class SupplyService : ISupplyService {
         return supply;
     }
 
-    public async Task<Supply> CreateSupply(Supply supply) {
-        Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
-        ingredient.InSupply = supply.Amount;
+    public async Task<Supply> CreateSupply(int ingredientId, double amount) {
+        Ingredient ingredient = await _ingredientRepository.GetByID(ingredientId);
+        ingredient.InSupply = amount;
         await _ingredientRepository.Update(ingredient);
+
+        Supply supply = new Supply() {
+            IngredientId = ingredientId,
+            Amount = amount,
+        };
         supply = await _supplyRepository.Add(supply);
         return supply;
     }

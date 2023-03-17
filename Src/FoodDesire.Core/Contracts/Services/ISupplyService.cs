@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-internal interface ISupplyService {
-    Task<Supply> CreateSupply(Supply supply);
+public interface ISupplyService {
+    Task<Supply> CreateSupply(int ingredientId, double amount);
     Task<List<Supply>> GetAllSupplies();
     Task<Supply> GetSupplyById(int supplyId);
     Task<List<Supply>> GetAllPendingSupplies();

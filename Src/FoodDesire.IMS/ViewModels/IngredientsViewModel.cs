@@ -30,11 +30,17 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
         IngredientsDetail.Insert(0, _mapper.Map<IngredientDetails>(ingredient));
     }
 
-    public async void DeleteIngredient(int ingredientId) {
+    public async Task DeleteIngredient(int ingredientId) {
         bool deleted = await _ingredientsPageService.DeleteIngredient(ingredientId);
         if (deleted) {
             IngredientDetails ingredientDetails = IngredientsDetail.SingleOrDefault(e => e.Id == ingredientId)!;
             IngredientsDetail.Remove(ingredientDetails);
         }
+    }
+
+    public async Task RequestIngredient(int ingredientId, double amount) {
+        Supply requestedSupply = await _ingredientsPageService.RequestIngredient(ingredientId, amount);
+        int listIndex = IngredientsDetail.IndexOf(IngredientsDetail.SingleOrDefault(e => e.Id == ingredientId)!);
+        IngredientsDetail[listIndex] = _mapper.Map<IngredientDetails>(requestedSupply.Ingredient);
     }
 }

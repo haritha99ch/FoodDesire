@@ -84,9 +84,13 @@
                        Text="{Binding DisplayMaximumQuantity}" />
 
             <ProgressBar Grid.Row="4"
+                         Value="{Binding QuantityWithSupply, Mode=OneWay}"
+                         Maximum="{Binding MaximumQuantity, Mode=OneWay}"
+                         Foreground="Lime"
+                         VerticalAlignment="Bottom" />
+            <ProgressBar Grid.Row="4"
                          Value="{Binding CurrentQuantity, Mode=OneWay}"
                          Maximum="{Binding MaximumQuantity, Mode=OneWay}"
-                         ShowPaused="{Binding IsMediumInventory, Mode=OneWay}"
                          ShowError="{Binding IsLowInventory, Mode=OneWay}"
                          VerticalAlignment="Bottom" />
         </Grid>

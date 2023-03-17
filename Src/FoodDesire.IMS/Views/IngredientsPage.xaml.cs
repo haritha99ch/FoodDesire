@@ -6,7 +6,7 @@ using Windows.Foundation;
 namespace FoodDesire.IMS.Views;
 public sealed partial class IngredientsPage : Page {
     public IngredientsViewModel ViewModel { get; }
-    private IngredientDetails? _ingredientDetails { get; set; }
+    private IngredientDetails? _selectedIngredient { get; set; }
 
     public IngredientsPage() {
         InitializeComponent();
@@ -15,10 +15,9 @@ public sealed partial class IngredientsPage : Page {
     }
 
     private void IngredientList_ItemClick(object sender, ItemClickEventArgs e) {
-        _ingredientDetails = (IngredientDetails)e.ClickedItem;
+        _selectedIngredient = (IngredientDetails)e.ClickedItem;
 
         var listViewItem = IngredientList.ContainerFromItem(e.ClickedItem) as GridViewItem;
-        var index = listViewItem!.TabIndex;
         var transform = listViewItem.TransformToVisual(null);
         var position = transform.TransformPoint(new Point(0, 0));
 
@@ -46,7 +45,7 @@ public sealed partial class IngredientsPage : Page {
 
     private async void RequestButton_Click(object sender, RoutedEventArgs e) {
         CommandBarFlyout.Hide();
-        RequestIngredientDialog dialog = new RequestIngredientDialog(_ingredientDetails!.Id) {
+        RequestIngredientDialog dialog = new RequestIngredientDialog(_selectedIngredient!.Id) {
             XamlRoot = XamlRoot,
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
             DefaultButton = ContentDialogButton.Primary,
@@ -54,13 +53,15 @@ public sealed partial class IngredientsPage : Page {
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
-
-
+        ViewModel.IsLoading = true;
+        double amount = dialog.ViewModel.RequestingAmount;
+        await ViewModel.RequestIngredient(_selectedIngredient.Id, amount);
+        ViewModel.IsLoading = false;
     }
 
     private async void EditButton_Click(object sender, RoutedEventArgs e) {
         CommandBarFlyout.Hide();
-        EditIngredientDialog dialog = new EditIngredientDialog(_ingredientDetails!.Id) {
+        EditIngredientDialog dialog = new EditIngredientDialog(_selectedIngredient!.Id) {
             XamlRoot = XamlRoot,
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
             DefaultButton = ContentDialogButton.Primary,
@@ -68,11 +69,12 @@ public sealed partial class IngredientsPage : Page {
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
+        ViewModel.IsLoading = true;
         Ingredient ingredient = await dialog.ViewModel.EditIngredient();
-        int index = ViewModel.IngredientsDetail.IndexOf(_ingredientDetails);
-        _ingredientDetails = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
-        ViewModel.IngredientsDetail[index] = _ingredientDetails;
-
+        int index = ViewModel.IngredientsDetail.IndexOf(_selectedIngredient);
+        _selectedIngredient = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
+        ViewModel.IngredientsDetail[index] = _selectedIngredient;
+        ViewModel.IsLoading = false;
     }
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e) {
@@ -83,11 +85,13 @@ public sealed partial class IngredientsPage : Page {
             PrimaryButtonText = "Delete",
             CloseButtonText = "Cancel",
             Title = "Delete Ingredient",
-            Content = $"Are you sure you want to delete this ingredient {_ingredientDetails!.Name}?"
+            Content = $"Are you sure you want to delete this ingredient {_selectedIngredient!.Name}?"
         };
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
-        ViewModel.DeleteIngredient(_ingredientDetails.Id);
+        ViewModel.IsLoading = true;
+        await ViewModel.DeleteIngredient(_selectedIngredient.Id);
+        ViewModel.IsLoading = false;
     }
 }

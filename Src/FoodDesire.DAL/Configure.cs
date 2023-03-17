@@ -32,7 +32,7 @@ public static class Configure {
         services.AddScoped<IRepository<Chef>, Repository<Chef>>();
         services.AddScoped<IRepository<Deliverer>, Repository<Deliverer>>();
         services.AddScoped<IRepository<Supplier>, Repository<Supplier>>();
-        services.AddScoped<IRepository<Supply>, IRepository<Supply>>();
+        services.AddScoped<IRepository<Supply>, Repository<Supply>>();
         services.AddScoped<ITrackingRepository<Supply>, TrackingRepository<Supply>>();
         services.AddScoped<ITrackingRepository<IngredientCategory>, TrackingRepository<IngredientCategory>>();
     }

@@ -10,4 +10,5 @@ public interface IIngredientsPageService {
     Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory);
     Task<bool> DeleteIngredient(int ingredientId);
     Task<bool> DeleteIngredientCategory(int ingredientCategoryId);
+    Task<Supply> RequestIngredient(int ingredientId, double amount);
 }
