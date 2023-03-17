@@ -23,6 +23,7 @@ public static class Configure {
         services.AddTransient<ISupplierService, SupplierService>();
         services.AddTransient<IIngredientService, IngredientService>();
         services.AddTransient<IOrderDeliveryService, OrderDeliveryService>();
+        services.AddTransient<ISupplyService, SupplyService>();
     }
 
     public static void ConfigureServices(IServiceCollection services) {

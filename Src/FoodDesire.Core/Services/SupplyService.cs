@@ -26,6 +26,10 @@ public class SupplyService : ISupplyService {
         Supply supply = await _supplyRepository.GetByID(supplyId);
         supply.Status = SupplyStatus.Completed;
         supply.SuppliedDate = DateTime.Now;
+        Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
+        ingredient.CurrentPricePerUnit = (decimal)((double)value / supply.Amount);
+        ingredient.InSupply = 0;
+        await _ingredientRepository.Update(ingredient);
         supply = await _supplyRepository.Update(supply);
         supply = await _paymentService.PaymentForSupply(supply, value);
         return supply;
