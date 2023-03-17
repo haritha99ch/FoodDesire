@@ -22,6 +22,8 @@ public class IngredientDetails {
         Measurement.Each => "each",
         _ => "",
     };
+    public double InSupply { get; set; }
+    public double QuantityWithSupply => CurrentQuantity + InSupply;
     public decimal TotalValue => (decimal)(CurrentQuantity * Convert.ToDouble(CurrentPricePerUnit));
     public double AvailableSpacePerCent => (CurrentQuantity / MaximumQuantity * 100);
     public bool IsLowInventory => CurrentQuantity / MaximumQuantity <= 0.2;
