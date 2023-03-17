@@ -5,7 +5,7 @@ using Windows.Foundation;
 
 namespace FoodDesire.IMS.Views;
 public sealed partial class IngredientsPage : Page {
-    public IngredientsViewModel? ViewModel { get; }
+    public IngredientsViewModel ViewModel { get; }
     private IngredientDetails? _ingredientDetails { get; set; }
 
     public IngredientsPage() {
@@ -36,7 +36,7 @@ public sealed partial class IngredientsPage : Page {
             DefaultButton = ContentDialogButton.Primary,
         };
         var result = await dialog.ShowAsync();
-        ViewModel!.IsLoading = true;
+        ViewModel.IsLoading = true;
         if (result == ContentDialogResult.Primary) {
             Ingredient? ingredient = await dialog.ViewModel.CreateIngredient();
             ViewModel.NewIngredient(ingredient);
@@ -51,8 +51,11 @@ public sealed partial class IngredientsPage : Page {
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
             DefaultButton = ContentDialogButton.Primary,
         };
-
         var result = await dialog.ShowAsync();
+
+        if (result != ContentDialogResult.Primary) return;
+
+
     }
 
     private async void EditButton_Click(object sender, RoutedEventArgs e) {
@@ -66,7 +69,7 @@ public sealed partial class IngredientsPage : Page {
 
         if (result != ContentDialogResult.Primary) return;
         Ingredient ingredient = await dialog.ViewModel.EditIngredient();
-        int index = ViewModel!.IngredientsDetail.IndexOf(_ingredientDetails);
+        int index = ViewModel.IngredientsDetail.IndexOf(_ingredientDetails);
         _ingredientDetails = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
         ViewModel.IngredientsDetail[index] = _ingredientDetails;
 
@@ -85,6 +88,6 @@ public sealed partial class IngredientsPage : Page {
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
-        ViewModel!.DeleteIngredient(_ingredientDetails.Id);
+        ViewModel.DeleteIngredient(_ingredientDetails.Id);
     }
 }

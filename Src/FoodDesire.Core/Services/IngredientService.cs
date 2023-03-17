@@ -3,15 +3,18 @@ public class IngredientService : IIngredientService {
     private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly ITrackingRepository<IngredientCategory> _ingredientCategoryTRepository;
     private readonly IPaymentService _paymentService;
+    private readonly ITrackingRepository<Supply> _supplyTRepository;
 
     public IngredientService(
         IRepository<Ingredient> ingredientRepository,
         IPaymentService paymentService,
-        ITrackingRepository<IngredientCategory> categoryRepository
+        ITrackingRepository<IngredientCategory> categoryRepository,
+        ITrackingRepository<Supply> supplyTRepository
         ) {
         _ingredientRepository = ingredientRepository;
         _paymentService = paymentService;
         _ingredientCategoryTRepository = categoryRepository;
+        _supplyTRepository = supplyTRepository;
     }
 
     public async Task<IngredientCategory> NewIngredientCategory(IngredientCategory ingredientCategory) {
@@ -89,13 +92,13 @@ public class IngredientService : IIngredientService {
         return deleted;
     }
 
-    public async Task<Supply> NewSupply(Supply supply, decimal value) {
+    public async Task<Supply> NewSupply(Supply supply) {
+        supply = await _supplyTRepository.Add(supply);
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
-        ingredient.CurrentQuantity += supply.Amount;
-        ingredient.CurrentPricePerUnit = (decimal)(Convert.ToDouble(value) / supply.Amount);
-        Payment payment = await _paymentService.PaymentForSupply(supply, value);
+        ingredient.InSupply = supply.Amount;
+        await _supplyTRepository.SaveChanges();
         await _ingredientRepository.Update(ingredient);
-        return payment.Supply!;
+        return supply;
     }
 
     public async Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory) {

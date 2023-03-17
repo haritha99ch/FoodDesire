@@ -16,7 +16,7 @@
         <CommandBarFlyout Placement="BottomEdgeAlignedRight"
                           x:Name="CommandBarFlyout">
             <AppBarButton Label="Request"
-                          Icon="Forward"
+                          Icon="Import"
                           ToolTipService.ToolTip="Request"
                           Click="RequestButton_Click"/>
             <AppBarButton Label="Edit"

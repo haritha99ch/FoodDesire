@@ -15,6 +15,7 @@ public sealed class Ingredient : TrackedEntity {
     public double CurrentQuantity { get; set; }
     [Required]
     public int IngredientCategoryId { get; set; }
+    public double InSupply { get; set; } = 0;
 
 
     [ForeignKey(nameof(IngredientCategoryId))]
