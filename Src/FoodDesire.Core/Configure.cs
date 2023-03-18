@@ -17,6 +17,8 @@ public static class Configure {
         services.AddTransient<ICustomerService, CustomerService>();
         services.AddTransient<ICustomerOrderService, CustomerOrderService>();
 
+        services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IAdminService, AdminService>();
         services.AddTransient<IChefService, ChefService>();
         services.AddTransient<IDelivererService, DelivererService>();

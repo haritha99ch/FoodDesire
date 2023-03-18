@@ -43,4 +43,11 @@ public class ChefService : IChefService {
         Chef updatedChef = await _chefRepository.Update(user);
         return updatedChef;
     }
+
+    public async Task<Chef> GetByEmail(string email) {
+        Expression<Func<Chef, bool>> filter = e => e.Employee!.User!.Account!.Email.Equals(email);
+
+        Chef? chef = await _chefRepository.GetOne(filter);
+        return chef!;
+    }
 }

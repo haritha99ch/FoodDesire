@@ -38,4 +38,11 @@ public class CustomerService : ICustomerService {
         Customer updatedCustomer = await _customerRepository.Update(user);
         return updatedCustomer;
     }
+
+    public async Task<Customer> GetByEmail(string email) {
+        Expression<Func<Customer, bool>> filter = e => e!.User!.Account!.Email.Equals(email);
+
+        Customer? customer = await _customerRepository.GetOne(filter);
+        return customer!;
+    }
 }

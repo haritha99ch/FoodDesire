@@ -4,6 +4,7 @@ public interface IUserService<T> {
     Task<T> GetById(int id);
     Task<List<T>> GetAll();
     Task<T> GetByEmailAndPassword(string email, string password);
+    Task<T> GetByEmail(string email);
     Task<T> UpdateAccount(T user);
     Task<bool> DeleteAccountById(int id);
 }

@@ -44,4 +44,11 @@ public class DelivererService : IDelivererService {
         Deliverer updatedDeliverer = await _delivererRepository.Update(user);
         return updatedDeliverer;
     }
+
+    public async Task<Deliverer> GetByEmail(string email) {
+        Expression<Func<Deliverer, bool>> filter = e => e.Employee!.User!.Account!.Email.Equals(email);
+
+        Deliverer? deliverer = await _delivererRepository.GetOne(filter);
+        return deliverer!;
+    }
 }

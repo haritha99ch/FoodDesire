@@ -45,4 +45,11 @@ public class SupplierService : ISupplierService {
         await _userRepository.SaveChanges();
         return updatedSupplier;
     }
+
+    public async Task<Supplier> GetByEmail(string email) {
+        Expression<Func<Supplier, bool>> filter = e => e.Employee!.User!.Account!.Email.Equals(email);
+
+        Supplier? supplier = await _supplierRepository.GetOne(filter);
+        return supplier!;
+    }
 }
