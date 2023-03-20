@@ -41,6 +41,7 @@ public sealed partial class ShellPage : Page {
             await ViewModel.AuthenticateUser(App.Configuration["ClientId"]!);
             dialog.Content = "Invalid Sign in. Please Try Again";
         }
+        await ViewModel.GetUser();
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) {

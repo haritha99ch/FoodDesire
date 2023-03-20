@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Windows.ApplicationModel;
 
 namespace FoodDesire.IMS.ViewModels;
-public class SettingsViewModel : ObservableRecipient {
+public partial class SettingsViewModel : ObservableRecipient {
     private readonly IThemeSelectorService _themeSelectorService;
     private ElementTheme _elementTheme;
     private string _versionDescription;

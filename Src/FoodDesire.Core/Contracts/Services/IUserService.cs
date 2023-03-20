@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
-public interface IUserService<T> {
+public interface IUserService<T> where T : BaseUser {
     Task<T> CreateAccount(T user);
     Task<T> GetById(int id);
     Task<List<T>> GetAll();
@@ -8,3 +8,4 @@ public interface IUserService<T> {
     Task<T> UpdateAccount(T user);
     Task<bool> DeleteAccountById(int id);
 }
+

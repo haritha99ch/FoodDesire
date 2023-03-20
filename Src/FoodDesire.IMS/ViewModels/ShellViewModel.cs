@@ -1,7 +1,7 @@
 ﻿using FoodDesire.Core.Contracts.Services;
 
 namespace FoodDesire.IMS.ViewModels;
-public class ShellViewModel : ObservableRecipient {
+public partial class ShellViewModel : ObservableRecipient {
     private bool _isBackEnabled;
     private object? _selected;
 
@@ -20,6 +20,15 @@ public class ShellViewModel : ObservableRecipient {
         set => SetProperty(ref _selected, value);
     }
 
+    [ObservableProperty]
+    private Admin? _admin;
+    [ObservableProperty]
+    private Chef? _chef;
+    [ObservableProperty]
+    private Supplier? _supplier;
+    [ObservableProperty]
+    private Deliverer? _deliverer;
+
     public ShellViewModel(
         INavigationService navigationService,
         INavigationViewService navigationViewService,
@@ -31,6 +40,7 @@ public class ShellViewModel : ObservableRecipient {
         NavigationViewService = navigationViewService;
         _authenticationService = authenticationService;
         _localSettingsService = localSettingsService;
+
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e) {
@@ -51,5 +61,24 @@ public class ShellViewModel : ObservableRecipient {
         App.CurrentUserAccount = await _authenticationService.AuthenticateUser(clientId);
         if (App.CurrentUserAccount == null) return;
         await _localSettingsService.SaveSettingAsync<Account>("CurrentUser", App.CurrentUserAccount);
+    }
+
+
+    public async Task GetUser() {
+        if (App.CurrentUserAccount == null) return;
+        switch (App.CurrentUserAccount.Role) {
+            case Role.Admin:
+                Admin = await App.GetService<IUserService<Admin>>().GetByEmail(App.CurrentUserAccount.Email);
+                break;
+            case Role.Chef:
+                Chef = await App.GetService<IUserService<Chef>>().GetByEmail(App.CurrentUserAccount.Email);
+                break;
+            case Role.Deliverer:
+                Deliverer = await App.GetService<IUserService<Deliverer>>().GetByEmail(App.CurrentUserAccount.Email);
+                break;
+            case Role.Supplier:
+                Supplier = await App.GetService<IUserService<Supplier>>().GetByEmail(App.CurrentUserAccount.Email);
+                break;
+        }
     }
 }
