@@ -23,6 +23,24 @@ public sealed partial class ShellPage : Page {
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
+        Loaded += HomePage_Loaded;
+    }
+
+    private async void HomePage_Loaded(object sender, RoutedEventArgs e) {
+        ContentDialog dialog = new ContentDialog() {
+            XamlRoot = XamlRoot,
+            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
+            PrimaryButtonText = "Sign in",
+            DefaultButton = ContentDialogButton.Primary,
+            Title = "Sign in to FoodDesire",
+            Content = "To Continue, Please Sign in",
+        };
+
+        while (App.CurrentUserAccount == null) {
+            await dialog.ShowAsync();
+            await ViewModel.AuthenticateUser(App.Configuration["ClientId"]!);
+            dialog.Content = "Invalid Sign in. Please Try Again";
+        }
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) {

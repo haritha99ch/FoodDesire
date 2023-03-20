@@ -35,7 +35,13 @@ public partial class App : Application {
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args) {
+        await GetCurrentUser();
         base.OnLaunched(args);
         await GetService<IActivationService>().ActivateAsync(args);
+    }
+
+    private async Task GetCurrentUser() {
+        CurrentUserAccount = await GetService<ILocalSettingsService>()
+            .ReadSettingAsync<Account>("CurrentUser");
     }
 }
