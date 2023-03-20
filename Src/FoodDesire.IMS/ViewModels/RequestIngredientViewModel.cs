@@ -19,10 +19,10 @@ public partial class RequestIngredientViewModel : ObservableObject, IInitializab
         _ingredientsPageService = App.GetService<IIngredientsPageService>();
         _ingredientId = ingredientId;
         _ingredientDetails = new();
-        OnInit();
+        _ = OnInit();
     }
 
-    public async void OnInit() {
+    public async Task OnInit() {
         Ingredient ingredient = await _ingredientsPageService.GetIngredientById(IngredientId);
         IngredientDetails = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
         currentAmount = IngredientDetails.CurrentQuantity;

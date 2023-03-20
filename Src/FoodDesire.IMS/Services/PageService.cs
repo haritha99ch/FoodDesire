@@ -6,6 +6,7 @@ public class PageService : IPageService {
         Configure<HomeViewModel, HomePage>();
         Configure<IngredientsViewModel, IngredientsPage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<EmployeesViewModel, EmployeesPage>();
     }
 
     public Type GetPageType(string key) {

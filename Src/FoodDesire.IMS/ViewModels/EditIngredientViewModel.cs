@@ -9,10 +9,10 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
     public EditIngredientViewModel(int ingredientId) {
         _ingredientsPageService = App.GetService<IIngredientsPageService>();
         _ingredientId = ingredientId;
-        OnInit();
+        _ = OnInit();
     }
 
-    public async void OnInit() {
+    public async Task OnInit() {
         _ingredient = await _ingredientsPageService.GetIngredientById(_ingredientId);
         List<IngredientCategory> ingredientCategories = await _ingredientsPageService.GetAllIngredientCategory();
         ingredientCategories.ForEach(IngredientCategories.Add);

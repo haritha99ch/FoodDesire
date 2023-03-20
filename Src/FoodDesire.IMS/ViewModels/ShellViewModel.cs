@@ -1,6 +1,4 @@
-﻿using FoodDesire.Core.Contracts.Services;
-
-namespace FoodDesire.IMS.ViewModels;
+﻿namespace FoodDesire.IMS.ViewModels;
 public partial class ShellViewModel : ObservableRecipient {
     private bool _isBackEnabled;
     private object? _selected;
@@ -9,6 +7,9 @@ public partial class ShellViewModel : ObservableRecipient {
     private readonly IAuthenticationService _authenticationService;
     private readonly ILocalSettingsService _localSettingsService;
     public INavigationViewService NavigationViewService { get; }
+
+    [ObservableProperty]
+    private User _user;
 
     public bool IsBackEnabled {
         get => _isBackEnabled;
@@ -60,7 +61,7 @@ public partial class ShellViewModel : ObservableRecipient {
     public async Task AuthenticateUser(string clientId) {
         App.CurrentUserAccount = await _authenticationService.AuthenticateUser(clientId);
         if (App.CurrentUserAccount == null) return;
-        await _localSettingsService.SaveSettingAsync<Account>("CurrentUser", App.CurrentUserAccount);
+        await _localSettingsService.SaveSettingAsync<string>("CurrentUser", App.CurrentUserAccount.Email);
     }
 
 
@@ -80,5 +81,7 @@ public partial class ShellViewModel : ObservableRecipient {
                 Supplier = await App.GetService<IUserService<Supplier>>().GetByEmail(App.CurrentUserAccount.Email);
                 break;
         }
+
+        User = App.CurrentUserAccount.User!;
     }
 }

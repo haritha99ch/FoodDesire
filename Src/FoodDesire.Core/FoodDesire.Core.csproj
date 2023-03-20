@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
+    <PackageReference Include="Microsoft.Graph" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
     <ProjectReference Include="..\FoodDesire.Models\FoodDesire.Models.csproj" />
   </ItemGroup>

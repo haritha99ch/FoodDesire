@@ -162,4 +162,7 @@
   <data name="Currency.Text" xml:space="preserve">
     <value>Rs. </value>
   </data>
+  <data name="Shell_Employees.Content" xml:space="preserve">
+    <value>Employees</value>
+  </data>
 </root>

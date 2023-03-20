@@ -13,10 +13,10 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
     public IngredientsViewModel(IIngredientsPageService ingredientsPageService, IMapper mapper) {
         _mapper = mapper;
         _ingredientsPageService = ingredientsPageService;
-        OnInit();
+        _ = OnInit();
     }
 
-    public async void OnInit() {
+    public async Task OnInit() {
         List<Ingredient> ingredients = await _ingredientsPageService.GetAllIngredients();
         List<IngredientDetails>? ingredientsDetails = ingredients
             .Select(_mapper.Map<IngredientDetails>)

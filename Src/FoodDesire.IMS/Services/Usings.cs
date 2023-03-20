@@ -1,4 +1,5 @@
-﻿global using FoodDesire.IMS.Contracts.Services;
+﻿global using FoodDesire.Core.Contracts.Services;
+global using FoodDesire.IMS.Contracts.Services;
 global using FoodDesire.IMS.Contracts.ViewModels;
 global using FoodDesire.IMS.Core.Contracts.Services;
 global using FoodDesire.IMS.Core.Helpers;

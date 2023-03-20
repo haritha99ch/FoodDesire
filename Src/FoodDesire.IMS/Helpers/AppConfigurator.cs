@@ -21,6 +21,7 @@ internal static class AppConfigurator {
         // Core Services
         string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
         Core.Configure.ConfigureServices(services, connectionString);
+        services.AddTransient<IEmployeePageService, EmployeePageService>();
 
         // Services
         services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -45,6 +46,8 @@ internal static class AppConfigurator {
         services.AddTransient<IngredientsPage>();
         services.AddTransient<ShellViewModel>();
         services.AddTransient<ShellPage>();
+        services.AddTransient<EmployeesViewModel>();
+        services.AddTransient<EmployeesPage>();
 
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

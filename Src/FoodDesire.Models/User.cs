@@ -13,12 +13,12 @@ public class User : TrackedEntity {
         }
     }
     private DateTime _dateOfBirth { get; set; }
-    [Required]
-    public int Age { get; private set; } = 0;
-    [Required]
-    public Gender Gender { get; set; }
-    [Required]
-    public int AddressId { get; set; }
+    [AllowNull]
+    public int? Age { get; private set; }
+    [AllowNull]
+    public Gender? Gender { get; set; }
+    [AllowNull]
+    public int? AddressId { get; set; }
     [Required]
     public int AccountId { get; set; }
 

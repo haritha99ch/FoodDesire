@@ -5,10 +5,10 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
 
     public NewIngredientFormViewModel() {
         _ingredientsPageService = App.GetService<IIngredientsPageService>();
-        OnInit();
+        _ = OnInit();
     }
 
-    public async void OnInit() {
+    public async Task OnInit() {
         List<IngredientCategory> ingredientCategories = await _ingredientsPageService.GetAllIngredientCategory();
         ingredientCategories.ForEach(IngredientCategories.Add);
         Category = Categories.FirstOrDefault();

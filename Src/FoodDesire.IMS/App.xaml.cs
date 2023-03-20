@@ -41,7 +41,8 @@ public partial class App : Application {
     }
 
     private async Task GetCurrentUser() {
-        CurrentUserAccount = await GetService<ILocalSettingsService>()
-            .ReadSettingAsync<Account>("CurrentUser");
+        string? email = await GetService<ILocalSettingsService>().ReadSettingAsync<string>("CurrentUser");
+        if (email == null) return;
+        CurrentUserAccount = await GetService<IAccountService>().GetAccountByEmail(email);
     }
 }
