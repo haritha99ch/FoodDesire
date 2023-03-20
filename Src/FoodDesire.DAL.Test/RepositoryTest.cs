@@ -106,23 +106,21 @@ public class RepositoryTest {
     [Test, Order(3)]
     public async Task CreateChef() {
         Chef chef = new Chef() {
-            Employee = new Employee() {
-                User = new User() {
-                    FirstName = "Test",
-                    LastName = "Test",
-                    DateOfBirth = new DateTime(1999, 6, 18),
-                    Gender = Gender.Male,
-                    Address = new Address() {
-                        No = "1/156",
-                        Street1 = "Nilmini",
-                        Street2 = "Kahagolla",
-                        City = "Diyatalawa",
-                        PostalCode = 19150
-                    },
-                    Account = new Account() {
-                        Email = "chef@outlook.com",
-                        Password = "asd123",
-                    },
+            User = new User() {
+                FirstName = "Test",
+                LastName = "Test",
+                DateOfBirth = new DateTime(1999, 6, 18),
+                Gender = Gender.Male,
+                Address = new Address() {
+                    No = "1/156",
+                    Street1 = "Nilmini",
+                    Street2 = "Kahagolla",
+                    City = "Diyatalawa",
+                    PostalCode = 19150
+                },
+                Account = new Account() {
+                    Email = "chef@outlook.com",
+                    Password = "asd123",
                 },
             },
         };
@@ -134,23 +132,21 @@ public class RepositoryTest {
     [Test, Order(4)]
     public async Task CreateSupplier() {
         Supplier supplier = new Supplier() {
-            Employee = new Employee() {
-                User = new User() {
-                    FirstName = "Test",
-                    LastName = "Test",
-                    DateOfBirth = new DateTime(1999, 6, 18),
-                    Gender = Gender.Male,
-                    Address = new Address() {
-                        No = "1/156",
-                        Street1 = "Nilmini",
-                        Street2 = "Kahagolla",
-                        City = "Diyatalawa",
-                        PostalCode = 19150
-                    },
-                    Account = new Account() {
-                        Email = "supplier@outlook.com",
-                        Password = "asd123",
-                    },
+            User = new User() {
+                FirstName = "Test",
+                LastName = "Test",
+                DateOfBirth = new DateTime(1999, 6, 18),
+                Gender = Gender.Male,
+                Address = new Address() {
+                    No = "1/156",
+                    Street1 = "Nilmini",
+                    Street2 = "Kahagolla",
+                    City = "Diyatalawa",
+                    PostalCode = 19150
+                },
+                Account = new Account() {
+                    Email = "supplier@outlook.com",
+                    Password = "asd123",
                 },
             },
             City = "Diyatalawa"
@@ -163,23 +159,21 @@ public class RepositoryTest {
     [Test, Order(5)]
     public async Task CreateDeliverer() {
         Deliverer deliverer = new Deliverer() {
-            Employee = new Employee() {
-                User = new User() {
-                    FirstName = "Test",
-                    LastName = "Test",
-                    DateOfBirth = new DateTime(1999, 6, 18),
-                    Gender = Gender.Male,
-                    Address = new Address() {
-                        No = "1/156",
-                        Street1 = "Nilmini",
-                        Street2 = "Kahagolla",
-                        City = "Diyatalawa",
-                        PostalCode = 19150
-                    },
-                    Account = new Account() {
-                        Email = "deliverer@outlook.com",
-                        Password = "asd123",
-                    },
+            User = new User() {
+                FirstName = "Test",
+                LastName = "Test",
+                DateOfBirth = new DateTime(1999, 6, 18),
+                Gender = Gender.Male,
+                Address = new Address() {
+                    No = "1/156",
+                    Street1 = "Nilmini",
+                    Street2 = "Kahagolla",
+                    City = "Diyatalawa",
+                    PostalCode = 19150
+                },
+                Account = new Account() {
+                    Email = "deliverer@outlook.com",
+                    Password = "asd123",
                 },
             },
             VehicleType = VehicleType.Bike,
