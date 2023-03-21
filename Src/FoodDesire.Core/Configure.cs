@@ -19,6 +19,8 @@ public static class Configure {
 
         services.AddTransient<IAuthenticationService, AuthenticationService>();
         services.AddTransient<IAccountService, AccountService>();
+        services.AddTransient<ICoreUserService, CoreUserService>();
+
         services.AddTransient<IAdminService, AdminService>();
         services.AddTransient<IChefService, ChefService>();
         services.AddTransient<IDelivererService, DelivererService>();
@@ -28,6 +30,7 @@ public static class Configure {
         services.AddTransient<IUserService<Supplier>, UserService<Supplier>>();
         services.AddTransient<IUserService<Deliverer>, UserService<Deliverer>>();
         services.AddTransient<IUserService<Customer>, UserService<Customer>>();
+
         services.AddTransient<IIngredientService, IngredientService>();
         services.AddTransient<IOrderDeliveryService, OrderDeliveryService>();
         services.AddTransient<ISupplyService, SupplyService>();

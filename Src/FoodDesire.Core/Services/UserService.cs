@@ -1,6 +1,7 @@
 ﻿namespace FoodDesire.Core.Services;
 public class UserService<T> : IUserService<T> where T : BaseUser {
     private readonly IRepository<T> _userRepository;
+
     public UserService(IRepository<T> userRepository) {
         _userRepository = userRepository;
     }
@@ -22,8 +23,9 @@ public class UserService<T> : IUserService<T> where T : BaseUser {
     public async Task<T> GetByEmailAndPassword(string email, string password) {
         Expression<Func<T, bool>> filter =
             e => e.User!.Account!.Email.Equals(email) && e.User!.Account!.Password!.Equals(password);
+        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = e => e.Include(e => e.User!).ThenInclude(e => e.Account!);
 
-        T user = await _userRepository.GetOne(filter);
+        T user = await _userRepository.GetOne(filter, include);
         return user;
     }
 
@@ -39,8 +41,8 @@ public class UserService<T> : IUserService<T> where T : BaseUser {
 
     public async Task<T> GetByEmail(string email) {
         Expression<Func<T, bool>> filter = e => e!.User!.Account!.Email.Equals(email);
-
-        T? user = await _userRepository.GetOne(filter);
+        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = e => e.Include(e => e.User!).ThenInclude(e => e.Account!);
+        T? user = await _userRepository.GetOne(filter, include);
         return user;
     }
 }

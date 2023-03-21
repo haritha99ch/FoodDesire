@@ -1,4 +1,8 @@
-﻿namespace FoodDesire.IMS.ViewModels;
+﻿using Microsoft.UI.Xaml.Media.Imaging;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Storage.Streams;
+
+namespace FoodDesire.IMS.ViewModels;
 public partial class ShellViewModel : ObservableRecipient {
     private bool _isBackEnabled;
     private object? _selected;
@@ -9,7 +13,14 @@ public partial class ShellViewModel : ObservableRecipient {
     public INavigationViewService NavigationViewService { get; }
 
     [ObservableProperty]
-    private User _user;
+    [NotifyPropertyChangedFor(nameof(FullName))]
+    private User? _user;
+
+    public string FullName => $"{User?.FirstName} {User?.LastName}";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(FullName))]
+    private BitmapImage _profilePicture;
 
     public bool IsBackEnabled {
         get => _isBackEnabled;
@@ -41,7 +52,7 @@ public partial class ShellViewModel : ObservableRecipient {
         NavigationViewService = navigationViewService;
         _authenticationService = authenticationService;
         _localSettingsService = localSettingsService;
-
+        _ = GetUser();
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e) {
@@ -59,9 +70,10 @@ public partial class ShellViewModel : ObservableRecipient {
     }
 
     public async Task AuthenticateUser(string clientId) {
-        App.CurrentUserAccount = await _authenticationService.AuthenticateUser(clientId);
+        App.CurrentUserAccount = await _authenticationService.AcquireAccount();
         if (App.CurrentUserAccount == null) return;
-        await _localSettingsService.SaveSettingAsync<string>("CurrentUser", App.CurrentUserAccount.Email);
+        await _localSettingsService.SaveSettingAsync<string>("CurrentUserToken", _authenticationService.AcquireAccessToken());
+        await GetUser();
     }
 
 
@@ -70,18 +82,33 @@ public partial class ShellViewModel : ObservableRecipient {
         switch (App.CurrentUserAccount.Role) {
             case Role.Admin:
                 Admin = await App.GetService<IUserService<Admin>>().GetByEmail(App.CurrentUserAccount.Email);
+                User = Admin.User;
                 break;
             case Role.Chef:
                 Chef = await App.GetService<IUserService<Chef>>().GetByEmail(App.CurrentUserAccount.Email);
+                User = Chef.User;
                 break;
             case Role.Deliverer:
                 Deliverer = await App.GetService<IUserService<Deliverer>>().GetByEmail(App.CurrentUserAccount.Email);
+                User = Deliverer.User;
                 break;
             case Role.Supplier:
                 Supplier = await App.GetService<IUserService<Supplier>>().GetByEmail(App.CurrentUserAccount.Email);
+                User = Supplier.User;
                 break;
         }
+        App.CurrentUserAccount = User!.Account;
 
-        User = App.CurrentUserAccount.User!;
+        byte[] imageData = Convert.FromBase64String(User!.Account!.ProfilePicture!);
+
+        using InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
+        await stream.WriteAsync(imageData.AsBuffer());
+        stream.Seek(0);
+
+        BitmapImage image = new BitmapImage();
+        await image.SetSourceAsync(stream);
+
+        ProfilePicture = image;
+        stream.Dispose();
     }
 }

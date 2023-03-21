@@ -1,5 +1,9 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
 public interface IAuthenticationService {
-    Task<Account> AuthenticateUser(string clientId);
-    Task<User> NewUser(string clientId);
+    Task<User> NewUser();
+    Task<Account> AcquireAccount();
+    Task<User> UpdateUser(int userAccountId, string accessToken);
+    string AcquireAccessToken();
+    Task<Account> AcquireAccount(string accessToken);
+
 }

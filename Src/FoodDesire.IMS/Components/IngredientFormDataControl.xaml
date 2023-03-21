@@ -8,9 +8,7 @@
              xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converters:BoolToVisibilityConverter  x:Key="BoolToVisibilityConverterInverse"
-                                               FalseValue="Visible"
-                                               TrueValue="Collapsed"/>
+        <converters:BoolToVisibilityConverter  x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -67,7 +65,7 @@
                          VerticalAlignment="Bottom"
                          IsIndeterminate="True"
                          Style="{StaticResource LoadingPrograssBar}"
-                         Visibility="{x:Bind ViewModel.IsCategoriesLoaded, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterInverse}}" />
+                         Visibility="{x:Bind ViewModel.IsCategoriesLoaded, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}" />
             <Button x:Name="NewCategoryButton" Grid.Column="1"
                     HorizontalAlignment="Right"
                     Click="NewCategoryButton_Click">

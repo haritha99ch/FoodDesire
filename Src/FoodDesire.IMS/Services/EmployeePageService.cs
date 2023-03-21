@@ -18,7 +18,7 @@ public class EmployeePageService : IEmployeePageService {
     }
 
     public async Task<Chef> NewChef() {
-        User user = await _authenticationService.NewUser(App.Configuration["ClientId"]!);
+        User user = await _authenticationService.NewUser();
         user.Account!.Role = Role.Chef;
         Chef chef = new Chef() {
             User = user,

@@ -25,6 +25,7 @@ public static class Configure {
         services.AddScoped<IRepository<Account>, Repository<Account>>();
         services.AddScoped<ITrackingRepository<Payment>, TrackingRepository<Payment>>();
         services.AddScoped<ITrackingRepository<User>, TrackingRepository<User>>();
+        services.AddScoped<IRepository<User>, Repository<User>>();
         services.AddScoped<IRepository<RecipeCategory>, Repository<RecipeCategory>>();
         services.AddScoped<IRepository<Recipe>, Repository<Recipe>>();
         services.AddScoped<IRepository<Customer>, Repository<Customer>>();
