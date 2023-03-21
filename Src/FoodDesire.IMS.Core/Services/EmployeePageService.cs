@@ -1,4 +1,4 @@
-﻿namespace FoodDesire.IMS.Services;
+﻿namespace FoodDesire.IMS.Core.Services;
 public class EmployeePageService : IEmployeePageService {
     private readonly IUserService<Chef> _chefUserService;
     private readonly IUserService<Supplier> _supplierUserService;

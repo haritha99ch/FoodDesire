@@ -21,7 +21,6 @@ internal static class AppConfigurator {
         // Core Services
         string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
         Core.Configure.ConfigureServices(services, connectionString);
-        services.AddTransient<IEmployeePageService, EmployeePageService>();
 
         // Services
         services.AddSingleton<ILocalSettingsService, LocalSettingsService>();

@@ -1,5 +1,4 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-
 public class EmployeesViewModel : ObservableRecipient {
     private readonly IEmployeePageService _employeePageService;
     public EmployeesViewModel(IEmployeePageService employeePageService) {
