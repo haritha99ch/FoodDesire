@@ -45,11 +45,11 @@ public class Repository<T> : IRepository<T> where T : Entity {
         Expression<Func<T, object>>? order = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
         ) {
-        IQueryable<T> query = entitySet;
+        IQueryable<T> query = entitySet.AsNoTracking();
 
+        if (includes != null) query = includes(query);
         if (filter != null) query = query.Where(filter);
         if (order != null) query = query.OrderBy(order);
-        if (includes != null) query = includes(query);
 
         List<T> entities = await query.ToListAsync();
         return entities;

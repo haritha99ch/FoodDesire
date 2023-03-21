@@ -32,21 +32,28 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     private async Task AcquireProfile(string accessToken) {
-        _profile = await "https://graph.microsoft.com/beta/me/profile"
-            .WithOAuthBearerToken(accessToken)
-            .GetJsonAsync();
+        try {
+            _profile = await "https://graph.microsoft.com/beta/me/profile"
+                .WithOAuthBearerToken(accessToken)
+                .GetJsonAsync();
+        } catch (Exception) {
+            _profile = null;
+        }
     }
 
     private async Task<User> AcquireUser(string accessToken) {
         await AcquireProfile(accessToken);
 
         dynamic? birthDay = (_profile!.anniversaries as List<dynamic>)!.SingleOrDefault(e => (e.type as string)!.Equals("birthday"));
+        byte[]? profilePicture;
+        try {
+            profilePicture = await "https://graph.microsoft.com/v1.0/me/photo/$value"
+                 .WithOAuthBearerToken(accessToken)
+                 .GetBytesAsync();
+        } catch (Exception) {
+            profilePicture = null;
+        }
 
-        byte[]? profilePicture = await "https://graph.microsoft.com/v1.0/me/photo/$value"
-            .WithOAuthBearerToken(accessToken)
-            .GetBytesAsync();
-
-        string? profilePictureB64 = Convert.ToBase64String(profilePicture);
 
         User user = new User() {
             FirstName = _profile.names[0].first,
@@ -54,7 +61,7 @@ public class AuthenticationService : IAuthenticationService {
             DateOfBirth = DateTime.Parse(birthDay!.date),
             Account = new Account() {
                 Email = _profile.account[0].userPrincipalName,
-                ProfilePicture = profilePictureB64
+                ProfilePicture = profilePicture
             }
         };
         return user;
@@ -67,16 +74,20 @@ public class AuthenticationService : IAuthenticationService {
     public async Task<Account> AcquireAccount() {
         await AuthenticateUser();
         string userName = _result!.Account.Username;
-        Account? Account = await _accountService.GetAccountByEmail(userName);
-        if (Account != null) await UpdateUser(Account.Id, _result!.AccessToken);
-        return Account!;
+        Account? account = await _accountService.GetAccountByEmail(userName);
+        if (account != null) await UpdateUser(account.Id, _result!.AccessToken);
+        return account!;
     }
 
     public async Task<Account> AcquireAccount(string accessToken) {
         await AcquireProfile(accessToken);
-        Account? Account = await _accountService.GetAccountByEmail(_profile!.account[0].userPrincipalName);
-        if (Account != null) await UpdateUser(Account.Id, accessToken);
-        return Account!;
+        if (_profile == null) return null!;
+
+        var account = await _accountService.GetAccountByEmail(_profile!.account[0].userPrincipalName);
+        if (account == null) return null!;
+
+        await UpdateUser(account.Id, accessToken);
+        return account;
     }
 
     public async Task<User> NewUser() {
@@ -102,7 +113,7 @@ public class AuthenticationService : IAuthenticationService {
             currentUser.Account.Email = acquiredUser.Account.Email;
             hasUpdate = true;
         }
-        if (!string.Equals(acquiredUser.Account!.ProfilePicture, currentUser.Account!.ProfilePicture)) {
+        if (acquiredUser.Account!.ProfilePicture!.Equals(currentUser.Account!.ProfilePicture)) {
             currentUser.Account.ProfilePicture = acquiredUser.Account.ProfilePicture;
             hasUpdate = true;
         }

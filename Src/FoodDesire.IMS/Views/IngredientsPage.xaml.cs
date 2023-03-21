@@ -18,7 +18,7 @@ public sealed partial class IngredientsPage : Page {
         _selectedIngredient = (IngredientDetails)e.ClickedItem;
 
         var listViewItem = IngredientList.ContainerFromItem(e.ClickedItem) as GridViewItem;
-        var transform = listViewItem.TransformToVisual(null);
+        var transform = listViewItem!.TransformToVisual(null);
         var position = transform.TransformPoint(new Point(0, 0));
 
         var options = new FlyoutShowOptions {

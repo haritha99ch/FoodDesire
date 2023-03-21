@@ -99,7 +99,8 @@ public partial class ShellViewModel : ObservableRecipient {
         }
         App.CurrentUserAccount = User!.Account;
 
-        byte[] imageData = Convert.FromBase64String(User!.Account!.ProfilePicture!);
+        if (User.Account!.ProfilePicture == null) return;
+        byte[] imageData = User.Account!.ProfilePicture;
 
         using InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
         await stream.WriteAsync(imageData.AsBuffer());

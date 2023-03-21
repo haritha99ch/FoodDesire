@@ -9,7 +9,7 @@ public sealed class Account : Entity {
     public string? VerifyCode { get; set; }
     [Required]
     public Role Role { get; set; }
-    public string? ProfilePicture { get; set; }
+    public byte[]? ProfilePicture { get; set; }
 
     public User? User { get; set; }
 }

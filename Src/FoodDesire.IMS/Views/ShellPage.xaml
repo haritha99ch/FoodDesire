@@ -81,11 +81,9 @@
                                   Glyph="&#xe7c3;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Employees"
-                                    helpers:NavigationHelper.NavigateTo="FoodDesire.IMS.ViewModels.EmployeesViewModel">
+                <NavigationViewItem x:Uid="Shell_Employees" helpers:NavigationHelper.NavigateTo="FoodDesire.IMS.ViewModels.EmployeesViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe7c3;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
