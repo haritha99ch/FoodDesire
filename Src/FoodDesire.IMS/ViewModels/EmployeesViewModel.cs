@@ -1,12 +1,32 @@
-﻿namespace FoodDesire.IMS.ViewModels;
-public class EmployeesViewModel : ObservableRecipient {
+﻿using AutoMapper;
+using System.Collections.ObjectModel;
+
+namespace FoodDesire.IMS.ViewModels;
+
+public partial class EmployeesViewModel : ObservableRecipient, INavigationAware {
     private readonly IEmployeePageService _employeePageService;
-    public EmployeesViewModel(IEmployeePageService employeePageService) {
+    private readonly IMapper _mapper;
+
+    [ObservableProperty]
+    private UserDetail? _selected;
+    public ObservableCollection<UserDetail> Users { get; private set; } = new();
+
+
+    public EmployeesViewModel(IEmployeePageService employeePageService, IMapper mapper) {
         _employeePageService = employeePageService;
-        OnInit();
+        _mapper = mapper;
     }
 
-    public async void OnInit() {
-        Chef user = await _employeePageService.NewChef();
+    public async void OnNavigatedTo(object parameter) {
+        List<User> users = await _employeePageService.GetAllEmployees();
+        users.ForEach(e => Users.Add(_mapper.Map<UserDetail>(e)));
+    }
+
+    public void OnNavigatedFrom() {
+    }
+
+    public void EnsureItemSelected() {
+        if (Selected != null) return;
+        Selected = Users?.First();
     }
 }

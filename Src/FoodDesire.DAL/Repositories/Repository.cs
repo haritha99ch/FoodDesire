@@ -51,7 +51,7 @@ public class Repository<T> : IRepository<T> where T : Entity {
         if (filter != null) query = query.Where(filter);
         if (order != null) query = query.OrderBy(order);
 
-        List<T> entities = await query.ToListAsync();
+        List<T>? entities = await query.ToListAsync();
         return entities;
     }
 

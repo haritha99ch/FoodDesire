@@ -7,5 +7,6 @@ public class DtoConfigurator {
             .ForMember(d => d.IngredientCategory, opt => opt.MapFrom(s => s.IngredientCategory!.Name));
         config.CreateMap<IngredientForm, Ingredient>();
         config.CreateMap<Ingredient, IngredientForm>();
+        config.CreateMap<User, UserDetail>();
     }
 }
