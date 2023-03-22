@@ -75,8 +75,10 @@ public class AuthenticationService : IAuthenticationService {
         await AuthenticateUser();
         string userName = _result!.Account.Username;
         Account? account = await _accountService.GetAccountByEmail(userName);
-        if (account != null) await UpdateUser(account.Id, _result!.AccessToken);
-        return account!;
+
+        if (account == null) throw new Exception("Invalid Login");
+        await UpdateUser(account.Id, _result!.AccessToken);
+        return account;
     }
 
     public async Task<Account> AcquireAccount(string accessToken) {

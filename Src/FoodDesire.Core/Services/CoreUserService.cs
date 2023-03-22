@@ -7,7 +7,7 @@ public class CoreUserService : ICoreUserService {
     }
 
     public async Task<List<User>> GetAllEmployees() {
-        Expression<Func<User, bool>> filter = e => e.Account!.Role != Role.Admin && e.Account.Role != Role.Customer;
+        Expression<Func<User, bool>> filter = e => e.Account!.Role == Role.Admin || e.Account.Role == Role.Chef;
         Func<IQueryable<User>, IIncludableQueryable<User, object>> include = e => e.Include(e => e.Account)!;
         List<User> users = await _coreUserRepository.Get(filter, null, include);
         return users;

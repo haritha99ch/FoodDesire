@@ -1,6 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Media.Imaging;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Storage.Streams;
 
 namespace FoodDesire.IMS.ViewModels;
 public partial class ShellViewModel : ObservableRecipient {
@@ -20,7 +18,7 @@ public partial class ShellViewModel : ObservableRecipient {
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(FullName))]
-    private BitmapImage _profilePicture;
+    private BitmapImage? _profilePicture;
 
     public bool IsBackEnabled {
         get => _isBackEnabled;
@@ -100,16 +98,6 @@ public partial class ShellViewModel : ObservableRecipient {
         App.CurrentUserAccount = User!.Account;
 
         if (User.Account!.ProfilePicture == null) return;
-        byte[] imageData = User.Account!.ProfilePicture;
-
-        using InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream();
-        await stream.WriteAsync(imageData.AsBuffer());
-        stream.Seek(0);
-
-        BitmapImage image = new BitmapImage();
-        await image.SetSourceAsync(stream);
-
-        ProfilePicture = image;
-        stream.Dispose();
+        ProfilePicture = await ByteArrayToImageSourceConverter.GetBitmap(User.Account.ProfilePicture);
     }
 }

@@ -10,8 +10,6 @@ public sealed class Account : Entity {
     [Required]
     public Role Role { get; set; }
     public byte[]? ProfilePicture { get; set; }
-
-    public User? User { get; set; }
 }
 
 public enum Role {

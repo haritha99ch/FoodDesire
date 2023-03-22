@@ -38,10 +38,18 @@ public sealed partial class ShellPage : Page {
 
         while (App.CurrentUserAccount == null) {
             await dialog.ShowAsync();
-            await ViewModel.AuthenticateUser(App.Configuration["ClientId"]!);
-            dialog.Content = "Invalid Sign in. Please Try Again";
+            try {
+                await ViewModel.AuthenticateUser(App.Configuration["ClientId"]!);
+            } catch (HttpRequestException) {
+                dialog.Content = "No Internet Connection";
+                dialog.PrimaryButtonText = "Try Again";
+            } catch (Exception ex) {
+                dialog.Content = ex.Message;
+                dialog.PrimaryButtonText = "Sign in";
+            }
         }
         await ViewModel.GetUser();
+        ContentGrid.IsHitTestVisible = true;
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) {

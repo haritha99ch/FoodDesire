@@ -11,7 +11,8 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
 
-    <Grid>
+    <Grid x:Name="ContentGrid" 
+          IsHitTestVisible="False">
         <Grid x:Name="AppTitleBar"
               Canvas.ZIndex="1"
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
