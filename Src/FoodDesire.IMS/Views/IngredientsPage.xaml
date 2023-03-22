@@ -43,7 +43,6 @@
                   ItemsSource="{x:Bind ViewModel.IngredientsDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   IsItemClickEnabled="True"
                   ItemTemplate="{StaticResource IngrdientItem}"
-                  ItemClick="IngredientList_ItemClick">
-        </GridView>
+                  ItemClick="IngredientList_ItemClick" />
     </StackPanel>
 </Page>

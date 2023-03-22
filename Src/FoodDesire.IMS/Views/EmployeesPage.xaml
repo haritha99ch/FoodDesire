@@ -9,24 +9,8 @@
       mc:Ignorable="d">
 
     <Page.Resources>
-        <DataTemplate x:Key="ItemTemplate"
-                      x:DataType="models:UserDetail">
-            <Grid Height="60">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <PersonPicture Height="50"
-                               ProfilePicture="{x:Bind ProfilePicture, Mode=OneWay}" />
-                <StackPanel Grid.Column="1"
-                            Margin="{StaticResource SmallLeftMargin}"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="{x:Bind FullName, Mode=OneWay}"
-                               Style="{StaticResource ListTitleStyle}" />
-                    <TextBlock Text="{x:Bind Account.Role}"
-                               Style="{StaticResource ListSubTitleStyle}" />
-                </StackPanel>
-            </Grid>
+        <DataTemplate x:Key="EmployeeListItem">
+            <components:EmployeeListItemControl />
         </DataTemplate>
 
         <DataTemplate x:Key="DetailsTemplate">
@@ -61,44 +45,45 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    
+
     <StackPanel>
         <CommandBar Background="Transparent"
                     IsOpen="False"
                     HorizontalAlignment="Left"
                     DefaultLabelPosition="Right">
             <AppBarButton Icon="Add"
-                          Label="Add" />
+                          Label="Add"
+                          Click=""/>
             <AppBarButton Icon="Edit"
                           Label="Edit" />
         </CommandBar>
 
         <Grid x:Name="ContentArea">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="641" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="ListDetailsViewControl.ListHeaderTemplate"
-                                Value="{StaticResource ListHeaderTemplate}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        <controls:ListDetailsView x:Uid="ListDetails"
-                                  x:Name="ListDetailsViewControl"
-                                  BackButtonBehavior="Manual"
-                                  Background="Transparent"
-                                  BorderBrush="Transparent"
-                                  DetailsTemplate="{StaticResource DetailsTemplate}"
-                                  ItemsSource="{x:Bind ViewModel.Users}"
-                                  ItemTemplate="{StaticResource ItemTemplate}"
-                                  ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
-                                  NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
-                                  SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
-                                  ViewStateChanged="OnViewStateChanged" />
-    </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="641" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="ListDetailsViewControl.ListHeaderTemplate"
+                                    Value="{StaticResource ListHeaderTemplate}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <controls:ListDetailsView x:Uid="ListDetails"
+                                      x:Name="ListDetailsViewControl"
+                                      BackButtonBehavior="Manual"
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      DetailsTemplate="{StaticResource DetailsTemplate}"
+                                      ItemsSource="{x:Bind ViewModel.Users, Mode=OneWay}"
+                                      ItemTemplate="{StaticResource EmployeeListItem}"
+                                      ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
+                                      NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
+                                      SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
+                                      ViewStateChanged="OnViewStateChanged" />
+        </Grid>
     </StackPanel>
 </Page>

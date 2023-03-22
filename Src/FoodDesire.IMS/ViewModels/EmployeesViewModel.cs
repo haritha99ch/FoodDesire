@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using System.Collections.ObjectModel;
-
-namespace FoodDesire.IMS.ViewModels;
-
+﻿namespace FoodDesire.IMS.ViewModels;
 public partial class EmployeesViewModel : ObservableRecipient, INavigationAware {
     private readonly IEmployeePageService _employeePageService;
     private readonly IMapper _mapper;
@@ -26,6 +22,7 @@ public partial class EmployeesViewModel : ObservableRecipient, INavigationAware 
     }
 
     public void EnsureItemSelected() {
+        if (!Users.Any()) return;
         if (Selected != null) return;
         Selected = Users?.First();
     }
