@@ -6,6 +6,8 @@ public partial class EmployeesViewModel : ObservableRecipient, INavigationAware 
     [ObservableProperty]
     private UserDetail? _selected;
     public ObservableCollection<UserDetail> Users { get; private set; } = new();
+    [ObservableProperty]
+    private bool _isUserAdding = false;
 
 
     public EmployeesViewModel(IEmployeePageService employeePageService, IMapper mapper) {
@@ -25,5 +27,10 @@ public partial class EmployeesViewModel : ObservableRecipient, INavigationAware 
         if (!Users.Any()) return;
         if (Selected != null) return;
         Selected = Users?.First();
+    }
+
+    public async Task AddNewUser<T>() where T : BaseUser, new() {
+        T employee = await _employeePageService.NewUser<T>();
+        Users.Insert(0, _mapper.Map<UserDetail>(employee.User));
     }
 }

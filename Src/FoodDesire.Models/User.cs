@@ -4,15 +4,16 @@ public class User : TrackedEntity {
     public string? FirstName { get; set; }
     [Required]
     public string? LastName { get; set; }
-    [Required]
-    public DateTime DateOfBirth {
+    [AllowNull]
+    public DateTime? DateOfBirth {
         get => _dateOfBirth;
         set {
             _dateOfBirth = value;
-            Age = DateTime.Now.AddYears(-value.Year).Year;
+            if (value == null) return;
+            Age = DateTime.Now.AddYears(-value.Value.Year).Year;
         }
     }
-    private DateTime _dateOfBirth { get; set; }
+    private DateTime? _dateOfBirth { get; set; }
     [AllowNull]
     public int? Age { get; private set; }
     [AllowNull]

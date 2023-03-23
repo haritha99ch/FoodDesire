@@ -43,8 +43,12 @@ public class AuthenticationService : IAuthenticationService {
 
     private async Task<User> AcquireUser(string accessToken) {
         await AcquireProfile(accessToken);
-
-        dynamic? birthDay = (_profile!.anniversaries as List<dynamic>)!.SingleOrDefault(e => (e.type as string)!.Equals("birthday"));
+        dynamic? birthDay;
+        try {
+            birthDay = (_profile!.anniversaries as List<dynamic>)!.SingleOrDefault(e => (e.type as string)!.Equals("birthday"));
+        } catch (Exception) {
+            birthDay = null;
+        }
         byte[]? profilePicture;
         try {
             profilePicture = await "https://graph.microsoft.com/v1.0/me/photo/$value"
@@ -111,13 +115,21 @@ public class AuthenticationService : IAuthenticationService {
             currentUser.LastName = acquiredUser.LastName;
             hasUpdate = true;
         }
+        if (acquiredUser.DateOfBirth != null && currentUser.DateOfBirth != null) {
+            if (acquiredUser.DateOfBirth != currentUser.DateOfBirth) {
+                currentUser.DateOfBirth = currentUser.DateOfBirth;
+                hasUpdate = true;
+            }
+        }
         if (!string.Equals(acquiredUser.Account!.Email, currentUser.Account!.Email)) {
             currentUser.Account.Email = acquiredUser.Account.Email;
             hasUpdate = true;
         }
-        if (acquiredUser.Account!.ProfilePicture!.Equals(currentUser.Account!.ProfilePicture)) {
-            currentUser.Account.ProfilePicture = acquiredUser.Account.ProfilePicture;
-            hasUpdate = true;
+        if (acquiredUser.Account!.ProfilePicture! != null) {
+            if (acquiredUser.Account.ProfilePicture.Equals(currentUser.Account.ProfilePicture)) {
+                currentUser.Account.ProfilePicture = acquiredUser.Account.ProfilePicture;
+                hasUpdate = true;
+            }
         }
 
         return !hasUpdate ? currentUser : await _userService.UpdateCoreUser(currentUser);

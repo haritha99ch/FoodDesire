@@ -4,8 +4,8 @@ public sealed class Deliverer : BaseUser {
     public int EmployeeId { get; set; }
     [Required]
     public VehicleType VehicleType { get; set; } = VehicleType.Bike;
-    [Required]
-    public required string LicenseNo { get; set; }
+    [AllowNull]
+    public string? LicenseNo { get; set; }
 
 
     [ForeignKey(nameof(EmployeeId))]

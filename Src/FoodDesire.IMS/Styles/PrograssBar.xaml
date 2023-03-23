@@ -6,5 +6,7 @@
            TargetType="ProgressBar">
         <Setter Property="Background"
                 Value="Transparent" />
+        <Setter Property="IsIndeterminate"
+                Value="True" />
     </Style>
 </ResourceDictionary>

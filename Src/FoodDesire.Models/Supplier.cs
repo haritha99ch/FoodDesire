@@ -2,7 +2,7 @@
 public sealed class Supplier : BaseUser {
     [Required]
     public int EmployeeId { get; set; }
-    [Required]
+    [AllowNull]
     public string? City { get; set; }
 
 

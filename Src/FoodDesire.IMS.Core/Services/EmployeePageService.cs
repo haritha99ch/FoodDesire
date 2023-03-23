@@ -1,11 +1,13 @@
-﻿namespace FoodDesire.IMS.Core.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace FoodDesire.IMS.Core.Services;
 public class EmployeePageService : IEmployeePageService {
     private readonly IUserService<Chef> _chefUserService;
     private readonly IUserService<Supplier> _supplierUserService;
     private readonly IUserService<Deliverer> _delivererUserService;
-    private readonly IUserService<Admin> _adminUserService;
     private readonly ICoreUserService _coreUserService;
     private readonly IPaymentService _paymentService;
+    private readonly IServiceProvider _serviceProvider;
     private readonly IAuthenticationService _authenticationService;
 
     public EmployeePageService(
@@ -15,7 +17,7 @@ public class EmployeePageService : IEmployeePageService {
         ICoreUserService coreUserService,
         IAuthenticationService authenticationService,
         IPaymentService paymentService,
-        IUserService<Admin> adminUserService
+        IServiceProvider serviceProvider
         ) {
         _chefUserService = chefUserService;
         _supplierUserService = supplierUserService;
@@ -23,7 +25,7 @@ public class EmployeePageService : IEmployeePageService {
         _authenticationService = authenticationService;
         _coreUserService = coreUserService;
         _paymentService = paymentService;
-        _adminUserService = adminUserService;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<List<Chef>> GetAllChef() => await _chefUserService.GetAll();
@@ -42,49 +44,20 @@ public class EmployeePageService : IEmployeePageService {
 
     public async Task<List<User>> GetAllEmployees() => await _coreUserService.GetAllEmployees();
 
-    public async Task<Chef> NewChef() {
-        User user = await GetNewUser();
-        user.Account!.Role = Role.Chef;
-        Chef chef = new Chef() {
-            User = user,
-        };
-        chef = await _chefUserService.CreateAccount(chef);
-        return chef;
-    }
-
-    public async Task<Deliverer> NewDeliverer(VehicleType vehicleType, string licenseNo) {
-        User user = await GetNewUser();
-        user.Account!.Role = Role.Chef;
-        Deliverer deliverer = new Deliverer() {
-            User = user,
-            LicenseNo = licenseNo,
-            VehicleType = vehicleType
-        };
-        deliverer = await _delivererUserService.CreateAccount(deliverer);
-        return deliverer;
-    }
-
-    public async Task<Supplier> NewSupplier() {
-        User user = await GetNewUser();
-        user.Account!.Role = Role.Chef;
-        Supplier supplier = new Supplier() {
-            User = user,
-        };
-        supplier = await _supplierUserService.CreateAccount(supplier);
-        return supplier;
-    }
-
-    public async Task<Admin> NewAdmin() {
-        User user = await GetNewUser();
-        user.Account!.Role = Role.Admin;
-        Admin admin = new Admin() {
-            User = user
-        };
-        admin = await _adminUserService.CreateAccount(admin);
-        return admin;
-    }
-
     private async Task<User> GetNewUser() {
         return await _authenticationService.NewUser();
+    }
+
+    public async Task<T> NewUser<T>() where T : BaseUser, new() {
+        User user = await GetNewUser();
+        if (typeof(T) == typeof(Chef)) user.Account!.Role = Role.Chef;
+        if (typeof(T) == typeof(Supplier)) user.Account!.Role = Role.Supplier;
+        if (typeof(T) == typeof(Deliverer)) user.Account!.Role = Role.Deliverer;
+        if (typeof(T) == typeof(Admin)) user.Account!.Role = Role.Admin;
+
+        T employee = new() { User = user };
+        employee = await _serviceProvider.GetService<IUserService<T>>()!
+            .CreateAccount(employee);
+        return employee;
     }
 }

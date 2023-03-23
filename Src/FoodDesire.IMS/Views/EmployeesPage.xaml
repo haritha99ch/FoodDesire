@@ -6,9 +6,12 @@
       xmlns:components="using:FoodDesire.IMS.Components"
       xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:models="using:FoodDesire.IMS.Models"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
       mc:Ignorable="d">
 
     <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
         <DataTemplate x:Key="EmployeeListItem">
             <components:EmployeeListItemControl />
         </DataTemplate>
@@ -47,6 +50,8 @@
     </Page.Resources>
 
     <StackPanel>
+        <ProgressBar Style="{StaticResource LoadingPrograssBar}" 
+                     Visibility="{x:Bind ViewModel.IsUserAdding, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
         <CommandBar Background="Transparent"
                     IsOpen="False"
                     HorizontalAlignment="Left"

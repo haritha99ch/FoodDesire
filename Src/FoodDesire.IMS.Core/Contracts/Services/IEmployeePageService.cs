@@ -1,9 +1,6 @@
 ﻿namespace FoodDesire.IMS.Core.Contracts.Services;
 public interface IEmployeePageService {
-    Task<Chef> NewChef();
-    Task<Admin> NewAdmin();
-    Task<Supplier> NewSupplier();
-    Task<Deliverer> NewDeliverer(VehicleType vehicleType, string licenseNo);
+    Task<T> NewUser<T>() where T : BaseUser, new();
 
     Task<Chef> GetChef(int chefId);
     Task<Supplier> GetSupplier(int supplierId);
