@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace FoodDesire.IMS.Helpers;
+﻿namespace FoodDesire.IMS.Helpers;
 public class DtoConfigurator {
     public static void Configure(IMapperConfigurationExpression config) {
         config.CreateMap<Ingredient, IngredientDetails>()
@@ -8,5 +6,6 @@ public class DtoConfigurator {
         config.CreateMap<IngredientForm, Ingredient>();
         config.CreateMap<Ingredient, IngredientForm>();
         config.CreateMap<User, UserDetail>();
+        config.CreateMap<UserDetail, User>();
     }
 }

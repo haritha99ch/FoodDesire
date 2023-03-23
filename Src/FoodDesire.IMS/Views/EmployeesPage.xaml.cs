@@ -16,4 +16,10 @@ public sealed partial class EmployeesPage : Page {
             ViewModel.EnsureItemSelected();
         }
     }
+
+    private async void AddButton_Click(object sender, RoutedEventArgs e) {
+        NewEmployeeDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<NewEmployeeDialog>(XamlRoot);
+        ContentDialogResult result = await dialog.ShowAsync();
+    }
 }

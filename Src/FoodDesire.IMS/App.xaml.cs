@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace FoodDesire.IMS;
+﻿namespace FoodDesire.IMS;
 public partial class App : Application {
     public IHost Host { get; }
     public static WindowEx MainWindow { get; } = new MainWindow();

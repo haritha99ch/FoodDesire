@@ -1,11 +1,4 @@
-﻿using AutoMapper;
-using FoodDesire.IMS.Activation;
-using FoodDesire.IMS.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace FoodDesire.IMS.Helpers;
+﻿namespace FoodDesire.IMS.Helpers;
 internal static class AppConfigurator {
     internal static void Configure(HostBuilderContext context, IConfigurationBuilder config) {
         string environmentName = context.HostingEnvironment.EnvironmentName;
@@ -31,6 +24,8 @@ internal static class AppConfigurator {
         services.AddSingleton<IPageService, PageService>();
         services.AddSingleton<INavigationService, NavigationService>();
 
+        services.AddTransient<IContentDialogFactory, ContentDialogFactory>();
+
         // AutoMapper
         MapperConfiguration? configuration = new(DtoConfigurator.Configure);
         IMapper? mapper = configuration.CreateMapper();
@@ -47,6 +42,10 @@ internal static class AppConfigurator {
         services.AddTransient<ShellPage>();
         services.AddTransient<EmployeesViewModel>();
         services.AddTransient<EmployeesPage>();
+
+        //Components ViewModels
+        services.AddTransient<NewEmployeeViewModel>();
+        services.AddTransient<NewEmployeeDialog>();
 
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

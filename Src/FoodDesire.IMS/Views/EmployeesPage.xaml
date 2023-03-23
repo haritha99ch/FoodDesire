@@ -53,7 +53,7 @@
                     DefaultLabelPosition="Right">
             <AppBarButton Icon="Add"
                           Label="Add"
-                          Click=""/>
+                          Click="AddButton_Click"/>
             <AppBarButton Icon="Edit"
                           Label="Edit" />
         </CommandBar>
