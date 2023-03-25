@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using FoodDesire.IMS.Components;
-using Microsoft.UI.Xaml.Controls.Primitives;
+﻿using Microsoft.UI.Xaml.Controls.Primitives;
 using Windows.Foundation;
 
 namespace FoodDesire.IMS.Views;
@@ -29,11 +27,8 @@ public sealed partial class IngredientsPage : Page {
     }
 
     private async void NewIngredient_Click(object sender, RoutedEventArgs e) {
-        NewIngredientFormDialog dialog = new NewIngredientFormDialog() {
-            XamlRoot = XamlRoot,
-            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
-            DefaultButton = ContentDialogButton.Primary,
-        };
+        NewIngredientFormDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<NewIngredientFormDialog>(XamlRoot);
         var result = await dialog.ShowAsync();
         ViewModel.IsLoading = true;
         if (result == ContentDialogResult.Primary) {
@@ -45,33 +40,27 @@ public sealed partial class IngredientsPage : Page {
 
     private async void RequestButton_Click(object sender, RoutedEventArgs e) {
         CommandBarFlyout.Hide();
-        RequestIngredientDialog dialog = new RequestIngredientDialog(_selectedIngredient!.Id) {
-            XamlRoot = XamlRoot,
-            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
-            DefaultButton = ContentDialogButton.Primary,
-        };
+        RequestIngredientDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<RequestIngredientDialog>(XamlRoot);
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
         ViewModel.IsLoading = true;
         double amount = dialog.ViewModel.RequestingAmount;
-        await ViewModel.RequestIngredient(_selectedIngredient.Id, amount);
+        await ViewModel.RequestIngredient(_selectedIngredient!.Id, amount);
         ViewModel.IsLoading = false;
     }
 
     private async void EditButton_Click(object sender, RoutedEventArgs e) {
         CommandBarFlyout.Hide();
-        EditIngredientDialog dialog = new EditIngredientDialog(_selectedIngredient!.Id) {
-            XamlRoot = XamlRoot,
-            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
-            DefaultButton = ContentDialogButton.Primary,
-        };
+        EditIngredientDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<EditIngredientDialog>(XamlRoot);
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
         ViewModel.IsLoading = true;
         Ingredient ingredient = await dialog.ViewModel.EditIngredient();
-        int index = ViewModel.IngredientsDetail.IndexOf(_selectedIngredient);
+        int index = ViewModel.IngredientsDetail.IndexOf(_selectedIngredient!);
         _selectedIngredient = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
         ViewModel.IngredientsDetail[index] = _selectedIngredient;
         ViewModel.IsLoading = false;
