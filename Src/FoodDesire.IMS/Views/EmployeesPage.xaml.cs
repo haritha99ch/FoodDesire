@@ -19,8 +19,8 @@ public sealed partial class EmployeesPage : Page {
     }
 
     private async void AddButton_Click(object sender, RoutedEventArgs e) {
-        NewEmployeeDialog dialog = App.GetService<IContentDialogFactory>()
-            .ConfigureDialog<NewEmployeeDialog>(XamlRoot);
+        NewEmployeeFormDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<NewEmployeeFormDialog>(XamlRoot);
         ContentDialogResult result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;

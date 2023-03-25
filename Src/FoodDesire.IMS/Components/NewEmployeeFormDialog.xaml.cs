@@ -1,7 +1,7 @@
 namespace FoodDesire.IMS.Components;
-public sealed partial class NewEmployeeDialog : ContentDialog {
+public sealed partial class NewEmployeeFormDialog : ContentDialog {
     public NewEmployeeViewModel ViewModel { get; set; }
-    public NewEmployeeDialog(NewEmployeeViewModel viewModel) {
+    public NewEmployeeFormDialog(NewEmployeeViewModel viewModel) {
         InitializeComponent();
         ViewModel = viewModel;
     }

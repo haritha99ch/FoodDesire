@@ -45,7 +45,7 @@ internal static class AppConfigurator {
 
         //Components ViewModels
         services.AddTransient<NewEmployeeViewModel>();
-        services.AddTransient<NewEmployeeDialog>();
+        services.AddTransient<NewEmployeeFormDialog>();
 
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

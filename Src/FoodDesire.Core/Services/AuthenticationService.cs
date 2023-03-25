@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensions.Msal;
 
 namespace FoodDesire.Core.Services;
 public class AuthenticationService : IAuthenticationService {
@@ -8,41 +9,70 @@ public class AuthenticationService : IAuthenticationService {
     private readonly IConfiguration _configuration;
     private readonly ICoreUserService _userService;
 
-    private dynamic? _profile;
+    private const string _defaultApplicationDataFolder = "FoodDesire.IMS/ApplicationData";
+    private const string _defaultAuthenticationFile = "AuthenticationCache";
+    private readonly string _localApplicationData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+    private readonly StorageCreationProperties _storageProperties;
+
     private readonly IPublicClientApplication _app;
-    private readonly string _clientId;
-    private readonly string[] scopes = new string[] {
-        "user.read"
-    };
     private AuthenticationResult? _result;
+    private dynamic? _profile;
+    private readonly string _clientId;
+    private readonly string _redirectUri = "http://localhost";
+    private readonly string _profileUri = "https://graph.microsoft.com/beta/me/profile";
+    private readonly string[] scopes = new string[] {
+        "user.read",
+        "profile",
+    };
 
     public AuthenticationService(IAccountService accountService, ICoreUserService userService, IConfiguration configuration) {
         _accountService = accountService;
         _configuration = configuration;
         _userService = userService;
         _clientId = configuration["ClientId"]!;
+        _storageProperties = new StorageCreationPropertiesBuilder(_defaultAuthenticationFile, $"{_localApplicationData}/{_defaultApplicationDataFolder}")
+            .Build();
+
         _app = PublicClientApplicationBuilder
             .Create(_clientId)
-            .WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
+            .WithRedirectUri(_redirectUri)
             .Build();
+        RegisterCache();
+    }
+
+    private async void RegisterCache() {
+        MsalCacheHelper? cacheHelper = await MsalCacheHelper.CreateAsync(_storageProperties);
+        cacheHelper.RegisterCache(_app.UserTokenCache);
     }
 
     private async Task AuthenticateUser() {
         _result = await _app.AcquireTokenInteractive(scopes).ExecuteAsync();
     }
 
-    private async Task AcquireProfile(string accessToken) {
+    private async Task<string> AcquireProfile(string accessToken) {
+        var accounts = await _app.GetAccountsAsync();
         try {
-            _profile = await "https://graph.microsoft.com/beta/me/profile"
-                .WithOAuthBearerToken(accessToken)
-                .GetJsonAsync();
+            _profile = await GetProfileJson(accessToken);
+        } catch (FlurlHttpException) {
+            try {
+                _result = await _app.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
+                accessToken = _result.AccessToken;
+                _profile = await GetProfileJson(accessToken);
+            } catch (Exception) {
+                _profile = null;
+            }
         } catch (Exception) {
             _profile = null;
         }
+        return accessToken;
+    }
+
+    private async Task<dynamic> GetProfileJson(string accessToken) {
+        return await _profileUri.WithOAuthBearerToken(accessToken).GetJsonAsync();
     }
 
     private async Task<User> AcquireUser(string accessToken) {
-        await AcquireProfile(accessToken);
+        if (_profile == null) await AcquireProfile(accessToken);
         dynamic? birthDay;
         try {
             birthDay = (_profile!.anniversaries as List<dynamic>)!.SingleOrDefault(e => (e.type as string)!.Equals("birthday"));
@@ -58,11 +88,10 @@ public class AuthenticationService : IAuthenticationService {
             profilePicture = null;
         }
 
-
         User user = new User() {
-            FirstName = _profile.names[0].first,
+            FirstName = _profile!.names[0].first,
             LastName = _profile.names[0].last,
-            DateOfBirth = DateTime.Parse(birthDay!.date),
+            DateOfBirth = birthDay?.date != null ? DateTime.Parse(birthDay.date) : null,
             Account = new Account() {
                 Email = _profile.account[0].userPrincipalName,
                 ProfilePicture = profilePicture
@@ -72,7 +101,7 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public string AcquireAccessToken() {
-        return _result!.AccessToken;
+        return _result?.AccessToken!;
     }
 
     public async Task<Account> AcquireAccount() {
@@ -86,7 +115,7 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public async Task<Account> AcquireAccount(string accessToken) {
-        await AcquireProfile(accessToken);
+        accessToken = await AcquireProfile(accessToken);
         if (_profile == null) return null!;
 
         var account = await _accountService.GetAccountByEmail(_profile!.account[0].userPrincipalName);

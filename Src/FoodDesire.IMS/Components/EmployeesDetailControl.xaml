@@ -36,6 +36,7 @@
                            Style="{StaticResource DetailSubTitleStyle}" />
                 <TextBlock Text="{x:Bind ListDetailsMenuItem.PhoneNumber, Mode=OneWay}"
                            Style="{StaticResource DetailBodyBaseMediumStyle}" />
+
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

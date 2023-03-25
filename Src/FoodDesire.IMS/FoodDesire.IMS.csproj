@@ -21,7 +21,7 @@
     <None Remove="Components\IngredientCategoryFormControl.xaml" />
     <None Remove="Components\IngredientFormDataControl.xaml" />
     <None Remove="Components\IngredientListItemControl.xaml" />
-    <None Remove="Components\NewEmployeeDialog.xaml" />
+    <None Remove="Components\NewEmployeeFormDialog.xaml" />
     <None Remove="Components\NewIngredientFormDialog.xaml" />
     <None Remove="Components\RequestIngredientDialog.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
@@ -49,7 +49,7 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Components\NewEmployeeDialog.xaml">
+    <Page Update="Components\NewEmployeeFormDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Components\EmployeeListItemControl.xaml">
