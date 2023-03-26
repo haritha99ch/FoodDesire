@@ -12,11 +12,22 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Debug]
 
     runs-on: windows-latest
 
     steps:
+    - name: Update appsettings.Production.json
+      env:
+        APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
+      run: |
+        echo $env:APPSETTINGS_PRODUCTION > secret.json
+        $secret = Get-Content -Raw secret.json
+        Set-Content -Path "appsettings.Production.json" -Value $secret
+        cat "appsettings.Production.json"
+      shell: pwsh
+
+    
     - name: Checkout
       uses: actions/checkout@v2
 
