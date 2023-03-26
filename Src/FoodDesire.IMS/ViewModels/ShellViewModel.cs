@@ -88,19 +88,19 @@ public partial class ShellViewModel : ObservableRecipient {
         if (App.CurrentUserAccount == null) return;
         switch (App.CurrentUserAccount.Role) {
             case Role.Admin:
-                Admin = await App.GetService<IUserService<Admin>>().GetByEmail(App.CurrentUserAccount.Email);
+                Admin = await App.GetService<IUserService<Admin>>().GetByEmail(App.CurrentUserAccount.Email!);
                 User = Admin.User;
                 break;
             case Role.Chef:
-                Chef = await App.GetService<IUserService<Chef>>().GetByEmail(App.CurrentUserAccount.Email);
+                Chef = await App.GetService<IUserService<Chef>>().GetByEmail(App.CurrentUserAccount.Email!);
                 User = Chef.User;
                 break;
             case Role.Deliverer:
-                Deliverer = await App.GetService<IUserService<Deliverer>>().GetByEmail(App.CurrentUserAccount.Email);
+                Deliverer = await App.GetService<IUserService<Deliverer>>().GetByEmail(App.CurrentUserAccount.Email!);
                 User = Deliverer.User;
                 break;
             case Role.Supplier:
-                Supplier = await App.GetService<IUserService<Supplier>>().GetByEmail(App.CurrentUserAccount.Email);
+                Supplier = await App.GetService<IUserService<Supplier>>().GetByEmail(App.CurrentUserAccount.Email!);
                 User = Supplier.User;
                 break;
         }

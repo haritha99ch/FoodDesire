@@ -57,15 +57,11 @@ public class RecipeService : IRecipeService {
     }
 
     public async Task<List<Recipe>> GetAllRecipesByCategoryName(string categoryName) {
-        Expression<Func<RecipeCategory, bool>> categoryFilter = e => e.Name == categoryName;
-
-        RecipeCategory foodCategory = await _recipeCategoryRepository.GetOne(categoryFilter);
-        int categoryId = foodCategory.Id;
-
-        Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
+        Expression<Func<Recipe, bool>> filter = e => e.FoodCategory!.Name.Equals(categoryName);
         Expression<Func<Recipe, object>> order = e => e.RecipeCategoryId;
+        static IIncludableQueryable<Recipe, object?> include(IQueryable<Recipe> e) => e.Include(e => e.FoodCategory);
 
-        List<Recipe> recipes = await _recipeRepository.Get(filter, order);
+        List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
         return recipes;
     }
 

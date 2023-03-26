@@ -72,13 +72,12 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> GetAllIngredientsByCategory(string ingredientCategory) {
-        Expression<Func<IngredientCategory, bool>> categoryFilter = e => e.Name.Equals(ingredientCategory);
-        IngredientCategory category = await _ingredientCategoryTRepository.GetOne(categoryFilter);
-
-        Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategoryId == category.Id;
+        Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategory!.Name.Equals(ingredientCategory);
         Expression<Func<Ingredient, object>> order = e => e.IngredientCategoryId;
+        Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object?>> include =
+            e => e.Include(e => e.IngredientCategory);
 
-        List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order);
+        List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order, include);
         return ingredients;
     }
 

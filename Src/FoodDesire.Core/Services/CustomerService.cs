@@ -24,7 +24,7 @@ public class CustomerService : ICustomerService {
     }
     public async Task<Customer> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Customer, bool>> filter =
-            e => e.User!.Account!.Email.Equals(email) && e.User!.Account!.Password.Equals(password);
+            e => e.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
 
         Customer? customer = await _customerRepository.GetOne(filter);
         return customer!;
@@ -40,7 +40,7 @@ public class CustomerService : ICustomerService {
     }
 
     public async Task<Customer> GetByEmail(string email) {
-        Expression<Func<Customer, bool>> filter = e => e!.User!.Account!.Email.Equals(email);
+        Expression<Func<Customer, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
 
         Customer? customer = await _customerRepository.GetOne(filter);
         return customer!;
