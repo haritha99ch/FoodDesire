@@ -25,7 +25,6 @@ jobs:
         ls Src/ -Force
         Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
         Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
-        Cat "Src/FoodDesire.AppSettings/appsettings.Development.json"
       shell: pwsh
 
     - name: Setup .NET
