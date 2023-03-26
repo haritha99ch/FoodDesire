@@ -15,18 +15,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Update appsettings.Production.json
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Setting Environment Variables
       env:
         APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
       run: |
-        echo $env:APPSETTINGS_PRODUCTION > secret.json
-        $secret = Get-Content -Raw secret.json
-        Set-Content -Path "appsettings.Production.json" -Value $secret
+        Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
+        Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
       shell: pwsh
-
-    
-    - name: Checkout
-      uses: actions/checkout@v2
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
