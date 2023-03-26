@@ -32,7 +32,7 @@ public sealed partial class ShellPage : Page {
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
             PrimaryButtonText = "Sign in",
             DefaultButton = ContentDialogButton.Primary,
-            Title = "Sign in to FoodDesire",
+            Title = $"Sign in to {"AppDisplayName".GetLocalized()}",
             Content = "To Continue, Please Sign in",
         };
 

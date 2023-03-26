@@ -37,10 +37,9 @@ public class AuthenticationService : IAuthenticationService {
             .Create(_clientId)
             .WithRedirectUri(_redirectUri)
             .Build();
-        RegisterCache();
     }
 
-    private async void RegisterCache() {
+    private async Task RegisterCache() {
         MsalCacheHelper? cacheHelper = await MsalCacheHelper.CreateAsync(_storageProperties);
         cacheHelper.RegisterCache(_app.UserTokenCache);
     }
@@ -50,11 +49,12 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     private async Task<string> AcquireProfile(string accessToken) {
-        var accounts = await _app.GetAccountsAsync();
         try {
             _profile = await GetProfileJson(accessToken);
         } catch (FlurlHttpException) {
             try {
+                await RegisterCache();
+                var accounts = await _app.GetAccountsAsync();
                 _result = await _app.AcquireTokenSilent(scopes, accounts.FirstOrDefault()).ExecuteAsync();
                 accessToken = _result.AccessToken;
                 _profile = await GetProfileJson(accessToken);
@@ -105,6 +105,7 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public async Task<Account> AcquireAccount() {
+        await RegisterCache();
         await AuthenticateUser();
         string userName = _result!.Account.Username;
         Account? account = await _accountService.GetAccountByEmail(userName);
@@ -115,6 +116,7 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public async Task<Account> AcquireAccount(string accessToken) {
+        await RegisterCache();
         accessToken = await AcquireProfile(accessToken);
         if (_profile == null) return null!;
 

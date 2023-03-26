@@ -174,4 +174,7 @@
   <data name="Employees_NoSelection.Text" xml:space="preserve">
     <value>Select an item from the list.</value>
   </data>
+  <data name="Settings_MyAccount.Text" xml:space="preserve">
+    <value>My Account</value>
+  </data>
 </root>

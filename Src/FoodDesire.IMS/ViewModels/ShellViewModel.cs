@@ -31,13 +31,22 @@ public partial class ShellViewModel : ObservableRecipient {
     }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAdmin))]
     private Admin? _admin;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsChef))]
     private Chef? _chef;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsSupplier))]
     private Supplier? _supplier;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsDeliverer))]
     private Deliverer? _deliverer;
+
+    public bool IsAdmin => Admin != null;
+    public bool IsChef => Chef != null;
+    public bool IsSupplier => Supplier != null;
+    public bool IsDeliverer => Deliverer != null;
 
     public ShellViewModel(
         INavigationService navigationService,
