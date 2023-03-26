@@ -22,7 +22,6 @@ jobs:
       env:
         APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
       run: |
-        ls Src/ -Force
         Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
         Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
       shell: pwsh
