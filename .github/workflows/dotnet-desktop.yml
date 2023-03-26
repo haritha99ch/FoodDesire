@@ -15,13 +15,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Update appsettings.Production.json
+    - name: Setting Environment Variables
       env:
         APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
       run: |
         echo $env:APPSETTINGS_PRODUCTION > secret.json
         $secret = Get-Content -Raw secret.json
-        Set-Content -Path "appsettings.Production.json" -Value $secret
+        Set-Content -Path "FoodDesire.AppSettings\appsettings.Production.json" -Value $secret
+        Set-Content -Path "FoodDesire.AppSettings\appsettings.Development.json" -Value $secret
       shell: pwsh
 
     
