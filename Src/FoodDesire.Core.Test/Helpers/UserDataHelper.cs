@@ -2,24 +2,22 @@
 public static class UserDataHelper {
     public static Supplier GetSupplierPayload() {
         return new() {
-            Employee = new Employee {
-                User = new User() {
-                    FirstName = "Supplier",
-                    LastName = "Reilppus",
-                    DateOfBirth = new DateTime(1999, 5, 2),
-                    Account = new Account() {
-                        Email = "supplier@fooddesire.com",
-                        Password = "1234",
-                    },
-                    Address = new Address() {
-                        No = "2",
-                        Street1 = "Street1",
-                        Street2 = "Street2",
-                        City = "Diyatalawa",
-                        PostalCode = 1290
-                    },
-                    Gender = Gender.Male,
+            User = new User() {
+                FirstName = "Supplier",
+                LastName = "Reilppus",
+                DateOfBirth = new DateTime(1999, 5, 2),
+                Account = new Account() {
+                    Email = "supplier@fooddesire.com",
+                    Password = "1234",
                 },
+                Address = new Address() {
+                    No = "2",
+                    Street1 = "Street1",
+                    Street2 = "Street2",
+                    City = "Diyatalawa",
+                    PostalCode = 1290
+                },
+                Gender = Gender.Male,
             },
             City = "Diyatalawa"
         };
@@ -48,24 +46,22 @@ public static class UserDataHelper {
 
     public static Chef GetChefPayload() {
         return new() {
-            Employee = new Employee {
-                User = new User() {
-                    FirstName = "Chef",
-                    LastName = "Fehc",
-                    DateOfBirth = new DateTime(1999, 5, 2),
-                    Account = new Account() {
-                        Email = "chef@fooddesire.com",
-                        Password = "1234",
-                    },
-                    Address = new Address() {
-                        No = "2",
-                        Street1 = "Street1",
-                        Street2 = "Street2",
-                        City = "Diyatalawa",
-                        PostalCode = 1290
-                    },
-                    Gender = Gender.Male,
+            User = new User() {
+                FirstName = "Chef",
+                LastName = "Fehc",
+                DateOfBirth = new DateTime(1999, 5, 2),
+                Account = new Account() {
+                    Email = "chef@fooddesire.com",
+                    Password = "1234",
                 },
+                Address = new Address() {
+                    No = "2",
+                    Street1 = "Street1",
+                    Street2 = "Street2",
+                    City = "Diyatalawa",
+                    PostalCode = 1290
+                },
+                Gender = Gender.Male,
             },
         };
     }
@@ -94,23 +90,21 @@ public static class UserDataHelper {
 
     public static Deliverer GetDelivererPayload() {
         return new Deliverer() {
-            Employee = new Employee() {
-                User = new User() {
-                    FirstName = "Deliverer",
-                    LastName = "Rerevilved",
-                    DateOfBirth = new DateTime(1999, 6, 18),
-                    Gender = Gender.Male,
-                    Address = new Address() {
-                        No = "1/156",
-                        Street1 = "Nilmini",
-                        Street2 = "Kahagolla",
-                        City = "Diyatalawa",
-                        PostalCode = 19150
-                    },
-                    Account = new Account() {
-                        Email = "deliverer@outlook.com",
-                        Password = "asd123",
-                    },
+            User = new User() {
+                FirstName = "Deliverer",
+                LastName = "Rerevilved",
+                DateOfBirth = new DateTime(1999, 6, 18),
+                Gender = Gender.Male,
+                Address = new Address() {
+                    No = "1/156",
+                    Street1 = "Nilmini",
+                    Street2 = "Kahagolla",
+                    City = "Diyatalawa",
+                    PostalCode = 19150
+                },
+                Account = new Account() {
+                    Email = "deliverer@outlook.com",
+                    Password = "asd123",
                 },
             },
             VehicleType = VehicleType.Bike,

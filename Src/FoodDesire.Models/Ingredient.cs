@@ -7,13 +7,15 @@ public sealed class Ingredient : TrackedEntity {
     [Required]
     public Measurement Measurement { get; set; }
     [Required]
-    public double CurrentPricePerUnit { get; set; }
+    [Column(TypeName = "Decimal(18,2)")]
+    public decimal CurrentPricePerUnit { get; set; } = decimal.Zero;
     [Required]
     public double MaximumQuantity { get; set; }
     [Required]
     public double CurrentQuantity { get; set; }
     [Required]
     public int IngredientCategoryId { get; set; }
+    public double InSupply { get; set; } = 0;
 
 
     [ForeignKey(nameof(IngredientCategoryId))]

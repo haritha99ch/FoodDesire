@@ -24,6 +24,9 @@ public class FoodDesireContext : DbContext {
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Account>()
+            .HasIndex(a => a.Email)
+            .IsUnique();
         modelBuilder.Entity<FoodItem>()
             .Property(r => r.FoodItemIngredients)
             .HasConversion(

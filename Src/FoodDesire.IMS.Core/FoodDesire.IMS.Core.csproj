@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>FoodDesire.IMS.Core</RootNamespace>
+    <Platforms>x86;x64;arm64;AnyCPU</Platforms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.51.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoodDesire.Core\FoodDesire.Core.csproj" />
+    <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
+    <ProjectReference Include="..\FoodDesire.Models\FoodDesire.Models.csproj" />
+  </ItemGroup>
+</Project>

@@ -18,7 +18,7 @@ public class DelivererService : IDelivererService {
 
     public async Task<bool> DeleteAccountById(int id) {
         Deliverer deliverer = await _delivererRepository.GetByID(id);
-        bool delivererDeleted = await _userRepository.SoftDelete(deliverer.Employee!.UserId);
+        bool delivererDeleted = await _userRepository.SoftDelete(deliverer!.UserId);
         return delivererDeleted;
     }
 
@@ -29,7 +29,7 @@ public class DelivererService : IDelivererService {
 
     public async Task<Deliverer> GetByEmailAndPassword(string email, string password) {
         Expression<Func<Deliverer, bool>> filter =
-            e => e.Employee!.User!.Account!.Email.Equals(email) && e.Employee.User.Account.Password.Equals(password);
+            e => e!.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
 
         Deliverer deliverer = await _delivererRepository.GetOne(filter);
         return deliverer;
@@ -43,5 +43,12 @@ public class DelivererService : IDelivererService {
     public async Task<Deliverer> UpdateAccount(Deliverer user) {
         Deliverer updatedDeliverer = await _delivererRepository.Update(user);
         return updatedDeliverer;
+    }
+
+    public async Task<Deliverer> GetByEmail(string email) {
+        Expression<Func<Deliverer, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
+
+        Deliverer? deliverer = await _delivererRepository.GetOne(filter);
+        return deliverer!;
     }
 }

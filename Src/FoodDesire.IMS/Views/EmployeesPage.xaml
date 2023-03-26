@@ -1,0 +1,94 @@
+﻿<Page x:Class="FoodDesire.IMS.Views.EmployeesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:components="using:FoodDesire.IMS.Components"
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+      xmlns:models="using:FoodDesire.IMS.Models"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+      mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <DataTemplate x:Key="EmployeeListItem">
+            <components:EmployeeListItemControl />
+        </DataTemplate>
+
+        <DataTemplate x:Key="DetailsTemplate">
+            <Grid>
+                <components:EmployeesDetailControl ListDetailsMenuItem="{Binding}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NoSelectionContentTemplate">
+            <Grid>
+                <TextBlock x:Uid="ListDetails_NoSelection"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           Style="{ThemeResource SubtitleTextBlockStyle}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ListHeaderTemplate">
+            <Grid Height="40">
+                <TextBlock VerticalAlignment="Center"
+                           Style="{StaticResource ListTitleStyle}"
+                           Text="{Binding}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="MinimalListHeaderTemplate">
+            <Grid Height="40">
+                <TextBlock Margin="96,0,0,0"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource ListTitleStyle}"
+                           Text="{Binding}" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <StackPanel>
+        <ProgressBar Style="{StaticResource LoadingPrograssBar}" 
+                     Visibility="{x:Bind ViewModel.IsUserAdding, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
+        <CommandBar Background="Transparent"
+                    IsOpen="False"
+                    HorizontalAlignment="Left"
+                    DefaultLabelPosition="Right">
+            <AppBarButton Icon="Add"
+                          Label="Add"
+                          Click="AddButton_Click"/>
+            <AppBarButton Icon="Edit"
+                          Label="Edit" />
+        </CommandBar>
+
+        <Grid x:Name="ContentArea">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="641" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="ListDetailsViewControl.ListHeaderTemplate"
+                                    Value="{StaticResource ListHeaderTemplate}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <controls:ListDetailsView x:Uid="ListDetails"
+                                      x:Name="ListDetailsViewControl"
+                                      BackButtonBehavior="Manual"
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      DetailsTemplate="{StaticResource DetailsTemplate}"
+                                      ItemsSource="{x:Bind ViewModel.Users, Mode=OneWay}"
+                                      ItemTemplate="{StaticResource EmployeeListItem}"
+                                      ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
+                                      NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
+                                      SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
+                                      ViewStateChanged="OnViewStateChanged" />
+        </Grid>
+    </StackPanel>
+</Page>

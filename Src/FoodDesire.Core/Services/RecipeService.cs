@@ -57,15 +57,11 @@ public class RecipeService : IRecipeService {
     }
 
     public async Task<List<Recipe>> GetAllRecipesByCategoryName(string categoryName) {
-        Expression<Func<RecipeCategory, bool>> categoryFilter = e => e.Name == categoryName;
-
-        RecipeCategory foodCategory = await _recipeCategoryRepository.GetOne(categoryFilter);
-        int categoryId = foodCategory.Id;
-
-        Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
+        Expression<Func<Recipe, bool>> filter = e => e.FoodCategory!.Name.Equals(categoryName);
         Expression<Func<Recipe, object>> order = e => e.RecipeCategoryId;
+        static IIncludableQueryable<Recipe, object?> include(IQueryable<Recipe> e) => e.Include(e => e.FoodCategory);
 
-        List<Recipe> recipes = await _recipeRepository.Get(filter, order);
+        List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
         return recipes;
     }
 
@@ -97,7 +93,7 @@ public class RecipeService : IRecipeService {
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
             recipeIngredient.PricePerMultiplier = await SetMinimumPricePerMultiplier(recipeIngredient);
-            recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
+            recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
 
         });
         if (recipe.FixedPrice < recipe.MinimumPrice)
@@ -118,7 +114,7 @@ public class RecipeService : IRecipeService {
 
     private async Task<decimal> SetMinimumPricePerMultiplier(RecipeIngredient recipeIngredient) {
         Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
-        decimal pricePerMultiplier = Convert.ToDecimal(recipeIngredient.Amount * ingredient.CurrentPricePerUnit);
+        decimal pricePerMultiplier = (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
 
         if (pricePerMultiplier < recipeIngredient.PricePerMultiplier) return recipeIngredient.PricePerMultiplier;
         recipeIngredient.PricePerMultiplier = pricePerMultiplier;

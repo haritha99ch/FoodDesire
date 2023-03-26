@@ -41,16 +41,17 @@ public class Repository<T> : IRepository<T> where T : Entity {
     }
 
     public async Task<List<T>> Get(
-        Expression<Func<T, bool>> filter,
+        Expression<Func<T, bool>>? filter,
         Expression<Func<T, object>>? order = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
         ) {
-        IQueryable<T> query = entitySet.Where(filter);
+        IQueryable<T> query = entitySet.AsNoTracking();
 
-        if (order != null) query = query.OrderBy(order);
         if (includes != null) query = includes(query);
+        if (filter != null) query = query.Where(filter);
+        if (order != null) query = query.OrderBy(order);
 
-        List<T> entities = await query.ToListAsync();
+        List<T>? entities = await query.ToListAsync();
         return entities;
     }
 

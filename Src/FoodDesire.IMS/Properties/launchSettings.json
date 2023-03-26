@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FoodDesire.IMS (Unpackaged)": {
+      "commandName": "Project"
+    },
+    "FoodDesire.IMS (Package)": {
+      "commandName": "MsixPackage"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog x:Class="FoodDesire.IMS.Components.NewEmployeeFormDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+               mc:Ignorable="d"
+               Title="New Employee"
+               PrimaryButtonText="Create"
+               IsPrimaryButtonEnabled="{x:Bind ViewModel.IsPrimaryButtonEnabled, Mode=OneWay}"
+               xmlns:viewmodels="using:FoodDesire.IMS.ViewModels"
+               d:DataContext="{d:DesignInstance Type=viewmodels:NewEmployeeViewModel}"
+               DefaultButton="Primary"
+               CloseButtonText="Cancel">
+    <ContentDialog.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </ContentDialog.Resources>
+
+    <RadioButtons Header="Role:"
+                  ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedRole, Mode=TwoWay}">
+    </RadioButtons>
+</ContentDialog>
