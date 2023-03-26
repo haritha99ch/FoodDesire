@@ -9,11 +9,9 @@ on:
 jobs:
 
   build:
-
     strategy:
       matrix:
         configuration: [Debug]
-
     runs-on: windows-latest
 
     steps:
@@ -24,7 +22,6 @@ jobs:
         echo $env:APPSETTINGS_PRODUCTION > secret.json
         $secret = Get-Content -Raw secret.json
         Set-Content -Path "appsettings.Production.json" -Value $secret
-        cat "appsettings.Production.json"
       shell: pwsh
 
     
