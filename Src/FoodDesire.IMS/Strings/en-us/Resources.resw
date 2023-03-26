@@ -177,4 +177,7 @@
   <data name="Settings_MyAccount.Text" xml:space="preserve">
     <value>My Account</value>
   </data>
+  <data name="Shell_Supplies.Content" xml:space="preserve">
+    <value>Supplies</value>
+  </data>
 </root>

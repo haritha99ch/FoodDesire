@@ -42,6 +42,8 @@ internal static class AppConfigurator {
         services.AddTransient<ShellPage>();
         services.AddTransient<EmployeesViewModel>();
         services.AddTransient<EmployeesPage>();
+        services.AddTransient<SuppliesViewModel>();
+        services.AddTransient<SuppliesPage>();
 
         //Components ViewModels
         services.AddTransient<NewEmployeeViewModel>();
