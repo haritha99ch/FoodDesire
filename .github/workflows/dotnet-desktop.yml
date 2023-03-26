@@ -19,10 +19,9 @@ jobs:
       env:
         APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
       run: |
-        echo $env:APPSETTINGS_PRODUCTION > secret.json
-        $secret = Get-Content -Raw secret.json
-        pwd
-        ls -Force
+        Set-Content -Path "Src\FoodDesire.AppSettings\appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
+        Set-Content -Path "Src\FoodDesire.AppSettings\appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
+        Cat "Src\FoodDesire.AppSettings\appsettings.Development.json"
       shell: pwsh
 
     
