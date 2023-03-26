@@ -1,0 +1,48 @@
+﻿<Page x:Class="FoodDesire.IMS.Views.IngredientsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:controls="using:FoodDesire.IMS.Components"
+      xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:viewmodels="using:FoodDesire.IMS.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodels:IngredientsViewModel}"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="IngrdientItem">
+            <controls:IngredientListItemControl />
+        </DataTemplate>
+        <CommandBarFlyout Placement="BottomEdgeAlignedRight"
+                          x:Name="CommandBarFlyout">
+            <AppBarButton Label="Request"
+                          Icon="Import"
+                          ToolTipService.ToolTip="Request"
+                          Click="RequestButton_Click"/>
+            <AppBarButton Label="Edit"
+                          Icon="Edit"
+                          ToolTipService.ToolTip="Edit"
+                          Click="EditButton_Click"/>
+            <AppBarButton Label="Delete"
+                          Icon="Delete"
+                          ToolTipService.ToolTip="Delete"
+                          Click="DeleteButton_Click" />
+        </CommandBarFlyout>
+    </Page.Resources>
+
+    <StackPanel>
+        <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                     Style="{StaticResource LoadingPrograssBar}" />
+        <AppBarButton x:Name="NewIngredient" Icon="Add"
+                      Label="Creat An Ingredient"
+                      Click="NewIngredient_Click">
+        </AppBarButton>
+
+        <GridView x:Name="IngredientList"
+                  SelectionMode="None"
+                  ItemsSource="{x:Bind ViewModel.IngredientsDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                  IsItemClickEnabled="True"
+                  ItemTemplate="{StaticResource IngrdientItem}"
+                  ItemClick="IngredientList_ItemClick" />
+    </StackPanel>
+</Page>

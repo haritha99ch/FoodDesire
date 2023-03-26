@@ -1,16 +1,16 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Deliverer : Entity {
+public sealed class Deliverer : BaseUser {
     [Required]
     public int EmployeeId { get; set; }
     [Required]
     public VehicleType VehicleType { get; set; } = VehicleType.Bike;
-    [Required]
-    public required string LicenseNo { get; set; }
+    [AllowNull]
+    public string? LicenseNo { get; set; }
 
 
     [ForeignKey(nameof(EmployeeId))]
-    public Employee? Employee { get; set; }
-    public ICollection<Delivery>? Deliveries { get; set; }
+    public Employee Employee { get; set; } = new Employee();
+    public ICollection<Delivery> Deliveries { get; set; } = new List<Delivery>();
 }
 
 public enum VehicleType {

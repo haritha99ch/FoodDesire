@@ -1,11 +1,10 @@
 ﻿namespace FoodDesire.Models;
-public sealed class Chef : Entity {
+public sealed class Chef : BaseUser {
     [Required]
     public int EmployeeId { get; set; }
 
 
     [ForeignKey(nameof(EmployeeId))]
-    public Employee? Employee { get; set; }
-    public List<FoodItem>? FoodItems { get; set; }   //Chef prepares Foods
-    public List<Recipe>? Recipes { get; set; }       //Chef creates Recipes
+    public Employee Employee { get; set; } = new Employee();
+    public List<Recipe> Recipes { get; set; } = new List<Recipe>();       //Chef creates Recipes
 }

@@ -42,15 +42,14 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
     }
 
     public async Task<List<T>> Get(
-        Expression<Func<T, bool>> filter,
+        Expression<Func<T, bool>>? filter,
         Expression<Func<T, object>>? order,
         Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
         ) {
         Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
-        BinaryExpression? body = Expression.AndAlso(filter.Body, TrackedFilter.Body);
 
-        IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-
+        IQueryable<T>? query = entitySet.AsNoTracking().Where(TrackedFilter);
+        if (filter != null) query = query.Where(filter);
         if (order != null) query = query.OrderBy(order);
         if (includes != null) query = includes(query);
 
@@ -63,7 +62,8 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
     }
 
     public Task<T> Update(T entity) {
-        EntityEntry<T>? updatedEntity = entitySet.Update(entity);
+        _context.Entry(entity).State = EntityState.Detached;
+        var updatedEntity = entitySet.Update(entity);
         return Task.FromResult(updatedEntity.Entity);
     }
     public async Task<bool> SoftDelete(int Id) {

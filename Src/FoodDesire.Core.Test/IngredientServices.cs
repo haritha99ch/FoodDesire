@@ -77,10 +77,10 @@ public class IngredientServices : Services {
             SuppliedDate = new DateTime(),
             SupplierId = 1,
         };
-        Supply newSupply = await _ingredientService.NewSupply(supply, 3000);
+        Supply newSupply = await _ingredientService.NewSupply(supply);
 
         Ingredient ingredient = await _ingredientService.GetIngredientById(1);
-        Assert.That(ingredient.CurrentQuantity, Is.EqualTo(1000));
+        Assert.That(ingredient.InSupply, Is.EqualTo(1000));
     }
 
     [Test, Order(7)]

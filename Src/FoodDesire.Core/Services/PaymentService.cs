@@ -28,7 +28,7 @@ public class PaymentService : IPaymentService {
         return order.Payment!;
     }
 
-    public async Task<Payment> PaymentForSupply(Supply supply, decimal value) {
+    public async Task<Supply> PaymentForSupply(Supply supply, decimal value) {
         List<Admin> admins = await _adminRepository.GetAll();
         Admin? admin = admins.FirstOrDefault();
         if (admin == null) throw new Exception("No admin found");
@@ -39,7 +39,7 @@ public class PaymentService : IPaymentService {
         };
         supply = await _supplyRepository.Update(supply);
         await _supplyRepository.SaveChanges();
-        return supply.Payment!;
+        return supply;
     }
 
     public async Task<Payment> SalaryForEmployee(Payment payment) {

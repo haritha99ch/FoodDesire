@@ -43,6 +43,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
     public async Task<Delivery> OrderIsDelivered(int deliveryId) {
         Delivery delivery = await _deliveryRepository.GetByID(deliveryId);
         delivery.IsDelivered = true;
+        delivery.Order!.Status = OrderStatus.Delivered;
         delivery = await _deliveryRepository.Update(delivery);
         return delivery;
     }

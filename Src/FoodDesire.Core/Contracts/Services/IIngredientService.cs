@@ -10,7 +10,10 @@ public interface IIngredientService {
     Task<List<Ingredient>> GetAllIngredients();
     Task<Ingredient> GetIngredientById(int ingredientId);
     Task<Ingredient> GetIngredientByName(string ingredientName);
+    Task<Ingredient> EditIngredient(Ingredient ingredient);
     Task<List<Ingredient>> GetAllIngredientsByCategory(string ingredientCategory);
+    Task<bool> DeleteIngredientById(int ingredientCategoryId);
 
-    Task<Supply> NewSupply(Supply supply, decimal value);
+    Task<Supply> NewSupply(Supply supply);
+    Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory);
 }

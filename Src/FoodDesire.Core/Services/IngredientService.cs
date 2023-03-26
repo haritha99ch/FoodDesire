@@ -3,15 +3,18 @@ public class IngredientService : IIngredientService {
     private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly ITrackingRepository<IngredientCategory> _ingredientCategoryTRepository;
     private readonly IPaymentService _paymentService;
+    private readonly ITrackingRepository<Supply> _supplyTRepository;
 
     public IngredientService(
         IRepository<Ingredient> ingredientRepository,
         IPaymentService paymentService,
-        ITrackingRepository<IngredientCategory> categoryRepository
+        ITrackingRepository<IngredientCategory> categoryRepository,
+        ITrackingRepository<Supply> supplyTRepository
         ) {
         _ingredientRepository = ingredientRepository;
         _paymentService = paymentService;
         _ingredientCategoryTRepository = categoryRepository;
+        _supplyTRepository = supplyTRepository;
     }
 
     public async Task<IngredientCategory> NewIngredientCategory(IngredientCategory ingredientCategory) {
@@ -21,7 +24,8 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<IngredientCategory>> GetAllIngredientCategories() {
-        List<IngredientCategory> ingredientCategories = await _ingredientCategoryTRepository.GetAll();
+        Func<IQueryable<IngredientCategory>, IIncludableQueryable<IngredientCategory, object?>> include = e => e.Include(i => i.Ingredients);
+        List<IngredientCategory> ingredientCategories = await _ingredientCategoryTRepository.Get(null, null, include);
         return ingredientCategories;
     }
 
@@ -44,7 +48,8 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> GetAllIngredients() {
-        List<Ingredient> ingredients = await _ingredientRepository.GetAll();
+        Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object?>> include = e => e.Include(i => i.IngredientCategory);
+        List<Ingredient> ingredients = await _ingredientRepository.Get(null, null, include);
         return ingredients;
     }
 
@@ -67,22 +72,37 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> GetAllIngredientsByCategory(string ingredientCategory) {
-        Expression<Func<IngredientCategory, bool>> categoryFilter = e => e.Name.Equals(ingredientCategory);
-        IngredientCategory category = await _ingredientCategoryTRepository.GetOne(categoryFilter);
-
-        Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategoryId == category.Id;
+        Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategory!.Name.Equals(ingredientCategory);
         Expression<Func<Ingredient, object>> order = e => e.IngredientCategoryId;
+        Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object?>> include =
+            e => e.Include(e => e.IngredientCategory);
 
-        List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order);
+        List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order, include);
         return ingredients;
     }
 
-    public async Task<Supply> NewSupply(Supply supply, decimal value) {
+    public async Task<Ingredient> EditIngredient(Ingredient ingredient) {
+        Ingredient updatedIngredient = await _ingredientRepository.Update(ingredient);
+        return updatedIngredient;
+    }
+
+    public async Task<bool> DeleteIngredientById(int ingredientCategoryId) {
+        bool deleted = await _ingredientRepository.Delete(ingredientCategoryId);
+        return deleted;
+    }
+
+    public async Task<Supply> NewSupply(Supply supply) {
+        supply = await _supplyTRepository.Add(supply);
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
-        ingredient.CurrentQuantity += supply.Amount;
-        ingredient.CurrentPricePerUnit = Convert.ToDouble(value) / supply.Amount;
-        Payment payment = await _paymentService.PaymentForSupply(supply, value);
+        ingredient.InSupply = supply.Amount;
+        await _supplyTRepository.SaveChanges();
         await _ingredientRepository.Update(ingredient);
-        return payment.Supply!;
+        return supply;
+    }
+
+    public async Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory) {
+        IngredientCategory category = await _ingredientCategoryTRepository.Update(ingredientCategory);
+        await _ingredientCategoryTRepository.SaveChanges();
+        return category;
     }
 }

@@ -41,7 +41,7 @@ public class UserServices : Services {
     public async Task CreateSupplier() {
         Supplier supplier = UserDataHelper.GetSupplierPayload();
         Supplier saveSupplier = await _supplierService.CreateAccount(supplier);
-        Assert.That(supplier!.Employee!.User!.FirstName, Is.EqualTo(saveSupplier.Employee!.User!.FirstName));
+        Assert.That(supplier!.User!.FirstName, Is.EqualTo(saveSupplier!.User!.FirstName));
     }
 
     [Test, Order(5)]
@@ -53,17 +53,17 @@ public class UserServices : Services {
     [Test, Order(6)]
     public async Task UpdateSupplier() {
         Supplier supplier = await _supplierService.GetById(1);
-        supplier.Employee!.User!.FirstName = "SupplierUpdated";
+        supplier!.User!.FirstName = "SupplierUpdated";
         await _supplierService.UpdateAccount(supplier);
         Supplier updateAdmin = await _supplierService.GetById(1);
-        Assert.That(supplier.Employee!.User!.FirstName, Is.EqualTo(updateAdmin.Employee!.User!.FirstName));
+        Assert.That(supplier!.User!.FirstName, Is.EqualTo(updateAdmin!.User!.FirstName));
     }
 
     [Test, Order(7)]
     public async Task CreateChef() {
         Chef chef = UserDataHelper.GetChefPayload();
         Chef saveChef = await _chefService.CreateAccount(chef);
-        Assert.That(chef.Employee!.User!.FirstName, Is.EqualTo(saveChef.Employee!.User!.FirstName));
+        Assert.That(chef!.User!.FirstName, Is.EqualTo(saveChef!.User!.FirstName));
     }
 
     [Test, Order(8)]
@@ -75,38 +75,36 @@ public class UserServices : Services {
     [Test, Order(9)]
     public async Task UpdateChef() {
         Chef chef = await _chefService.GetById(1);
-        chef.Employee!.User!.FirstName = "ChefUpdated";
+        chef!.User!.FirstName = "ChefUpdated";
         await _chefService.UpdateAccount(chef);
         Chef updateSupplier = await _chefService.GetById(1);
-        Assert.That(chef.Employee!.User!.FirstName, Is.EqualTo(updateSupplier.Employee!.User!.FirstName));
+        Assert.That(chef!.User!.FirstName, Is.EqualTo(updateSupplier!.User!.FirstName));
     }
 
     [Test, Order(10)]
     public async Task CreateDeliverer() {
         Deliverer deliverer = new() {
-            Employee = new Employee {
-                User = new User() {
-                    FirstName = "Deliverer",
-                    LastName = "Rereviled",
-                    DateOfBirth = new DateTime(1999, 5, 2),
-                    Account = new Account() {
-                        Email = "deliverer@fooddesire.com",
-                        Password = "1234",
-                    },
-                    Address = new Address() {
-                        No = "2",
-                        Street1 = "Street1",
-                        Street2 = "Street2",
-                        City = "Diyatalawa",
-                        PostalCode = 1290
-                    },
-                    Gender = Gender.Male,
+            User = new User() {
+                FirstName = "Deliverer",
+                LastName = "Rereviled",
+                DateOfBirth = new DateTime(1999, 5, 2),
+                Account = new Account() {
+                    Email = "deliverer@fooddesire.com",
+                    Password = "1234",
                 },
+                Address = new Address() {
+                    No = "2",
+                    Street1 = "Street1",
+                    Street2 = "Street2",
+                    City = "Diyatalawa",
+                    PostalCode = 1290
+                },
+                Gender = Gender.Male,
             },
             LicenseNo = "2",
         };
         Deliverer saveDeliverer = await _delivererService.CreateAccount(deliverer);
-        Assert.That(deliverer.Employee.User.FirstName, Is.EqualTo(saveDeliverer.Employee!.User!.FirstName));
+        Assert.That(deliverer.User!.FirstName, Is.EqualTo(saveDeliverer!.User!.FirstName));
     }
 
     [Test, Order(11)]
@@ -118,9 +116,9 @@ public class UserServices : Services {
     [Test, Order(12)]
     public async Task UpdateDeliverer() {
         Deliverer deliverer = await _delivererService.GetById(1);
-        deliverer.Employee!.User!.FirstName = "DelivererUpdated";
+        deliverer!.User!.FirstName = "DelivererUpdated";
         await _delivererService.UpdateAccount(deliverer);
         Deliverer updateDeliverer = await _delivererService.GetById(1);
-        Assert.That(deliverer.Employee!.User!.FirstName, Is.EqualTo(updateDeliverer.Employee!.User!.FirstName));
+        Assert.That(deliverer!.User!.FirstName, Is.EqualTo(updateDeliverer!.User!.FirstName));
     }
 }
