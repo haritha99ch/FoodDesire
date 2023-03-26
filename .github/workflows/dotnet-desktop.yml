@@ -23,8 +23,6 @@ jobs:
         $secret = Get-Content -Raw secret.json
         pwd
         ls -Force
-        Set-Content -Path "FoodDesire.AppSettings\appsettings.Production.json" -Value $secret
-        Set-Content -Path "FoodDesire.AppSettings\appsettings.Development.json" -Value $secret
       shell: pwsh
 
     
