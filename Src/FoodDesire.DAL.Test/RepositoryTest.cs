@@ -193,8 +193,10 @@ public class RepositoryTest {
 
     [Test, Order(7)]
     public async Task GetAccountByEmailAndPassword() {
-        Expression<Func<Account, bool>> filter =
-            e => e.Email.Equals("deliverer@outlook.com") && e.Password.Equals("asd123");
+        Expression<Func<Account, bool>> filterExpression =
+            e => e.Email!.Equals("deliverer@outlook.com") && e.Password!.Equals("asd123");
+
+        IQueryable<Account> filter(IQueryable<Account> e) => e.Where(filterExpression);
 
         Account? account = await accountRepository!.GetOne(filter);
 
@@ -203,8 +205,10 @@ public class RepositoryTest {
 
     [Test, Order(8)]
     public async Task GetAccountByInvalidEmailAndPassword() {
-        Expression<Func<Account, bool>> filter =
-            e => e.Email.Equals("deliverer@outlook.com") && e.Password.Equals("asdd123");
+        Expression<Func<Account, bool>> filterExpression =
+            e => e.Email!.Equals("deliverer@outlook.com") && e.Password!.Equals("asdd123");
+
+        IQueryable<Account> filter(IQueryable<Account> e) => e.Where(filterExpression);
 
         Account? account = await accountRepository!.GetOne(filter);
 
@@ -237,8 +241,11 @@ public class RepositoryTest {
 
     [Test, Order(11)]
     public async Task GetByFilteringAndOrdering() {
-        Expression<Func<User, bool>> filter = e => !e.Deleted;
-        Expression<Func<User, object>> order = e => e.FirstName;
+        Expression<Func<User, bool>> filterExpression = e => !e.Deleted;
+        Expression<Func<User, object>> orderExpression = e => e.FirstName!;
+
+        IQueryable<User> filter(IQueryable<User> e) => e.Where(filterExpression);
+        IOrderedQueryable<User> order(IQueryable<User> e) => e.OrderBy(orderExpression);
 
         List<User> orderedUserList = await userTrackingRepository!.Get(filter, order);
 

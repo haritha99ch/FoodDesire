@@ -7,15 +7,21 @@ public class CoreUserService : ICoreUserService {
     }
 
     public async Task<List<User>> GetAllEmployees() {
-        Expression<Func<User, bool>> filter = e => e.Account!.Role != Role.Admin && e.Account.Role != Role.Customer;
-        Func<IQueryable<User>, IIncludableQueryable<User, object>> include = e => e.Include(e => e.Account)!;
+        Expression<Func<User, bool>> filterExpression = e => e.Account!.Role != Role.Admin && e.Account.Role != Role.Customer;
+
+        IIncludableQueryable<User, object> include(IQueryable<User> e) => e.Include(e => e.Account!);
+        IQueryable<User> filter(IQueryable<User> e) => e.Where(filterExpression);
+
         List<User> users = await _coreUserRepository.Get(filter, null, include);
         return users;
     }
 
     public async Task<User> GetUserByAccountId(int accountId) {
-        Expression<Func<User, bool>> filter = e => e!.AccountId == accountId;
-        Func<IQueryable<User>, IIncludableQueryable<User, object>> include = e => e.Include(e => e.Account!);
+        Expression<Func<User, bool>> filterExpression = e => e!.AccountId == accountId;
+
+        IIncludableQueryable<User, object> include(IQueryable<User> e) => e.Include(e => e.Account!);
+        IQueryable<User> filter(IQueryable<User> e) => e.Where(filterExpression);
+
         User user = await _coreUserRepository.GetOne(filter, include);
         return user;
     }

@@ -21,9 +21,11 @@ public class UserService<T> : IUserService<T> where T : BaseUser {
     }
 
     public async Task<T> GetByEmailAndPassword(string email, string password) {
-        Expression<Func<T, bool>> filter =
+        Expression<Func<T, bool>> filterExpression =
             e => e.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
-        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = e => e.Include(e => e.User!).ThenInclude(e => e.Account!);
+
+        IQueryable<T> filter(IQueryable<T> e) => e.Where(filterExpression);
+        IIncludableQueryable<T, object> include(IQueryable<T> e) => e.Include(e => e.User!).ThenInclude(e => e.Account!);
 
         T user = await _userRepository.GetOne(filter, include);
         return user;
@@ -40,8 +42,11 @@ public class UserService<T> : IUserService<T> where T : BaseUser {
     }
 
     public async Task<T> GetByEmail(string email) {
-        Expression<Func<T, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
-        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = e => e.Include(e => e.User!).ThenInclude(e => e.Account!);
+        Expression<Func<T, bool>> filterExpression = e => e!.User!.Account!.Email!.Equals(email);
+
+        IQueryable<T> filter(IQueryable<T> e) => e.Where(filterExpression);
+        IIncludableQueryable<T, object> include(IQueryable<T> e) => e.Include(e => e.User!).ThenInclude(e => e.Account!);
+
         T? user = await _userRepository.GetOne(filter, include);
         return user;
     }

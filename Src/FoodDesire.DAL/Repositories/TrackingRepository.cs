@@ -22,38 +22,8 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
         return entity!;
     }
 
-    public async Task<T> GetOne(
-        Expression<Func<T, bool>> filter,
-        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
-        ) {
-        Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
-
-        IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-
-        if (includes != null) query = includes(query);
-
-        T? entity = await query.SingleOrDefaultAsync();
-        return entity!;
-    }
-
     public async Task<List<T>> GetAll() {
         List<T>? entities = await entitySet.AsNoTracking().Where(e => !e.Deleted).ToListAsync();
-        return entities;
-    }
-
-    public async Task<List<T>> Get(
-        Expression<Func<T, bool>>? filter,
-        Expression<Func<T, object>>? order,
-        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
-        ) {
-        Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
-
-        IQueryable<T>? query = entitySet.AsNoTracking().Where(TrackedFilter);
-        if (filter != null) query = query.Where(filter);
-        if (order != null) query = query.OrderBy(order);
-        if (includes != null) query = includes(query);
-
-        List<T> entities = await query.ToListAsync();
         return entities;
     }
 
@@ -82,5 +52,35 @@ public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEnt
 
     public async Task<IDbContextTransaction> BeginTransaction() {
         return await _context.Database.BeginTransactionAsync();
+    }
+
+    public async Task<T> GetOne(
+        Func<IQueryable<T>, IQueryable<T>> filter,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null
+        ) {
+        Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
+
+        IQueryable<T>? query = entitySet.AsNoTracking().Where(TrackedFilter);
+        query = filter(query);
+        if (include != null) query = include(query);
+
+        T? entity = await query.SingleOrDefaultAsync();
+        return entity!;
+    }
+
+    public async Task<List<T>> Get(
+        Func<IQueryable<T>, IQueryable<T>>? filter,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? order = null,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null
+        ) {
+        Expression<Func<T, bool>> TrackedFilter = e => !e.Deleted;
+
+        IQueryable<T>? query = entitySet.AsNoTracking().Where(TrackedFilter);
+        query = include?.Invoke(query) ?? query;
+        query = filter?.Invoke(query) ?? query;
+        query = order?.Invoke(query) ?? query;
+
+        List<T> entities = await query.ToListAsync();
+        return entities;
     }
 }

@@ -14,33 +14,42 @@ public class CustomerService : ICustomerService {
         Customer newCustomer = await _customerRepository.Add(user);
         return newCustomer;
     }
+
     public async Task<Customer> GetById(int id) {
         Customer customer = await _customerRepository.GetByID(id);
         return customer;
     }
+
     public async Task<List<Customer>> GetAll() {
         List<Customer> customers = await _customerRepository.GetAll();
         return customers;
     }
+
     public async Task<Customer> GetByEmailAndPassword(string email, string password) {
-        Expression<Func<Customer, bool>> filter =
+        Expression<Func<Customer, bool>> filterExpression =
             e => e.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
+
+        IQueryable<Customer> filter(IQueryable<Customer> e) => e.Where(filterExpression);
 
         Customer? customer = await _customerRepository.GetOne(filter);
         return customer!;
     }
+
     public async Task<bool> DeleteAccountById(int id) {
         Customer customer = await _customerRepository.GetByID(id);
         bool customerDeleted = await _userRepository.SoftDelete(customer.UserId);
         return customerDeleted;
     }
+
     public async Task<Customer> UpdateAccount(Customer user) {
         Customer updatedCustomer = await _customerRepository.Update(user);
         return updatedCustomer;
     }
 
     public async Task<Customer> GetByEmail(string email) {
-        Expression<Func<Customer, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
+        Expression<Func<Customer, bool>> filterExpression = e => e!.User!.Account!.Email!.Equals(email);
+
+        IQueryable<Customer> filter(IQueryable<Customer> e) => e.Where(filterExpression);
 
         Customer? customer = await _customerRepository.GetOne(filter);
         return customer!;

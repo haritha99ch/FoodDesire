@@ -49,40 +49,55 @@ public class SupplyService : ISupplyService {
     }
 
     public async Task<List<Supply>> GetAllAcceptedSupplies() {
-        Expression<Func<Supply, bool>> filter = e => e.Status.Equals(SupplyStatus.Accepted);
-        Expression<Func<Supply, object>> order = e => e.RequestedAt;
+        Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Accepted);
+        Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
+
+        Func<IQueryable<Supply>, IQueryable<Supply>> filter = e => e.Where(filterExpression);
+        Func<IQueryable<Supply>, IOrderedQueryable<Supply>> order = e => e.OrderBy(orderExpression);
 
         List<Supply> supplies = await _supplyRepository.Get(filter, order);
         return supplies;
     }
 
     public async Task<List<Supply>> GetAllCompletedSupplies() {
-        Expression<Func<Supply, bool>> filter = e => e.Status.Equals(SupplyStatus.Completed);
-        Expression<Func<Supply, object>> order = e => e.RequestedAt;
+        Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Completed);
+        Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
+
+        Func<IQueryable<Supply>, IQueryable<Supply>> filter = e => e.Where(filterExpression);
+        Func<IQueryable<Supply>, IOrderedQueryable<Supply>> order = e => e.OrderBy(orderExpression);
 
         List<Supply> supplies = await _supplyRepository.Get(filter, order);
         return supplies;
     }
 
     public async Task<List<Supply>> GetAllPendingSupplierSupplies(int supplierId) {
-        Expression<Func<Supply, bool>> filter = e => e.Status.Equals(SupplyStatus.Pending) && e.SupplierId == supplierId;
-        Expression<Func<Supply, object>> order = e => e.RequestedAt;
+        Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Pending) && e.SupplierId == supplierId;
+        Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
+
+        IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
+        IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
 
         List<Supply> supplies = await _supplyRepository.Get(filter, order);
         return supplies;
     }
 
     public async Task<List<Supply>> GetAllPendingSupplies() {
-        Expression<Func<Supply, bool>> filter = e => e.Status.Equals(SupplyStatus.Pending);
-        Expression<Func<Supply, object>> order = e => e.RequestedAt;
+        Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Pending);
+        Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
+
+        IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
+        IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
 
         List<Supply> supplies = await _supplyRepository.Get(filter, order);
         return supplies;
     }
 
     public async Task<List<Supply>> GetAllSupplierSupplies(int supplierId) {
-        Expression<Func<Supply, bool>> filter = e => e.SupplierId == supplierId;
-        Expression<Func<Supply, object>> order = e => e.RequestedAt;
+        Expression<Func<Supply, bool>> filterExpression = e => e.SupplierId == supplierId;
+        Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
+
+        IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
+        IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
 
         List<Supply> supplies = await _supplyRepository.Get(filter, order);
         return supplies;

@@ -28,8 +28,10 @@ public class DelivererService : IDelivererService {
     }
 
     public async Task<Deliverer> GetByEmailAndPassword(string email, string password) {
-        Expression<Func<Deliverer, bool>> filter =
+        Expression<Func<Deliverer, bool>> filterExpression =
             e => e!.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
+
+        IQueryable<Deliverer> filter(IQueryable<Deliverer> e) => e.Where(filterExpression);
 
         Deliverer deliverer = await _delivererRepository.GetOne(filter);
         return deliverer;
@@ -46,7 +48,9 @@ public class DelivererService : IDelivererService {
     }
 
     public async Task<Deliverer> GetByEmail(string email) {
-        Expression<Func<Deliverer, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
+        Expression<Func<Deliverer, bool>> filterExpression = e => e!.User!.Account!.Email!.Equals(email);
+
+        IQueryable<Deliverer> filter(IQueryable<Deliverer> e) => e.Where(filterExpression);
 
         Deliverer? deliverer = await _delivererRepository.GetOne(filter);
         return deliverer!;

@@ -22,12 +22,11 @@ public class OrderService : IOrderService {
     }
 
     public async Task<List<Order>> GetPendingOrders() {
-        Expression<Func<Order, bool>> filter = e => e.Status != OrderStatus.Delivered;
-        Func<IQueryable<Order>, IIncludableQueryable<Order, object?>> include =
-            e => e
-                .Include(e => e.Delivery)
-                .Include(e => e.Customer)
-                .Include(e => e.FoodItems);
+        Expression<Func<Order, bool>> filterExpression = e => e.Status != OrderStatus.Delivered;
+
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) =>
+            e.Include(e => e.Delivery).Include(e => e.Customer).Include(e => e.FoodItems);
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;

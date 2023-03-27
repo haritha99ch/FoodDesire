@@ -23,35 +23,9 @@ public class Repository<T> : IRepository<T> where T : Entity {
         T? entity = await entitySet.FindAsync(Id);
         return entity!;
     }
-    public async Task<T> GetOne(
-        Expression<Func<T, bool>> filter,
-        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
-        ) {
-        IQueryable<T>? query = entitySet.AsNoTracking().Where(filter);
-
-        if (includes != null) query = includes(query);
-
-        T? entity = await query.SingleOrDefaultAsync();
-        return entity!;
-    }
 
     public async Task<List<T>> GetAll() {
         List<T>? entities = await entitySet.AsNoTracking().ToListAsync();
-        return entities;
-    }
-
-    public async Task<List<T>> Get(
-        Expression<Func<T, bool>>? filter,
-        Expression<Func<T, object>>? order = null,
-        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? includes = null
-        ) {
-        IQueryable<T> query = entitySet.AsNoTracking();
-
-        if (includes != null) query = includes(query);
-        if (filter != null) query = query.Where(filter);
-        if (order != null) query = query.OrderBy(order);
-
-        List<T>? entities = await query.ToListAsync();
         return entities;
     }
 
@@ -67,5 +41,31 @@ public class Repository<T> : IRepository<T> where T : Entity {
         if (await GetByID(Id) == null)
             return true;
         return false;
+    }
+
+    public async Task<T> GetOne
+        (Func<IQueryable<T>, IQueryable<T>> filter,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null
+        ) {
+        IQueryable<T>? query = entitySet.AsNoTracking();
+        query = filter(query);
+        if (include != null) query = include(query);
+        T? entity = await query.SingleOrDefaultAsync();
+        return entity!;
+    }
+
+    public async Task<List<T>> Get(
+        Func<IQueryable<T>, IQueryable<T>>? filter,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? order = null,
+        Func<IQueryable<T>, IIncludableQueryable<T, object?>>? include = null
+        ) {
+        IQueryable<T> query = entitySet.AsNoTracking();
+
+        query = include?.Invoke(query) ?? query;
+        query = filter?.Invoke(query) ?? query;
+        query = order?.Invoke(query) ?? query;
+
+        List<T>? entities = await query.ToListAsync();
+        return entities;
     }
 }

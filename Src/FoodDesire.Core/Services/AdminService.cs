@@ -23,8 +23,10 @@ public class AdminService : IAdminService {
     }
 
     public async Task<Admin> GetByEmailAndPassword(string email, string password) {
-        Expression<Func<Admin, bool>> filter = e =>
+        Expression<Func<Admin, bool>> filterExpression = e =>
             e.User!.Account!.Email!.Equals(email) && e.User!.Account.Password!.Equals(password);
+
+        IQueryable<Admin> filter(IQueryable<Admin> e) => e.Where(filterExpression);
 
         Admin? admin = await _adminRepository.GetOne(filter);
         return admin!;
@@ -45,7 +47,9 @@ public class AdminService : IAdminService {
     }
 
     public async Task<Admin> GetByEmail(string email) {
-        Expression<Func<Admin, bool>> filter = e => e.User!.Account!.Email!.Equals(email);
+        Expression<Func<Admin, bool>> filterExpression = e => e.User!.Account!.Email!.Equals(email);
+
+        IQueryable<Admin> filter(IQueryable<Admin> e) => e.Where(filterExpression);
 
         Admin? admin = await _adminRepository.GetOne(filter);
         return admin!;

@@ -19,22 +19,26 @@ public class OrderDeliveryService : IOrderDeliveryService {
     public async Task<Delivery> NewDeliveryForOrder(Delivery delivery) {
         Order order = await _orderRepository.GetByID(delivery.OrderId);
         order.Delivery = delivery;
-        order.Delivery.Address = (delivery.Address == null) ? order.Customer!.User!.Address : delivery.Address;
+        order.Delivery.Address = delivery.Address ?? order.Customer!.User!.Address;
         order = await _orderRepository.Update(order);
         return order.Delivery!;
     }
 
     public async Task<List<Order>> GetAllDeliveredOrders() {
-        Expression<Func<Order, bool>> filter = e => e.Delivery!.IsDelivered;
-        Func<IQueryable<Order>, IIncludableQueryable<Order, object?>> include = e => e.Include(o => o.Delivery);
+        Expression<Func<Order, bool>> filterExpression = e => e.Delivery!.IsDelivered;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(o => o.Delivery);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;
     }
 
     public async Task<List<Order>> GetAllOrdersToDeliver() {
-        Expression<Func<Order, bool>> filter = e => e.Delivery == null || !e.Delivery.IsDelivered;
-        Func<IQueryable<Order>, IIncludableQueryable<Order, object?>> include = e => e.Include(e => e.Delivery);
+        Expression<Func<Order, bool>> filterExpression = e => e.Delivery == null || !e.Delivery.IsDelivered;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;

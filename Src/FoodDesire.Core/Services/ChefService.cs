@@ -27,8 +27,10 @@ public class ChefService : IChefService {
     }
 
     public async Task<Chef> GetByEmailAndPassword(string email, string password) {
-        Expression<Func<Chef, bool>> filter =
+        Expression<Func<Chef, bool>> filterExpression =
             e => e.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
+
+        IQueryable<Chef> filter(IQueryable<Chef> e) => e.Where(filterExpression);
 
         Chef chef = await _chefRepository.GetOne(filter);
         return chef;
@@ -45,7 +47,9 @@ public class ChefService : IChefService {
     }
 
     public async Task<Chef> GetByEmail(string email) {
-        Expression<Func<Chef, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
+        Expression<Func<Chef, bool>> filterExpression = e => e!.User!.Account!.Email!.Equals(email);
+
+        IQueryable<Chef> filter(IQueryable<Chef> e) => e.Where(filterExpression);
 
         Chef? chef = await _chefRepository.GetOne(filter);
         return chef!;

@@ -50,24 +50,32 @@ public class RecipeService : IRecipeService {
     }
 
     public async Task<RecipeCategory> GetRecipeCategoryByName(string categoryName) {
-        Expression<Func<RecipeCategory, bool>> filter = e => e.Name == categoryName;
-        RecipeCategory recipeCategory = await _recipeCategoryRepository.GetOne(filter);
+        Expression<Func<RecipeCategory, bool>> filterExpression = e => e.Name == categoryName;
 
+        IQueryable<RecipeCategory> filter(IQueryable<RecipeCategory> e) => e.Where(filterExpression);
+
+        RecipeCategory recipeCategory = await _recipeCategoryRepository.GetOne(filter);
         return recipeCategory;
     }
 
     public async Task<List<Recipe>> GetAllRecipesByCategoryName(string categoryName) {
-        Expression<Func<Recipe, bool>> filter = e => e.FoodCategory!.Name.Equals(categoryName);
-        Expression<Func<Recipe, object>> order = e => e.RecipeCategoryId;
-        static IIncludableQueryable<Recipe, object?> include(IQueryable<Recipe> e) => e.Include(e => e.FoodCategory);
+        Expression<Func<Recipe, bool>> filterExpression = e => e.FoodCategory!.Name.Equals(categoryName);
+        Expression<Func<Recipe, object>> orderExpression = e => e.RecipeCategoryId;
+
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+        IOrderedQueryable<Recipe> order(IQueryable<Recipe> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Recipe, object?> include(IQueryable<Recipe> e) => e.Include(e => e.FoodCategory);
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
         return recipes;
     }
 
     public async Task<List<Recipe>> GetAllRecipesByCategoryId(int categoryId) {
-        Expression<Func<Recipe, bool>> filter = e => e.RecipeCategoryId == categoryId;
-        Expression<Func<Recipe, object>> order = e => e.RecipeCategoryId;
+        Expression<Func<Recipe, bool>> filterExpression = e => e.RecipeCategoryId == categoryId;
+        Expression<Func<Recipe, object>> orderExpression = e => e.RecipeCategoryId;
+
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+        IOrderedQueryable<Recipe> order(IQueryable<Recipe> e) => e.OrderBy(orderExpression);
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order);
         return recipes;

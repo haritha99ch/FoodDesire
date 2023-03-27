@@ -24,7 +24,8 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<IngredientCategory>> GetAllIngredientCategories() {
-        Func<IQueryable<IngredientCategory>, IIncludableQueryable<IngredientCategory, object?>> include = e => e.Include(i => i.Ingredients);
+        IIncludableQueryable<IngredientCategory, object?> include(IQueryable<IngredientCategory> e) => e.Include(i => i.Ingredients);
+
         List<IngredientCategory> ingredientCategories = await _ingredientCategoryTRepository.Get(null, null, include);
         return ingredientCategories;
     }
@@ -35,9 +36,11 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<IngredientCategory> GetIngredientCategoryByName(string ingredientCategoryName) {
-        Expression<Func<IngredientCategory, bool>> categoryFilter = e => e.Name.Equals(ingredientCategoryName);
+        Expression<Func<IngredientCategory, bool>> filterExpression = e => e.Name.Equals(ingredientCategoryName);
 
-        IngredientCategory ingredientCategory = await _ingredientCategoryTRepository.GetOne(categoryFilter);
+        IQueryable<IngredientCategory> filter(IQueryable<IngredientCategory> e) => e.Where(filterExpression);
+
+        IngredientCategory ingredientCategory = await _ingredientCategoryTRepository.GetOne(filter);
         return ingredientCategory;
     }
 
@@ -48,7 +51,8 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> GetAllIngredients() {
-        Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object?>> include = e => e.Include(i => i.IngredientCategory);
+        IIncludableQueryable<Ingredient, object?> include(IQueryable<Ingredient> e) => e.Include(i => i.IngredientCategory);
+
         List<Ingredient> ingredients = await _ingredientRepository.Get(null, null, include);
         return ingredients;
     }
@@ -60,9 +64,11 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<Ingredient> GetIngredientByName(string ingredientName) {
-        Expression<Func<Ingredient, bool>> ingredientFilter = e => e.Name.Equals(ingredientName);
+        Expression<Func<Ingredient, bool>> filterExpression = e => e.Name.Equals(ingredientName);
 
-        Ingredient ingredient = await _ingredientRepository.GetOne(ingredientFilter);
+        IQueryable<Ingredient> filter(IQueryable<Ingredient> e) => e.Where(filterExpression);
+
+        Ingredient ingredient = await _ingredientRepository.GetOne(filter);
         return ingredient;
     }
 
@@ -72,10 +78,12 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> GetAllIngredientsByCategory(string ingredientCategory) {
-        Expression<Func<Ingredient, bool>> filter = e => e.IngredientCategory!.Name.Equals(ingredientCategory);
-        Expression<Func<Ingredient, object>> order = e => e.IngredientCategoryId;
-        Func<IQueryable<Ingredient>, IIncludableQueryable<Ingredient, object?>> include =
-            e => e.Include(e => e.IngredientCategory);
+        Expression<Func<Ingredient, bool>> filterExpression = e => e.IngredientCategory!.Name.Equals(ingredientCategory);
+        Expression<Func<Ingredient, object>> orderExpression = e => e.IngredientCategoryId;
+
+        IIncludableQueryable<Ingredient, object?> include(IQueryable<Ingredient> e) => e.Include(e => e.IngredientCategory);
+        IQueryable<Ingredient> filter(IQueryable<Ingredient> e) => e.Where(filterExpression);
+        IOrderedQueryable<Ingredient> order(IQueryable<Ingredient> e) => e.OrderBy(orderExpression);
 
         List<Ingredient> ingredients = await _ingredientRepository.Get(filter, order, include);
         return ingredients;

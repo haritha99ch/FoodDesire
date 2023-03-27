@@ -69,13 +69,19 @@ public class PaymentService : IPaymentService {
     }
 
     public async Task<List<Payment>> GetIncome() {
-        Expression<Func<Payment, bool>> filter = p => p.PaymentType == PaymentType.Order;
+        Expression<Func<Payment, bool>> filterExpression = p => p.PaymentType == PaymentType.Order;
+
+        IQueryable<Payment> filter(IQueryable<Payment> e) => e.Where(filterExpression);
+
         List<Payment> payments = await _paymentRepository.Get(filter);
         return payments;
     }
 
     public async Task<List<Payment>> GetExpenses() {
-        Expression<Func<Payment, bool>> filter = p => p.PaymentType != PaymentType.Order;
+        Expression<Func<Payment, bool>> filterExpression = p => p.PaymentType != PaymentType.Order;
+
+        IQueryable<Payment> filter(IQueryable<Payment> e) => e.Where(filterExpression);
+
         List<Payment> payments = await _paymentRepository.Get(filter);
         return payments;
     }

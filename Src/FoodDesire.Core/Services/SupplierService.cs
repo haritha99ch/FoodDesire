@@ -28,8 +28,10 @@ public class SupplierService : ISupplierService {
     }
 
     public async Task<Supplier> GetByEmailAndPassword(string email, string password) {
-        Expression<Func<Supplier, bool>> filter =
+        Expression<Func<Supplier, bool>> filterExpression =
             e => e!.User!.Account!.Email!.Equals(email) && e.User!.Account!.Password!.Equals(password);
+
+        IQueryable<Supplier> filter(IQueryable<Supplier> e) => e.Where(filterExpression);
 
         Supplier? supplier = await _supplierRepository.GetOne(filter);
         return supplier!;
@@ -47,7 +49,9 @@ public class SupplierService : ISupplierService {
     }
 
     public async Task<Supplier> GetByEmail(string email) {
-        Expression<Func<Supplier, bool>> filter = e => e!.User!.Account!.Email!.Equals(email);
+        Expression<Func<Supplier, bool>> filterExpression = e => e!.User!.Account!.Email!.Equals(email);
+
+        IQueryable<Supplier> filter(IQueryable<Supplier> e) => e.Where(filterExpression);
 
         Supplier? supplier = await _supplierRepository.GetOne(filter);
         return supplier!;

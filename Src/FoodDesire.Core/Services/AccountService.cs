@@ -7,7 +7,10 @@ public class AccountService : IAccountService {
     }
 
     public async Task<Account> GetAccountByEmail(string email) {
-        Expression<Func<Account, bool>> filter = e => e.Email == email;
+        Expression<Func<Account, bool>> filterExpression = e => e.Email == email;
+
+        IQueryable<Account> filter(IQueryable<Account> e) => e.Where(filterExpression);
+
         Account account = await _accountRepository.GetOne(filter);
         return account;
     }

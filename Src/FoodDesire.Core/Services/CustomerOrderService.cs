@@ -12,24 +12,33 @@ public class CustomerOrderService : ICustomerOrderService {
     }
 
     public async Task<List<Order>> GetAllOrdersForCustomerById(int customerId) {
-        Expression<Func<Order, bool>> filter = e => e.CustomerId == customerId;
-        Expression<Func<Order, object>> order = e => e.DateTime;
+        Expression<Func<Order, bool>> filterExpression = e => e.CustomerId == customerId;
+        Expression<Func<Order, object>> orderExpression = e => e.DateTime;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IOrderedQueryable<Order> order(IQueryable<Order> e) => e.OrderBy(orderExpression);
 
         List<Order> orders = await _orderRepository.Get(filter, order);
         return orders;
     }
 
     public async Task<List<Order>> GetAllOrdersToDeliverForCustomerById(int customerId) {
-        Expression<Func<Order, bool>> filter = e => e.CustomerId == customerId && e.Status == OrderStatus.Prepared;
-        Expression<Func<Order, object>> order = e => e.DateTime;
+        Expression<Func<Order, bool>> filterExpression = e => e.CustomerId == customerId && e.Status == OrderStatus.Prepared;
+        Expression<Func<Order, object>> orderExpression = e => e.DateTime;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IOrderedQueryable<Order> order(IQueryable<Order> e) => e.OrderBy(orderExpression);
 
         List<Order> orders = await _orderRepository.Get(filter, order);
         return orders;
     }
 
     public async Task<List<Order>> GetAllPendingOrdersForCustomerById(int customerId) {
-        Expression<Func<Order, bool>> filter = e => e.CustomerId == customerId && e.Status == OrderStatus.Pending;
-        Expression<Func<Order, object>> order = e => e.DateTime;
+        Expression<Func<Order, bool>> filterExpression = e => e.CustomerId == customerId && e.Status == OrderStatus.Pending;
+        Expression<Func<Order, object>> orderExpression = e => e.DateTime;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IOrderedQueryable<Order> order(IQueryable<Order> e) => e.OrderBy(orderExpression);
 
         List<Order> orders = await _orderRepository.Get(filter, order);
         return orders;
