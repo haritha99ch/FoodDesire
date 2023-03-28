@@ -7,6 +7,7 @@
                Title="{x:Bind ViewModel.IngredientDetails.Name, Converter={StaticResource StringFormatConverter},
                         ConverterParameter='Request Ingredient: {0}'}"
                PrimaryButtonText="Request"
+               DefaultButton="Primary"
                IsPrimaryButtonEnabled="{x:Bind ViewModel.CanRequest, Mode=OneWay}"
                CloseButtonText="Cancel">
 

@@ -8,8 +8,6 @@
              mc:Ignorable="d">
 
     <StackPanel>
-        <ProgressBar IsIndeterminate="{x:Bind IsLoading, Mode=OneWay}"
-                     Style="{StaticResource LoadingPrograssBar}" />
 
         <Grid x:Name="ContentGrid"
               MinWidth="350"

@@ -28,6 +28,7 @@ public class SupplyService : ISupplyService {
         supply.SuppliedDate = DateTime.Now;
         Ingredient ingredient = await _ingredientRepository.GetByID(supply.IngredientId);
         ingredient.CurrentPricePerUnit = (decimal)((double)value / supply.Amount);
+        ingredient.CurrentQuantity += supply.Amount;
         ingredient.InSupply = 0;
         await _ingredientRepository.Update(ingredient);
         supply = await _supplyRepository.Update(supply);
@@ -52,10 +53,11 @@ public class SupplyService : ISupplyService {
         Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Accepted);
         Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
 
-        Func<IQueryable<Supply>, IQueryable<Supply>> filter = e => e.Where(filterExpression);
-        Func<IQueryable<Supply>, IOrderedQueryable<Supply>> order = e => e.OrderBy(orderExpression);
+        IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
+        IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Supply, object> include(IQueryable<Supply> e) => e.Include(e => e.Ingredient!);
 
-        List<Supply> supplies = await _supplyRepository.Get(filter, order);
+        List<Supply> supplies = await _supplyRepository.Get(filter, order, include);
         return supplies;
     }
 
@@ -63,21 +65,23 @@ public class SupplyService : ISupplyService {
         Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Completed);
         Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
 
-        Func<IQueryable<Supply>, IQueryable<Supply>> filter = e => e.Where(filterExpression);
-        Func<IQueryable<Supply>, IOrderedQueryable<Supply>> order = e => e.OrderBy(orderExpression);
+        IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
+        IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Supply, object> include(IQueryable<Supply> e) => e.Include(e => e.Ingredient!);
 
-        List<Supply> supplies = await _supplyRepository.Get(filter, order);
+        List<Supply> supplies = await _supplyRepository.Get(filter, order, include);
         return supplies;
     }
 
-    public async Task<List<Supply>> GetAllPendingSupplierSupplies(int supplierId) {
-        Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Pending) && e.SupplierId == supplierId;
+    public async Task<List<Supply>> GetAllAcceptedSuppliesForSupplier(int supplierId) {
+        Expression<Func<Supply, bool>> filterExpression = e => e.Status.Equals(SupplyStatus.Accepted) && e.SupplierId == supplierId;
         Expression<Func<Supply, object>> orderExpression = e => e.RequestedAt;
 
         IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
         IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Supply, object> include(IQueryable<Supply> e) => e.Include(e => e.Ingredient!);
 
-        List<Supply> supplies = await _supplyRepository.Get(filter, order);
+        List<Supply> supplies = await _supplyRepository.Get(filter, order, include);
         return supplies;
     }
 
@@ -87,8 +91,10 @@ public class SupplyService : ISupplyService {
 
         IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
         IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Supply, object> include(IQueryable<Supply> e) => e.Include(e => e.Ingredient!);
 
-        List<Supply> supplies = await _supplyRepository.Get(filter, order);
+
+        List<Supply> supplies = await _supplyRepository.Get(filter, order, include);
         return supplies;
     }
 
@@ -98,8 +104,10 @@ public class SupplyService : ISupplyService {
 
         IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
         IOrderedQueryable<Supply> order(IQueryable<Supply> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Supply, object> include(IQueryable<Supply> e) => e.Include(e => e.Ingredient!);
 
-        List<Supply> supplies = await _supplyRepository.Get(filter, order);
+
+        List<Supply> supplies = await _supplyRepository.Get(filter, order, include);
         return supplies;
     }
 

@@ -24,6 +24,7 @@
     <None Remove="Components\NewEmployeeFormDialog.xaml" />
     <None Remove="Components\NewIngredientFormDialog.xaml" />
     <None Remove="Components\RequestIngredientDialog.xaml" />
+    <None Remove="Components\SuppliesListItemControl.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
   </ItemGroup>
 
@@ -49,6 +50,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\SuppliesListItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Components\NewEmployeeFormDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -14,7 +14,7 @@ public class SuppliesPageService : ISuppliesPageService {
 
     public async Task<List<Supply>> GetAllSupplies() => await _supplyService.GetAllSupplies();
 
-    public async Task<List<Supply>> GetPendingSuppliesForSupplier(int supplierId) => await _supplyService.GetAllPendingSupplierSupplies(supplierId);
+    public async Task<List<Supply>> GetAcceptedSuppliesForSupplier(int supplierId) => await _supplyService.GetAllAcceptedSuppliesForSupplier(supplierId);
 
     public async Task<List<Supply>> GetSuppliesForSupplier(int supplierId) => await _supplyService.GetAllSupplierSupplies(supplierId);
 

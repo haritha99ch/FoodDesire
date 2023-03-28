@@ -40,8 +40,10 @@ public sealed partial class IngredientsPage : Page {
 
     private async void RequestButton_Click(object sender, RoutedEventArgs e) {
         CommandBarFlyout.Hide();
-        RequestIngredientDialog dialog = App.GetService<IContentDialogFactory>()
-            .ConfigureDialog<RequestIngredientDialog>(XamlRoot);
+        RequestIngredientDialog dialog = new(_selectedIngredient!.Id) {
+            XamlRoot = XamlRoot,
+            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"]
+        };
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
@@ -53,8 +55,10 @@ public sealed partial class IngredientsPage : Page {
 
     private async void EditButton_Click(object sender, RoutedEventArgs e) {
         CommandBarFlyout.Hide();
-        EditIngredientDialog dialog = App.GetService<IContentDialogFactory>()
-            .ConfigureDialog<EditIngredientDialog>(XamlRoot);
+        EditIngredientDialog dialog = new EditIngredientDialog(_selectedIngredient!.Id) {
+            XamlRoot = XamlRoot,
+            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"]
+        };
         var result = await dialog.ShowAsync();
 
         if (result != ContentDialogResult.Primary) return;
