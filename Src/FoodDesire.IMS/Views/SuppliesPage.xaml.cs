@@ -6,8 +6,8 @@ public sealed partial class SuppliesPage : Page {
     public SuppliesViewModel ViewModel { get; }
 
     public SuppliesPage() {
-        ViewModel = App.GetService<SuppliesViewModel>();
         InitializeComponent();
+        ViewModel = App.GetService<SuppliesViewModel>();
     }
 
     private void PendingSupplies_DragItemsStarting(object sender, DragItemsStartingEventArgs e) {
@@ -34,8 +34,15 @@ public sealed partial class SuppliesPage : Page {
         e.AcceptedOperation = DataPackageOperation.Move;
     }
 
-    private void UserSupplies_ItemClick(object sender, ItemClickEventArgs e) {
+    private async void UserSupplies_ItemClick(object sender, ItemClickEventArgs e) {
         Supply selectedSupply = (Supply)e.ClickedItem;
+        CompleteSupplyDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<CompleteSupplyDialog>(XamlRoot);
+        dialog.ViewModel.Supply = selectedSupply;
 
+        await dialog.ShowAsync();
+
+        if (dialog.ViewModel.Result.Equals(SupplyResult.Failed)) return;
+        ViewModel.UserSupplies.Remove(ViewModel.UserSupplies.FirstOrDefault(s => s.Id == selectedSupply.Id)!);
     }
 }

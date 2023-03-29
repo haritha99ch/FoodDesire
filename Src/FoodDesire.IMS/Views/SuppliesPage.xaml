@@ -4,60 +4,79 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:components="using:FoodDesire.IMS.Components"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
       mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <ProgressBar Grid.Column="0" Grid.Row="0" 
-                     IsIndeterminate="{x:Bind ViewModel.IsAcceptingSupply, Mode=OneWay}"
-                     Style="{StaticResource LoadingPrograssBar}"/>
-        <ListView Grid.Column="0"
-                  Grid.Row="1"
-                  Margin="10,0,10,10"
-                  x:Name="UserSupplies"
-                  BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
-                  BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
-                  CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
-                  CanDragItems="True"
-                  CanReorderItems="True"
-                  AllowDrop="True"
-                  DragOver="UserSupplies_DragOver"
-                  Drop="UserSupplies_Drop"
-                  SelectionMode="Single"
-                  IsItemClickEnabled="True"
-                  ItemClick="UserSupplies_ItemClick"
-                  ItemsSource="{x:Bind ViewModel.UserSupplies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <components:SuppliesListItemControl />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Grid Grid.Column="0"
+              Visibility="{x:Bind ViewModel.IsSupplier, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+              x:Name="UserSupplies">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <ListView Grid.Column="1"
-                  Grid.Row="1"
-                  x:Name="PendingSupplies"
-                  Margin="10,0,10,10"
-                  BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
-                  BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
-                  CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
-                  CanDragItems="True"
-                  SelectionMode="Single"
-                  DragItemsStarting="PendingSupplies_DragItemsStarting"
-                  ItemsSource="{x:Bind ViewModel.PendingSupplies, Mode=OneWay}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <components:SuppliesListItemControl />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <TextBlock Grid.Row="0"
+                       Text="My Supplies"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+            <ListView Grid.Row="1"
+                      Margin="0,20,40,20"
+                      VerticalAlignment="Stretch"
+                      BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
+                      BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
+                      CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
+                      CanDragItems="True"
+                      CanReorderItems="True"
+                      AllowDrop="True"
+                      DragOver="UserSupplies_DragOver"
+                      Drop="UserSupplies_Drop"
+                      SelectionMode="Single"
+                      IsItemClickEnabled="True"
+                      ItemClick="UserSupplies_ItemClick"
+                      ItemsSource="{x:Bind ViewModel.UserSupplies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <components:SuppliesListItemControl />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column="{x:Bind ViewModel.PendingSuppliesGridIndex, Mode=OneWay}"
+              x:Name="PendingSupplies">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Text="Pending Supplies"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+            <ListView Grid.Column="1"
+                      Grid.Row="1"
+                      Margin="0,20,40,20"
+                      BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
+                      BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
+                      CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
+                      CanDragItems="True"
+                      SelectionMode="Single"
+                      DragItemsStarting="PendingSupplies_DragItemsStarting"
+                      ItemsSource="{x:Bind ViewModel.PendingSupplies, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <components:SuppliesListItemControl />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
 </Page>

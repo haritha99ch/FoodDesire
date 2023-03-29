@@ -1,0 +1,43 @@
+<ContentDialog x:Class="FoodDesire.IMS.Components.CompleteSupplyDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:local="using:FoodDesire.IMS.Components"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:convertors="using:CommunityToolkit.WinUI.UI.Converters"
+               mc:Ignorable="d"
+               Style="{ThemeResource DefaultContentDialogStyle}"
+               Title="Complete Supply"
+               PrimaryButtonText="Complete"
+               IsPrimaryButtonEnabled="{x:Bind ViewModel.IsPrimaryButtonEnabled, Mode=OneWay}"
+               PrimaryButtonCommand="{x:Bind ViewModel.CompleteSupplyCommand}"
+               PrimaryButtonCommandParameter="{x:Bind}"
+               SecondaryButtonText="Cancel"
+               IsSecondaryButtonEnabled="{x:Bind ViewModel.CompleteSupplyCommand.IsRunning, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
+               Closing="ContentDialog_Closing"
+               DefaultButton="Primary">
+    <ContentDialog.Resources>
+        <convertors:BoolNegationConverter x:Key="BoolNegationConverter" />
+    </ContentDialog.Resources>
+
+    <StackPanel>
+        <StackPanel VerticalAlignment="Top">
+            <TextBlock Margin="{StaticResource TextBoxInnerButtonMargin}"
+                       Style="{StaticResource BodyStrongTextBlockStyle}"
+                       Text="{x:Bind ViewModel.Supply.Ingredient.Name, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='Supply Ingredient: {0}'}" />
+            <TextBlock Margin="{StaticResource TextBoxInnerButtonMargin}"
+                       Style="{StaticResource BodyTextBlockStyle}">
+            <Run Text="Amount: " />
+            <Run Text="{x:Bind ViewModel.Supply.Amount, Mode=OneWay}" />
+            <Run Text="{x:Bind ViewModel.Supply.Ingredient.Measurement, Mode=OneWay}" />
+            </TextBlock>
+            <TextBox Header="Value: Rs."
+                     Text="{x:Bind ViewModel.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <StackPanel VerticalAlignment="Bottom">
+            <ProgressBar VerticalAlignment="Bottom"
+                         Style="{StaticResource LoadingPrograssBar}"
+                         IsIndeterminate="{x:Bind ViewModel.CompleteSupplyCommand.IsRunning, Mode=OneWay}" />
+        </StackPanel>
+    </StackPanel>
+</ContentDialog>

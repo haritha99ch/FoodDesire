@@ -6,6 +6,7 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
                mc:Ignorable="d"
+               Style="{ThemeResource DefaultContentDialogStyle}"
                Title="New Employee"
                PrimaryButtonText="Create"
                IsPrimaryButtonEnabled="{x:Bind ViewModel.IsPrimaryButtonEnabled, Mode=OneWay}"

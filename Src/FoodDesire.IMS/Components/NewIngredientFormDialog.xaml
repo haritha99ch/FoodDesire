@@ -5,6 +5,7 @@
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:local="using:FoodDesire.IMS.Components"
                mc:Ignorable="d"
+               Style="{ThemeResource DefaultContentDialogStyle}"
                Title="Add New Ingrdient"
                PrimaryButtonText="Create"
                DefaultButton="Primary"

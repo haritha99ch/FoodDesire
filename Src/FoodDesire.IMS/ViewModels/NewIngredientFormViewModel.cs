@@ -20,6 +20,7 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
             Name = IngredientName!,
             Description = IngredientDescription!,
             IngredientCategoryId = (int)_ingredientCategoryId!,
+            Measurement = Measurement,
             MaximumQuantity = (double)IngredientMaximumQuantity!
         };
         _ingredient = await _ingredientsPageService.AddIngredient(_ingredient);

@@ -71,6 +71,7 @@ public sealed partial class IngredientsPage : Page {
     }
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e) {
+        CommandBarFlyout.Hide();
         ContentDialog dialog = new() {
             XamlRoot = XamlRoot,
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],

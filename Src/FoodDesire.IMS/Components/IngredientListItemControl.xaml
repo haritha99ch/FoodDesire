@@ -26,7 +26,7 @@
 
             <TextBlock Grid.Row="0"
                        x:Name="IngredientName"
-                       Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                       Text="{Binding Name, Mode=OneWay}"
                        TextWrapping="Wrap"
                        Margin="15,0,10,0"
                        Style="{StaticResource SubtitleTextBlockStyle}" />

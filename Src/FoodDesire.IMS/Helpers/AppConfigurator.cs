@@ -50,6 +50,8 @@ internal static class AppConfigurator {
         services.AddTransient<NewEmployeeFormDialog>();
         services.AddTransient<NewIngredientFormDialog>();
         services.AddTransient<NewIngredientFormViewModel>();
+        services.AddTransient<CompleteSupplyViewModel>();
+        services.AddTransient<CompleteSupplyDialog>();
 
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

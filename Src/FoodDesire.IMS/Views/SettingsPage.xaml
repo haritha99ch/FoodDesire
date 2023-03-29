@@ -10,12 +10,13 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        
+
         <StackPanel Grid.Column="0"
                     x:Name="ContentArea">
             <TextBlock x:Uid="Settings_Personalization"
@@ -71,13 +72,14 @@
 
         <StackPanel Grid.Column="1">
             <TextBlock x:Uid="Settings_MyAccount"
-                       Margin="{StaticResource SmallTopBottomMargin}"
                        Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <components:EmployeesDetailControl ListDetailsMenuItem="{x:Bind ViewModel.User}" />
-            <Button Style="{StaticResource AccentButtonStyle}"
-                    Margin="{StaticResource SmallTopBottomMargin}"
-                    Content="Sign out"
-                    Command="{x:Bind ViewModel.SignUserOutCommand}"/>
+            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                <components:EmployeesDetailControl ListDetailsMenuItem="{x:Bind ViewModel.User}" />
+                <Button Style="{StaticResource AccentButtonStyle}"
+                        Margin="{StaticResource SmallTopBottomMargin}"
+                        Content="Sign out"
+                        Command="{x:Bind ViewModel.SignUserOutCommand}" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

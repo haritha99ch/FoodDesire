@@ -4,6 +4,7 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                mc:Ignorable="d"
+               Style="{ThemeResource DefaultContentDialogStyle}"
                Title="{x:Bind ViewModel.IngredientDetails.Name, Converter={StaticResource StringFormatConverter},
                         ConverterParameter='Request Ingredient: {0}'}"
                PrimaryButtonText="Request"
@@ -18,11 +19,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <TextBlock HorizontalAlignment="Center">
-                <Run Text="+" />
-                <Run Text="{x:Bind ViewModel.RequestingAmount, Mode=OneWay}" />
-                <Run Text="{x:Bind ViewModel.IngredientDetails.Measurement}" />
-            </TextBlock>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="+"
+                           VerticalAlignment="Center" />
+                <TextBox Text="{x:Bind ViewModel.RequestingAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock VerticalAlignment="Center"
+                           Text="{x:Bind ViewModel.IngredientDetails.Measurement}" />
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -47,7 +51,7 @@
             <TextBlock HorizontalAlignment="Left"
                        Text="{x:Bind ViewModel.IngredientDetails.DisplayCurrentQuantity}" />
             <TextBlock HorizontalAlignment="Right"
-                       Text="{x:Bind ViewModel.IngredientDetails.DisplayMaximumQuantity}"/>
+                       Text="{x:Bind ViewModel.IngredientDetails.DisplayMaximumQuantity}" />
         </Grid>
     </Grid>
 </ContentDialog>
