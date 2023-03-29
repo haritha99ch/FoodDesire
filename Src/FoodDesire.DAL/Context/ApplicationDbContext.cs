@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace FoodDesire.DAL.Context;
-public class FoodDesireContext : DbContext {
+public class ApplicationDbContext : DbContext {
     public DbSet<User>? User { get; set; }
     public DbSet<Account>? Account { get; set; }
     public DbSet<Address>? Address { get; set; }
@@ -20,7 +20,7 @@ public class FoodDesireContext : DbContext {
     public DbSet<Payment>? Payment { get; set; }
     public DbSet<Delivery>? Delivery { get; set; }
     public DbSet<Supply>? Supply { get; set; }
-    public FoodDesireContext(DbContextOptions<FoodDesireContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
@@ -48,11 +48,6 @@ public class FoodDesireContext : DbContext {
             .HasConversion(
                 e => JsonConvert.SerializeObject(e),
                 e => JsonConvert.DeserializeObject<List<RecipeIngredient>>(e)!);
-        modelBuilder.Entity<Recipe>()
-            .Property(e => e.Image)
-            .HasConversion(
-                e => JsonConvert.SerializeObject(e),
-                e => JsonConvert.DeserializeObject<Image>(e));
         modelBuilder.Entity<Delivery>()
             .Property(e => e.Address)
             .HasConversion(

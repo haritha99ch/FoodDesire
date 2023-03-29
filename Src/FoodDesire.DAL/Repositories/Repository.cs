@@ -1,9 +1,9 @@
 ﻿namespace FoodDesire.DAL.Repositories;
 public class Repository<T> : IRepository<T> where T : Entity {
-    protected readonly FoodDesireContext _context;
+    protected readonly ApplicationDbContext _context;
     private DbSet<T> entitySet => _context.Set<T>();
 
-    public Repository(FoodDesireContext context) {
+    public Repository(ApplicationDbContext context) {
         _context = context;
     }
 

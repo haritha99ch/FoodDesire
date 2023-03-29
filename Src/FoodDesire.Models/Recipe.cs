@@ -16,14 +16,13 @@ public sealed class Recipe : TrackedEntity {
     public int RecipeCategoryId { get; set; }
     [NotNull]
     public string Tags { get; set; } = "";
+    public List<Image> Images { get; set; } = new();
 
 
     [ForeignKey(nameof(ChefId))]
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(RecipeCategoryId))]
-    public RecipeCategory? FoodCategory { get; set; }
+    public RecipeCategory? RecipeCategory { get; set; }
     [NotMapped]
-    public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
-    [NotMapped]
-    public Image? Image { get; set; }
+    public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
 }

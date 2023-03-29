@@ -12,7 +12,7 @@ public abstract class Services {
     internal readonly ICustomerOrderService _customerOrderService;
     internal readonly IOrderDeliveryService _orderDeliveryServices;
     internal readonly IPaymentService _paymentService;
-    internal readonly FoodDesireContext _context;
+    internal readonly ApplicationDbContext _context;
 
     public Services(string hostName) {
         ApplicationHostHelper.ConfigureHost(hostName);
@@ -29,6 +29,6 @@ public abstract class Services {
         _customerOrderService = ApplicationHostHelper.GetService<ICustomerOrderService>();
         _orderDeliveryServices = ApplicationHostHelper.GetService<IOrderDeliveryService>();
         _paymentService = ApplicationHostHelper.GetService<IPaymentService>();
-        _context = ApplicationHostHelper.GetService<FoodDesireContext>();
+        _context = ApplicationHostHelper.GetService<ApplicationDbContext>();
     }
 }

@@ -5,5 +5,5 @@ public sealed class RecipeCategory : Entity {
     [Required]
     public required string Description { get; set; }
 
-    public ICollection<Recipe>? Recipes { get; set; }
+    public List<Recipe> Recipes { get; set; } = new();
 }

@@ -1,9 +1,9 @@
 ﻿namespace FoodDesire.DAL.Repositories;
 public class TrackingRepository<T> : ITrackingRepository<T> where T : TrackedEntity {
-    private readonly FoodDesireContext _context;
+    private readonly ApplicationDbContext _context;
     private DbSet<T> entitySet => _context.Set<T>();
 
-    public TrackingRepository(FoodDesireContext context) {
+    public TrackingRepository(ApplicationDbContext context) {
         _context = context;
     }
 

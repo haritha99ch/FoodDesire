@@ -5,7 +5,7 @@ public static class ApplicationHostHelper {
     public static IHost ConfigureHost(string contextName) {
         _host = Host.CreateDefaultBuilder()
             .ConfigureServices(services => {
-                services.AddDbContext<FoodDesireContext>(options => {
+                services.AddDbContext<ApplicationDbContext>(options => {
                     DbContextHelper.ConfigureDbContextOptions(contextName, options);
                 });
                 DAL.Configure.ConfigureAllForTesting(services);
