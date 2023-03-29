@@ -35,7 +35,9 @@ public class RecipeService : IRecipeService {
     }
 
     public async Task<List<Recipe>> GetAllRecipes() {
-        List<Recipe> recipes = await _recipeRepository.GetAll();
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory).Include(e => e.Images);
+
+        List<Recipe> recipes = await _recipeRepository.Get(null, null, include);
         return recipes;
     }
 
@@ -76,8 +78,9 @@ public class RecipeService : IRecipeService {
 
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
         IOrderedQueryable<Recipe> order(IQueryable<Recipe> e) => e.OrderBy(orderExpression);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory).Include(e => e.Images);
 
-        List<Recipe> recipes = await _recipeRepository.Get(filter, order);
+        List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
         return recipes;
     }
 

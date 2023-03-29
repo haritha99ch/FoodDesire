@@ -14,6 +14,6 @@ public static class Configure {
         services.AddTransient<ISuppliesPageService, SuppliesPageService>();
         services.AddTransient<IEmployeePageService, EmployeePageService>();
         services.AddTransient<ISettingsPageService, SettingsPageService>();
-        services.AddTransient<ISampleDataService, SampleDataService>();
+        services.AddTransient<IRecipesPageService, RecipesPageService>();
     }
 }

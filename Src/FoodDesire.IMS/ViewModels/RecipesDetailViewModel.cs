@@ -1,37 +1,22 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿namespace FoodDesire.IMS.ViewModels;
+public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAware {
+    private readonly IRecipesPageService _recipesPageService;
+    private readonly IMapper _mapper;
 
-using FoodDesire.IMS.Contracts.ViewModels;
-using FoodDesire.IMS.Core.Contracts.Services;
-using FoodDesire.IMS.Core.Models;
+    [ObservableProperty]
+    private RecipeDetail? _recipe;
 
-namespace FoodDesire.IMS.ViewModels;
-
-public class RecipesDetailViewModel : ObservableRecipient, INavigationAware
-{
-    private readonly ISampleDataService _sampleDataService;
-    private SampleOrder? _item;
-
-    public SampleOrder? Item
-    {
-        get => _item;
-        set => SetProperty(ref _item, value);
+    public RecipesDetailViewModel(IRecipesPageService recipesPageService, IMapper mapper) {
+        _recipesPageService = recipesPageService;
+        _mapper = mapper;
     }
 
-    public RecipesDetailViewModel(ISampleDataService sampleDataService)
-    {
-        _sampleDataService = sampleDataService;
-    }
-
-    public async void OnNavigatedTo(object parameter)
-    {
-        if (parameter is long orderID)
-        {
-            var data = await _sampleDataService.GetContentGridDataAsync();
-            Item = data.First(i => i.OrderID == orderID);
+    public async void OnNavigatedTo(object parameter) {
+        if (parameter is int recipeId) {
+            Recipe = _mapper.Map<RecipeDetail>(await _recipesPageService.GetRecipeById(recipeId));
         }
     }
 
-    public void OnNavigatedFrom()
-    {
+    public void OnNavigatedFrom() {
     }
 }

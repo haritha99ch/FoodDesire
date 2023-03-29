@@ -1,58 +1,35 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-
-using FoodDesire.IMS.Contracts.Services;
-using FoodDesire.IMS.Contracts.ViewModels;
-using FoodDesire.IMS.Core.Contracts.Services;
-using FoodDesire.IMS.Core.Models;
+﻿using CommunityToolkit.Mvvm.Input;
 
 namespace FoodDesire.IMS.ViewModels;
-
-public class RecipesViewModel : ObservableRecipient, INavigationAware
-{
+public partial class RecipesViewModel : ObservableRecipient, INavigationAware {
     private readonly INavigationService _navigationService;
-    private readonly ISampleDataService _sampleDataService;
+    private readonly IRecipesPageService _recipesPageService;
+    private readonly IMapper _mapper;
 
-    public ICommand ItemClickCommand
-    {
-        get;
-    }
+    public ObservableCollection<RecipeDetail> Recipes { get; } = new();
+    public IRelayCommand<RecipeDetail> OnItemClickedCommand { get; }
 
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
-
-    public RecipesViewModel(INavigationService navigationService, ISampleDataService sampleDataService)
-    {
+    public RecipesViewModel(INavigationService navigationService, IRecipesPageService recipesPageService, IMapper mapper) {
         _navigationService = navigationService;
-        _sampleDataService = sampleDataService;
-
-        ItemClickCommand = new RelayCommand<SampleOrder>(OnItemClick);
+        _recipesPageService = recipesPageService;
+        _mapper = mapper;
+        OnItemClickedCommand = new RelayCommand<RecipeDetail>(OnItemClick);
     }
 
-    public async void OnNavigatedTo(object parameter)
-    {
-        Source.Clear();
+    public async void OnNavigatedTo(object parameter) {
+        Recipes.Clear();
 
-        // TODO: Replace with real data.
-        var data = await _sampleDataService.GetContentGridDataAsync();
-        foreach (var item in data)
-        {
-            Source.Add(item);
-        }
+        List<Recipe> recipes = await _recipesPageService.GetAllRecipes();
+        recipes.ForEach(e => Recipes.Add(_mapper.Map<RecipeDetail>(e)));
     }
 
-    public void OnNavigatedFrom()
-    {
+    public void OnNavigatedFrom() {
     }
 
-    private void OnItemClick(SampleOrder? clickedItem)
-    {
-        if (clickedItem != null)
-        {
+    public void OnItemClick(RecipeDetail? clickedItem) {
+        if (clickedItem != null) {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(RecipesDetailViewModel).FullName!, clickedItem.OrderID);
+            _navigationService.NavigateTo(typeof(RecipesDetailViewModel).FullName!, clickedItem.Id);
         }
     }
 }

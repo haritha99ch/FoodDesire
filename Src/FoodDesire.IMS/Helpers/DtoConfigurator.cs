@@ -7,5 +7,6 @@ public class DtoConfigurator {
         config.CreateMap<Ingredient, IngredientForm>();
         config.CreateMap<User, UserDetail>();
         config.CreateMap<UserDetail, User>();
+        config.CreateMap<Recipe, RecipeDetail>();
     }
 }

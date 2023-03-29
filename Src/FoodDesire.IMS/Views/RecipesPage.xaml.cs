@@ -1,18 +1,9 @@
-﻿using FoodDesire.IMS.ViewModels;
+﻿namespace FoodDesire.IMS.Views;
 
-using Microsoft.UI.Xaml.Controls;
+public sealed partial class RecipesPage : Page {
+    public RecipesViewModel ViewModel { get; }
 
-namespace FoodDesire.IMS.Views;
-
-public sealed partial class RecipesPage : Page
-{
-    public RecipesViewModel ViewModel
-    {
-        get;
-    }
-
-    public RecipesPage()
-    {
+    public RecipesPage() {
         ViewModel = App.GetService<RecipesViewModel>();
         InitializeComponent();
     }
