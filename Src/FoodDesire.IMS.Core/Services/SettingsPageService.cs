@@ -12,7 +12,7 @@ public class SettingsPageService : ISettingsPageService {
 
     public async Task<T> GetEmployeeByEmail<T>(string email) where T : BaseUser => await _serviceProvider.GetService<IUserService<T>>()!.GetByEmail(email);
 
-    public Task<bool> SignUserOutFromIMS() {
-        throw new NotImplementedException();
+    public bool SignUserOutFromIMS() {
+        return _authenticationService.SignOutMSAL();
     }
 }

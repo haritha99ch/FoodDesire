@@ -5,4 +5,5 @@ public interface IAuthenticationService {
     Task<User> UpdateUser(int userAccountId, string accessToken);
     string AcquireAccessToken();
     Task<Account> AcquireAccount(string accessToken);
+    bool SignOutMSAL();
 }

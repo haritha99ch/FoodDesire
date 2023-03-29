@@ -10,7 +10,7 @@
     <StackPanel>
 
         <Grid x:Name="ContentGrid"
-              MinWidth="350"
+              MinWidth="400"
               Width="Auto"
               Height="Auto"
               Background="{ThemeResource CardBackgroundFillColorDefault}"

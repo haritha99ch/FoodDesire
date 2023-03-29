@@ -1,10 +1,12 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-public partial class RequestIngredientViewModel : ObservableObject, IInitializable {
+public partial class RequestIngredientViewModel : ObservableRecipient {
     private readonly IIngredientsPageService _ingredientsPageService;
 
     [ObservableProperty]
     private int _ingredientId;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRequest))]
+    [NotifyPropertyChangedFor(nameof(RequestingAmount))]
     private IngredientDetails? _ingredientDetails;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanRequest))]
@@ -20,10 +22,10 @@ public partial class RequestIngredientViewModel : ObservableObject, IInitializab
         _ingredientsPageService = App.GetService<IIngredientsPageService>();
         IngredientId = ingredientId;
         IngredientDetails = new();
-        _ = OnInit();
+        OnInit();
     }
 
-    public async Task OnInit() {
+    public async void OnInit() {
         Ingredient ingredient = await _ingredientsPageService.GetIngredientById(IngredientId);
         IngredientDetails = App.GetService<IMapper>().Map<IngredientDetails>(ingredient);
         CurrentAmount = IngredientDetails.CurrentQuantity!;

@@ -87,6 +87,7 @@ public partial class SettingsViewModel : ObservableRecipient, INavigationAware {
     [RelayCommand]
     public async void SignUserOut() {
         await App.GetService<ILocalSettingsService>().SaveSettingAsync<string>("CurrentUserToken", null!);
+        _settingsPageService.SignUserOutFromIMS();
         App.CurrentUserAccount = null;
         App.MainWindow.Content = App.GetService<ShellPage>();
         (App.MainWindow.Content as ShellPage)!.ViewModel.NavigationService.NavigateTo(typeof(HomeViewModel).FullName!);

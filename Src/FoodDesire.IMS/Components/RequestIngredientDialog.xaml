@@ -25,7 +25,7 @@
                            VerticalAlignment="Center" />
                 <TextBox Text="{x:Bind ViewModel.RequestingAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock VerticalAlignment="Center"
-                           Text="{x:Bind ViewModel.IngredientDetails.Measurement}" />
+                           Text="{x:Bind ViewModel.IngredientDetails.Measurement, Mode=OneWay}" />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">

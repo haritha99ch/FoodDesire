@@ -165,4 +165,14 @@ public class AuthenticationService : IAuthenticationService {
 
         return !hasUpdate ? currentUser : await _userService.UpdateCoreUser(currentUser);
     }
+
+    public bool SignOutMSAL() {
+        string cacheFilePath = Path.Combine(_localApplicationData, _defaultApplicationDataFolder, _defaultAuthenticationFile);
+        try {
+            File.Delete(cacheFilePath);
+        } catch (Exception) {
+            return false;
+        }
+        return true;
+    }
 }
