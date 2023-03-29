@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.IMS.Services;
+﻿using CommunityToolkit.WinUI.UI.Animations;
+
+namespace FoodDesire.IMS.Services;
 public class NavigationService : INavigationService {
     private readonly IPageService _pageService;
     private object? _lastParameterUsed;
@@ -42,6 +44,8 @@ public class NavigationService : INavigationService {
         }
         Navigated?.Invoke(sender, e);
     }
+
+    public void SetListDataItemForNextConnectedAnimation(object item) => Frame.SetListDataItemForNextConnectedAnimation(item);
 
     public bool GoBack() {
         if (!CanGoBack) return false;

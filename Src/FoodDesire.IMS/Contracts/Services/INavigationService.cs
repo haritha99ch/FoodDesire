@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Navigation;
-
-namespace FoodDesire.IMS.Contracts.Services;
+﻿namespace FoodDesire.IMS.Contracts.Services;
 public interface INavigationService {
     event NavigatedEventHandler Navigated;
 
@@ -11,4 +9,6 @@ public interface INavigationService {
     bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
 
     bool GoBack();
+
+    void SetListDataItemForNextConnectedAnimation(object item);
 }
