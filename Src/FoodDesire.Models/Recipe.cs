@@ -6,6 +6,9 @@ public class Recipe : TrackedEntity {
     public required string Name { get; set; }
     [Required]
     public required string Description { get; set; }
+    public List<RecipeInstruction> RecipeInstructions { get; set; } = new();
+    public List<Image> Images { get; set; } = new();
+    public List<RecipeReview> RecipeReviews { get; set; } = new();
     [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal MinimumPrice { get; set; }
@@ -16,7 +19,8 @@ public class Recipe : TrackedEntity {
     public int RecipeCategoryId { get; set; }
     [NotNull]
     public string Tags { get; set; } = "";
-    public List<Image> Images { get; set; } = new();
+    [Required]
+    public float Rating { get; set; } = 0;
 
 
     [ForeignKey(nameof(ChefId))]
