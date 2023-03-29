@@ -49,9 +49,9 @@
         </Grid>
         <Grid Grid.Row="2">
             <TextBlock HorizontalAlignment="Left"
-                       Text="{x:Bind ViewModel.IngredientDetails.DisplayCurrentQuantity}" />
+                       Text="{x:Bind ViewModel.IngredientDetails.DisplayCurrentQuantity, Mode=OneWay}" />
             <TextBlock HorizontalAlignment="Right"
-                       Text="{x:Bind ViewModel.IngredientDetails.DisplayMaximumQuantity}" />
+                       Text="{x:Bind ViewModel.IngredientDetails.DisplayMaximumQuantity, Mode=OneWay}" />
         </Grid>
     </Grid>
 </ContentDialog>
