@@ -48,6 +48,8 @@ internal static class AppConfigurator {
         services.AddTransient<RecipesPage>();
         services.AddTransient<RecipesDetailViewModel>();
         services.AddTransient<RecipesDetailPage>();
+        services.AddTransient<NewRecipeViewModel>();
+        services.AddTransient<NewRecipePage>();
 
         //Components ViewModels
         services.AddTransient<NewEmployeeViewModel>();
@@ -56,6 +58,9 @@ internal static class AppConfigurator {
         services.AddTransient<NewIngredientFormViewModel>();
         services.AddTransient<CompleteSupplyViewModel>();
         services.AddTransient<CompleteSupplyDialog>();
+
+        services.AddTransient<RecipeFormViewModel>();
+        services.AddTransient<RecipeFormControl>();
 
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

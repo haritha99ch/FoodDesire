@@ -6,4 +6,9 @@ public interface IRecipesPageService {
     Task<List<Recipe>> GetAllRecipes();
     Task<List<Recipe>> GetAllRecipeByCategoryId(int categoryId);
     Task<Recipe> GetRecipeById(int recipeId);
+    Task<RecipeCategory> GetRecipeCategoryById(int recipeCategoryId);
+    Task<RecipeCategory> GetRecipeCategoryByName(string recipeCategoryName);
+    Task<List<RecipeCategory>> GetAllRecipeCategories();
+    Task<RecipeCategory> AddNewRecipeCategory(RecipeCategory recipeCategory);
+    Task<RecipeCategory> EditRecipeCategory(RecipeCategory recipeCategory);
 }

@@ -8,6 +8,19 @@
       xmlns:models="using:FoodDesire.IMS.Models"
       mc:Ignorable="d">
 
+    <StackPanel>
+        <CommandBar Background="Transparent"
+                    IsOpen="False"
+                    HorizontalAlignment="Left"
+                    DefaultLabelPosition="Right">
+            <AppBarButton x:Name="NewIngredient"
+                          Icon="Add"
+                          Label="Create New Recipe"
+                          Command="{x:Bind ViewModel.AddNewRecipeCommand}"
+                          CommandParameter="{x:Bind XamlRoot}">
+            </AppBarButton>
+        </CommandBar>
+
     <Grid x:Name="ContentArea">
         <controls:AdaptiveGridView animations:Connected.ListItemElementName="itemThumbnail"
                                    animations:Connected.ListItemKey="animationKeyContentGrid"
@@ -38,4 +51,5 @@
             </controls:AdaptiveGridView.ItemTemplate>
         </controls:AdaptiveGridView>
     </Grid>
+    </StackPanel>
 </Page>

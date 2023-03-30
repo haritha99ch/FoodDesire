@@ -32,4 +32,9 @@ public partial class RecipesViewModel : ObservableRecipient, INavigationAware {
             _navigationService.NavigateTo(typeof(RecipesDetailViewModel).FullName!, clickedItem.Id);
         }
     }
+
+    [RelayCommand]
+    public void AddNewRecipe(XamlRoot xamlRoot) {
+        _navigationService.NavigateTo(typeof(NewRecipeViewModel).FullName!);
+    }
 }

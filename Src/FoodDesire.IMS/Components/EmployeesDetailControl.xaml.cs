@@ -5,7 +5,8 @@ public sealed partial class EmployeesDetailControl : UserControl {
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
 
-    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(UserDetail), typeof(EmployeesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+    public static readonly DependencyProperty ListDetailsMenuItemProperty =
+        DependencyProperty.Register("ListDetailsMenuItem", typeof(UserDetail), typeof(EmployeesDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
     public EmployeesDetailControl() {
         InitializeComponent();

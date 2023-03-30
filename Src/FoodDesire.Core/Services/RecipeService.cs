@@ -131,4 +131,9 @@ public class RecipeService : IRecipeService {
         recipeIngredient.PricePerMultiplier = pricePerMultiplier;
         return recipeIngredient.PricePerMultiplier;
     }
+
+    public async Task<RecipeCategory> UpdateRecipeCategory(RecipeCategory recipeCategory) {
+        RecipeCategory updatedRecipeCategory = await _recipeCategoryRepository.Update(recipeCategory);
+        return updatedRecipeCategory;
+    }
 }
