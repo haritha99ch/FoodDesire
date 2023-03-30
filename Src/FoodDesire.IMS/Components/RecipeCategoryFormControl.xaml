@@ -24,7 +24,8 @@
         <TextBox Grid.Row="0"
                  Grid.Column="1"
                  Margin="2,2"
-                 Text="{x:Bind Recipe.NewRecipeCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                 TextChanged="TextBox_TextChanged"
+                 Text="{x:Bind Recipe.NewRecipeCategory.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
@@ -35,6 +36,7 @@
                  Margin="2,2"
                  Width="300"
                  Height="50"
-                 Text="{x:Bind Recipe.NewRecipeCategoryDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                 TextChanged="TextBox_TextChanged"
+                 Text="{x:Bind Recipe.NewRecipeCategory.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
     </Grid>
 </UserControl>

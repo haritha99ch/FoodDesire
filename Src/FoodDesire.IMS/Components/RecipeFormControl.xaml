@@ -42,9 +42,22 @@
                           VerticalAlignment="Top"
                           RelativePanel.AlignTopWithPanel="True"
                           RelativePanel.AlignLeftWithPanel="True">
-                        <FlipView MaxWidth="400"
-                                  Height="270"
-                                  ItemsSource="{x:Bind Recipe.BitmapImages, Mode=OneWay}">
+                        <FlipView ItemsSource="{x:Bind Recipe.BitmapImages, Mode=OneWay}">
+                            <FlipView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </FlipView.ItemsPanel>
+
+                            <FlipView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Image 
+                                               Source="{Binding}"
+                                               Stretch="Uniform" />
+                                    </Grid>
+                                </DataTemplate>
+                            </FlipView.ItemTemplate>
                         </FlipView>
                         <StackPanel>
                             <CommandBar Background="Transparent"
@@ -52,7 +65,8 @@
                                         HorizontalAlignment="Left"
                                         DefaultLabelPosition="Right">
                                 <AppBarButton Icon="Add"
-                                              Label="Add New Image">
+                                              Label="Add New Image"
+                                              Command="{x:Bind Recipe.AddNewImageCommand}">
                                 </AppBarButton>
                             </CommandBar>
                         </StackPanel>
@@ -88,8 +102,14 @@
                                 <ComboBox Grid.Column="0"
                                           HorizontalAlignment="Stretch"
                                           Margin="{StaticResource SmallRightMargin}"
-                                          ItemsSource="{x:Bind Recipe.Categories, Mode=OneWay}"
-                                          SelectedItem="{x:Bind Recipe.SelectedRecipeCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          ItemsSource="{x:Bind Recipe.RecipeCategories, Mode=OneWay}"
+                                          SelectedItem="{x:Bind Recipe.RecipeCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                                 <Button Grid.Column="1"
                                         x:Name="NewCategoryButton"
                                         Margin="{StaticResource SmallRightMargin}"
@@ -144,6 +164,7 @@
                                    Text="Description" />
                         <TextBox Width="300"
                                  Height="110"
+                                 Margin="{StaticResource XXSmallTopMargin}"
                                  PlaceholderText="Description"
                                  TextWrapping="Wrap"
                                  Text="Description" />

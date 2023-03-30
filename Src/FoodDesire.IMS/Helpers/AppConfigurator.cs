@@ -59,6 +59,8 @@ internal static class AppConfigurator {
         services.AddTransient<CompleteSupplyViewModel>();
         services.AddTransient<CompleteSupplyDialog>();
 
+        services.AddTransient<ShowErrorsDialog>();
+
         services.AddTransient<RecipeFormViewModel>();
         services.AddTransient<RecipeFormControl>();
 

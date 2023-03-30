@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace FoodDesire.IMS.Models;
 public partial class RecipeForm : ObservableObject {
@@ -10,12 +11,10 @@ public partial class RecipeForm : ObservableObject {
     [ObservableProperty]
     private string? _description;
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Categories))]
     private ObservableCollection<RecipeCategory> _recipeCategories = new();
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRecipeCategoryEditable))]
-    [NotifyPropertyChangedFor(nameof(RecipeCategoryId))]
-    private string? _selectedRecipeCategory;
+    private RecipeCategory? _recipeCategory;
     [ObservableProperty]
     private ObservableCollection<FoodDesire.Models.Image> _images = new();
     [ObservableProperty]
@@ -28,18 +27,34 @@ public partial class RecipeForm : ObservableObject {
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAddRecipeCategoryButtonEnabled))]
-    private string? _newRecipeCategory;
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsAddRecipeCategoryButtonEnabled))]
-    private string? _newRecipeCategoryDescription;
+    private RecipeCategory _newRecipeCategory = new();
 
-    public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory) || string.IsNullOrEmpty(NewRecipeCategoryDescription));
-    public bool IsRecipeCategoryEditable => SelectedRecipeCategory != null;
+    public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory.Name) || string.IsNullOrEmpty(NewRecipeCategory.Description));
+    public bool IsRecipeCategoryEditable => RecipeCategory != null;
+    public int? RecipeCategoryId => (RecipeCategories.SingleOrDefault(e => e.Id == RecipeCategory?.Id)?.Id);
 
-    public List<string> Categories => RecipeCategories.Select(c => c.Name).ToList();
-    public int? RecipeCategoryId => (RecipeCategories.SingleOrDefault(e => e.Name.Equals(SelectedRecipeCategory))?.Id);
+    public void UpdateIsAddRecipeCategoryButtonEnabled() {
+        OnPropertyChanged(nameof(IsAddRecipeCategoryButtonEnabled));
+    }
 
-    public async void NewImage(StorageFile file) {
+    [RelayCommand]
+    private async void AddNewImage() {
+        FileOpenPicker picker = new FileOpenPicker() {
+            CommitButtonText = "Open",
+            SuggestedStartLocation = PickerLocationId.ComputerFolder,
+            FileTypeFilter = { ".jpg", ".jpeg" }
+        };
+
+        IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        var images = await picker.PickMultipleFilesAsync();
+        foreach (var image in images) {
+            await NewImage(image);
+        }
+    }
+
+    private async Task NewImage(StorageFile file) {
         using var stream = await file.OpenReadAsync();
         var buffer = new Windows.Storage.Streams.Buffer((uint)stream.Size);
         await stream.ReadAsync(buffer, (uint)stream.Size, Windows.Storage.Streams.InputStreamOptions.None);
@@ -51,15 +66,13 @@ public partial class RecipeForm : ObservableObject {
 
     [RelayCommand]
     private void SetRecipeCategoryToEdit() {
-        if (SelectedRecipeCategory == null) return;
-        NewRecipeCategory = RecipeCategories.SingleOrDefault(e => e.Id.Equals(RecipeCategoryId))?.Name;
-        NewRecipeCategoryDescription = RecipeCategories.SingleOrDefault(e => e.Name.Equals(SelectedRecipeCategory))?.Description;
+        if (RecipeCategory == null) return;
+        NewRecipeCategory = RecipeCategory;
     }
 
     [RelayCommand]
     private void EmptyRecipeCategoryDetailsToCreateANew() {
-        NewRecipeCategory = null;
-        NewRecipeCategoryDescription = null;
+        NewRecipeCategory = new();
     }
 }
 

@@ -20,32 +20,28 @@ public partial class RecipeFormViewModel : ObservableRecipient {
     [RelayCommand]
     private async Task AddNewRecipeCategory(RecipeForm recipe) {
         try {
-            if (recipe.Categories.Contains(recipe.NewRecipeCategory!)) {
+            if (recipe.RecipeCategories.Any(e => e.Name!.Equals(recipe.NewRecipeCategory.Name))) {
                 throw new Exception("Category Already Exists");
             }
         } catch (Exception ex) {
-            //TODO: Handel duplicate error
+            ShowErrorsDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<ShowErrorsDialog>(XamlRoot!);
+            dialog.Content = ex.Message;
+            await dialog.ShowAsync();
+            return;
         }
-        RecipeCategory recipeCategory = new() {
-            Name = recipe.NewRecipeCategory!,
-            Description = recipe.NewRecipeCategoryDescription!
-        };
-        recipeCategory = await _recipesPageService.AddNewRecipeCategory(recipeCategory);
-        recipe.RecipeCategories.Add(recipeCategory);
+        RecipeCategory recipeCategory = await _recipesPageService.AddNewRecipeCategory(recipe.NewRecipeCategory);
         RecipeCategories.Add(recipeCategory);
-        recipe.NewRecipeCategory = null;
-        recipe.NewRecipeCategoryDescription = null;
+        recipe.RecipeCategories = RecipeCategories;
+        recipe.NewRecipeCategory = new();
     }
 
     [RelayCommand]
     private async Task EditRecipeCategory(RecipeForm recipe) {
-        RecipeCategory recipeCategory = RecipeCategories.SingleOrDefault(e => e.Id == recipe.RecipeCategoryId)!;
-        RecipeCategories.Remove(recipeCategory);
-        recipe.RecipeCategories.Remove(recipeCategory);
-        recipeCategory.Name = recipe.NewRecipeCategory!;
-        recipeCategory.Description = recipe.NewRecipeCategoryDescription!;
-        recipeCategory = await _recipesPageService.EditRecipeCategory(recipeCategory);
-        RecipeCategories.Add(recipeCategory);
-        recipe.RecipeCategories.Add(recipeCategory);
+        RecipeCategories.Remove(recipe.RecipeCategory!);
+        RecipeCategory? updateRecipeCategory = await _recipesPageService.EditRecipeCategory(recipe.NewRecipeCategory);
+        RecipeCategories.Add(updateRecipeCategory);
+        recipe.RecipeCategories = RecipeCategories;
+        recipe.NewRecipeCategory = new();
     }
 }
