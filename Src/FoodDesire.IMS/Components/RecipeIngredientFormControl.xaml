@@ -1,0 +1,95 @@
+<UserControl x:Class="FoodDesire.IMS.Components.RecipeIngredientFormControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <StackPanel  x:Name="NewRecipeIngredient"
+                 HorizontalAlignment="Stretch"
+                 Padding="5"
+                 Background="{ThemeResource CardBackgroundFillColorDefault}">
+
+        <ComboBox Header="Ingredient"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  ItemsSource="{x:Bind ViewModel.RawIngredients, Mode=OneWay}"
+                  SelectedItem="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Margin="{StaticResource XSmallLeftMargin}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <ComboBox VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  Header="Recipe As Ingredient: "
+                  ItemsSource="{x:Bind ViewModel.RecipeAsIngredients, Mode=OneWay}"
+                  SelectedItem="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Margin="{StaticResource XSmallLeftMargin}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBox Margin="{StaticResource XSmallLeftMargin}"
+                 Text="{x:Bind RecipeIngredient.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalAlignment="Stretch"
+                 HorizontalAlignment="Stretch">
+            <TextBox.Header>
+                <StackPanel>
+                    <TextBlock Visibility="{x:Bind RecipeIngredient.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Run Text="Amount: " />
+                        <Run Text="{x:Bind RecipeIngredient.SelectedIngredient.Measurement, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Visibility="{x:Bind RecipeIngredient.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}">
+                         <Run Text="Amount: " />
+                         <Run Text="Each" />
+                    </TextBlock>
+                </StackPanel>
+            </TextBox.Header>
+        </TextBox>
+        <CheckBox VerticalAlignment="Center"
+                  HorizontalAlignment="Left"
+                  Margin="{StaticResource XSmallLeftMargin}"
+                  Content="Required"
+                  IsChecked="{x:Bind RecipeIngredient.IsRequired, Mode=TwoWay}" />
+        <CheckBox VerticalAlignment="Center"
+                  HorizontalAlignment="Right"
+                  Margin="{StaticResource XSmallLeftMargin}"
+                  Content="Editable"
+                  IsChecked="{x:Bind RecipeIngredient.CanModify, Mode=TwoWay}" />
+        <TextBox IsEnabled="{x:Bind RecipeIngredient.CanModify, Mode=OneWay}"
+                 Margin="{StaticResource XSmallLeftMargin}"
+                 Text="{x:Bind RecipeIngredient.RecommendedAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalAlignment="Stretch"
+                 HorizontalAlignment="Stretch">
+            <TextBox.Header>
+                <StackPanel>
+                    <TextBlock Visibility="{x:Bind RecipeIngredient.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                         <Run Text="Recommended: " />
+                         <Run Text="{x:Bind RecipeIngredient.SelectedIngredient.Measurement, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Visibility="{x:Bind RecipeIngredient.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}">
+                          <Run Text="Recommended: " />
+                          <Run Text="Each" />
+                    </TextBlock>
+                </StackPanel>
+            </TextBox.Header>
+        </TextBox>
+
+        <TextBox IsEnabled="{x:Bind RecipeIngredient.CanModify, Mode=OneWay}"
+                 Margin="{StaticResource XSmallLeftMargin}"
+                 Text="{x:Bind RecipeIngredient.PricePerMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.Header>
+                <TextBlock>
+                    <Run Text="Price Per Multiplier: " />
+                    <Run x:Uid="Currency" />
+                </TextBlock>
+            </TextBox.Header>
+        </TextBox>
+    </StackPanel>
+</UserControl>

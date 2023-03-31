@@ -317,6 +317,16 @@
                                       Label="Add">
                         </AppBarButton>
                     </Grid>
+                    <CommandBar  Background="Transparent"
+                                 IsOpen="False"
+                                 DefaultLabelPosition="Right">
+                        <AppBarButton Icon="Add"
+                                      Label="Add" />
+                        <AppBarButton Icon="Edit"
+                                      Label="Edit" />
+                        <AppBarButton Icon="Share"
+                                      Label="Share" />
+                    </CommandBar>
                     <Grid Background="{ThemeResource CardStrokeColorDefaultSolid}"
                           Margin="{StaticResource SmallTopMargin}"
                           Padding="5">
@@ -338,16 +348,6 @@
                         <TextBlock Grid.Column="4"
                                    Text="Price per multiplier" />
                     </Grid>
-                    <CommandBar  Background="Transparent"
-                                 IsOpen="False"
-                                 DefaultLabelPosition="Right">
-                        <AppBarButton Icon="Add"
-                                      Label="Add" />
-                        <AppBarButton Icon="Edit"
-                                      Label="Edit" />
-                        <AppBarButton Icon="Share"
-                                      Label="Share" />
-                    </CommandBar>
                     <ListView  ItemsSource="{x:Bind Recipe.RecipeIngredients, Mode=OneWay}"
                                Margin="{StaticResource SmallTopMargin}"
                                Height="480"
