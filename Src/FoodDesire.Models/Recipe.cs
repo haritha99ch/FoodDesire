@@ -21,6 +21,12 @@ public class Recipe : TrackedEntity {
     public string Tags { get; set; } = "";
     [Required]
     public float Rating { get; set; } = 0;
+    [Required]
+    public bool AsIngredient { get; set; } = false;
+    [Required]
+    public bool IsMenuItem { get; set; } = true;
+    [Required]
+    public long Times { get; set; } = 0;
 
 
     [ForeignKey(nameof(ChefId))]

@@ -1,41 +1,168 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
 namespace FoodDesire.IMS.Models;
-public partial class RecipeForm : ObservableObject {
+public partial class RecipeForm : ObservableValidator {
+    public int Id { get; set; }
+    public int ChefId { get; set; }
     [ObservableProperty]
+    [MinLength(5)]
+    [NotifyPropertyChangedFor(nameof(NameErrors))]
     private string? _name;
+    public string NameErrors => string.Join(Environment.NewLine, GetErrors(nameof(Name)));
+
     [ObservableProperty]
     private string? _description;
     [ObservableProperty]
-    private ObservableCollection<RecipeCategory> _recipeCategories = new();
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRecipeCategoryEditable))]
-    private RecipeCategory? _recipeCategory;
+    private RecipeCategory? _selectedRecipeCategory;
+    public ObservableCollection<FoodDesire.Models.Image> Images { get; set; } = new();
+    public ObservableCollection<BitmapImage> BitmapImages { get; set; } = new();
+    public ObservableCollection<RecipeIngredient> RecipeIngredients { get; set; } = new();
+    public ObservableCollection<RecipeInstruction> RecipeInstructions { get; set; } = new();
     [ObservableProperty]
-    private ObservableCollection<FoodDesire.Models.Image> _images = new();
+    private bool _asIngredient = false;
     [ObservableProperty]
-    private ObservableCollection<BitmapImage> _bitmapImages = new();
-    [ObservableProperty]
-    private ObservableCollection<RecipeIngredient> _ingredients = new();
-    [ObservableProperty]
-    private ObservableCollection<RecipeInstruction> _instructions = new();
-
+    private bool _isMenuItem = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAddRecipeCategoryButtonEnabled))]
     private RecipeCategory _newRecipeCategory = new();
 
-    public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory.Name) || string.IsNullOrEmpty(NewRecipeCategory.Description));
-    public bool IsRecipeCategoryEditable => RecipeCategory != null;
-    public int? RecipeCategoryId => (RecipeCategories.SingleOrDefault(e => e.Id == RecipeCategory?.Id)?.Id);
-
-    public void UpdateIsAddRecipeCategoryButtonEnabled() {
-        OnPropertyChanged(nameof(IsAddRecipeCategoryButtonEnabled));
+    [ObservableProperty]
+    private RecipeIngredient _recipeIngredient = new();
+    private Ingredient? _selectedIngredient;
+    //Recipe Ingredient ObservableProperties
+    private double _amount;
+    public double Amount {
+        get => RecipeIngredient.Amount;
+        set {
+            RecipeIngredient.Amount = value;
+            SetProperty(ref _amount, value);
+            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
+            if (!CanModify) return;
+            try {
+                if (SelectedIngredient != null) {
+                    double price = value * (double)SelectedIngredient.CurrentPricePerUnit;
+                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
+                } else if (SelectedRecipeAsIngredient != null) {
+                    double price = value * (double)SelectedRecipeAsIngredient.FixedPrice;
+                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
+                }
+            } catch (Exception) {
+                return;
+            }
+        }
     }
+    private double _recommendedAmount;
+    public double RecommendedAmount {
+        get => RecipeIngredient.RecommendedAmount;
+        set {
+            RecipeIngredient.RecommendedAmount = value;
+            SetProperty(ref _recommendedAmount, value);
+            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
+        }
+    }
+    private bool _isRequired;
+    public bool IsRequired {
+        get => RecipeIngredient.IsRequired;
+        set {
+            RecipeIngredient.IsRequired = value;
+            SetProperty(ref _isRequired, value);
+            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
+        }
+    }
+    private bool _canModify;
+    public bool CanModify {
+        get => RecipeIngredient.CanModify;
+        set {
+            if (!value) RecommendedAmount = 0; PricePerMultiplier = 0;
+            RecipeIngredient.CanModify = value;
+            SetProperty(ref _canModify, value);
+            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
+        }
+    }
+    private double _pricePerMultiplier;
+    public double PricePerMultiplier {
+        get => (double)RecipeIngredient.PricePerMultiplier;
+        set {
+            RecipeIngredient.PricePerMultiplier = (decimal)value;
+            SetProperty(ref _pricePerMultiplier, value);
+        }
+    }
+    public bool IsAddRecipeIngredientButtonEnabled {
+        get {
+            if (SelectedIngredient == null && SelectedRecipeAsIngredient == null) return false;
+            if (Amount == 0) return false;
+            if (!CanModify) return true;
+            if (CanModify && RecommendedAmount <= Amount) return false;
+            if (!UpdateRecipeIngredientPricePerMultiplier) return false;
+            return true;
+        }
+    }
+
+    public Ingredient? SelectedIngredient {
+        get => _selectedIngredient;
+        set {
+            if (value == null) return;
+            RecipeIngredient.Ingredient_Id = value.Id;
+            RecipeIngredient.Recipe_Id = null;
+            RecipeIngredient.Recipe_Name = null;
+            RecipeIngredient.Ingredient_Name = value.Name;
+            RecipeIngredient.Measurement = value.Measurement;
+            SelectedRecipeAsIngredient = null;
+            SetProperty(ref _selectedIngredient, value);
+            OnPropertyChanged(nameof(SelectedIngredientIsRaw));
+            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
+        }
+    }
+    private Recipe? _selectedRecipeAsIngredient;
+    public Recipe? SelectedRecipeAsIngredient {
+        get => _selectedRecipeAsIngredient;
+        set {
+            if (value == null) return;
+            RecipeIngredient.Ingredient_Id = null;
+            RecipeIngredient.Ingredient_Name = null;
+            RecipeIngredient.Recipe_Id = value.Id;
+            RecipeIngredient.Recipe_Name = value.Name;
+            RecipeIngredient.Measurement = Measurement.Each;
+            SelectedIngredient = null;
+            SetProperty(ref _selectedRecipeAsIngredient, value);
+            OnPropertyChanged(nameof(SelectedIngredientIsRaw));
+            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
+        }
+    }
+    public bool SelectedIngredientIsRaw => SelectedIngredient != null;
+
+    public bool UpdateRecipeIngredientPricePerMultiplier {
+        get {
+            try {
+                if (SelectedIngredient != null) {
+                    double price = Amount * (double)SelectedIngredient.CurrentPricePerUnit;
+                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
+                    return true;
+                }
+                if (SelectedRecipeAsIngredient != null) {
+                    double price = Amount * (double)SelectedRecipeAsIngredient.FixedPrice;
+                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
+                    return true;
+                }
+            } catch (Exception) {
+                return false;
+            }
+            return true;
+        }
+    }
+    public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory.Name) || string.IsNullOrEmpty(NewRecipeCategory.Description));
+    public bool IsRecipeCategoryEditable => SelectedRecipeCategory != null;
+    public int? RecipeCategoryId => SelectedRecipeCategory?.Id;
+
+
+    public void UpdateIsAddRecipeCategoryButtonEnabled() => OnPropertyChanged(nameof(IsAddRecipeCategoryButtonEnabled));
 
     [RelayCommand]
     private async void AddNewImage() {
@@ -66,13 +193,18 @@ public partial class RecipeForm : ObservableObject {
 
     [RelayCommand]
     private void SetRecipeCategoryToEdit() {
-        if (RecipeCategory == null) return;
-        NewRecipeCategory = RecipeCategory;
+        if (SelectedRecipeCategory == null) return;
+        NewRecipeCategory = SelectedRecipeCategory;
     }
 
     [RelayCommand]
     private void EmptyRecipeCategoryDetailsToCreateANew() {
         NewRecipeCategory = new();
+    }
+
+    [RelayCommand]
+    private void AddRecipeIngredient() {
+        RecipeIngredients.Add(RecipeIngredient);
     }
 }
 

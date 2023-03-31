@@ -15,7 +15,6 @@ public sealed partial class RecipeFormControl : UserControl {
     }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e) {
-        Recipe.RecipeCategories = ViewModel.RecipeCategories;
         ViewModel.XamlRoot = XamlRoot;
     }
 

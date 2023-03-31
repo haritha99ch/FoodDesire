@@ -1,9 +1,11 @@
 ﻿namespace FoodDesire.IMS.Core.Services;
 public class RecipesPageService : IRecipesPageService {
     private readonly IRecipeService _recipeService;
+    private readonly IIngredientService _ingredientService;
 
-    public RecipesPageService(IRecipeService recipeService) {
+    public RecipesPageService(IRecipeService recipeService, IIngredientService ingredientService) {
         _recipeService = recipeService;
+        _ingredientService = ingredientService;
     }
 
 
@@ -16,6 +18,10 @@ public class RecipesPageService : IRecipesPageService {
     public async Task<Recipe> EditRecipe(Recipe recipe) => await _recipeService.UpdateRecipe(recipe);
 
     public async Task<RecipeCategory> EditRecipeCategory(RecipeCategory recipeCategory) => await _recipeService.UpdateRecipeCategory(recipeCategory);
+
+    public async Task<List<Ingredient>> GetAllIngredients() => await _ingredientService.GetAllIngredients();
+
+    public async Task<List<Recipe>> GetAllRecipeAsIngredients() => await _recipeService.GetAllRecipeAsIngredients();
 
     public async Task<List<Recipe>> GetAllRecipeByCategoryId(int categoryId) => await _recipeService.GetAllRecipesByCategoryId(categoryId);
 

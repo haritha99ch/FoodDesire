@@ -14,4 +14,5 @@ public interface IRecipeService {
     Task<Recipe> RemoveRecipeIngredientById(int recipeId, RecipeIngredient recipeIngredient);
     Task<bool> RemoveRecipeById(int recipeId);
     Task<RecipeCategory> UpdateRecipeCategory(RecipeCategory recipeCategory);
+    Task<List<Recipe>> GetAllRecipeAsIngredients();
 }

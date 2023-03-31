@@ -136,4 +136,13 @@ public class RecipeService : IRecipeService {
         RecipeCategory updatedRecipeCategory = await _recipeCategoryRepository.Update(recipeCategory);
         return updatedRecipeCategory;
     }
+
+    public async Task<List<Recipe>> GetAllRecipeAsIngredients() {
+        Expression<Func<Recipe, bool>> filterExpression = e => e.AsIngredient;
+
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+
+        List<Recipe> recipes = await _recipeRepository.Get(filter);
+        return recipes;
+    }
 }
