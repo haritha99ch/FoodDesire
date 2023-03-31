@@ -196,136 +196,15 @@
                             VerticalAlignment="Stretch"
                             BorderThickness="{StaticResource ListBoxBorderThemeThickness}"
                             BorderBrush="{ThemeResource AppBarBorderThemeBrush}">
-                    <Grid  x:Name="NewRecipeIngredient"
-                           HorizontalAlignment="Stretch"
-                           Padding="5"
-                           Background="{ThemeResource CardBackgroundFillColorDefault}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <ComboBox Grid.Column="0"
-                                  Grid.Row="0"
-                                  Header="Ingredient"
-                                  VerticalAlignment="Stretch"
-                                  HorizontalAlignment="Stretch"
-                                  ItemsSource="{x:Bind ViewModel.Ingredients, Mode=OneWay}"
-                                  SelectedItem="{x:Bind Recipe.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="{StaticResource XSmallLeftMargin}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-
-                        <ComboBox Grid.Column="1"
-                                  Grid.Row="0"
-                                  VerticalAlignment="Stretch"
-                                  HorizontalAlignment="Stretch"
-                                  Header="Recipe As Ingredient: "
-                                  ItemsSource="{x:Bind ViewModel.RecipeAsIngredient, Mode=OneWay}"
-                                  SelectedItem="{x:Bind Recipe.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="{StaticResource XSmallLeftMargin}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBox Grid.Column="2"
-                                 Grid.Row="0"
-                                 Margin="{StaticResource XSmallLeftMargin}"
-                                 Text="{x:Bind Recipe.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalAlignment="Stretch"
-                                 HorizontalAlignment="Stretch">
-                            <TextBox.Header>
-                                <StackPanel>
-                                    <TextBlock Visibility="{x:Bind Recipe.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Run Text="Amount: " />
-                                        <Run Text="{x:Bind Recipe.SelectedIngredient.Measurement, Mode=OneWay}" />
-                                    </TextBlock>
-                                    <TextBlock Visibility="{x:Bind Recipe.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}">
-                                        <Run Text="Amount: " />
-                                        <Run Text="Each" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </TextBox.Header>
-                        </TextBox>
-                        <CheckBox Grid.Column="0"
-                                  Grid.Row="1"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Right"
-                                  Margin="{StaticResource XSmallLeftMargin}"
-                                  Content="Editable"
-                                  IsChecked="{x:Bind Recipe.CanModify, Mode=TwoWay}" />
-                        <CheckBox Grid.Column="0"
-                                  Grid.Row="1"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Left"
-                                  Margin="{StaticResource XSmallLeftMargin}"
-                                  Content="Required"
-                                  IsChecked="{x:Bind Recipe.IsRequired, Mode=TwoWay}" />
-                        <TextBox Grid.Column="1"
-                                 Grid.Row="1"
-                                 IsEnabled="{x:Bind Recipe.CanModify, Mode=OneWay}"
-                                 Margin="{StaticResource XSmallLeftMargin}"
-                                 Text="{x:Bind Recipe.RecommendedAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalAlignment="Stretch"
-                                 HorizontalAlignment="Stretch">
-                            <TextBox.Header>
-                                <StackPanel>
-                                    <TextBlock Visibility="{x:Bind Recipe.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <Run Text="Recommended: " />
-                                        <Run Text="{x:Bind Recipe.SelectedIngredient.Measurement, Mode=OneWay}" />
-                                    </TextBlock>
-                                    <TextBlock Visibility="{x:Bind Recipe.SelectedIngredientIsRaw, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}">
-                                        <Run Text="Recommended: " />
-                                        <Run Text="Each" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </TextBox.Header>
-                        </TextBox>
-
-                        <TextBox Grid.Column="2"
-                                 Grid.Row="1"
-                                 IsEnabled="{x:Bind Recipe.CanModify, Mode=OneWay}"
-                                 Margin="{StaticResource XSmallLeftMargin}"
-                                 Text="{x:Bind Recipe.PricePerMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.Header>
-                                <TextBlock>
-                                    <Run Text="Price Per Multiplier: " />
-                                    <Run x:Uid="Currency" />
-                                </TextBlock>
-                            </TextBox.Header>
-                        </TextBox>
-
-
-                        <AppBarButton Grid.Column="3"
-                                      Grid.RowSpan="2"
-                                      VerticalAlignment="Center"
-                                      IsEnabled="{x:Bind Recipe.IsAddRecipeIngredientButtonEnabled, Mode=OneWay}"
-                                      Command="{x:Bind Recipe.AddRecipeIngredientCommand}"
-                                      Icon="Add"
-                                      Label="Add">
-                        </AppBarButton>
-                    </Grid>
                     <CommandBar  Background="Transparent"
+                                 HorizontalAlignment="Left"
                                  IsOpen="False"
                                  DefaultLabelPosition="Right">
                         <AppBarButton Icon="Add"
-                                      Label="Add" />
+                                      Label="Add" 
+                                      Command="{x:Bind Recipe.OpenAddRecipeIngredientDialogCommand}"/>
                         <AppBarButton Icon="Edit"
                                       Label="Edit" />
-                        <AppBarButton Icon="Share"
-                                      Label="Share" />
                     </CommandBar>
                     <Grid Background="{ThemeResource CardStrokeColorDefaultSolid}"
                           Margin="{StaticResource SmallTopMargin}"
@@ -368,10 +247,13 @@
                                         <ColumnDefinition Width="3*" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
+                                               VerticalAlignment="Center"
                                                Text="{Binding Ingredient_Name, Mode=OneWay}" />
                                     <TextBlock Grid.Column="0"
+                                               VerticalAlignment="Center"
                                                Text="{Binding Recipe_Name, Mode=OneWay}" />
-                                    <TextBlock Grid.Column="1">
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center">
                                         <Run Text="{Binding Amount, Mode=OneWay}" />
                                         <Run Text="{Binding Measurement, Mode=OneWay}" />
                                     </TextBlock>
@@ -381,6 +263,9 @@
                                     <CheckBox Grid.Column="3"
                                               IsChecked="{Binding CanModify, Mode=OneWay}"
                                               IsEnabled="False" />
+                                    <TextBlock Grid.Column="3"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding PricePerMultiplier, Mode=OneWay}"
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

@@ -7,6 +7,7 @@ using Windows.Storage.Pickers;
 
 namespace FoodDesire.IMS.Models;
 public partial class RecipeForm : ObservableValidator {
+    public XamlRoot? XamlRoot { get; set; }
     public int Id { get; set; }
     public int ChefId { get; set; }
     [ObservableProperty]
@@ -35,128 +36,7 @@ public partial class RecipeForm : ObservableValidator {
 
     [ObservableProperty]
     private RecipeIngredient _recipeIngredient = new();
-    private Ingredient? _selectedIngredient;
-    //Recipe Ingredient ObservableProperties
-    private double _amount;
-    public double Amount {
-        get => RecipeIngredient.Amount;
-        set {
-            RecipeIngredient.Amount = value;
-            SetProperty(ref _amount, value);
-            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
-            if (!CanModify) return;
-            try {
-                if (SelectedIngredient != null) {
-                    double price = value * (double)SelectedIngredient.CurrentPricePerUnit;
-                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
-                } else if (SelectedRecipeAsIngredient != null) {
-                    double price = value * (double)SelectedRecipeAsIngredient.FixedPrice;
-                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
-                }
-            } catch (Exception) {
-                return;
-            }
-        }
-    }
-    private double _recommendedAmount;
-    public double RecommendedAmount {
-        get => RecipeIngredient.RecommendedAmount;
-        set {
-            RecipeIngredient.RecommendedAmount = value;
-            SetProperty(ref _recommendedAmount, value);
-            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
-        }
-    }
-    private bool _isRequired;
-    public bool IsRequired {
-        get => RecipeIngredient.IsRequired;
-        set {
-            RecipeIngredient.IsRequired = value;
-            SetProperty(ref _isRequired, value);
-            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
-        }
-    }
-    private bool _canModify;
-    public bool CanModify {
-        get => RecipeIngredient.CanModify;
-        set {
-            if (!value) RecommendedAmount = 0; PricePerMultiplier = 0;
-            RecipeIngredient.CanModify = value;
-            SetProperty(ref _canModify, value);
-            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
-        }
-    }
-    private double _pricePerMultiplier;
-    public double PricePerMultiplier {
-        get => (double)RecipeIngredient.PricePerMultiplier;
-        set {
-            RecipeIngredient.PricePerMultiplier = (decimal)value;
-            SetProperty(ref _pricePerMultiplier, value);
-        }
-    }
-    public bool IsAddRecipeIngredientButtonEnabled {
-        get {
-            if (SelectedIngredient == null && SelectedRecipeAsIngredient == null) return false;
-            if (Amount == 0) return false;
-            if (!CanModify) return true;
-            if (CanModify && RecommendedAmount <= Amount) return false;
-            if (!UpdateRecipeIngredientPricePerMultiplier) return false;
-            return true;
-        }
-    }
 
-    public Ingredient? SelectedIngredient {
-        get => _selectedIngredient;
-        set {
-            if (value == null) return;
-            RecipeIngredient.Ingredient_Id = value.Id;
-            RecipeIngredient.Recipe_Id = null;
-            RecipeIngredient.Recipe_Name = null;
-            RecipeIngredient.Ingredient_Name = value.Name;
-            RecipeIngredient.Measurement = value.Measurement;
-            SelectedRecipeAsIngredient = null;
-            SetProperty(ref _selectedIngredient, value);
-            OnPropertyChanged(nameof(SelectedIngredientIsRaw));
-            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
-        }
-    }
-    private Recipe? _selectedRecipeAsIngredient;
-    public Recipe? SelectedRecipeAsIngredient {
-        get => _selectedRecipeAsIngredient;
-        set {
-            if (value == null) return;
-            RecipeIngredient.Ingredient_Id = null;
-            RecipeIngredient.Ingredient_Name = null;
-            RecipeIngredient.Recipe_Id = value.Id;
-            RecipeIngredient.Recipe_Name = value.Name;
-            RecipeIngredient.Measurement = Measurement.Each;
-            SelectedIngredient = null;
-            SetProperty(ref _selectedRecipeAsIngredient, value);
-            OnPropertyChanged(nameof(SelectedIngredientIsRaw));
-            OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
-        }
-    }
-    public bool SelectedIngredientIsRaw => SelectedIngredient != null;
-
-    public bool UpdateRecipeIngredientPricePerMultiplier {
-        get {
-            try {
-                if (SelectedIngredient != null) {
-                    double price = Amount * (double)SelectedIngredient.CurrentPricePerUnit;
-                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
-                    return true;
-                }
-                if (SelectedRecipeAsIngredient != null) {
-                    double price = Amount * (double)SelectedRecipeAsIngredient.FixedPrice;
-                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
-                    return true;
-                }
-            } catch (Exception) {
-                return false;
-            }
-            return true;
-        }
-    }
     public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory.Name) || string.IsNullOrEmpty(NewRecipeCategory.Description));
     public bool IsRecipeCategoryEditable => SelectedRecipeCategory != null;
     public int? RecipeCategoryId => SelectedRecipeCategory?.Id;
@@ -205,6 +85,16 @@ public partial class RecipeForm : ObservableValidator {
     [RelayCommand]
     private void AddRecipeIngredient() {
         RecipeIngredients.Add(RecipeIngredient);
+    }
+
+    [RelayCommand]
+    private async Task OpenAddRecipeIngredientDialog() {
+        NewRecipeIngredientDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<NewRecipeIngredientDialog>(XamlRoot!);
+        ContentDialogResult result = await dialog.ShowAsync();
+
+        if (!result.Equals(ContentDialogResult.Primary)) return;
+        RecipeIngredients.Add(App.GetService<IMapper>().Map<RecipeIngredient>(dialog.RecipeIngredient));
     }
 }
 

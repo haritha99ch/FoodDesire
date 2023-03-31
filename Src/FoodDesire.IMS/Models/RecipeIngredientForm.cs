@@ -10,9 +10,8 @@ public partial class RecipeIngredientForm : ObservableObject {
     private Measurement _measurement;
     private double _amount;
     public double Amount {
-        get => Amount;
+        get => _amount;
         set {
-            Amount = value;
             SetProperty(ref _amount, value);
             OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
             if (!CanModify) return;
@@ -31,37 +30,33 @@ public partial class RecipeIngredientForm : ObservableObject {
     }
     private double _recommendedAmount;
     public double RecommendedAmount {
-        get => RecommendedAmount;
+        get => _recommendedAmount;
         set {
-            RecommendedAmount = value;
             SetProperty(ref _recommendedAmount, value);
             OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
         }
     }
     private bool _isRequired;
     public bool IsRequired {
-        get => IsRequired;
+        get => _isRequired;
         set {
-            IsRequired = value;
             SetProperty(ref _isRequired, value);
             OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
         }
     }
     private bool _canModify;
     public bool CanModify {
-        get => CanModify;
+        get => _canModify;
         set {
             if (!value) RecommendedAmount = 0; PricePerMultiplier = 0;
-            CanModify = value;
             SetProperty(ref _canModify, value);
             OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
         }
     }
     private double _pricePerMultiplier;
     public double PricePerMultiplier {
-        get => (double)PricePerMultiplier;
+        get => _pricePerMultiplier;
         set {
-            PricePerMultiplier = value;
             SetProperty(ref _pricePerMultiplier, value);
         }
     }

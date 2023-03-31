@@ -3,19 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
 
-    <StackPanel  x:Name="NewRecipeIngredient"
-                 HorizontalAlignment="Stretch"
-                 Padding="5"
-                 Background="{ThemeResource CardBackgroundFillColorDefault}">
-
+    <StackPanel x:Name="NewRecipeIngredient"
+                HorizontalAlignment="Stretch"
+                Padding="5">
         <ComboBox Header="Ingredient"
-                  VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"
                   ItemsSource="{x:Bind ViewModel.RawIngredients, Mode=OneWay}"
-                  SelectedItem="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Margin="{StaticResource XSmallLeftMargin}">
+                  SelectedItem="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name, Mode=OneWay}" />
@@ -23,19 +23,18 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <ComboBox VerticalAlignment="Stretch"
+        <ComboBox Header="Recipe As Ingredient: "
                   HorizontalAlignment="Stretch"
-                  Header="Recipe As Ingredient: "
+                  Margin="{StaticResource SmallTopMargin}"
                   ItemsSource="{x:Bind ViewModel.RecipeAsIngredients, Mode=OneWay}"
-                  SelectedItem="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Margin="{StaticResource XSmallLeftMargin}">
+                  SelectedItem="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name, Mode=OneWay}" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <TextBox Margin="{StaticResource XSmallLeftMargin}"
+        <TextBox Margin="{StaticResource SmallTopMargin}"
                  Text="{x:Bind RecipeIngredient.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  VerticalAlignment="Stretch"
                  HorizontalAlignment="Stretch">
@@ -52,18 +51,18 @@
                 </StackPanel>
             </TextBox.Header>
         </TextBox>
-        <CheckBox VerticalAlignment="Center"
-                  HorizontalAlignment="Left"
-                  Margin="{StaticResource XSmallLeftMargin}"
-                  Content="Required"
-                  IsChecked="{x:Bind RecipeIngredient.IsRequired, Mode=TwoWay}" />
-        <CheckBox VerticalAlignment="Center"
-                  HorizontalAlignment="Right"
-                  Margin="{StaticResource XSmallLeftMargin}"
-                  Content="Editable"
-                  IsChecked="{x:Bind RecipeIngredient.CanModify, Mode=TwoWay}" />
+        <StackPanel Orientation="Horizontal">
+            <CheckBox 
+                      Margin="{StaticResource SmallTopMargin}"
+                      Content="Required"
+                      IsChecked="{x:Bind RecipeIngredient.IsRequired, Mode=TwoWay}" />
+            <CheckBox 
+                      Margin="{StaticResource SmallTopMargin}"
+                      Content="Editable"
+                      IsChecked="{x:Bind RecipeIngredient.CanModify, Mode=TwoWay}" />
+        </StackPanel>
         <TextBox IsEnabled="{x:Bind RecipeIngredient.CanModify, Mode=OneWay}"
-                 Margin="{StaticResource XSmallLeftMargin}"
+                 Margin="{StaticResource SmallTopMargin}"
                  Text="{x:Bind RecipeIngredient.RecommendedAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  VerticalAlignment="Stretch"
                  HorizontalAlignment="Stretch">
@@ -82,7 +81,7 @@
         </TextBox>
 
         <TextBox IsEnabled="{x:Bind RecipeIngredient.CanModify, Mode=OneWay}"
-                 Margin="{StaticResource XSmallLeftMargin}"
+                 Margin="{StaticResource SmallTopMargin}"
                  Text="{x:Bind RecipeIngredient.PricePerMultiplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBox.Header>
                 <TextBlock>

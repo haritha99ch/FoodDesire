@@ -24,8 +24,10 @@
     <None Remove="Components\IngredientListItemControl.xaml" />
     <None Remove="Components\NewEmployeeFormDialog.xaml" />
     <None Remove="Components\NewIngredientFormDialog.xaml" />
+    <None Remove="Components\NewRecipeIngredientDialog.xaml" />
     <None Remove="Components\RecipeCategoryFormControl.xaml" />
     <None Remove="Components\RecipeFormControl.xaml" />
+    <None Remove="Components\RecipeIngredientFormControl.xaml" />
     <None Remove="Components\RequestIngredientDialog.xaml" />
     <None Remove="Components\ShowErrorsDialog.xaml" />
     <None Remove="Components\SuppliesListItemControl.xaml" />
@@ -56,6 +58,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\NewRecipeIngredientDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\RecipeIngredientFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Components\ShowErrorsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

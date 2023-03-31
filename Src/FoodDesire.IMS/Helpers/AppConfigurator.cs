@@ -65,6 +65,7 @@ internal static class AppConfigurator {
         services.AddTransient<RecipeFormControl>();
 
         services.AddTransient<RecipeIngredientFormViewModel>();
+        services.AddTransient<NewRecipeIngredientDialog>();
 
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
