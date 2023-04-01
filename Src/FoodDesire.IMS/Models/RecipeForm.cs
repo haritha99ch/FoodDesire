@@ -35,8 +35,10 @@ public partial class RecipeForm : ObservableValidator {
     private RecipeCategory _newRecipeCategory = new();
 
     [ObservableProperty]
-    private RecipeIngredient _recipeIngredient = new();
+    [NotifyPropertyChangedFor(nameof(IsEditRecipeIngredientButtonEnabled))]
+    private RecipeIngredient? _selectedRecipeIngredient;
 
+    public bool IsEditRecipeIngredientButtonEnabled => SelectedRecipeIngredient != null;
     public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory.Name) || string.IsNullOrEmpty(NewRecipeCategory.Description));
     public bool IsRecipeCategoryEditable => SelectedRecipeCategory != null;
     public int? RecipeCategoryId => SelectedRecipeCategory?.Id;
@@ -83,11 +85,6 @@ public partial class RecipeForm : ObservableValidator {
     }
 
     [RelayCommand]
-    private void AddRecipeIngredient() {
-        RecipeIngredients.Add(RecipeIngredient);
-    }
-
-    [RelayCommand]
     private async Task OpenAddRecipeIngredientDialog() {
         NewRecipeIngredientDialog dialog = App.GetService<IContentDialogFactory>()
             .ConfigureDialog<NewRecipeIngredientDialog>(XamlRoot!);
@@ -95,6 +92,20 @@ public partial class RecipeForm : ObservableValidator {
 
         if (!result.Equals(ContentDialogResult.Primary)) return;
         RecipeIngredients.Add(App.GetService<IMapper>().Map<RecipeIngredient>(dialog.RecipeIngredient));
+    }
+
+    [RelayCommand]
+    private async Task OpenEditRecipeIngredientDialog(RecipeFormViewModel viewModel) {
+        EditRecipeIngredientDialog dialog = App.GetService<IContentDialogFactory>()
+            .ConfigureDialog<EditRecipeIngredientDialog>(XamlRoot!);
+        RecipeIngredientForm? recipeIngredient = App.GetService<IMapper>().Map<RecipeIngredientForm>(SelectedRecipeIngredient);
+        dialog.RecipeIngredient = recipeIngredient;
+        ContentDialogResult result = await dialog.ShowAsync();
+
+        if (!result.Equals(ContentDialogResult.Primary)) return;
+        int index = RecipeIngredients.IndexOf(SelectedRecipeIngredient!);
+        RecipeIngredients.Remove(SelectedRecipeIngredient!);
+        RecipeIngredients.Insert(index, App.GetService<IMapper>().Map<RecipeIngredient>(dialog.RecipeIngredient));
     }
 }
 

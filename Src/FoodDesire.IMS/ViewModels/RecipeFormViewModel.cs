@@ -6,8 +6,6 @@ public partial class RecipeFormViewModel : ObservableRecipient {
 
     public XamlRoot? XamlRoot { get; set; }
     public ObservableCollection<RecipeCategory> RecipeCategories { get; set; } = new();
-    public ObservableCollection<Ingredient> Ingredients { get; set; } = new();
-    public ObservableCollection<Recipe> RecipeAsIngredient { get; set; } = new();
 
     public RecipeFormViewModel(IRecipesPageService recipesPageService) {
         _recipesPageService = recipesPageService;
@@ -17,10 +15,6 @@ public partial class RecipeFormViewModel : ObservableRecipient {
     public async void OnInit() {
         List<RecipeCategory> recipeCategories = await _recipesPageService.GetAllRecipeCategories();
         recipeCategories.ForEach(RecipeCategories.Add);
-        List<Ingredient> ingredients = await _recipesPageService.GetAllIngredients();
-        ingredients.ForEach(Ingredients.Add);
-        List<Recipe> recipes = await _recipesPageService.GetAllRecipeAsIngredients();
-        recipes.ForEach(RecipeAsIngredient.Add);
     }
 
     [RelayCommand]

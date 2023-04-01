@@ -1,0 +1,42 @@
+<UserControl x:Class="FoodDesire.IMS.Components.RecipeIngredientListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="using:FoodDesire.IMS.Models"
+             d:DataContext="{d:DesignInstance Type=models:RecipeIngredientForm}"
+             mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource CardStrokeColorDefaultSolid}"
+          VerticalAlignment="Center"
+          Padding="5"
+          Margin="0,2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="{Binding Ingredient_Name, Mode=OneWay}" />
+        <TextBlock Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="{Binding Recipe_Name, Mode=OneWay}" />
+        <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center">
+                                        <Run Text="{Binding Amount, Mode=OneWay}" />
+                                        <Run Text="{Binding Measurement, Mode=OneWay}" />
+        </TextBlock>
+        <CheckBox Grid.Column="2"
+                  IsChecked="{Binding IsRequired, Mode=OneWay}"
+                  IsEnabled="False" />
+        <CheckBox Grid.Column="3"
+                  IsChecked="{Binding CanModify, Mode=OneWay}"
+                  IsEnabled="False" />
+        <TextBlock Grid.Column="4"
+                   VerticalAlignment="Center"
+                   Text="{Binding PricePerMultiplier, Mode=OneWay}" />
+    </Grid>
+</UserControl>

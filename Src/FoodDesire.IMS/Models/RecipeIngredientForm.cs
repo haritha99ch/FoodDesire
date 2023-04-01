@@ -1,9 +1,9 @@
 ﻿namespace FoodDesire.IMS.Models;
 public partial class RecipeIngredientForm : ObservableObject {
-    public int? Ingredient_Id { get; set; }
+    public int? Ingredient_Id { get; set; } = null;
     [ObservableProperty]
     private string? _ingredient_Name;
-    public int? Recipe_Id { get; set; }
+    public int? Recipe_Id { get; set; } = null;
     [ObservableProperty]
     private string? _recipe_Name;
     [ObservableProperty]

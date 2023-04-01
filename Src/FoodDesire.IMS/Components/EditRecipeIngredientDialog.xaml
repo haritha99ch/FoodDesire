@@ -1,0 +1,17 @@
+<ContentDialog x:Class="FoodDesire.IMS.Components.EditRecipeIngredientDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:local="using:FoodDesire.IMS.Components"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               Style="{ThemeResource DefaultContentDialogStyle}"
+               Title="Edit Recipe Ingredient"
+               PrimaryButtonText="Add"
+               IsPrimaryButtonEnabled="{x:Bind RecipeIngredient.IsAddRecipeIngredientButtonEnabled, Mode=OneWay}"
+               DefaultButton="Primary"
+               SecondaryButtonText="Close"
+               Loaded="ContentDialog_Loaded"
+               mc:Ignorable="d">
+
+    <local:RecipeIngredientFormControl x:Name="RecipeIngredientFormControl" RecipeIngredient="{x:Bind RecipeIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+</ContentDialog>
