@@ -95,7 +95,7 @@ public partial class RecipeForm : ObservableValidator {
     }
 
     [RelayCommand]
-    private async Task OpenEditRecipeIngredientDialog(RecipeFormViewModel viewModel) {
+    private async Task OpenEditRecipeIngredientDialog() {
         EditRecipeIngredientDialog dialog = App.GetService<IContentDialogFactory>()
             .ConfigureDialog<EditRecipeIngredientDialog>(XamlRoot!);
         RecipeIngredientForm? recipeIngredient = App.GetService<IMapper>().Map<RecipeIngredientForm>(SelectedRecipeIngredient);
@@ -106,6 +106,23 @@ public partial class RecipeForm : ObservableValidator {
         int index = RecipeIngredients.IndexOf(SelectedRecipeIngredient!);
         RecipeIngredients.Remove(SelectedRecipeIngredient!);
         RecipeIngredients.Insert(index, App.GetService<IMapper>().Map<RecipeIngredient>(dialog.RecipeIngredient));
+    }
+
+    [RelayCommand]
+    private async Task OpenConfirmDeleteRecipeIngredientDialog() {
+        ContentDialog dialog = new() {
+            XamlRoot = XamlRoot,
+            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
+            DefaultButton = ContentDialogButton.Close,
+            PrimaryButtonText = "Delete",
+            CloseButtonText = "Cancel",
+            Title = "Delete Recipe Ingredient",
+            Content = $"Are you sure you want to delete this recipe ingredient?"
+        };
+        ContentDialogResult result = await dialog.ShowAsync();
+
+        if (!result.Equals(ContentDialogResult.Primary)) return;
+        RecipeIngredients.Remove(SelectedRecipeIngredient!);
     }
 }
 

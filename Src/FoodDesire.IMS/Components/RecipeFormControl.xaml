@@ -208,8 +208,11 @@
                         <AppBarButton Icon="Edit"
                                       Label="Edit"
                                       IsEnabled="{x:Bind Recipe.IsEditRecipeIngredientButtonEnabled, Mode=OneWay}"
-                                      Command="{x:Bind Recipe.OpenEditRecipeIngredientDialogCommand}"
-                                      CommandParameter="{x:Bind ViewModel}"/>
+                                      Command="{x:Bind Recipe.OpenEditRecipeIngredientDialogCommand}"/>
+                        <AppBarButton Icon="Delete"
+                                      Label="Delete"
+                                      IsEnabled="{x:Bind Recipe.IsEditRecipeIngredientButtonEnabled, Mode=OneWay}"
+                                      Command="{x:Bind Recipe.OpenConfirmDeleteRecipeIngredientDialogCommand}"/>
                     </CommandBar>
                     <local:RecipeIngredientListViewHeaderControl />
                     <ListView  ItemsSource="{x:Bind Recipe.RecipeIngredients, Mode=OneWay}"

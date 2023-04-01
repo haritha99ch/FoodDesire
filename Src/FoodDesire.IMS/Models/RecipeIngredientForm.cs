@@ -53,8 +53,8 @@ public partial class RecipeIngredientForm : ObservableObject {
             OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
         }
     }
-    private double _pricePerMultiplier;
-    public double PricePerMultiplier {
+    private double? _pricePerMultiplier;
+    public double? PricePerMultiplier {
         get => _pricePerMultiplier;
         set {
             SetProperty(ref _pricePerMultiplier, value);
