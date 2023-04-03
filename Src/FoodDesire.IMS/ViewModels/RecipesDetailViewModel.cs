@@ -4,7 +4,7 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
     private readonly IMapper _mapper;
 
     [ObservableProperty]
-    private RecipeDetail? _recipe;
+    private RecipeListItemDetail? _recipe;
 
     public RecipesDetailViewModel(IRecipesPageService recipesPageService, IMapper mapper) {
         _recipesPageService = recipesPageService;
@@ -13,7 +13,7 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
 
     public async void OnNavigatedTo(object parameter) {
         if (parameter is int recipeId) {
-            Recipe = _mapper.Map<RecipeDetail>(await _recipesPageService.GetRecipeById(recipeId));
+            Recipe = _mapper.Map<RecipeListItemDetail>(await _recipesPageService.GetRecipeById(recipeId));
         }
     }
 

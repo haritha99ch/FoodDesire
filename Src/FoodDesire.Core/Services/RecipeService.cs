@@ -95,18 +95,17 @@ public class RecipeService : IRecipeService {
         if (recipe.RecipeIngredients.Count == 0)
             return await _recipeRepository.Update(recipe);
         recipe.MinimumPrice = decimal.Zero;
-        recipe.RecipeIngredients.ForEach(async (recipeIngredient) => {
+        foreach (var recipeIngredient in recipe.RecipeIngredients) {
             if (recipeIngredient.Recipe_Id != null) {
                 Recipe recipeFromIngredient = await _recipeRepository.GetByID(recipeIngredient.Recipe_Id);
                 recipeIngredient.PricePerMultiplier = recipeFromIngredient.FixedPrice;
                 recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(Convert.ToDouble(recipeFromIngredient.FixedPrice) * recipeIngredient.Amount);
-                return;
+                break;
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
             recipeIngredient.PricePerMultiplier = await SetMinimumPricePerMultiplier(recipeIngredient);
             recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
-
-        });
+        }
         if (recipe.FixedPrice < recipe.MinimumPrice)
             recipe.FixedPrice = recipe.MinimumPrice;
         ;

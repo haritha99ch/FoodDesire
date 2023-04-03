@@ -169,7 +169,7 @@
                              Margin="{StaticResource XXSmallTopMargin}"
                              PlaceholderText="Description"
                              TextWrapping="Wrap"
-                             Text="Description" />
+                             Text="{x:Bind Recipe.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
@@ -217,7 +217,8 @@
                     <local:RecipeIngredientListViewHeaderControl />
                     <ListView  ItemsSource="{x:Bind Recipe.RecipeIngredients, Mode=OneWay}"
                                Margin="{StaticResource SmallTopMargin}"
-                               Height="480"
+                               MaxHeight="450"
+                               Height="Auto"
                                SelectedItem="{x:Bind Recipe.SelectedRecipeIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                ScrollViewer.VerticalScrollMode="Enabled"
                                ScrollViewer.VerticalScrollBarVisibility="Auto"

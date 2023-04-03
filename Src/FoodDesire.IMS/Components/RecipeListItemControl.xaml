@@ -1,0 +1,67 @@
+<UserControl x:Class="FoodDesire.IMS.Components.RecipeListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:FoodDesire.IMS.Components"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:models="using:FoodDesire.IMS.Models"
+             d:DataContext="{d:DesignInstance Type=models:RecipeListItemDetail}">
+
+    <Grid x:Name="itemThumbnail" Background="{ThemeResource CardBackgroundFillColorDefault}"
+          Padding="{StaticResource ButtonPadding}"
+          Margin="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Image Stretch="Fill"
+                   Grid.Column="0"
+                   Source="{Binding FeaturedImage, Mode=OneWay}" />
+            <Grid Grid.Column="1"
+                  Margin="{StaticResource XSmallLeftMargin}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="{Binding Name, Mode=OneWay}"
+                               Style="{StaticResource SubtitleTextBlockStyle}" />
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Style="{StaticResource BodyTextStyle}">
+                        <Run x:Uid="Currency" />
+                        <Run Text="{Binding FixedPrice, Mode=OneWay}" />
+                    </TextBlock>
+                </Grid>
+                <InfoBar Grid.Row="2"
+                         VerticalAlignment="Bottom"
+                         Title="Not Profitable"
+                         IsOpen="{Binding IsMinimumAndFixedPriceEquals, Mode=OneWay}" />
+                <CheckBox Grid.Row="3"
+                          Content="Menu Item"
+                          IsChecked="{Binding IsMenuItem, Mode=TwoWay}"
+                          IsHitTestVisible="False" />
+                <CheckBox Grid.Row="4"
+                          Content="Recipe Ingredient"
+                          IsChecked="{Binding AsIngredient, Mode=TwoWay}"
+                          IsHitTestVisible="False" />
+                <TextBlock Grid.Row="5"
+                           HorizontalAlignment="Right"
+                           Text="{Binding RecipeCategory.Name, Mode=OneWay}" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

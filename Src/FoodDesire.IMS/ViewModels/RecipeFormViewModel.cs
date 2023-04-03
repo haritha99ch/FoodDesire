@@ -3,16 +3,24 @@
 namespace FoodDesire.IMS.ViewModels;
 public partial class RecipeFormViewModel : ObservableRecipient {
     private readonly IRecipesPageService _recipesPageService;
+    private readonly IUserService<Chef> _chefService;
+
+    private Chef? _currentChef;
 
     public XamlRoot? XamlRoot { get; set; }
     public ObservableCollection<RecipeCategory> RecipeCategories { get; set; } = new();
 
-    public RecipeFormViewModel(IRecipesPageService recipesPageService) {
+    public RecipeFormViewModel(IRecipesPageService recipesPageService, IUserService<Chef> chefService) {
         _recipesPageService = recipesPageService;
+        _chefService = chefService;
+
         OnInit();
     }
 
     public async void OnInit() {
+        _currentChef = await _chefService.GetByEmail(App.CurrentUserAccount!.Email!);
+
+
         List<RecipeCategory> recipeCategories = await _recipesPageService.GetAllRecipeCategories();
         recipeCategories.ForEach(RecipeCategories.Add);
     }
@@ -41,5 +49,11 @@ public partial class RecipeFormViewModel : ObservableRecipient {
         RecipeCategory? updateRecipeCategory = await _recipesPageService.EditRecipeCategory(recipe.NewRecipeCategory);
         RecipeCategories.Add(updateRecipeCategory);
         recipe.NewRecipeCategory = new();
+    }
+
+    [RelayCommand]
+    private async Task CreateNewRecipe(RecipeForm recipe) {
+        recipe.ChefId = _currentChef!.Id;
+        Recipe newRecipe = await _recipesPageService.AddNewRecipe(App.GetService<IMapper>().Map<Recipe>(recipe));
     }
 }

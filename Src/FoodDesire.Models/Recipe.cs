@@ -9,6 +9,8 @@ public class Recipe : TrackedEntity {
     public List<RecipeInstruction> RecipeInstructions { get; set; } = new();
     public List<Image> Images { get; set; } = new();
     public List<RecipeReview> RecipeReviews { get; set; } = new();
+    [NotMapped]
+    public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
     [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal MinimumPrice { get; set; }
@@ -20,19 +22,21 @@ public class Recipe : TrackedEntity {
     [NotNull]
     public string Tags { get; set; } = "";
     [Required]
-    public float Rating { get; set; } = 0;
-    [Required]
     public bool AsIngredient { get; set; } = false;
     [Required]
     public bool IsMenuItem { get; set; } = true;
     [Required]
+    [Range(0, 1)]
+    public float Rating { get; set; } = 0;
+    public List<RecipeRating> Ratings { get; set; } = new();
+    [Required]
     public long Times { get; set; } = 0;
+
 
 
     [ForeignKey(nameof(ChefId))]
     public Chef? Chef { get; set; }
     [ForeignKey(nameof(RecipeCategoryId))]
     public RecipeCategory? RecipeCategory { get; set; }
-    [NotMapped]
-    public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
+
 }

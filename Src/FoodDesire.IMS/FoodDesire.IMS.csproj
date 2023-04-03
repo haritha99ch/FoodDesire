@@ -31,6 +31,7 @@
     <None Remove="Components\RecipeIngredientFormControl.xaml" />
     <None Remove="Components\RecipeIngredientListItemControl.xaml" />
     <None Remove="Components\RecipeIngredientListViewHeaderControl.xaml" />
+    <None Remove="Components\RecipeListItemControl.xaml" />
     <None Remove="Components\RequestIngredientDialog.xaml" />
     <None Remove="Components\ShowErrorsDialog.xaml" />
     <None Remove="Components\SuppliesListItemControl.xaml" />
@@ -48,7 +49,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230217.4" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230313.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="WinUIEx" Version="2.1" />
   </ItemGroup>
@@ -61,6 +62,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\RecipeListItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Components\EditRecipeIngredientDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

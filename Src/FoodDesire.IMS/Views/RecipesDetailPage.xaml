@@ -44,7 +44,7 @@
                           RelativePanel.AlignLeftWithPanel="True">
                         <FlipView MaxWidth="400"
                                   Height="270"
-                                  ItemsSource="{x:Bind ViewModel.Recipe.AllImages, Mode=OneWay}">
+                                  >
                         </FlipView>
                     </Grid>
 
@@ -53,7 +53,7 @@
                                RelativePanel.AlignTopWithPanel="True"
                                RelativePanel.RightOf="itemHero"
                                Style="{ThemeResource TitleTextBlockStyle}"
-                               Text="{x:Bind ViewModel.Recipe.Name, Mode=OneWay}" />
+                               Text="" />
 
                     <StackPanel x:Name="propertiesGroup1"
                                 RelativePanel.Below="itemHero">
@@ -62,7 +62,7 @@
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
                                        Text="Category" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                                       Text="{x:Bind ViewModel.Recipe.RecipeCategory.Name}" />
+                                       Text="" />
                         </StackPanel>
 
                         <StackPanel x:Name="orderDateGroup"
@@ -70,7 +70,7 @@
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
                                        Text="Order date" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                                       Text="{x:Bind ViewModel.Recipe.Chef.User.FirstName, Mode=OneWay}" />
+                                       Text="" />
                         </StackPanel>
                     </StackPanel>
 
@@ -80,7 +80,7 @@
                            Style="{ThemeResource SubtitleTextBlockStyle}"
                            Text="Description" />
                 <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                           Text="{x:Bind ViewModel.Recipe.Description, Mode=OneWay}" />
+                           Text="" />
 
                 <TextBlock Margin="{StaticResource SmallTopMargin}"
                            Style="{ThemeResource SubtitleTextBlockStyle}"

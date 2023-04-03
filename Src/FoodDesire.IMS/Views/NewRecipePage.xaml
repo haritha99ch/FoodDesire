@@ -8,6 +8,26 @@
       mc:Ignorable="d">
 
     <Grid>
-        <components:RecipeFormControl x:Name="RecipeForm" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <components:RecipeFormControl x:Name="RecipeForm"
+                                      Grid.Row="0" />
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Margin="{StaticResource LargeTopBottomMargin}">
+            <Button Style="{ThemeResource AccentButtonStyle}"
+                    Content="Create"
+                    Margin="{StaticResource SmallLeftMargin}"
+                    Command="{x:Bind RecipeForm.ViewModel.CreateNewRecipeCommand}"
+                    CommandParameter="{x:Bind RecipeForm.Recipe}"/>
+            <Button Style="{ThemeResource DefaultButtonStyle}"
+                    Content="Cancel"
+                    Margin="{StaticResource SmallLeftMargin}" />
+        </StackPanel>
+
     </Grid>
 </Page>
