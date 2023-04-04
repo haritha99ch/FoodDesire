@@ -36,7 +36,7 @@ public partial class RecipeListItemDetail : ObservableObject {
     public RecipeListItemDetail() {
     }
 
-    private async void UpdateImage() {
+    protected virtual async void UpdateImage() {
         if (!Images.Any()) return;
         FeaturedImage = await ByteArrayToImageSourceConverter.GetBitmap(Images.FirstOrDefault()!.Data);
     }

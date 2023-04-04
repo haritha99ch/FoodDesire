@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="using:FoodDesire.IMS.Components"
       mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -11,7 +12,6 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <!--641 is the default CompactModeThresholdWidth in NavigationView -->
                         <AdaptiveTrigger MinWindowWidth="641" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
@@ -42,9 +42,22 @@
                           VerticalAlignment="Top"
                           RelativePanel.AlignTopWithPanel="True"
                           RelativePanel.AlignLeftWithPanel="True">
-                        <FlipView MaxWidth="400"
-                                  Height="270"
-                                  >
+                        <FlipView MaxWidth="200"
+                                  Height="200"
+                                  ItemsSource="{x:Bind ViewModel.Recipe.RecipeImages, Mode=OneWay}">
+                            <FlipView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </FlipView.ItemsPanel>
+                            <FlipView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Image Source="{Binding Mode=OneWay}"
+                                               Stretch="Uniform" />
+                                    </Grid>
+                                </DataTemplate>
+                            </FlipView.ItemTemplate>
                         </FlipView>
                     </Grid>
 
@@ -53,41 +66,102 @@
                                RelativePanel.AlignTopWithPanel="True"
                                RelativePanel.RightOf="itemHero"
                                Style="{ThemeResource TitleTextBlockStyle}"
-                               Text="" />
+                               Text="{x:Bind ViewModel.Recipe.Name, Mode=OneWay}" />
 
                     <StackPanel x:Name="propertiesGroup1"
-                                RelativePanel.Below="itemHero">
+                                RelativePanel.Below="title"
+                                RelativePanel.RightOf="itemHero">
                         <StackPanel x:Name="statusGroup"
                                     Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
                                        Text="Category" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                                       Text="" />
+                                       Text="{x:Bind ViewModel.Recipe.CategoryName, Mode=OneWay}" />
                         </StackPanel>
 
-                        <StackPanel x:Name="orderDateGroup"
+                        <StackPanel x:Name="ChefGroup"
                                     Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
-                                       Text="Order date" />
+                                       Text="Created By" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                                       Text="" />
+                                       Text="{x:Bind ViewModel.CreatedBy.User.FirstName, Mode=OneWay}" />
                         </StackPanel>
                     </StackPanel>
+                    <StackPanel x:Name="DescriptionGroup" RelativePanel.RightOf="propertiesGroup1"
+                                Margin="50, 0,0,0"
+                                RelativePanel.Below="title">
 
+                        <TextBlock Margin="{StaticResource SmallTopMargin}"
+                                   Style="{ThemeResource SubtitleTextBlockStyle}"
+                                   Text="Description" />
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="400"
+                                   Text="{x:Bind ViewModel.Recipe.Description, Mode=OneWay}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="PriceGroup"
+                                Margin="50, 0, 0, 0"
+                                RelativePanel.RightOf="DescriptionGroup"
+                                RelativePanel.Below="title">
+                        
+                        <TextBlock Margin="{StaticResource SmallTopMargin}"
+                                   Style="{ThemeResource SubtitleTextBlockStyle}"
+                                   Text="Minimum Price" />
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
+                            <Run x:Uid="Currency" />
+                            <Run Text="{x:Bind ViewModel.Recipe.MinimumPrice, Mode=OneWay}" />
+                        </TextBlock>
+
+                        <TextBlock Margin="{StaticResource SmallTopMargin}"
+                                   Style="{ThemeResource SubtitleTextBlockStyle}"
+                                   Text="Fixed Price" />
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
+                            <Run x:Uid="Currency" />
+                            <Run Text="{x:Bind ViewModel.Recipe.FixedPrice, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ControlGroup"
+                                Margin="50, 0, 0, 0"
+                                RelativePanel.RightOf="PriceGroup"
+                                RelativePanel.AlignBottomWithPanel="True">
+
+                        <InfoBar IsOpen="{x:Bind ViewModel.Recipe.IsMinimumAndFixedPriceEquals, Mode=OneWay}"
+                                 VerticalAlignment="Top"
+                                 Title="No Profit."
+                                 Message="Set The Fixed price more than minimum price" />
+                        <StackPanel VerticalAlignment="Center"
+                                    Margin="{StaticResource MediumTopMargin}"
+                                    Orientation="Horizontal">
+                            <Button Content="Edit"
+                                    Style="{ThemeResource AccentButtonStyle}"
+                                    Margin="{StaticResource ContentDialogButton1HostMargin}"/>
+                            <Button Content="Delete"
+                                    Style="{ThemeResource DefaultButtonStyle}"
+                                    Margin="{StaticResource ContentDialogButton1HostMargin}" />
+                        </StackPanel>
+                    </StackPanel>
                 </RelativePanel>
 
                 <TextBlock Margin="{StaticResource SmallTopMargin}"
                            Style="{ThemeResource SubtitleTextBlockStyle}"
-                           Text="Description" />
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}"
-                           Text="" />
+                           Text="Recipe Ingredients" />
+                <local:RecipeIngredientListViewHeaderControl />
+                <ListView  ItemsSource="{x:Bind ViewModel.Recipe.RecipeIngredients, Mode=OneWay}"
+                           Margin="{StaticResource SmallTopMargin}"
+                           MaxHeight="450"
+                           Height="Auto"
+                           ScrollViewer.VerticalScrollMode="Enabled"
+                           ScrollViewer.VerticalScrollBarVisibility="Auto"
+                           ScrollViewer.IsVerticalScrollChainingEnabled="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <local:RecipeIngredientListItemControl />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-                <TextBlock Margin="{StaticResource SmallTopMargin}"
-                           Style="{ThemeResource SubtitleTextBlockStyle}"
-                           Text="Note 2" />
-                <TextBlock Margin="{StaticResource MediumBottomMargin}"
-                           Style="{ThemeResource BodyTextBlockStyle}"
-                           Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis hendrerit nulla, vel molestie libero. In nec ultricies magna, ultricies molestie ipsum. Mauris non dignissim velit. Etiam malesuada blandit mauris eu maximus. Quisque ornare, felis nec scelerisque mollis, risus dolor posuere magna, in gravida quam mi id nisi. Nullam mattis consequat ex. Cras nulla neque, dictum ac urna et, vestibulum feugiat ex. Pellentesque malesuada accumsan ligula, vel fringilla lacus facilisis sit amet. Proin convallis tempor arcu, ac placerat libero pretium ut. Praesent hendrerit nisl at lobortis viverra. Fusce vitae velit odio. Nam ut tortor sed purus finibus sollicitudin quis at ante. Ut sodales dolor vel eros mollis suscipit. Donec eu nulla id urna ultricies consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

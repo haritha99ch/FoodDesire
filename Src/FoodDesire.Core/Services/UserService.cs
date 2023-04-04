@@ -32,7 +32,13 @@ public class UserService<T> : IUserService<T> where T : BaseUser {
     }
 
     public async Task<T> GetById(int id) {
-        T user = await _userRepository.GetByID(id);
+        Expression<Func<T, bool>> filterExpression = e => e.Id == id;
+
+        IQueryable<T> filter(IQueryable<T> e) => e.Where(filterExpression);
+        IIncludableQueryable<T, object> include(IQueryable<T> e) => e.Include(e => e.User!).ThenInclude(e => e.Account!);
+
+        T user = await _userRepository.GetOne(filter, include);
+
         return user;
     }
 

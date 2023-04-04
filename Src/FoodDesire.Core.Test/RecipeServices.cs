@@ -54,10 +54,10 @@ public class RecipeServices : Services {
     public async Task GetRecipesByCategory() {
         List<RecipeCategory> recipeCategories = await _recipeService.GetAllRecipeCategories();
         RecipeCategory recipeCategory = await _recipeService.GetRecipeCategoryById(recipeCategories[0].Id);
-        recipeCategory = await _recipeService.GetRecipeCategoryByName(recipeCategory.Name);
+        recipeCategory = await _recipeService.GetRecipeCategoryByName(recipeCategory.Name!);
 
         List<Recipe> recipesByCatId = await _recipeService.GetAllRecipesByCategoryId(recipeCategories[0].Id);
-        List<Recipe> recipesByCatName = await _recipeService.GetAllRecipesByCategoryName(recipeCategories[0].Name);
+        List<Recipe> recipesByCatName = await _recipeService.GetAllRecipesByCategoryName(recipeCategories[0].Name!);
 
         Assert.That(recipesByCatId, Has.Count.EqualTo(recipesByCatName.Count));
     }

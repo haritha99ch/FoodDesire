@@ -14,6 +14,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0"
                    Text="Ingredient" />
@@ -25,5 +26,7 @@
                    Text="Editable" />
         <TextBlock Grid.Column="4"
                    Text="Price per multiplier" />
+        <TextBlock Grid.Column="5"
+                   Text="Value" />
     </Grid>
 </UserControl>

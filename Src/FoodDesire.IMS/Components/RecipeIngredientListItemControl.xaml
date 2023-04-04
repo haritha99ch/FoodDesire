@@ -17,6 +17,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="0"
                    VerticalAlignment="Center"
@@ -38,5 +39,8 @@
         <TextBlock Grid.Column="4"
                    VerticalAlignment="Center"
                    Text="{Binding PricePerMultiplier, Mode=OneWay}" />
+        <TextBlock Grid.Column="5"
+                   VerticalAlignment="Center"
+                   Text="{Binding Value, Mode=OneWay}" />
     </Grid>
 </UserControl>

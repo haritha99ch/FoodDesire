@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Models;
 [Serializable]
-public class RecipeIngredient : Entity {
+public class RecipeIngredient {
     [AllowNull]
     public int? Recipe_Id { get; set; }
     public string? Recipe_Name { get; set; }
@@ -20,4 +20,6 @@ public class RecipeIngredient : Entity {
     [Required]
     [Column(TypeName = "Decimal(18,2)")]
     public decimal PricePerMultiplier { get; set; }
+    [Column(TypeName = "Decimal(18,2)")]
+    public decimal Value { get; set; } = decimal.Zero;
 }

@@ -1,19 +1,28 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
 public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAware {
     private readonly IRecipesPageService _recipesPageService;
+    private readonly IUserService<Chef> _chefService;
     private readonly IMapper _mapper;
 
     [ObservableProperty]
-    private RecipeListItemDetail? _recipe;
+    private RecipeDetail? _recipe;
 
-    public RecipesDetailViewModel(IRecipesPageService recipesPageService, IMapper mapper) {
+    [ObservableProperty]
+    private Chef _createdBy;
+
+    public RecipesDetailViewModel(IRecipesPageService recipesPageService, IMapper mapper, IUserService<Chef> chefService) {
         _recipesPageService = recipesPageService;
+        _chefService = chefService;
         _mapper = mapper;
     }
 
     public async void OnNavigatedTo(object parameter) {
         if (parameter is int recipeId) {
-            Recipe = _mapper.Map<RecipeListItemDetail>(await _recipesPageService.GetRecipeById(recipeId));
+            Recipe = _mapper.Map<RecipeDetail>(await _recipesPageService.GetRecipeById(recipeId));
+            CreatedBy = await _chefService.GetById(Recipe.ChefId);
+
+            RecipeCategory recipeCategory = await _recipesPageService.GetRecipeCategoryById(Recipe.RecipeCategoryId);
+            Recipe.CategoryName = recipeCategory.Name;
         }
     }
 

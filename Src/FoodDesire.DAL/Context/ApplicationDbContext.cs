@@ -48,6 +48,11 @@ public class ApplicationDbContext : DbContext {
             .HasConversion(
                 e => JsonConvert.SerializeObject(e),
                 e => JsonConvert.DeserializeObject<List<RecipeIngredient>>(e)!);
+        modelBuilder.Entity<Recipe>()
+            .Property(e => e.Images)
+            .HasConversion(
+                e => JsonConvert.SerializeObject(e),
+                e => JsonConvert.DeserializeObject<List<Image>>(e)!);
         modelBuilder.Entity<Delivery>()
             .Property(e => e.Address)
             .HasConversion(

@@ -2,9 +2,7 @@
 
 namespace FoodDesire.IMS.Views;
 public sealed partial class RecipesDetailPage : Page {
-    public RecipesDetailViewModel ViewModel {
-        get;
-    }
+    public RecipesDetailViewModel ViewModel { get; }
 
     public RecipesDetailPage() {
         ViewModel = App.GetService<RecipesDetailViewModel>();

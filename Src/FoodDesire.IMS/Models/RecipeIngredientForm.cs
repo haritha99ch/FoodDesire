@@ -102,6 +102,8 @@ public partial class RecipeIngredientForm : ObservableObject {
             OnPropertyChanged(nameof(IsAddRecipeIngredientButtonEnabled));
         }
     }
+    [ObservableProperty]
+    private double _value = 0;
     public bool SelectedIngredientIsRaw => SelectedIngredient != null;
 
     public bool UpdateRecipeIngredientPricePerMultiplier {
