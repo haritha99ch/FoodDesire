@@ -8,8 +8,12 @@
              xmlns:models="using:FoodDesire.IMS.Models"
              d:DataContext="{d:DesignInstance Type=models:RecipeListItemDetail}">
 
-    <Grid x:Name="itemThumbnail" Background="{ThemeResource CardBackgroundFillColorDefault}"
+    <Grid x:Name="itemThumbnail"
+          Height="180"
+          Width="450"
+          Background="{ThemeResource CardBackgroundFillColorDefault}"
           Padding="{StaticResource ButtonPadding}"
+          CornerRadius="{StaticResource GridViewItemCornerRadius}"
           Margin="5">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,7 +26,6 @@
             <Grid Grid.Column="1"
                   Margin="{StaticResource XSmallLeftMargin}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -47,7 +50,8 @@
                     </TextBlock>
                 </Grid>
                 <InfoBar Grid.Row="2"
-                         VerticalAlignment="Bottom"
+                         Severity="Warning"
+                         VerticalAlignment="Center"
                          Title="Not Profitable"
                          IsOpen="{Binding IsMinimumAndFixedPriceEquals, Mode=OneWay}" />
                 <CheckBox Grid.Row="3"
@@ -58,10 +62,12 @@
                           Content="Recipe Ingredient"
                           IsChecked="{Binding AsIngredient, Mode=TwoWay}"
                           IsHitTestVisible="False" />
-                <TextBlock Grid.Row="5"
-                           HorizontalAlignment="Right"
-                           Text="{Binding RecipeCategory.Name, Mode=OneWay}" />
             </Grid>
+            <TextBlock Grid.Column="1"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Style="{StaticResource BodyStrongTextBlockStyle}"
+                       Text="{Binding RecipeCategory.Name, Mode=OneWay}" />
         </Grid>
     </Grid>
 </UserControl>

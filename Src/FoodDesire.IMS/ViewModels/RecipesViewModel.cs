@@ -6,6 +6,8 @@ public partial class RecipesViewModel : ObservableRecipient, INavigationAware {
     private readonly IRecipesPageService _recipesPageService;
     private readonly IMapper _mapper;
 
+    public bool IsChef => App.CurrentUserAccount?.Role == Role.Chef;
+
     public ObservableCollection<RecipeListItemDetail> Recipes { get; } = new();
     public IRelayCommand<RecipeListItemDetail> OnItemClickedCommand { get; }
 

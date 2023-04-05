@@ -50,6 +50,8 @@ internal static class AppConfigurator {
         services.AddTransient<RecipesDetailPage>();
         services.AddTransient<NewRecipeViewModel>();
         services.AddTransient<NewRecipePage>();
+        services.AddTransient<EditRecipeViewModel>();
+        services.AddTransient<EditRecipePage>();
 
         //Components ViewModels
         services.AddTransient<NewEmployeeViewModel>();

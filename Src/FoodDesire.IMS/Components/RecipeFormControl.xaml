@@ -100,14 +100,14 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <ComboBox Grid.Column="0"
+                            <ComboBox x:Name="Category" Grid.Column="0"
                                       HorizontalAlignment="Stretch"
                                       Margin="{StaticResource SmallRightMargin}"
                                       ItemsSource="{x:Bind ViewModel.RecipeCategories, Mode=OneWay}"
-                                      SelectedItem="{x:Bind Recipe.SelectedRecipeCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedValue="{x:Bind Recipe.SelectedRecipeCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                                        <TextBlock Text="{Binding Path=Name, Mode=TwoWay}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -182,6 +182,32 @@
                     <CheckBox Content="Can be used as an Ingredient"
                               Margin="{StaticResource XXSmallTopMargin}"
                               IsChecked="{x:Bind Recipe.AsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel x:Name="PriceGroup" 
+                            RelativePanel.RightOf="DescriptionGroup"
+                            Margin="{StaticResource SmallLeftMargin}">
+
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Text="Price" />
+                    <TextBox Text="{x:Bind Recipe.MinimumPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="{StaticResource SmallTopBottomMargin}">
+                        <TextBox.Header>
+                            <TextBlock>
+                                <Run Text="Minimum Price" />
+                                <Run x:Uid="Currency" />
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
+                    <TextBox Text="{x:Bind Recipe.FixedPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="{StaticResource SmallTopBottomMargin}">
+                        <TextBox.Header>
+                            <TextBlock>
+                                <Run Text="Fixed Price" />
+                                <Run x:Uid="Currency" />
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
                 </StackPanel>
             </RelativePanel>
 

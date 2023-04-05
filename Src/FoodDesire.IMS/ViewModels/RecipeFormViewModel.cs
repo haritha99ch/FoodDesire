@@ -4,15 +4,17 @@ namespace FoodDesire.IMS.ViewModels;
 public partial class RecipeFormViewModel : ObservableRecipient {
     private readonly IRecipesPageService _recipesPageService;
     private readonly IUserService<Chef> _chefService;
+    private readonly INavigationService _navigationService;
 
     private Chef? _currentChef;
 
     public XamlRoot? XamlRoot { get; set; }
     public ObservableCollection<RecipeCategory> RecipeCategories { get; set; } = new();
 
-    public RecipeFormViewModel(IRecipesPageService recipesPageService, IUserService<Chef> chefService) {
+    public RecipeFormViewModel(IRecipesPageService recipesPageService, IUserService<Chef> chefService, INavigationService navigationService) {
         _recipesPageService = recipesPageService;
         _chefService = chefService;
+        _navigationService = navigationService;
 
         OnInit();
     }
@@ -20,9 +22,10 @@ public partial class RecipeFormViewModel : ObservableRecipient {
     public async void OnInit() {
         _currentChef = await _chefService.GetByEmail(App.CurrentUserAccount!.Email!);
 
-
         List<RecipeCategory> recipeCategories = await _recipesPageService.GetAllRecipeCategories();
-        recipeCategories.ForEach(RecipeCategories.Add);
+        foreach (var category in recipeCategories) {
+            if (!RecipeCategories.Any(e => e?.Id == category.Id)) RecipeCategories.Add(category);
+        }
     }
 
     [RelayCommand]
@@ -55,5 +58,17 @@ public partial class RecipeFormViewModel : ObservableRecipient {
     private async Task CreateNewRecipe(RecipeForm recipe) {
         recipe.ChefId = _currentChef!.Id;
         Recipe newRecipe = await _recipesPageService.AddNewRecipe(App.GetService<IMapper>().Map<Recipe>(recipe));
+        CancelAndGoBack();
+    }
+
+    [RelayCommand]
+    private async Task EditRecipe(RecipeForm recipe) {
+        Recipe UpdatedRecipe = await _recipesPageService.EditRecipe(App.GetService<IMapper>().Map<Recipe>(recipe));
+        CancelAndGoBack();
+    }
+
+    [RelayCommand]
+    private void CancelAndGoBack() {
+        _navigationService.GoBack();
     }
 }

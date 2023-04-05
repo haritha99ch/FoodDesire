@@ -35,7 +35,7 @@ public class RecipeService : IRecipeService {
     }
 
     public async Task<List<Recipe>> GetAllRecipes() {
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
 
         List<Recipe> recipes = await _recipeRepository.Get(null, null, include);
         return recipes;
@@ -98,19 +98,19 @@ public class RecipeService : IRecipeService {
         foreach (var recipeIngredient in recipe.RecipeIngredients) {
             if (recipeIngredient.Recipe_Id != null) {
                 Recipe recipeFromIngredient = await _recipeRepository.GetByID(recipeIngredient.Recipe_Id);
-                recipeIngredient.Value = recipeFromIngredient.FixedPrice;
+                recipeIngredient.Value = (decimal)((double)recipeFromIngredient.FixedPrice * recipeIngredient.Amount);
                 recipeIngredient.PricePerMultiplier = recipeFromIngredient.FixedPrice;
                 recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(Convert.ToDouble(recipeFromIngredient.FixedPrice) * recipeIngredient.Amount);
                 continue;
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
-            recipeIngredient.Value = ingredient.CurrentPricePerUnit;
+            recipeIngredient.Value = (decimal)((double)ingredient.CurrentPricePerUnit * recipeIngredient.Amount);
             recipeIngredient.PricePerMultiplier = await SetMinimumPricePerMultiplier(recipeIngredient);
             recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
         }
         if (recipe.FixedPrice < recipe.MinimumPrice)
             recipe.FixedPrice = recipe.MinimumPrice;
-        ;
+
         return await _recipeRepository.Update(recipe);
     }
 

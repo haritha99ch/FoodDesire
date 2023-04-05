@@ -30,9 +30,15 @@ public class Repository<T> : IRepository<T> where T : Entity {
     }
 
     public async Task<T> Update(T entity) {
-        var updatedEntity = entitySet.Update(entity);
+        EntityEntry<T>? updatedEntity;
+        try {
+            updatedEntity = entitySet.Update(entity);
+        } catch (Exception) {
+            _context.ChangeTracker.Clear();
+            updatedEntity = entitySet.Update(entity);
+        }
         await _context.SaveChangesAsync();
-        return entity;
+        return updatedEntity.Entity;
     }
 
     public async Task<bool> Delete(int Id) {

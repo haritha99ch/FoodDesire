@@ -11,6 +11,7 @@ public class PageService : IPageService {
         Configure<RecipesViewModel, RecipesPage>();
         Configure<RecipesDetailViewModel, RecipesDetailPage>();
         Configure<NewRecipeViewModel, NewRecipePage>();
+        Configure<EditRecipeViewModel, EditRecipePage>();
     }
 
     public Type GetPageType(string key) {

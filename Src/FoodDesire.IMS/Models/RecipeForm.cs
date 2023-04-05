@@ -21,7 +21,14 @@ public partial class RecipeForm : ObservableValidator {
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsRecipeCategoryEditable))]
     private RecipeCategory? _selectedRecipeCategory;
-    public ObservableCollection<FoodDesire.Models.Image> Images { get; set; } = new();
+    private List<FoodDesire.Models.Image> _images = new();
+    public List<FoodDesire.Models.Image> Images {
+        get => _images;
+        set {
+            SetProperty(ref _images, value);
+            UpdateImages();
+        }
+    }
     public ObservableCollection<BitmapImage> BitmapImages { get; set; } = new();
     public ObservableCollection<RecipeIngredient> RecipeIngredients { get; set; } = new();
     public ObservableCollection<RecipeInstruction> RecipeInstructions { get; set; } = new();
@@ -38,6 +45,11 @@ public partial class RecipeForm : ObservableValidator {
     [NotifyPropertyChangedFor(nameof(IsEditRecipeIngredientButtonEnabled))]
     private RecipeIngredient? _selectedRecipeIngredient;
 
+    [ObservableProperty]
+    private float _minimumPrice;
+    [ObservableProperty]
+    private float _fixedPrice;
+
     public bool IsEditRecipeIngredientButtonEnabled => SelectedRecipeIngredient != null;
     public bool IsAddRecipeCategoryButtonEnabled => !(string.IsNullOrEmpty(NewRecipeCategory.Name) || string.IsNullOrEmpty(NewRecipeCategory.Description));
     public bool IsRecipeCategoryEditable => SelectedRecipeCategory != null;
@@ -45,6 +57,13 @@ public partial class RecipeForm : ObservableValidator {
 
 
     public void UpdateIsAddRecipeCategoryButtonEnabled() => OnPropertyChanged(nameof(IsAddRecipeCategoryButtonEnabled));
+
+    private async void UpdateImages() {
+        BitmapImages.Clear();
+        foreach (var image in Images) {
+            BitmapImages.Add(await ByteArrayToImageSourceConverter.GetBitmap(image.Data));
+        }
+    }
 
     [RelayCommand]
     private async void AddNewImage() {

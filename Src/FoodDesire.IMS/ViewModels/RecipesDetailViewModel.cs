@@ -1,19 +1,30 @@
-﻿namespace FoodDesire.IMS.ViewModels;
+﻿using CommunityToolkit.Mvvm.Input;
+
+namespace FoodDesire.IMS.ViewModels;
 public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAware {
     private readonly IRecipesPageService _recipesPageService;
     private readonly IUserService<Chef> _chefService;
+    private readonly INavigationService _navigationService;
     private readonly IMapper _mapper;
+
+    public bool IsChef => App.CurrentUserAccount?.Role == Role.Chef;
 
     [ObservableProperty]
     private RecipeDetail? _recipe;
 
     [ObservableProperty]
-    private Chef _createdBy;
+    private Chef? _createdBy;
 
-    public RecipesDetailViewModel(IRecipesPageService recipesPageService, IMapper mapper, IUserService<Chef> chefService) {
+    public RecipesDetailViewModel(
+        IRecipesPageService recipesPageService,
+        IMapper mapper,
+        IUserService<Chef> chefService,
+        INavigationService navigationService
+        ) {
         _recipesPageService = recipesPageService;
         _chefService = chefService;
         _mapper = mapper;
+        _navigationService = navigationService;
     }
 
     public async void OnNavigatedTo(object parameter) {
@@ -26,6 +37,17 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
         }
     }
 
-    public void OnNavigatedFrom() {
+    public void OnNavigatedFrom() { }
+
+    [RelayCommand]
+    public void EditRecipe() {
+        _navigationService.SetListDataItemForNextConnectedAnimation(Recipe!);
+        _navigationService.NavigateTo(typeof(EditRecipeViewModel).FullName!, Recipe.Id);
+    }
+
+    [RelayCommand]
+    private async void DeleteRecipe() {
+        bool deleted = await _recipesPageService.DeleteRecipeById(Recipe!.Id);
+        if (deleted) _navigationService.GoBack();
     }
 }

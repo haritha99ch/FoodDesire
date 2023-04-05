@@ -186,4 +186,7 @@
   <data name="Shell_NewRecipe.Content" xml:space="preserve">
     <value>NewRecipe</value>
   </data>
+  <data name="Shell_EditRecipe.Content" xml:space="preserve">
+    <value>EditRecipe</value>
+  </data>
 </root>

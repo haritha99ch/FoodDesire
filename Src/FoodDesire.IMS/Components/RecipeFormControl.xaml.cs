@@ -9,6 +9,9 @@ public sealed partial class RecipeFormControl : UserControl {
     public static readonly DependencyProperty RecipeProperty =
         DependencyProperty.Register("Recipe", typeof(RecipeForm), typeof(RecipeFormControl), new PropertyMetadata(0));
 
+    public Grid ImagesContainer => imagesContainer;
+
+
     public RecipeFormControl() {
         ViewModel = App.GetService<RecipeFormViewModel>();
         InitializeComponent();
@@ -17,6 +20,9 @@ public sealed partial class RecipeFormControl : UserControl {
     private void UserControl_Loaded(object sender, RoutedEventArgs e) {
         ViewModel.XamlRoot = XamlRoot;
         Recipe.XamlRoot = XamlRoot;
+        //if (!ViewModel.RecipeCategories.Any(e => e.Id == Recipe.SelectedRecipeCategory!.Id))
+        ViewModel.RecipeCategories.Add(Recipe.SelectedRecipeCategory!);
+        Category.SelectedItem = Recipe.SelectedRecipeCategory;
     }
 
     private void HideFlyout(object sender, RoutedEventArgs e) {
