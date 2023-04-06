@@ -40,7 +40,7 @@ public partial class RecipesViewModel : ObservableRecipient, INavigationAware {
         await _searchSemaphore.WaitAsync();
         try {
             IsLoading = true;
-            if (string.IsNullOrWhiteSpace(SearchText)) {
+            if (string.IsNullOrEmpty(SearchText) || string.IsNullOrWhiteSpace(SearchText)) {
                 Recipes.Clear();
                 List<Recipe> recipes = await _recipesPageService.GetAllRecipes();
                 recipes.ForEach(e => Recipes.Add(_mapper.Map<RecipeListItemDetail>(e)));

@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using System.Collections.ObjectModel;
-
-namespace FoodDesire.IMS.ViewModels;
+﻿namespace FoodDesire.IMS.ViewModels;
 public partial class IngredientsViewModel : ObservableRecipient, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private readonly IMapper _mapper;
@@ -9,6 +6,16 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
     private bool _isLoading = true;
     [ObservableProperty]
     private ObservableCollection<IngredientDetails> _ingredientsDetail = new();
+    private string? _searchText;
+    public string? SearchText {
+        get => _searchText;
+        set {
+            OnSearchTextChanged();
+            SetProperty(ref _searchText, value);
+        }
+    }
+    private readonly SemaphoreSlim _searchSemaphore = new(1, 1);
+    public bool IngredientControlAccess => App.CurrentUserAccount!.Role.Equals(Role.Admin) || App.CurrentUserAccount!.Role.Equals(Role.Chef);
 
     public IngredientsViewModel(IIngredientsPageService ingredientsPageService, IMapper mapper) {
         _mapper = mapper;
@@ -24,6 +31,33 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
             .ToList();
         ingredientsDetails.ForEach(IngredientsDetail.Add);
         IsLoading = false;
+    }
+
+    private async void OnSearchTextChanged() {
+        await _searchSemaphore.WaitAsync();
+        try {
+            IsLoading = true;
+            if (string.IsNullOrEmpty(SearchText) || string.IsNullOrWhiteSpace(SearchText)) {
+                IngredientsDetail.Clear();
+                List<Ingredient> ingredients = await _ingredientsPageService.GetAllIngredients();
+                List<IngredientDetails>? ingredientsDetails = ingredients
+                    .Select(_mapper.Map<IngredientDetails>)
+                    .OrderBy(e => e.AvailableSpacePerCent)
+                    .ToList();
+                ingredientsDetails.ForEach(IngredientsDetail.Add);
+            } else {
+                IngredientsDetail.Clear();
+                List<Ingredient> ingredients = await _ingredientsPageService.SearchIngredients(SearchText);
+                List<IngredientDetails>? ingredientsDetails = ingredients
+                    .Select(_mapper.Map<IngredientDetails>)
+                    .OrderBy(e => e.AvailableSpacePerCent)
+                    .ToList();
+                ingredientsDetails.ForEach(IngredientsDetail.Add);
+            }
+            IsLoading = false;
+        } finally {
+            _searchSemaphore.Release();
+        }
     }
 
     public void NewIngredient(Ingredient ingredient) {

@@ -16,4 +16,5 @@ public interface IIngredientService {
 
     Task<Supply> NewSupply(Supply supply);
     Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory);
+    Task<List<Ingredient>> SearchIngredients(string searchText);
 }

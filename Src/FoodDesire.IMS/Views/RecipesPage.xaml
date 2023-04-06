@@ -10,7 +10,7 @@
       xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
       mc:Ignorable="d">
     <Page.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Page.Resources>
 
     <Grid>
@@ -21,13 +21,13 @@
         <ProgressBar Style="{StaticResource LoadingPrograssBar}"
                      VerticalAlignment="Top"
                      IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
-        <TextBox Style="{StaticResource AutoSuggestBoxTextBoxStyle}" 
+        <TextBox Style="{StaticResource AutoSuggestBoxTextBoxStyle}"
                  CornerRadius="15"
                  VerticalAlignment="Top"
                  HorizontalAlignment="Center"
                  Width="500"
                  Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 PlaceholderText="Search"/>
+                 PlaceholderText="Search" />
 
 
         <CommandBar Grid.Row="0"
@@ -46,7 +46,8 @@
 
         <Grid x:Name="ContentArea"
               Grid.Row="1">
-            <controls:AdaptiveGridView animations:Connected.ListItemElementName="itemThumbnail"
+            <controls:AdaptiveGridView Margin="{StaticResource XXSmallTopMargin}"
+                                       animations:Connected.ListItemElementName="itemThumbnail"
                                        animations:Connected.ListItemKey="animationKeyContentGrid"
                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                                        ScrollViewer.IsVerticalScrollChainingEnabled="True"

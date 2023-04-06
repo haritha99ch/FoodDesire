@@ -148,10 +148,12 @@ public class RecipeService : IRecipeService {
     }
 
     public async Task<List<Recipe>> SearchRecipes(string value) {
-        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.Contains(value);
+        if (string.IsNullOrEmpty(value)) return await GetAllRecipes();
+        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.StartsWith(value);
 
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
-        List<Recipe> recipes = await _recipeRepository.Get(filter);
+        List<Recipe> recipes = await _recipeRepository.Get(filter, null, include);
         return recipes;
     }
 }

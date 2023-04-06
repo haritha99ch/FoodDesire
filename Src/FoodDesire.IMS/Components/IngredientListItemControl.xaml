@@ -47,7 +47,7 @@
                        x:Name="IngredientValue"
                        TextWrapping="Wrap"
                        Margin="15,0,10,0"
-                       Foreground="Lime"
+                       Foreground="{ThemeResource SystemFillColorSuccessBrush}"
                        Style="{StaticResource BodyTextStyle}">
                     <Run x:Uid="Currency" />
                     <Run Text="{Binding CurrentPricePerUnit, Mode=OneWay}" />
@@ -60,7 +60,7 @@
                        HorizontalAlignment="Right"
                        TextWrapping="Wrap"
                        Margin="15,0,10,0"
-                       Foreground="Lime"
+                       Foreground="{ThemeResource SystemFillColorSuccessBrush}"
                        Style="{StaticResource BodyTextStyle}">
                     <Run x:Uid="Currency" />
                     <Run Text="{Binding TotalValue, Mode=OneWay}" />
@@ -73,7 +73,7 @@
             <Run Text="{Binding DisplayCurrentQuantity, Mode=OneWay}" />
             <Run Text="{Binding AvailableSpacePerCent, Mode=OneWay, 
                 Converter={StaticResource StringFormatConverter}, 
-                ConverterParameter='({0}%)'}" />
+                ConverterParameter='({0:F2}%)'}" />
             </TextBlock>
             <TextBlock Grid.Row="3"
                        Margin="0 0 5 0"
@@ -84,7 +84,7 @@
             <ProgressBar Grid.Row="4"
                          Value="{Binding QuantityWithSupply, Mode=OneWay}"
                          Maximum="{Binding MaximumQuantity, Mode=OneWay}"
-                         Foreground="Lime"
+                         Foreground="{ThemeResource SystemFillColorSuccessBrush}"
                          VerticalAlignment="Bottom" />
             <ProgressBar Grid.Row="4"
                          Value="{Binding CurrentQuantity, Mode=OneWay}"

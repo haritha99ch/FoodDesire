@@ -7,9 +7,11 @@
       xmlns:i="using:Microsoft.Xaml.Interactivity"
       xmlns:core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:viewmodels="using:FoodDesire.IMS.ViewModels"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
       d:DataContext="{d:DesignInstance Type=viewmodels:IngredientsViewModel}"
       mc:Ignorable="d">
     <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <DataTemplate x:Key="IngrdientItem">
             <controls:IngredientListItemControl />
         </DataTemplate>
@@ -18,11 +20,11 @@
             <AppBarButton Label="Request"
                           Icon="Import"
                           ToolTipService.ToolTip="Request"
-                          Click="RequestButton_Click"/>
+                          Click="RequestButton_Click" />
             <AppBarButton Label="Edit"
                           Icon="Edit"
                           ToolTipService.ToolTip="Edit"
-                          Click="EditButton_Click"/>
+                          Click="EditButton_Click" />
             <AppBarButton Label="Delete"
                           Icon="Delete"
                           ToolTipService.ToolTip="Delete"
@@ -30,10 +32,21 @@
         </CommandBarFlyout>
     </Page.Resources>
 
-    <StackPanel>
-        <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+    <Grid RowDefinitions="Auto, *">
+
+        <ProgressBar Grid.Row="0"
+                     IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
                      Style="{StaticResource LoadingPrograssBar}" />
-        <CommandBar Background="Transparent"
+        <TextBox Style="{StaticResource AutoSuggestBoxTextBoxStyle}"
+                 CornerRadius="15"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Center"
+                 Width="500"
+                 Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 PlaceholderText="Search" />
+        <CommandBar Grid.Row="0"
+                    Visibility="{x:Bind ViewModel.IngredientControlAccess, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Background="Transparent"
                     IsOpen="False"
                     HorizontalAlignment="Left"
                     DefaultLabelPosition="Right">
@@ -44,11 +57,16 @@
             </AppBarButton>
         </CommandBar>
 
-        <GridView x:Name="IngredientList"
+        <GridView Grid.Row="1"
+                  Margin="{StaticResource XXSmallTopMargin}"
+                  x:Name="IngredientList"
                   SelectionMode="None"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.IsVerticalScrollChainingEnabled="True"
+                  ScrollViewer.VerticalScrollMode="Enabled"
                   ItemsSource="{x:Bind ViewModel.IngredientsDetail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   IsItemClickEnabled="True"
                   ItemTemplate="{StaticResource IngrdientItem}"
                   ItemClick="IngredientList_ItemClick" />
-    </StackPanel>
+    </Grid>
 </Page>

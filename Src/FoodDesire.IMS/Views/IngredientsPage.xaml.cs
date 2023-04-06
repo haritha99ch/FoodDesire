@@ -13,6 +13,7 @@ public sealed partial class IngredientsPage : Page {
     }
 
     private void IngredientList_ItemClick(object sender, ItemClickEventArgs e) {
+        if (!ViewModel.IngredientControlAccess) return;
         _selectedIngredient = (IngredientDetails)e.ClickedItem;
 
         var listViewItem = IngredientList.ContainerFromItem(e.ClickedItem) as GridViewItem;
