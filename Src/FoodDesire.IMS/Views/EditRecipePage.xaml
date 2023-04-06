@@ -1,0 +1,30 @@
+﻿<Page x:Class="FoodDesire.IMS.Views.EditRecipePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:components="using:FoodDesire.IMS.Components"
+      mc:Ignorable="d">
+
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <components:RecipeFormControl Grid.Row="0" x:Name="RecipeForm" Recipe="{x:Bind ViewModel.RecipeForm, Mode=TwoWay}" />
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Margin="{StaticResource LargeTopBottomMargin}">
+            <Button Style="{ThemeResource AccentButtonStyle}"
+                    Content="Save"
+                    Margin="{StaticResource SmallLeftMargin}"
+                    Command="{x:Bind RecipeForm.ViewModel.EditRecipeCommand}"
+                    CommandParameter="{x:Bind RecipeForm.Recipe}" />
+            <Button Style="{ThemeResource DefaultButtonStyle}"
+                    Content="Cancel"
+                    Margin="{StaticResource SmallLeftMargin}"
+                    Command="{x:Bind RecipeForm.ViewModel.CancelAndGoBackCommand}"/>
+        </StackPanel>
+    </Grid>
+</Page>

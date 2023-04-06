@@ -8,6 +8,10 @@ public class PageService : IPageService {
         Configure<SettingsViewModel, SettingsPage>();
         Configure<EmployeesViewModel, EmployeesPage>();
         Configure<SuppliesViewModel, SuppliesPage>();
+        Configure<RecipesViewModel, RecipesPage>();
+        Configure<RecipesDetailViewModel, RecipesDetailPage>();
+        Configure<NewRecipeViewModel, NewRecipePage>();
+        Configure<EditRecipeViewModel, EditRecipePage>();
     }
 
     public Type GetPageType(string key) {

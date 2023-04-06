@@ -1,0 +1,262 @@
+<UserControl x:Class="FoodDesire.IMS.Components.RecipeFormControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:FoodDesire.IMS.Components"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+             xmlns:models="using:FoodDesire.Models"
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="propertiesGroup1.(RelativePanel.RightOf)"
+                                Value="imagesContainer" />
+                        <Setter Target="propertiesGroup1.(RelativePanel.Below)"
+                                Value="recipeName" />
+                        <Setter Target="propertiesGroup2.(RelativePanel.RightOf)"
+                                Value="CategoryGroup" />
+                        <Setter Target="propertiesGroup2.(RelativePanel.Below)"
+                                Value="recipeName" />
+                        <Setter Target="propertiesGroup1.Width"
+                                Value="200" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <StackPanel x:Name="contentPanel">
+            <RelativePanel>
+                <Grid x:Name="imagesContainer"
+                      Width="200"
+                      Height="200"
+                      Margin="{StaticResource SmallRightMargin}"
+                      Padding="{StaticResource XSmallLeftTopRightBottomMargin}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      RelativePanel.AlignTopWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True">
+                    <FlipView ItemsSource="{x:Bind Recipe.BitmapImages, Mode=OneWay}">
+                        <FlipView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </FlipView.ItemsPanel>
+
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Image Source="{Binding}"
+                                           Stretch="Uniform" />
+                                </Grid>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                    <StackPanel>
+                        <CommandBar Background="Transparent"
+                                    IsOpen="False"
+                                    HorizontalAlignment="Left"
+                                    DefaultLabelPosition="Right">
+                            <AppBarButton Icon="Add"
+                                          Label="Add New Image"
+                                          Command="{x:Bind Recipe.AddNewImageCommand}">
+                            </AppBarButton>
+                        </CommandBar>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel x:Name="recipeName"
+                            RelativePanel.AlignTopWithPanel="True"
+                            RelativePanel.RightOf="imagesContainer">
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Text="Rcipe Name" />
+                    <TextBox Width="300"
+                             PlaceholderText="Recipe name"
+                             Margin="{StaticResource XXSmallTopMargin}"
+                             Text="{x:Bind Recipe.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel x:Name="CategoryGroup"
+                            RelativePanel.RightOf="imagesContainer"
+                            RelativePanel.Below="recipeName">
+                    <StackPanel Margin="{StaticResource SmallTopMargin}">
+                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                                   Text="Category" />
+                        <Grid Width="300"
+                              Margin="{StaticResource XXSmallTopMargin}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <ComboBox x:Name="Category" Grid.Column="0"
+                                      HorizontalAlignment="Stretch"
+                                      Margin="{StaticResource SmallRightMargin}"
+                                      ItemsSource="{x:Bind ViewModel.RecipeCategories, Mode=OneWay}"
+                                      SelectedValue="{x:Bind Recipe.SelectedRecipeCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Grid.Column="1"
+                                    x:Name="NewCategoryButton"
+                                    Margin="{StaticResource SmallRightMargin}"
+                                    Command="{x:Bind Recipe.EmptyRecipeCategoryDetailsToCreateANewCommand}"
+                                    HorizontalAlignment="Right">
+                                <Button.Flyout>
+                                    <Flyout x:Name="AddIngredientCategoryFlyout">
+                                        <StackPanel>
+                                            <local:RecipeCategoryFormControl Recipe="{x:Bind Recipe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Button Margin="2,5"
+                                                    Content="Add New Recipe Category"
+                                                    Click="HideFlyout"
+                                                    IsEnabled="{x:Bind Recipe.IsAddRecipeCategoryButtonEnabled, Mode=OneWay}"
+                                                    Command="{x:Bind ViewModel.AddNewRecipeCategoryCommand}"
+                                                    CommandParameter="{x:Bind Recipe, Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                                <StackPanel>
+                                    <SymbolIcon Symbol="Add" />
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="2"
+                                    HorizontalAlignment="Right"
+                                    IsEnabled="{x:Bind Recipe.IsRecipeCategoryEditable, Mode=OneWay}"
+                                    Command="{x:Bind Recipe.SetRecipeCategoryToEditCommand}">
+                                <Button.Flyout>
+                                    <Flyout x:Name="EditIngredientCategoryFlyout">
+                                        <StackPanel>
+                                            <local:RecipeCategoryFormControl Recipe="{x:Bind Recipe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Button Margin="2,5"
+                                                    Content="Edit Recipe Category"
+                                                    Click="HideFlyout"
+                                                    IsEnabled="{x:Bind Recipe.IsAddRecipeCategoryButtonEnabled, Mode=OneWay}"
+                                                    Command="{x:Bind ViewModel.EditRecipeCategoryCommand}"
+                                                    CommandParameter="{x:Bind Recipe, Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                                <StackPanel>
+                                    <SymbolIcon Symbol="Edit" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel x:Name="DescriptionGroup"
+                            RelativePanel.AlignTopWithPanel="True"
+                            Margin="{StaticResource SmallLeftMargin}"
+                            RelativePanel.RightOf="recipeName">
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Text="Description" />
+                    <TextBox Width="300"
+                             Height="110"
+                             Margin="{StaticResource XXSmallTopMargin}"
+                             PlaceholderText="Description"
+                             TextWrapping="Wrap"
+                             Text="{x:Bind Recipe.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            RelativePanel.RightOf="imagesContainer"
+                            RelativePanel.Below="CategoryGroup"
+                            RelativePanel.AlignBottomWithPanel="True">
+                    <CheckBox Content="Menu Item"
+                              Margin="{StaticResource XXSmallTopMargin}"
+                              IsChecked="{x:Bind Recipe.IsMenuItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Can be used as an Ingredient"
+                              Margin="{StaticResource XXSmallTopMargin}"
+                              IsChecked="{x:Bind Recipe.AsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel x:Name="PriceGroup" 
+                            RelativePanel.RightOf="DescriptionGroup"
+                            Margin="{StaticResource SmallLeftMargin}">
+
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Text="Price" />
+                    <TextBox Text="{x:Bind Recipe.MinimumPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="{StaticResource SmallTopBottomMargin}">
+                        <TextBox.Header>
+                            <TextBlock>
+                                <Run Text="Minimum Price" />
+                                <Run x:Uid="Currency" />
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
+                    <TextBox Text="{x:Bind Recipe.FixedPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="{StaticResource SmallTopBottomMargin}">
+                        <TextBox.Header>
+                            <TextBlock>
+                                <Run Text="Fixed Price" />
+                                <Run x:Uid="Currency" />
+                            </TextBlock>
+                        </TextBox.Header>
+                    </TextBox>
+                </StackPanel>
+            </RelativePanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            x:Name="RecipeIngredients"
+                            Margin="{StaticResource SmallTopMargin}"
+                            VerticalAlignment="Stretch"
+                            BorderThickness="{StaticResource ListBoxBorderThemeThickness}"
+                            BorderBrush="{ThemeResource AppBarBorderThemeBrush}">
+                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                               Text="Rcipe Ingrdints" />
+                    <CommandBar  Background="Transparent"
+                                 HorizontalAlignment="Left"
+                                 IsOpen="False"
+                                 DefaultLabelPosition="Right">
+                        <AppBarButton Icon="Add"
+                                      Label="Add" 
+                                      Command="{x:Bind Recipe.OpenAddRecipeIngredientDialogCommand}"/>
+                        <AppBarButton Icon="Edit"
+                                      Label="Edit"
+                                      IsEnabled="{x:Bind Recipe.IsEditRecipeIngredientButtonEnabled, Mode=OneWay}"
+                                      Command="{x:Bind Recipe.OpenEditRecipeIngredientDialogCommand}"/>
+                        <AppBarButton Icon="Delete"
+                                      Label="Delete"
+                                      IsEnabled="{x:Bind Recipe.IsEditRecipeIngredientButtonEnabled, Mode=OneWay}"
+                                      Command="{x:Bind Recipe.OpenConfirmDeleteRecipeIngredientDialogCommand}"/>
+                    </CommandBar>
+                    <local:RecipeIngredientListViewHeaderControl />
+                    <ListView  ItemsSource="{x:Bind Recipe.RecipeIngredients, Mode=OneWay}"
+                               Margin="{StaticResource SmallTopMargin}"
+                               MaxHeight="450"
+                               Height="Auto"
+                               SelectedItem="{x:Bind Recipe.SelectedRecipeIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               ScrollViewer.VerticalScrollMode="Enabled"
+                               ScrollViewer.VerticalScrollBarVisibility="Auto"
+                               ScrollViewer.IsVerticalScrollChainingEnabled="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <local:RecipeIngredientListItemControl />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

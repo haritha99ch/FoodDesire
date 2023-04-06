@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Configuration;
 
 namespace FoodDesire.DAL.Context;
-public class FoodDesireContextFactory : IDesignTimeDbContextFactory<FoodDesireContext> {
-    public FoodDesireContext CreateDbContext(string[] args) {
+public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext> {
+    public ApplicationDbContext CreateDbContext(string[] args) {
         string environmentName = null!;
         //Cannot retrieve env variables without IHost.
         //appsettings.json files cannot be found withing ConfigureAppConfiguration.
@@ -20,8 +20,8 @@ public class FoodDesireContextFactory : IDesignTimeDbContextFactory<FoodDesireCo
 
         string connectionString = config.GetConnectionString("DefaultConnection")!;
 
-        DbContextOptionsBuilder<FoodDesireContext> dbBuilder = new DbContextOptionsBuilder<FoodDesireContext>();
+        DbContextOptionsBuilder<ApplicationDbContext> dbBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         dbBuilder.UseSqlServer(connectionString);
-        return new FoodDesireContext(dbBuilder.Options);
+        return new ApplicationDbContext(dbBuilder.Options);
     }
 }

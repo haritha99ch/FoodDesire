@@ -7,7 +7,7 @@ public static class Configure {
         IServiceCollection services,
         string dbConnectionString
         ) {
-        services.AddDbContext<FoodDesireContext>(
+        services.AddDbContext<ApplicationDbContext>(
             options =>
                 options.UseSqlServer(dbConnectionString));
         GetServices(services);

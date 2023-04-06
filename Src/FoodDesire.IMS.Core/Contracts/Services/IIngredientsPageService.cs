@@ -11,4 +11,5 @@ public interface IIngredientsPageService {
     Task<bool> DeleteIngredient(int ingredientId);
     Task<bool> DeleteIngredientCategory(int ingredientCategoryId);
     Task<Supply> RequestIngredient(int ingredientId, double amount);
+    Task<List<Ingredient>> SearchIngredients(string searchText);
 }

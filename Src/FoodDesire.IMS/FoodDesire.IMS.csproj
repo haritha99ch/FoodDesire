@@ -18,15 +18,25 @@
   <ItemGroup>
     <None Remove="Components\CompleteSupplyDialog.xaml" />
     <None Remove="Components\EditIngredientDialog.xaml" />
+    <None Remove="Components\EditRecipeIngredientDialog.xaml" />
     <None Remove="Components\EmployeeListItemControl.xaml" />
     <None Remove="Components\IngredientCategoryFormControl.xaml" />
     <None Remove="Components\IngredientFormDataControl.xaml" />
     <None Remove="Components\IngredientListItemControl.xaml" />
     <None Remove="Components\NewEmployeeFormDialog.xaml" />
     <None Remove="Components\NewIngredientFormDialog.xaml" />
+    <None Remove="Components\NewRecipeIngredientDialog.xaml" />
+    <None Remove="Components\RecipeCategoryFormControl.xaml" />
+    <None Remove="Components\RecipeFormControl.xaml" />
+    <None Remove="Components\RecipeIngredientFormControl.xaml" />
+    <None Remove="Components\RecipeIngredientListItemControl.xaml" />
+    <None Remove="Components\RecipeIngredientListViewHeaderControl.xaml" />
+    <None Remove="Components\RecipeListItemControl.xaml" />
     <None Remove="Components\RequestIngredientDialog.xaml" />
+    <None Remove="Components\ShowErrorsDialog.xaml" />
     <None Remove="Components\SuppliesListItemControl.xaml" />
     <None Remove="Styles\PrograssBar.xaml" />
+    <None Remove="Views\NewRecipePage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +45,11 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230217.4" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.230313.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="WinUIEx" Version="2.1" />
   </ItemGroup>
@@ -51,6 +62,36 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\RecipeListItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\EditRecipeIngredientDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\RecipeIngredientListViewHeaderControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\RecipeIngredientListItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\NewRecipeIngredientDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\RecipeIngredientFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\ShowErrorsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\RecipeCategoryFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Components\RecipeFormControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\NewRecipePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Components\CompleteSupplyDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

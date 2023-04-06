@@ -9,7 +9,7 @@ public class RepositoryTest {
     private ITrackingRepository<User>? userTrackingRepository;
     private IRepository<User>? userRepository;
     private IRepository<Account>? accountRepository;
-    private protected FoodDesireContext? _context;
+    private protected ApplicationDbContext? _context;
 
     [OneTimeSetUp]
     public void Setup() {

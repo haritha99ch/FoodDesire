@@ -180,4 +180,13 @@
   <data name="Shell_Supplies.Content" xml:space="preserve">
     <value>Supplies</value>
   </data>
+  <data name="Shell_Recipes.Content" xml:space="preserve">
+    <value>Recipes</value>
+  </data>
+  <data name="Shell_NewRecipe.Content" xml:space="preserve">
+    <value>NewRecipe</value>
+  </data>
+  <data name="Shell_EditRecipe.Content" xml:space="preserve">
+    <value>EditRecipe</value>
+  </data>
 </root>

@@ -5,10 +5,10 @@ namespace FoodDesire.DAL.Test;
 public static class DbContextHelper {
     private static readonly IgnoringIdentityResolutionInterceptor IgnoringIdentityResolutionInterceptor = new();
 
-    public static FoodDesireContext GetContext(string name) {
-        DbContextOptions<FoodDesireContext>? dbOptions = new DbContextOptionsBuilder<FoodDesireContext>()
+    public static ApplicationDbContext GetContext(string name) {
+        DbContextOptions<ApplicationDbContext>? dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .AddInterceptors(IgnoringIdentityResolutionInterceptor)
                 .UseInMemoryDatabase(name).Options;
-        return new FoodDesireContext(dbOptions);
+        return new ApplicationDbContext(dbOptions);
     }
 }

@@ -1,0 +1,69 @@
+﻿<Page x:Class="FoodDesire.IMS.Views.RecipesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+      xmlns:models="using:FoodDesire.IMS.Models"
+      xmlns:components="using:FoodDesire.IMS.Components"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ProgressBar Style="{StaticResource LoadingPrograssBar}"
+                     VerticalAlignment="Top"
+                     IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <TextBox Style="{StaticResource AutoSuggestBoxTextBoxStyle}"
+                 CornerRadius="15"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Center"
+                 Width="500"
+                 Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 PlaceholderText="Search" />
+
+
+        <CommandBar Grid.Row="0"
+                    Visibility="{x:Bind ViewModel.IsChef, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Background="Transparent"
+                    IsOpen="False"
+                    HorizontalAlignment="Left"
+                    DefaultLabelPosition="Right">
+            <AppBarButton x:Name="NewIngredient"
+                          Icon="Add"
+                          Label="Create New Recipe"
+                          Command="{x:Bind ViewModel.AddNewRecipeCommand}"
+                          CommandParameter="{x:Bind XamlRoot}">
+            </AppBarButton>
+        </CommandBar>
+
+        <Grid x:Name="ContentArea"
+              Grid.Row="1">
+            <controls:AdaptiveGridView Margin="{StaticResource XXSmallTopMargin}"
+                                       animations:Connected.ListItemElementName="itemThumbnail"
+                                       animations:Connected.ListItemKey="animationKeyContentGrid"
+                                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                       ScrollViewer.IsVerticalScrollChainingEnabled="True"
+                                       ScrollViewer.VerticalScrollMode="Enabled"
+                                       IsItemClickEnabled="True"
+                                       DesiredWidth="350"
+                                       ItemClickCommand="{x:Bind ViewModel.OnItemClickedCommand}"
+                                       ItemsSource="{x:Bind ViewModel.Recipes,Mode=OneWay}"
+                                       SelectionMode="None"
+                                       StretchContentForSingleRow="False">
+                <controls:AdaptiveGridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:RecipeListItemDetail">
+                        <components:RecipeListItemControl />
+                    </DataTemplate>
+                </controls:AdaptiveGridView.ItemTemplate>
+            </controls:AdaptiveGridView>
+        </Grid>
+    </Grid>
+</Page>

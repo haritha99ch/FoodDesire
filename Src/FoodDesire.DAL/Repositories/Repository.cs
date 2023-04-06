@@ -1,9 +1,9 @@
 ﻿namespace FoodDesire.DAL.Repositories;
 public class Repository<T> : IRepository<T> where T : Entity {
-    protected readonly FoodDesireContext _context;
+    protected readonly ApplicationDbContext _context;
     private DbSet<T> entitySet => _context.Set<T>();
 
-    public Repository(FoodDesireContext context) {
+    public Repository(ApplicationDbContext context) {
         _context = context;
     }
 
@@ -30,9 +30,15 @@ public class Repository<T> : IRepository<T> where T : Entity {
     }
 
     public async Task<T> Update(T entity) {
-        var updatedEntity = entitySet.Update(entity);
+        EntityEntry<T>? updatedEntity;
+        try {
+            updatedEntity = entitySet.Update(entity);
+        } catch (Exception) {
+            _context.ChangeTracker.Clear();
+            updatedEntity = entitySet.Update(entity);
+        }
         await _context.SaveChangesAsync();
-        return entity;
+        return updatedEntity.Entity;
     }
 
     public async Task<bool> Delete(int Id) {

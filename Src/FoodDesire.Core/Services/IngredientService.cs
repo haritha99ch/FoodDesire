@@ -113,4 +113,16 @@ public class IngredientService : IIngredientService {
         await _ingredientCategoryTRepository.SaveChanges();
         return category;
     }
+
+    public async Task<List<Ingredient>> SearchIngredients(string searchText) {
+        if (string.IsNullOrEmpty(searchText)) return await GetAllIngredients();
+
+        Expression<Func<Ingredient, bool>> filterExpression = e => e.Name.StartsWith(searchText);
+
+        IQueryable<Ingredient> filter(IQueryable<Ingredient> e) => e.Where(filterExpression);
+        IIncludableQueryable<Ingredient, object?> include(IQueryable<Ingredient> e) => e.Include(i => i.IngredientCategory);
+
+        List<Ingredient> ingredients = await _ingredientRepository.Get(filter, null, include);
+        return ingredients;
+    }
 }

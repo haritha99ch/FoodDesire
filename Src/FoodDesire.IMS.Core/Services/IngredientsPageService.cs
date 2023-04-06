@@ -29,4 +29,6 @@ public class IngredientsPageService : IIngredientsPageService {
     public async Task<IngredientCategory> GetIngredientCategoryById(int ingredientCategoryId) => await _ingredientService.GetIngredientCategoryById(ingredientCategoryId);
 
     public async Task<Supply> RequestIngredient(int ingredientId, double amount) => await _supplyService.CreateSupply(ingredientId, amount);
+
+    public async Task<List<Ingredient>> SearchIngredients(string searchText) => await _ingredientService.SearchIngredients(searchText);
 }
