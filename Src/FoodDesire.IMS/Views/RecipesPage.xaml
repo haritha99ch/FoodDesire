@@ -18,6 +18,17 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <ProgressBar Style="{StaticResource LoadingPrograssBar}"
+                     VerticalAlignment="Top"
+                     IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <TextBox Style="{StaticResource AutoSuggestBoxTextBoxStyle}" 
+                 CornerRadius="15"
+                 VerticalAlignment="Top"
+                 HorizontalAlignment="Center"
+                 Width="500"
+                 Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 PlaceholderText="Search"/>
+
 
         <CommandBar Grid.Row="0"
                     Visibility="{x:Bind ViewModel.IsChef, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -41,6 +52,7 @@
                                        ScrollViewer.IsVerticalScrollChainingEnabled="True"
                                        ScrollViewer.VerticalScrollMode="Enabled"
                                        IsItemClickEnabled="True"
+                                       DesiredWidth="350"
                                        ItemClickCommand="{x:Bind ViewModel.OnItemClickedCommand}"
                                        ItemsSource="{x:Bind ViewModel.Recipes,Mode=OneWay}"
                                        SelectionMode="None"

@@ -145,7 +145,8 @@
                         <Button Content="Delete"
                                 Style="{ThemeResource DefaultButtonStyle}"
                                 Margin="{StaticResource ContentDialogButton1HostMargin}"
-                                Command="{x:Bind ViewModel.DeleteRecipeCommand}" />
+                                Command="{x:Bind ViewModel.DeleteRecipeCommand}"
+                                CommandParameter="{x:Bind XamlRoot}"/>
                     </StackPanel>
                 </StackPanel>
             </RelativePanel>

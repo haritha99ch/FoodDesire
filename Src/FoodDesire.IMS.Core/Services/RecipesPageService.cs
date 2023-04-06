@@ -34,4 +34,6 @@ public class RecipesPageService : IRecipesPageService {
     public async Task<RecipeCategory> GetRecipeCategoryById(int recipeCategoryId) => await _recipeService.GetRecipeCategoryById(recipeCategoryId);
 
     public async Task<RecipeCategory> GetRecipeCategoryByName(string recipeCategoryName) => await _recipeService.GetRecipeCategoryByName(recipeCategoryName);
+
+    public async Task<List<Recipe>> SearchRecipes(string value) => await _recipeService.SearchRecipes(value);
 }

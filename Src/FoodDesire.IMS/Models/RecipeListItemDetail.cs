@@ -15,7 +15,9 @@ public partial class RecipeListItemDetail : ObservableObject {
     [ObservableProperty]
     private BitmapImage? _featuredImage;
     [ObservableProperty]
-    private float _rating;
+    [NotifyPropertyChangedFor(nameof(Stars))]
+    private float _rating = 0;
+    public float Stars => (Rating == 0) ? -1 : Rating * 5;
     [ObservableProperty]
     private string? _name;
     [ObservableProperty]
@@ -25,11 +27,11 @@ public partial class RecipeListItemDetail : ObservableObject {
     [NotifyPropertyChangedFor(nameof(IsMinimumAndFixedPriceEquals))]
     private double _fixedPrice;
     [ObservableProperty]
-    public bool _asIngredient;
+    private bool _asIngredient;
     [ObservableProperty]
-    public bool _isMenuItem;
+    private bool _isMenuItem;
     [ObservableProperty]
-    public RecipeCategory? _recipeCategory;
+    private RecipeCategory? _recipeCategory;
 
     public bool IsMinimumAndFixedPriceEquals => MinimumPrice == FixedPrice;
 

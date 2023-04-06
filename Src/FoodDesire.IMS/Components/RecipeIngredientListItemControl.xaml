@@ -31,11 +31,11 @@
                                         <Run Text="{Binding Measurement, Mode=OneWay}" />
         </TextBlock>
         <CheckBox Grid.Column="2"
-                  IsChecked="{Binding IsRequired, Mode=OneWay}"
-                  IsEnabled="False" />
+                  IsHitTestVisible="False"
+                  IsChecked="{Binding IsRequired, Mode=OneWay}" />
         <CheckBox Grid.Column="3"
                   IsChecked="{Binding CanModify, Mode=OneWay}"
-                  IsEnabled="False" />
+                  IsHitTestVisible="False"/>
         <TextBlock Grid.Column="4"
                    VerticalAlignment="Center"
                    Text="{Binding PricePerMultiplier, Mode=OneWay}" />

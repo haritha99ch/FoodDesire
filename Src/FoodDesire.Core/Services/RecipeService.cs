@@ -146,4 +146,12 @@ public class RecipeService : IRecipeService {
         List<Recipe> recipes = await _recipeRepository.Get(filter);
         return recipes;
     }
+
+    public async Task<List<Recipe>> SearchRecipes(string value) {
+        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.Contains(value);
+
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+        List<Recipe> recipes = await _recipeRepository.Get(filter);
+        return recipes;
+    }
 }

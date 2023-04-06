@@ -13,4 +13,5 @@ public interface IRecipesPageService {
     Task<RecipeCategory> EditRecipeCategory(RecipeCategory recipeCategory);
     Task<List<Ingredient>> GetAllIngredients();
     Task<List<Recipe>> GetAllRecipeAsIngredients();
+    Task<List<Recipe>> SearchRecipes(string value);
 }

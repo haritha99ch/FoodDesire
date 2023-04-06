@@ -7,7 +7,7 @@ public sealed partial class CompleteSupplyDialog : ContentDialog {
         ViewModel = viewModel;
     }
 
-    private async void ContentDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args) {
+    private void ContentDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args) {
         if (!args.Result.Equals(ContentDialogResult.Primary)) return;
         args.Cancel = true;
     }

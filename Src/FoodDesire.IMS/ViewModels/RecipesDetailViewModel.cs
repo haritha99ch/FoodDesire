@@ -46,7 +46,19 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
     }
 
     [RelayCommand]
-    private async void DeleteRecipe() {
+    private async void DeleteRecipe(XamlRoot xamlRoot) {
+        ContentDialog dialog = new() {
+            XamlRoot = xamlRoot,
+            Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
+            DefaultButton = ContentDialogButton.Close,
+            PrimaryButtonText = "Delete",
+            CloseButtonText = "Cancel",
+            Title = "Delete Recipe",
+            Content = $"Are you sure you want to delete this recipe?"
+        };
+        ContentDialogResult result = await dialog.ShowAsync();
+
+        if (!result.Equals(ContentDialogResult.Primary)) return;
         bool deleted = await _recipesPageService.DeleteRecipeById(Recipe!.Id);
         if (deleted) _navigationService.GoBack();
     }

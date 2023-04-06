@@ -7,6 +7,17 @@ public partial class RecipesViewModel : ObservableRecipient, INavigationAware {
     private readonly IMapper _mapper;
 
     public bool IsChef => App.CurrentUserAccount?.Role == Role.Chef;
+    [ObservableProperty]
+    private bool _isLoading = true;
+    private string? _searchText;
+    public string? SearchText {
+        get => _searchText;
+        set {
+            OnSearchTextChanged();
+            SetProperty(ref _searchText, value);
+        }
+    }
+    private readonly SemaphoreSlim _searchSemaphore = new(1, 1);
 
     public ObservableCollection<RecipeListItemDetail> Recipes { get; } = new();
     public IRelayCommand<RecipeListItemDetail> OnItemClickedCommand { get; }
@@ -18,14 +29,30 @@ public partial class RecipesViewModel : ObservableRecipient, INavigationAware {
         OnItemClickedCommand = new RelayCommand<RecipeListItemDetail>(OnItemClick);
     }
 
-    public async void OnNavigatedTo(object parameter) {
-        Recipes.Clear();
-
-        List<Recipe> recipes = await _recipesPageService.GetAllRecipes();
-        recipes.ForEach(e => Recipes.Add(_mapper.Map<RecipeListItemDetail>(e)));
+    public void OnNavigatedTo(object parameter) {
+        OnSearchTextChanged();
     }
 
     public void OnNavigatedFrom() {
+    }
+
+    private async void OnSearchTextChanged() {
+        await _searchSemaphore.WaitAsync();
+        try {
+            IsLoading = true;
+            if (string.IsNullOrWhiteSpace(SearchText)) {
+                Recipes.Clear();
+                List<Recipe> recipes = await _recipesPageService.GetAllRecipes();
+                recipes.ForEach(e => Recipes.Add(_mapper.Map<RecipeListItemDetail>(e)));
+            } else {
+                Recipes.Clear();
+                List<Recipe> recipes = await _recipesPageService.SearchRecipes(SearchText);
+                recipes.ForEach(e => Recipes.Add(_mapper.Map<RecipeListItemDetail>(e)));
+            }
+            IsLoading = false;
+        } finally {
+            _searchSemaphore.Release();
+        }
     }
 
     public void OnItemClick(RecipeListItemDetail? clickedItem) {
