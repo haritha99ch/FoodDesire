@@ -1,7 +1,10 @@
 {
   "profiles": {
     "FoodDesire.IMS (Unpackaged)": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "environmentVariables": {
+        "Environment": "Development"
+      }
     },
     "FoodDesire.IMS (Package)": {
       "commandName": "MsixPackage"

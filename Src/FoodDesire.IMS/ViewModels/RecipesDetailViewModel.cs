@@ -42,7 +42,7 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
     [RelayCommand]
     public void EditRecipe() {
         _navigationService.SetListDataItemForNextConnectedAnimation(Recipe!);
-        _navigationService.NavigateTo(typeof(EditRecipeViewModel).FullName!, Recipe.Id);
+        _navigationService.NavigateTo(typeof(EditRecipeViewModel).FullName!, Recipe!.Id);
     }
 
     [RelayCommand]

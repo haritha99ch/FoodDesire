@@ -10,7 +10,7 @@ public partial class CompleteSupplyViewModel : ObservableObject {
     [NotifyPropertyChangedFor(nameof(IsPrimaryButtonEnabled))]
     private float _value = 0;
 
-    public bool IsPrimaryButtonEnabled => Value != null;
+    public bool IsPrimaryButtonEnabled => Value != 0;
     public SupplyResult Result { get; set; } = SupplyResult.Failed;
     public bool IsLoading => CompleteSupplyCommand.IsRunning;
 
@@ -20,7 +20,7 @@ public partial class CompleteSupplyViewModel : ObservableObject {
 
     [RelayCommand]
     private async Task CompleteSupply(ContentDialog sender) {
-        Supply = await _suppliesPageService.CompleteSupply(Supply.Id, (decimal)Value);
+        Supply = await _suppliesPageService.CompleteSupply(Supply!.Id, (decimal)Value);
         Result = (Supply.Status.Equals(SupplyStatus.Completed)) ? SupplyResult.Completed : SupplyResult.Failed;
         sender.Hide();
     }
