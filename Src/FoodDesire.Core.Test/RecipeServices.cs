@@ -41,7 +41,7 @@ public class RecipeServices : Services {
     [Test, Order(3)]
     public async Task GetRecipes() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
-        List<Recipe> recipes = await _recipeService.GetAllRecipes();
+        List<Recipe> recipes = await _recipeService.GetAllRecipesWithCategory();
 
         Assert.Multiple(() => {
             Assert.That(recipe.Name, Is.EqualTo(RecipeDataHelper.GetRecipes()[0].Name));
@@ -66,7 +66,7 @@ public class RecipeServices : Services {
     public async Task RemoveRecipeIngredient() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
         recipe = await _recipeService.RemoveRecipeIngredientById(recipe.Id, recipe.RecipeIngredients[1]);
-        List<Recipe>? recipes = await _recipeService.GetAllRecipes();
+        List<Recipe>? recipes = await _recipeService.GetAllRecipesWithCategory();
 
         Assert.That(recipes[0].RecipeIngredients, Has.Count.EqualTo(4));
     }

@@ -12,28 +12,27 @@
     <StackPanel x:Name="NewRecipeIngredient"
                 HorizontalAlignment="Stretch"
                 Padding="5">
-        <ComboBox Header="Ingredient"
+        <ComboBox x:Name="RawIngredient"
+                  Header="Ingredient"
                   HorizontalAlignment="Stretch"
+                  PlaceholderText="Raw Ingredient"
+                  IsEditable="True"
                   ItemsSource="{x:Bind ViewModel.RawIngredients, Mode=OneWay}"
-                  SelectedItem="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+                  SelectedItem="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  DisplayMemberPath="Name"
+                  SelectionChanged="RawIngredient_SelectionChanged" />
 
-        <ComboBox Header="Recipe As Ingredient: "
+        <ComboBox x:Name="Recipe"
+                  Header="Recipe As Ingredient: "
                   HorizontalAlignment="Stretch"
+                  PlaceholderText="Recipe As Ingredient"
+                  IsEditable="True"
                   Margin="{StaticResource SmallTopMargin}"
                   ItemsSource="{x:Bind ViewModel.RecipeAsIngredients, Mode=OneWay}"
-                  SelectedItem="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+                  SelectedItem="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  DisplayMemberPath="Name"
+                  SelectionChanged="Recipe_SelectionChanged"/>
+
         <TextBox Margin="{StaticResource SmallTopMargin}"
                  Text="{x:Bind RecipeIngredient.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  VerticalAlignment="Stretch"

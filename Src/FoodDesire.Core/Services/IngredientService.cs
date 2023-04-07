@@ -2,17 +2,14 @@
 public class IngredientService : IIngredientService {
     private readonly IRepository<Ingredient> _ingredientRepository;
     private readonly ITrackingRepository<IngredientCategory> _ingredientCategoryTRepository;
-    private readonly IPaymentService _paymentService;
     private readonly ITrackingRepository<Supply> _supplyTRepository;
 
     public IngredientService(
         IRepository<Ingredient> ingredientRepository,
-        IPaymentService paymentService,
         ITrackingRepository<IngredientCategory> categoryRepository,
         ITrackingRepository<Supply> supplyTRepository
         ) {
         _ingredientRepository = ingredientRepository;
-        _paymentService = paymentService;
         _ingredientCategoryTRepository = categoryRepository;
         _supplyTRepository = supplyTRepository;
     }
@@ -50,7 +47,7 @@ public class IngredientService : IIngredientService {
         return newIngredient;
     }
 
-    public async Task<List<Ingredient>> GetAllIngredients() {
+    public async Task<List<Ingredient>> GetAllIngredientsWithCategory() {
         IIncludableQueryable<Ingredient, object?> include(IQueryable<Ingredient> e) => e.Include(i => i.IngredientCategory);
 
         List<Ingredient> ingredients = await _ingredientRepository.Get(null, null, include);
@@ -115,7 +112,7 @@ public class IngredientService : IIngredientService {
     }
 
     public async Task<List<Ingredient>> SearchIngredients(string searchText) {
-        if (string.IsNullOrEmpty(searchText)) return await GetAllIngredients();
+        if (string.IsNullOrEmpty(searchText)) return await GetAllIngredientsWithCategory();
 
         Expression<Func<Ingredient, bool>> filterExpression = e => e.Name.StartsWith(searchText);
 
@@ -123,6 +120,11 @@ public class IngredientService : IIngredientService {
         IIncludableQueryable<Ingredient, object?> include(IQueryable<Ingredient> e) => e.Include(i => i.IngredientCategory);
 
         List<Ingredient> ingredients = await _ingredientRepository.Get(filter, null, include);
+        return ingredients;
+    }
+
+    public async Task<List<Ingredient>> GetAllIngredients() {
+        List<Ingredient> ingredients = await _ingredientRepository.GetAll();
         return ingredients;
     }
 }
