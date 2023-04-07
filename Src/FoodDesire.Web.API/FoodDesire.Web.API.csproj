@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FoodDesire.Core\FoodDesire.Core.csproj" />
+    <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
+    <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
+  </ItemGroup>
 </Project>
