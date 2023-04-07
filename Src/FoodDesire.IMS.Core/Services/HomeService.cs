@@ -15,7 +15,7 @@ public class HomeService : IHomeService {
     }
 
     public async Task<InventorySummary> GetInventorySummery() {
-        List<Ingredient> ingredients = await _ingredientService.GetAllIngredients();
+        List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsWithCategory();
         double totalCapacity = ingredients.Sum(e => e.MaximumQuantity);
         double totalCurrentQuantity = ingredients.Sum(e => e.CurrentQuantity);
         double availableSpace = totalCapacity - totalCurrentQuantity;

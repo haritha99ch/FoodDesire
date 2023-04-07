@@ -46,7 +46,7 @@ public class IngredientServices : Services {
         newIngredient.Measurement = Measurement.Liquid;
         await _ingredientService.NewIngredient(newIngredient);
 
-        List<Ingredient> ingredients = await _ingredientService.GetAllIngredients();
+        List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsWithCategory();
         Assert.That(ingredients.Count, Is.EqualTo(2));
 
         List<IngredientCategory> ingredientCategories = await _ingredientService.GetAllIngredientCategories();

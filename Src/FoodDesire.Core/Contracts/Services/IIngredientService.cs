@@ -7,7 +7,7 @@ public interface IIngredientService {
     Task<bool> DeleteIngredientCategoryById(int ingredientCategoryId);
 
     Task<Ingredient> NewIngredient(Ingredient ingredient);
-    Task<List<Ingredient>> GetAllIngredients();
+    Task<List<Ingredient>> GetAllIngredientsWithCategory();
     Task<Ingredient> GetIngredientById(int ingredientId);
     Task<Ingredient> GetIngredientByName(string ingredientName);
     Task<Ingredient> EditIngredient(Ingredient ingredient);
@@ -17,4 +17,5 @@ public interface IIngredientService {
     Task<Supply> NewSupply(Supply supply);
     Task<IngredientCategory> EditIngredientCategory(IngredientCategory ingredientCategory);
     Task<List<Ingredient>> SearchIngredients(string searchText);
+    Task<List<Ingredient>> GetAllIngredients();
 }

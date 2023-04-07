@@ -19,7 +19,9 @@ public class RecipesPageService : IRecipesPageService {
 
     public async Task<RecipeCategory> EditRecipeCategory(RecipeCategory recipeCategory) => await _recipeService.UpdateRecipeCategory(recipeCategory);
 
-    public async Task<List<Ingredient>> GetAllIngredients() => await _ingredientService.GetAllIngredients();
+    public Task<List<Ingredient>> GetAllIngredients() => _ingredientService.GetAllIngredients();
+
+    public async Task<List<Ingredient>> GetAllIngredientsWithCategory() => await _ingredientService.GetAllIngredientsWithCategory();
 
     public async Task<List<Recipe>> GetAllRecipeAsIngredients() => await _recipeService.GetAllRecipeAsIngredients();
 
@@ -27,7 +29,7 @@ public class RecipesPageService : IRecipesPageService {
 
     public async Task<List<RecipeCategory>> GetAllRecipeCategories() => await _recipeService.GetAllRecipeCategories();
 
-    public async Task<List<Recipe>> GetAllRecipes() => await _recipeService.GetAllRecipes();
+    public async Task<List<Recipe>> GetAllRecipes() => await _recipeService.GetAllRecipesWithCategory();
 
     public async Task<Recipe> GetRecipeById(int recipeId) => await _recipeService.GetRecipeById(recipeId);
 
