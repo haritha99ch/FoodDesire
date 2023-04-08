@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FoodDesire.DAL.Helpers;
+using Newtonsoft.Json;
 
 namespace FoodDesire.DAL.Context;
 public class ApplicationDbContext : DbContext {
@@ -51,8 +52,8 @@ public class ApplicationDbContext : DbContext {
         modelBuilder.Entity<Recipe>()
             .Property(e => e.Images)
             .HasConversion(
-                e => JsonConvert.SerializeObject(e),
-                e => JsonConvert.DeserializeObject<List<Image>>(e)!);
+                e => JsonConvert.SerializeObject(e, new ByteArrayConverter()),
+                e => JsonConvert.DeserializeObject<List<Image>>(e, new ByteArrayConverter())!);
         modelBuilder.Entity<Delivery>()
             .Property(e => e.Address)
             .HasConversion(

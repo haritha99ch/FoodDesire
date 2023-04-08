@@ -156,4 +156,13 @@ public class RecipeService : IRecipeService {
         List<Recipe> recipes = await _recipeRepository.Get(filter, null, include);
         return recipes;
     }
+
+    public async Task<List<Recipe>> GetTop10Recipes() {
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Take(10);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IOrderedQueryable<Recipe> order(IQueryable<Recipe> e) => e.OrderBy(e => e.Times);
+
+        List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
+        return recipes;
+    }
 }

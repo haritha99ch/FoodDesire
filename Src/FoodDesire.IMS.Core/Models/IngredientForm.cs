@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Microsoft.IdentityModel.Tokens;
 
 namespace FoodDesire.IMS.Core.Models;
 public abstract partial class IngredientForm : ObservableObject {
@@ -36,7 +35,7 @@ public abstract partial class IngredientForm : ObservableObject {
     private bool _isLoading = true;
     [ObservableProperty]
     private bool _isCategoriesLoaded = true;
-    public bool IngredientCategoryCanBeEdited => (Category != null) ? IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!.Ingredients.IsNullOrEmpty() : false;
+    public bool IngredientCategoryCanBeEdited => (Category != null);
 
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
     public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();

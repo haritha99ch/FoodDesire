@@ -1,4 +1,8 @@
-WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+WebApplicationOptions? options = new() {
+    ContentRootPath = AppContext.BaseDirectory
+};
+
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(options);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

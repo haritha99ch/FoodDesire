@@ -16,4 +16,5 @@ public interface IRecipeService {
     Task<RecipeCategory> UpdateRecipeCategory(RecipeCategory recipeCategory);
     Task<List<Recipe>> GetAllRecipeAsIngredients();
     Task<List<Recipe>> SearchRecipes(string value);
+    Task<List<Recipe>> GetTop10Recipes();
 }
