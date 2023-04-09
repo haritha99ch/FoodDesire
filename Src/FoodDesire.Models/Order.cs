@@ -2,21 +2,19 @@
 public sealed class Order : TrackedEntity {
     [Required]
     public int CustomerId { get; set; }
+    [AllowNull]
+    public int? DeliveryId { get; set; }
     [Required]
     public DateTime DateTime { get; set; } = DateTime.Now;
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
     public List<FoodItem>? FoodItems { get; set; }
-    [AllowNull]
-    public int? DeliveryId { get; set; }
-    [AllowNull]
-    public int? PaymentId { get; set; }
+    [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; set; } = decimal.Zero;
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }
     [ForeignKey(nameof(DeliveryId))]
     public Delivery? Delivery { get; set; }
-    [ForeignKey(nameof(PaymentId))]
     public Payment? Payment { get; set; }
 }
 

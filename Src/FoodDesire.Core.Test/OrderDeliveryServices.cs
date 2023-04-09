@@ -45,7 +45,6 @@ public class OrderDeliveryServices : Services {
     [Test, Order(1)]
     public async Task NewDelivery() {
         Delivery delivery = new Delivery {
-            OrderId = 1,
             Address = new Address {
                 City = "Lagos",
                 Street1 = "Ogunlana Drive",
@@ -54,12 +53,11 @@ public class OrderDeliveryServices : Services {
             },
             DelivererId = 1,
         };
-        Delivery newDelivery = await _orderDeliveryServices.NewDeliveryForOrder(delivery);
-        newDelivery = await _orderDeliveryServices.GetDeliveryById(newDelivery.Id);
+        Order deliveryOrder = await _orderDeliveryServices.NewDeliveryForOrder(1, delivery);
 
-        Assert.That(newDelivery.IsDelivered, Is.False);
-        Assert.That(newDelivery.Order!.FoodItems, Has.Count.EqualTo(2));
-        Assert.That(newDelivery, Is.Not.Null);
+        Assert.That(deliveryOrder.Delivery!.IsDelivered, Is.False);
+        Assert.That(deliveryOrder.FoodItems, Has.Count.EqualTo(2));
+        Assert.That(deliveryOrder.Delivery!, Is.Not.Null);
     }
 
     [Test, Order(2)]

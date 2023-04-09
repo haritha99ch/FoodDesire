@@ -1,6 +1,6 @@
 ﻿namespace FoodDesire.Core.Contracts.Services;
 public interface IOrderDeliveryService {
-    Task<Delivery> NewDeliveryForOrder(Delivery delivery);
+    Task<Order> NewDeliveryForOrder(int orderId, Delivery delivery);
     Task<List<Order>> GetAllOrdersToDeliver();
     Task<List<Order>> GetAllDeliveredOrders();
 

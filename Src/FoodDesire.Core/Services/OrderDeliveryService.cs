@@ -16,12 +16,12 @@ public class OrderDeliveryService : IOrderDeliveryService {
         return delivery;
     }
 
-    public async Task<Delivery> NewDeliveryForOrder(Delivery delivery) {
-        Order order = await _orderRepository.GetByID(delivery.OrderId);
+    public async Task<Order> NewDeliveryForOrder(int orderId, Delivery delivery) {
+        Order order = await _orderRepository.GetByID(orderId);
         order.Delivery = delivery;
         order.Delivery.Address = delivery.Address ?? order.Customer!.User!.Address;
         order = await _orderRepository.Update(order);
-        return order.Delivery!;
+        return order;
     }
 
     public async Task<List<Order>> GetAllDeliveredOrders() {
@@ -44,11 +44,11 @@ public class OrderDeliveryService : IOrderDeliveryService {
         return orders;
     }
 
-    public async Task<Delivery> OrderIsDelivered(int deliveryId) {
-        Delivery delivery = await _deliveryRepository.GetByID(deliveryId);
-        delivery.IsDelivered = true;
-        delivery.Order!.Status = OrderStatus.Delivered;
-        delivery = await _deliveryRepository.Update(delivery);
-        return delivery;
+    public async Task<Delivery> OrderIsDelivered(int orderId) {
+        Order order = await _orderRepository.GetByID(orderId);
+        order.Delivery!.IsDelivered = true;
+        order.Status = OrderStatus.Delivered;
+        order = await _orderRepository.Update(order);
+        return order.Delivery!;
     }
 }

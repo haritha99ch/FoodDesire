@@ -6,8 +6,6 @@ public sealed class Supply : TrackedEntity {
     public int IngredientId { get; set; }
     [Required]
     public double Amount { get; set; } = 0;
-    [AllowNull]
-    public int? PaymentId { get; set; }
     [Required]
     public DateTime RequestedAt { get; set; } = DateTime.Now;
     [AllowNull]
@@ -20,7 +18,6 @@ public sealed class Supply : TrackedEntity {
     public Supplier? Supplier { get; set; }
     [ForeignKey(nameof(IngredientId))]
     public Ingredient? Ingredient { get; set; }
-    [ForeignKey(nameof(PaymentId))]
     public Payment? Payment { get; set; }
 }
 

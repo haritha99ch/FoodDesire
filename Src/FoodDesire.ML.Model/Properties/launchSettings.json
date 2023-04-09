@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FoodDesire.ML.Model": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Production"
+      }
+    }
+  }
+}

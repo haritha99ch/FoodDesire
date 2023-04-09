@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext {
     public DbSet<Ingredient>? Ingredient { get; set; }
     public DbSet<RecipeCategory>? FoodCategory { get; set; }
     public DbSet<Recipe>? Recipe { get; set; }
+    public DbSet<RecipeRating> RecipeRating { get; set; }
     public DbSet<FoodItem>? FoodItem { get; set; }
     public DbSet<Order>? Order { get; set; }
     public DbSet<Payment>? Payment { get; set; }
@@ -32,11 +33,11 @@ public class ApplicationDbContext : DbContext {
             .Property(r => r.FoodItemIngredients)
             .HasConversion(
                 v => JsonConvert.SerializeObject(v),
-                v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!);
-        modelBuilder.Entity<Delivery>()
-            .HasOne(e => e.Order)
-            .WithOne()
-            .OnDelete(DeleteBehavior.ClientSetNull);
+                v => JsonConvert.DeserializeObject<List<FoodItemIngredient>>(v)!,
+                new ValueComparer<List<FoodItemIngredient>>(
+                (c1, c2) => c1!.SequenceEqual(c2!),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()));
         modelBuilder.Entity<FoodItem>()
             .HasOne(e => e.Recipe)
             .WithOne()
@@ -48,12 +49,25 @@ public class ApplicationDbContext : DbContext {
             .Property(e => e.RecipeIngredients)
             .HasConversion(
                 e => JsonConvert.SerializeObject(e),
-                e => JsonConvert.DeserializeObject<List<RecipeIngredient>>(e)!);
+                e => JsonConvert.DeserializeObject<List<RecipeIngredient>>(e)!,
+                new ValueComparer<List<RecipeIngredient>>(
+                (c1, c2) => c1!.SequenceEqual(c2!),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()));
         modelBuilder.Entity<Recipe>()
             .Property(e => e.Images)
             .HasConversion(
                 e => JsonConvert.SerializeObject(e, new ByteArrayConverter()),
-                e => JsonConvert.DeserializeObject<List<Image>>(e, new ByteArrayConverter())!);
+                e => JsonConvert.DeserializeObject<List<Image>>(e, new ByteArrayConverter())!,
+                new ValueComparer<List<Image>>(
+                (c1, c2) => c1!.SequenceEqual(c2!),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList()));
+        modelBuilder.Entity<RecipeRating>()
+            .HasOne(r => r.Recipe)
+            .WithMany()
+            .HasForeignKey(r => r.RecipeId)
+            .OnDelete(DeleteBehavior.NoAction);
         modelBuilder.Entity<Delivery>()
             .Property(e => e.Address)
             .HasConversion(

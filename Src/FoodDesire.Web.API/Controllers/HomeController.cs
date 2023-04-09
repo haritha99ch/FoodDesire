@@ -10,8 +10,6 @@ public class HomeController : ControllerBase {
 
     [HttpGet]
     public async Task<IEnumerable<Recipe>> Index(int? CustomerId = null) {
-        if (CustomerId == null) return await _homeControllerService.GetTop10Recipes();
-        // TODO: Recommendation Process 
         return await _homeControllerService.GetTop10Recipes();
     }
 }

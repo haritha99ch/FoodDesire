@@ -29,7 +29,6 @@ public class Recipe : TrackedEntity {
     [Required]
     [Range(0, 1)]
     public float Rating { get; set; } = 0;
-    public List<RecipeRating> Ratings { get; set; } = new();
     [Required]
     public long Times { get; set; } = 0;
 

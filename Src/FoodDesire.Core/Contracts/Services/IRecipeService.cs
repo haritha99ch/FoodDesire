@@ -17,4 +17,5 @@ public interface IRecipeService {
     Task<List<Recipe>> GetAllRecipeAsIngredients();
     Task<List<Recipe>> SearchRecipes(string value);
     Task<List<Recipe>> GetTop10Recipes();
+    Task<List<RecipeRating>> GetAllRecipeRatings();
 }

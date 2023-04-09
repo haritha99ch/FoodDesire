@@ -2,6 +2,8 @@
 public class RecipeRating : Entity {
     [Required]
     public int CustomerId { get; set; }
+    [Required]
+    public int RecipeId { get; set; }
     public string? FeedBack { get; set; }
     [Required]
     [Range(0, 1)]
@@ -9,4 +11,6 @@ public class RecipeRating : Entity {
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }
+    [ForeignKey(nameof(RecipeId))]
+    public Recipe? Recipe { get; set; }
 }

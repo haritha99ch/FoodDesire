@@ -28,6 +28,7 @@ public static class Configure {
         services.AddScoped<IRepository<User>, Repository<User>>();
         services.AddScoped<IRepository<RecipeCategory>, Repository<RecipeCategory>>();
         services.AddScoped<IRepository<Recipe>, Repository<Recipe>>();
+        services.AddScoped<IRepository<RecipeRating>, Repository<RecipeRating>>();
         services.AddScoped<IRepository<Customer>, Repository<Customer>>();
         services.AddScoped<IRepository<Admin>, Repository<Admin>>();
         services.AddScoped<IRepository<Chef>, Repository<Chef>>();

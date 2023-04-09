@@ -51,8 +51,7 @@ public class PaymentServices : Services {
 
     [Test, Order(2)]
     public async Task MakePaymentForOrderWithDelivery() {
-        Delivery delivery = await _orderDeliveryServices.NewDeliveryForOrder(new Delivery() {
-            OrderId = 2,
+        Order deliveryOrder = await _orderDeliveryServices.NewDeliveryForOrder(2, new Delivery() {
             DelivererId = 1,
             Fee = 210
         });

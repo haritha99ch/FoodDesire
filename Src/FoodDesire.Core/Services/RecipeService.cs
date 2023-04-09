@@ -3,15 +3,18 @@ public class RecipeService : IRecipeService {
     private readonly IRepository<Recipe> _recipeRepository;
     private readonly IRepository<RecipeCategory> _recipeCategoryRepository;
     private readonly IRepository<Ingredient> _ingredientRepository;
+    private readonly IRepository<RecipeRating> _recipeRatingRepository;
 
     public RecipeService(
         IRepository<Recipe> recipeRepository,
         IRepository<RecipeCategory> recipeCategoryRepository,
-        IRepository<Ingredient> ingredientRepository
+        IRepository<Ingredient> ingredientRepository,
+        IRepository<RecipeRating> recipeRatingRepository
         ) {
         _recipeRepository = recipeRepository;
         _recipeCategoryRepository = recipeCategoryRepository;
         _ingredientRepository = ingredientRepository;
+        _recipeRatingRepository = recipeRatingRepository;
     }
 
     public async Task<Recipe> NewRecipe(Recipe recipe) {
@@ -164,5 +167,10 @@ public class RecipeService : IRecipeService {
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
         return recipes;
+    }
+
+    public async Task<List<RecipeRating>> GetAllRecipeRatings() {
+        List<RecipeRating> recipeRatings = await _recipeRatingRepository.GetAll();
+        return recipeRatings;
     }
 }

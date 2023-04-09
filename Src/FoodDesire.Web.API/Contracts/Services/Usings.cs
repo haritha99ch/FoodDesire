@@ -1,1 +1,1 @@
-global using FoodDesire.Models;
+global using FoodDesire.ML.Model.Contracts.Services;
