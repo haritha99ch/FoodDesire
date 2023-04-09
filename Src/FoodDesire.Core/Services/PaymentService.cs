@@ -18,7 +18,7 @@ public class PaymentService : IPaymentService {
     }
 
     public async Task<Order> PaymentForOrder(int orderId) {
-        Order? order = await _orderRepository.GetByID(orderId);
+        Order? order = await _orderRepository.GetByID(orderId) ?? throw new Exception("Order not found");
         order.Payment = new Payment() {
             OrderId = orderId,
             Value = (order.Delivery == null) ? order.Price : order.Price + order.Delivery.Fee,
@@ -30,8 +30,7 @@ public class PaymentService : IPaymentService {
 
     public async Task<Supply> PaymentForSupply(Supply supply, decimal value) {
         List<Admin> admins = await _adminRepository.GetAll();
-        Admin? admin = admins.FirstOrDefault();
-        if (admin == null) throw new Exception("No admin found");
+        Admin? admin = admins.FirstOrDefault() ?? throw new Exception("No admin found");
         supply.Payment = new Payment() {
             ManagedBy = admin.Id,
             Value = value,
@@ -44,8 +43,7 @@ public class PaymentService : IPaymentService {
 
     public async Task<Payment> SalaryForEmployee(Payment payment) {
         List<Admin> admins = await _adminRepository.GetAll();
-        Admin? admin = admins.FirstOrDefault();
-        if (admin == null) throw new Exception("No admin found");
+        Admin? admin = admins.FirstOrDefault() ?? throw new Exception("No admin found");
         payment.ManagedBy = admin.Id;
         payment.PaymentType = PaymentType.Salary;
         Payment newPayment = await _paymentRepository.Add(payment);
@@ -55,8 +53,7 @@ public class PaymentService : IPaymentService {
 
     public async Task<Payment> PaymentForMaintenance(decimal value, string description) {
         List<Admin> admins = await _adminRepository.GetAll();
-        Admin? admin = admins.FirstOrDefault();
-        if (admin == null) throw new Exception("No admin found");
+        Admin? admin = admins.FirstOrDefault() ?? throw new Exception("No admin found");
         Payment payment = new Payment() {
             ManagedBy = admin.Id,
             Value = value,

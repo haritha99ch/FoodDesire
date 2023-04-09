@@ -42,7 +42,9 @@ public class Repository<T> : IRepository<T> where T : Entity {
     }
 
     public async Task<bool> Delete(int Id) {
-        EntityEntry<T>? entityDeleted = entitySet.Remove(await GetByID(Id));
+        T? entity = await GetByID(Id);
+        if (entity == null) return false;
+        EntityEntry<T>? entityDeleted = entitySet.Remove(entity);
         await _context.SaveChangesAsync();
         if (await GetByID(Id) == null)
             return true;

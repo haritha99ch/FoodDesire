@@ -1,9 +1,9 @@
 ﻿namespace FoodDesire.Web.API.Services;
-public class OrderControllerService : IOrderControllerService {
+public class CartControllerService : ICartControllerService {
     private readonly IOrderService _orderService;
     private readonly IPaymentService _paymentService;
 
-    public OrderControllerService(IOrderService orderService, IPaymentService paymentService) {
+    public CartControllerService(IOrderService orderService, IPaymentService paymentService) {
         _orderService = orderService;
         _paymentService = paymentService;
     }

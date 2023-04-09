@@ -16,5 +16,6 @@ internal static class AppConfigurator {
         // Web API Services
         builder.Services.AddTransient<IHomeControllerService, HomeControllerService>();
         builder.Services.AddTransient<IRecipeControllerService, RecipeControllerService>();
+        builder.Services.AddTransient<ICartControllerService, CartControllerService>();
     }
 }
