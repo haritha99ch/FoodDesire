@@ -11,7 +11,7 @@ public class HomeControllerService : IHomeControllerService {
     public async Task<IEnumerable<Recipe>> GetTop10Recipes() => await _recipeService.GetTop10Recipes();
 
     public async Task<IEnumerable<Recipe>> GetPredictedRecipes(int customerId) {
-        List<Recipe>? allRecipes = await _recipeService.GetAllRecipesWithCategory();
+        List<Recipe>? allRecipes = await _recipeService.GetAllRecipesWithCategory(true);
         if (!_predictionService.EnsureModelLoaded()) return allRecipes.Take(10);
 
         List<(Recipe Recipe, float Score)>? predictions = new List<(Recipe Recipe, float Score)>();
