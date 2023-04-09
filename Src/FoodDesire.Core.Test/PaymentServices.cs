@@ -43,10 +43,9 @@ public class PaymentServices : Services {
 
     [Test, Order(1)]
     public async Task MakePaymentForOrder() {
-        Payment payment = await _paymentService.PaymentForOrder(1);
-        Order order = await _orderService.GetOrderById(1);
+        Order order = await _paymentService.PaymentForOrder(1);
 
-        Assert.That(order.Price, Is.EqualTo(payment.Value));
+        Assert.That(order.Price, Is.EqualTo(order.Payment!.Value));
     }
 
     [Test, Order(2)]
@@ -56,10 +55,9 @@ public class PaymentServices : Services {
             Fee = 210
         });
 
-        Payment payment = await _paymentService.PaymentForOrder(2);
-        Order order = await _orderService.GetOrderById(2);
+        Order order = await _paymentService.PaymentForOrder(2);
 
-        Assert.That(order.Price + order.Delivery!.Fee, Is.EqualTo(payment.Value));
+        Assert.That(order.Price + order.Delivery!.Fee, Is.EqualTo(order.Payment!.Value));
     }
 
     //Payment for supply is tested in IngredientServices.cs

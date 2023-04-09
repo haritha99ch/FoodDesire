@@ -29,7 +29,7 @@ public class HomeService : IHomeService {
     }
 
     public async Task<List<Order>> GetPendingOrders() {
-        List<Order> orders = await _orderService.GetPendingOrders();
+        List<Order> orders = await _orderService.GetRemainingOrders();
         return orders;
     }
 

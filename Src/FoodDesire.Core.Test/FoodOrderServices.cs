@@ -133,7 +133,7 @@ public class FoodOrderServices : Services {
 
     [Test, Order(9)]
     public async Task GetPendingOrders() {
-        List<Order> orders = await _orderService.GetPendingOrders();
+        List<Order> orders = await _orderService.GetRemainingOrders();
 
         Assert.That(orders.Count, Is.EqualTo(1));
     }

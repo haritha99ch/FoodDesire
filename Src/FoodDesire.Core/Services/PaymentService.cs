@@ -17,7 +17,7 @@ public class PaymentService : IPaymentService {
         _adminRepository = adminRepository;
     }
 
-    public async Task<Payment> PaymentForOrder(int orderId) {
+    public async Task<Order> PaymentForOrder(int orderId) {
         Order? order = await _orderRepository.GetByID(orderId);
         order.Payment = new Payment() {
             OrderId = orderId,
@@ -25,7 +25,7 @@ public class PaymentService : IPaymentService {
             PaymentType = PaymentType.Order
         };
         order = await _orderRepository.Update(order);
-        return order.Payment!;
+        return order;
     }
 
     public async Task<Supply> PaymentForSupply(Supply supply, decimal value) {
