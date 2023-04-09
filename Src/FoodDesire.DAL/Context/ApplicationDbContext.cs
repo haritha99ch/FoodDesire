@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext {
     public DbSet<Ingredient>? Ingredient { get; set; }
     public DbSet<RecipeCategory>? FoodCategory { get; set; }
     public DbSet<Recipe>? Recipe { get; set; }
-    public DbSet<RecipeRating> RecipeRating { get; set; }
+    public DbSet<RecipeReview> RecipeReview { get; set; }
     public DbSet<FoodItem>? FoodItem { get; set; }
     public DbSet<Order>? Order { get; set; }
     public DbSet<Payment>? Payment { get; set; }
@@ -63,7 +63,7 @@ public class ApplicationDbContext : DbContext {
                 (c1, c2) => c1!.SequenceEqual(c2!),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList()));
-        modelBuilder.Entity<RecipeRating>()
+        modelBuilder.Entity<RecipeReview>()
             .HasOne(r => r.Recipe)
             .WithMany()
             .HasForeignKey(r => r.RecipeId)

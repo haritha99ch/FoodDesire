@@ -9,7 +9,6 @@ public class Recipe : TrackedEntity {
     public List<RecipeInstruction> RecipeInstructions { get; set; } = new();
     [NotMapped]
     public List<Image> Images { get; set; } = new();
-    public List<RecipeReview> RecipeReviews { get; set; } = new();
     [NotMapped]
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
     [Required]
@@ -31,7 +30,6 @@ public class Recipe : TrackedEntity {
     public float Rating { get; set; } = 0;
     [Required]
     public long Times { get; set; } = 0;
-
 
 
     [ForeignKey(nameof(ChefId))]
