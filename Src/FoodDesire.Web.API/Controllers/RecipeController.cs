@@ -20,4 +20,9 @@ public class RecipeController : ControllerBase {
     public async Task<Recipe> Details(int id) {
         return await _recipeControllerService.GetRecipeByIdAsync(id);
     }
+
+    [HttpPost]
+    public async Task<FoodItem> AddToCart(FoodItem foodItem) {
+        return await _recipeControllerService.CreateFoodItemAsync(foodItem);
+    }
 }
