@@ -6,7 +6,12 @@ public class AccountControllerService : IAccountControllerService {
         _userService = userService;
     }
 
-    public async Task<Customer> CreateAccount(Customer customer) => await _userService.CreateAccount(customer);
+    public async Task<Customer> CreateAccount(User user) {
+        Customer customer = new() {
+            User = user,
+        };
+        return await _userService.CreateAccount(customer);
+    }
 
     public async Task<Customer> GetById(int customerId) => await _userService.GetById(customerId);
 

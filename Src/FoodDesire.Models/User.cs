@@ -19,8 +19,7 @@ public class User : TrackedEntity {
     [AllowNull]
     public Gender? Gender { get; set; }
     [AllowNull]
-    [MaxLength(10), MinLength(10)]
-    public int PhoneNumber { get; set; } = 0705924764;
+    public int PhoneNumber { get; set; } = 1705924764;
     [AllowNull]
     public int? AddressId { get; set; }
     [Required]
