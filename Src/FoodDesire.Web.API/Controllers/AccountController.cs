@@ -17,7 +17,7 @@ public class AccountController : ControllerBase {
     }
 
     [HttpPost(nameof(SignUp)), AllowAnonymous]
-    public async Task<ActionResult<Customer>> SignUp(User user) => Ok(await _accountControllerService.CreateAccount(user));
+    public async Task<ActionResult<Customer>> SignUp(User user) => /*Todo:Implement Email Verification*/ Ok(await _accountControllerService.CreateAccount(user));
 
     [HttpGet(nameof(SignIn)), AllowAnonymous]
     public async Task<ActionResult<string>> SignIn(string email, string password) {

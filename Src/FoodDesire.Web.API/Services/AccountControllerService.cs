@@ -38,7 +38,8 @@ public class AccountControllerService : IAccountControllerService {
 
     private string CreateToken(Customer customer) {
         List<Claim> claims = new() {
-            new(ClaimTypes.Name, customer.User!.Account!.Email!)
+            new(ClaimTypes.Name, customer.User!.Account!.Email!),
+            new(ClaimTypes.NameIdentifier, customer.Id.ToString()),
         };
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_configuration["JWT:SignInKey"]!));
         SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256Signature);

@@ -9,9 +9,11 @@ public class HomeController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Recipe>>> Index(int? customerId = null) =>
-        Ok((customerId == null) ? await _homeControllerService.GetTop10Recipes()
-            : await GetPredictedRecipes((int)customerId));
+    public async Task<ActionResult<IEnumerable<Recipe>>> Index() {
+        string? userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        return Ok(string.IsNullOrEmpty(userId) ? await _homeControllerService.GetTop10Recipes()
+            : await GetPredictedRecipes(int.Parse(userId)));
+    }
 
     private async Task<IEnumerable<Recipe>> GetPredictedRecipes(int customerId) => await _homeControllerService.GetPredictedRecipes(customerId);
 }

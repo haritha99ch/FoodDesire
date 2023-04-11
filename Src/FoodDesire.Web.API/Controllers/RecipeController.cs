@@ -9,20 +9,18 @@ public class RecipeController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Recipe>> Index(string? search) {
-        if (string.IsNullOrEmpty(search) || string.IsNullOrWhiteSpace(search))
-            return await _recipeControllerService.GetRecipesAsync();
-
-        return await _recipeControllerService.GetRecipesAsync(search);
-    }
+    public async Task<ActionResult<IEnumerable<Recipe>>> Index(string? search) =>
+         string.IsNullOrEmpty(search) || string.IsNullOrWhiteSpace(search)
+            ? Ok(await _recipeControllerService.GetRecipesAsync())
+            : Ok(await _recipeControllerService.GetRecipesAsync(search));
 
     [HttpGet(nameof(recipeId))]
-    public async Task<Recipe> Details(int recipeId) {
-        return await _recipeControllerService.GetRecipeByIdAsync(recipeId);
-    }
+    public async Task<ActionResult<Recipe>> Details(int recipeId) => Ok(await _recipeControllerService.GetRecipeByIdAsync(recipeId));
 
-    [HttpPost]
-    public async Task<FoodItem> AddToCart(FoodItem foodItem) {
-        return await _recipeControllerService.CreateFoodItemAsync(foodItem);
+    [HttpPost(nameof(AddToCart)), Authorize]
+    public async Task<ActionResult<FoodItem>> AddToCart(FoodItem foodItem) {
+        string? userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        if (!foodItem.Order!.CustomerId.Equals(userId)) return BadRequest("You are not authorized to perform this action!");
+        return Ok(await _recipeControllerService.CreateFoodItemAsync(foodItem));
     }
 }
