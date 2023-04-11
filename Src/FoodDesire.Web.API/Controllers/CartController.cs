@@ -8,32 +8,32 @@ public class CartController : ControllerBase {
         _chartControllerService = orderControllerService;
     }
 
-    [HttpGet("index")]
-    public async Task<Order> Index() {
+    [HttpGet(nameof(Index))]
+    public async Task<ActionResult<Order>> Index() {
         //TODO: Get CustomerId By authentication
-        return await _chartControllerService.GetPendingOrderAsync(1);
+        return Ok(await _chartControllerService.GetPendingOrderAsync(1));
     }
 
-    [HttpGet("{orderId}")]
-    public async Task<Order> Details(int orderId) {
-        return await _chartControllerService.GetOrderAsync(orderId);
+    [HttpGet(nameof(orderId))]
+    public async Task<ActionResult<Order>> Details(int orderId) {
+        return Ok(await _chartControllerService.GetOrderAsync(orderId));
     }
 
     [HttpPost]
-    public async Task<Order> CreateOrder(Order order) {
-        return await _chartControllerService.CreateOrderAsync(order);
+    public async Task<ActionResult<Order>> CreateOrder(Order order) {
+        return Ok(await _chartControllerService.CreateOrderAsync(order));
     }
 
-    [HttpPatch("{orderId}/pay")]
-    public async Task<Order> PayForOrder(int orderId) {
+    [HttpPatch($"{nameof(orderId)}/{nameof(Pay)}")]
+    public async Task<ActionResult<Order>> Pay(int orderId) {
         //TODO: Authenticate request
-        return await _chartControllerService.PayForOrderAsync(orderId);
+        return Ok(await _chartControllerService.PayForOrderAsync(orderId));
     }
 
-    [HttpDelete("{orderId}/cancel")]
-    public async Task<bool> CancelOrder(int orderId) {
+    [HttpDelete($"{nameof(orderId)}/{nameof(Cancel)}")]
+    public async Task<ActionResult<bool>> Cancel(int orderId) {
         //TODO: Authenticate request
         //TODO: Configure Payment API
-        return await _chartControllerService.CancelOrderAsync(orderId);
+        return Ok(await _chartControllerService.CancelOrderAsync(orderId));
     }
 }

@@ -16,9 +16,9 @@ public class RecipeController : ControllerBase {
         return await _recipeControllerService.GetRecipesAsync(search);
     }
 
-    [HttpGet("{id}")]
-    public async Task<Recipe> Details(int id) {
-        return await _recipeControllerService.GetRecipeByIdAsync(id);
+    [HttpGet(nameof(recipeId))]
+    public async Task<Recipe> Details(int recipeId) {
+        return await _recipeControllerService.GetRecipeByIdAsync(recipeId);
     }
 
     [HttpPost]

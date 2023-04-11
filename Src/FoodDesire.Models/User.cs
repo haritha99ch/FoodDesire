@@ -19,15 +19,13 @@ public class User : TrackedEntity {
     [AllowNull]
     public Gender? Gender { get; set; }
     [AllowNull]
-    public int PhoneNumber { get; set; } = 1705924764;
-    [AllowNull]
-    public int? AddressId { get; set; }
+    public string PhoneNumber { get; set; } = "0705624764";
+    [NotMapped]
+    public Address Address { get; set; } = new();
     [Required]
     public int AccountId { get; set; }
 
 
-    [ForeignKey(nameof(AddressId))]
-    public Address? Address { get; set; }
     [ForeignKey(nameof(AccountId))]
     public Account? Account { get; set; }
 }
