@@ -15,10 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\" />
+    <ProjectReference Include="..\FoodDesire.Models\FoodDesire.Models.csproj" />
   </ItemGroup>
 
 </Project>
