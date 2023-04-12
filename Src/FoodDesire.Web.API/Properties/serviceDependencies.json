@@ -1,3 +1,8 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets",
+      "dynamicId": null
+    }
+  }
 }

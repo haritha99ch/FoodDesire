@@ -16,29 +16,7 @@
 	<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Components\CompleteSupplyDialog.xaml" />
-    <None Remove="Components\EditIngredientDialog.xaml" />
-    <None Remove="Components\EditRecipeIngredientDialog.xaml" />
-    <None Remove="Components\EmployeeListItemControl.xaml" />
-    <None Remove="Components\IngredientCategoryFormControl.xaml" />
-    <None Remove="Components\IngredientFormDataControl.xaml" />
-    <None Remove="Components\IngredientListItemControl.xaml" />
-    <None Remove="Components\NewEmployeeFormDialog.xaml" />
-    <None Remove="Components\NewIngredientFormDialog.xaml" />
-    <None Remove="Components\NewRecipeIngredientDialog.xaml" />
-    <None Remove="Components\RecipeCategoryFormControl.xaml" />
-    <None Remove="Components\RecipeFormControl.xaml" />
-    <None Remove="Components\RecipeIngredientFormControl.xaml" />
-    <None Remove="Components\RecipeIngredientListItemControl.xaml" />
-    <None Remove="Components\RecipeIngredientListViewHeaderControl.xaml" />
-    <None Remove="Components\RecipeListItemControl.xaml" />
-    <None Remove="Components\RequestIngredientDialog.xaml" />
-    <None Remove="Components\ShowErrorsDialog.xaml" />
-    <None Remove="Components\SuppliesListItemControl.xaml" />
-    <None Remove="Styles\PrograssBar.xaml" />
-    <None Remove="Views\NewRecipePage.xaml" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
