@@ -1,1 +1,26 @@
-﻿<MudBlazor.MudAppBar Color="MudBlazor.Color.Dark"/>
+﻿@*<MudAppBar Color="Color.Dark" Fixed="false">
+    <MudIconButton Icon="@Icons.Material.Filled.Home"
+                   Color="Color.Inherit"
+                   OnClick='(()=>NavigateTo("/"))'/>
+    <MudText Color="Color.Inherit"
+             Typo="Typo.body1">Food Desire</MudText>
+
+    <MudSpacer />
+
+    <MudTextField @bind-Value="Search" 
+                  AdornmentColor="Color.Inherit"
+                  Label="Search" 
+                  Variant="Variant.Text"
+                  TextChanged="OnSearchTextChanged"/>
+
+    <MudSpacer />
+
+    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" />
+</MudAppBar>*@
+@using Syncfusion.Blazor.Navigations
+
+<SfAppBar ColorMode="AppBarColor.Primary">
+        <SfButton CssClass="e-inherit" IconCss="e-icons e-menu"></SfButton>
+        <span class="regular">Blazor AppBar</span>
+        <AppBarSpacer></AppBarSpacer>
+</SfAppBar>
