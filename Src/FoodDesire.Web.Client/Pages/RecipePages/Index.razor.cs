@@ -7,6 +7,7 @@ public partial class Index : ComponentBase {
 
     protected override void OnInitialized() {
         _SearchCommunicationService!.OnChange += UpdateSearch;
+        Search = _SearchCommunicationService.Value.ToString();
     }
 
     public void UpdateSearch(string? search) {

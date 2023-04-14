@@ -9,7 +9,7 @@ WebAssemblyHostBuilder? builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 AppConfigurator.ConfigureServices(builder.Services);
-builder.Services.AddMudServices();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddMudServices();
 await builder.Build().RunAsync();

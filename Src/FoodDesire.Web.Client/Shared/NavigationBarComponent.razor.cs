@@ -5,14 +5,19 @@ public partial class NavigationBarComponent : ComponentBase {
     [Inject]
     private IComponentCommunicationService<string>? _searchCommunicationService { get; set; }
     private string? Search { get; set; }
+    private bool open = false;
 
-    private void NavigateTo(string pageKey) {
-        _navigationManager!.NavigateTo(pageKey);
+    void ToggleDrawer() {
+        open = !open;
+    }
+
+    private void NavigateTo(string pageUri) {
+        _navigationManager!.NavigateTo(pageUri);
     }
 
     private void OnSearchTextChanged() {
         if (!_navigationManager!.Uri.Contains("/Recipe/Index")) {
-            _navigationManager.NavigateTo("/Recipe/Index");
+            NavigateTo("/Recipe/Index");
         }
         _searchCommunicationService!.NotifyStateChanged(Search!);
     }

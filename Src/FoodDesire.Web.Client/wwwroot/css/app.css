@@ -1,3 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.appbar-search-input {
+    color:aliceblue;
+}
+
+main {
+    margin: 12px;
+}
+
 h1:focus {
     outline: none;
 }
