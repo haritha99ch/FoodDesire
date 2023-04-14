@@ -31,6 +31,12 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.PACKAGES_ACCESS_TOKEN }}
+        nuget-source: 'https://nuget.pkg.github.com/haritha99ch/index.json'
+
     - name: Build
       run: dotnet build Src/FoodDesire.sln --configuration ${{ matrix.configuration }}
 
