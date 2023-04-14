@@ -18,5 +18,6 @@
     <ProjectReference Include="..\FoodDesire.AppSettings\FoodDesire.AppSettings.csproj" />
     <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
     <ProjectReference Include="..\FoodDesire.ML.Model\FoodDesire.ML.Model.csproj" />
+    <ProjectReference Include="..\FoodDesire.Web.Shared\FoodDesire.Web.Shared.csproj" />
   </ItemGroup>
 </Project>

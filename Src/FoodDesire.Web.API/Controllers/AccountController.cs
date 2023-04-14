@@ -19,9 +19,9 @@ public class AccountController : ControllerBase {
     [HttpPost(nameof(SignUp)), AllowAnonymous]
     public async Task<ActionResult<Customer>> SignUp(User user) => /*Todo:Implement Email Verification*/ Ok(await _accountControllerService.CreateAccount(user));
 
-    [HttpGet(nameof(SignIn)), AllowAnonymous]
-    public async Task<ActionResult<string>> SignIn(string email, string password) {
-        string jwt = await _accountControllerService.SignIn(email, password);
+    [HttpPost(nameof(SignIn)), AllowAnonymous]
+    public async Task<ActionResult<string>> SignIn(SignIn signIn) {
+        string jwt = await _accountControllerService.SignIn(signIn.Email, signIn.Password);
         return jwt == null ? BadRequest("Invalid SignIn") : Ok(jwt);
     }
 
