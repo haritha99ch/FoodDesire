@@ -10,6 +10,7 @@ public class User : TrackedEntity {
         set {
             _dateOfBirth = value;
             if (value == null) return;
+            if (DateTime.Now.Year - value.Value.Year == 0) return;
             Age = DateTime.Now.AddYears(-value.Value.Year).Year;
         }
     }
