@@ -1,0 +1,87 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Text.RegularExpressions
+
+@page "/Account/SignUp"
+
+<MudContainer MaxWidth="MaxWidth.Large">
+
+    <MudGrid>
+        <MudItem xs="12" sm="7">
+            <MudPaper Class="pa-4 mud-height-full">
+                <MudForm @ref="form" ReadOnly="false">
+                    <MudGrid>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="First Name" @bind-Value="user.FirstName" Required="true" RequiredError="First name is required!" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Last Name" @bind-Value="user.LastName" Required="true" RequiredError="Last name is required!" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid xs="12" sm="6">
+                        <MudItem xs="12" sm="6">
+                            <MudDatePicker Label="Date of Birth" @bind-Value="user.DateOfBirth" Required="true" RequiredError="Birthday is required!" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudRadioGroup T="Gender?" @bind-SelectedOption="user.Gender" Required="true" RequiredError="Gender is required!">
+                                <MudRadio T="Gender?" Option="@Gender.Male">Male</MudRadio>
+                                <MudRadio T="Gender?" Option="@Gender.Female">Female</MudRadio>
+                        </MudRadioGroup>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudTextField T="string" Label="Email" @bind-Value="user.Account!.Email" Required="true" RequiredError="Email is required!"
+                                  Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
+                    <MudTextField T="string" Label="Password" @bind-Value="user.Account!.Password" HelperText="Choose a strong password" @ref="passwordField1"
+                                  InputType="MudBlazor.InputType.Password"
+                                  Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                                  RequiredError="Password is required!" />
+                    <MudTextField T="string"
+                                  Label="Password" HelperText="Repeat the password" InputType="MudBlazor.InputType.Password"
+                                  Validation="@(new Func<string, string>(PasswordMatch))" />
+                    
+                    <MudTextField T="string" Label="Phone" @bind-Value="user.PhoneNumber" Required="true" RequiredError="Phone is required!" />
+                    
+                    <MudText >Address</MudText>
+
+                    <MudGrid>
+                        <MudItem xs="12" sm="4">
+                            <MudTextField T="string" Label="No" @bind-Value="user.Address!.No" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Street 1" @bind-Value="user.Address!.Street1" Required="true" RequiredError="Street1 is required!" />
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" sm="4">
+                            <MudTextField T="string" Label="Street 2" @bind-Value="user.Address!.Street2" Required="true" RequiredError="Street2 is required!" />
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudTextField T="string" Label="City" @bind-Value="user.Address!.City" Required="true" RequiredError="City is required!" />
+                        </MudItem>
+                        <MudItem xs="12" sm="3">
+                            <MudTextField T="int" Label="Postal Code" @bind-Value="user.Address!.PostalCode" Required="true" RequiredError="ostal Code is required!" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <div class="d-flex align-center justify-space-between mt-5">
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form!.Reset())" Class="mx-2">Reset</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Register" Class="ml-auto">Register</MudButton>
+                    </div>
+                </MudForm>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="5">
+            <MudPaper Class="mud-height-full">
+                <MudText Align="Align.Center" Class="bold" Typo="Typo.h1">Food Desire</MudText>
+                <MudText Align="Align.Center" Typo="Typo.h4">SignUp</MudText>
+                <div class="d-flex justify-center">
+                    <MudImage ObjectFit="ObjectFit.Cover" Fluid="true" Src="./assets/signup_image1.jpg" Alt="Örebro Slott" Elevation="25" Class="rounded-lg" />
+                </div>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+</MudContainer>
+
+

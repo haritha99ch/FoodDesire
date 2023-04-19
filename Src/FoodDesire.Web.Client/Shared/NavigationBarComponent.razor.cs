@@ -12,6 +12,7 @@ public partial class NavigationBarComponent : ComponentBase {
     }
 
     private void NavigateTo(string pageUri) {
+        open = false;
         _navigationManager!.NavigateTo(pageUri);
     }
 

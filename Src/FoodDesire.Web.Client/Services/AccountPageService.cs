@@ -19,8 +19,8 @@ public class AccountPageService : IAccountPageService {
     }
 
     public async Task<Customer?> Get() {
-        Customer? response = await (await AddAuthorizationHeader()).GetFromJsonAsync<Customer>("/api/Account/Index");
-        return response;
+        var response = await (await AddAuthorizationHeader()).GetAsync("/api/Account/Index");
+        return response.StatusCode != HttpStatusCode.OK ? null : await response.Content.ReadFromJsonAsync<Customer>();
     }
 
     public async Task<string?> SignIn(SignIn signIn) {
@@ -35,7 +35,7 @@ public class AccountPageService : IAccountPageService {
 
     public async Task<Customer?> SignUp(User user) {
         HttpResponseMessage? response = await _httpClient.PostAsJsonAsync("/api/Account/SignUp", user);
-        return await response.Content.ReadFromJsonAsync<Customer>();
+        return response.StatusCode != HttpStatusCode.OK ? null : await response.Content.ReadFromJsonAsync<Customer>();
     }
 
     private async Task<HttpClient> AddAuthorizationHeader() {

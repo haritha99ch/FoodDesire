@@ -1,0 +1,8 @@
+﻿.signup-bg {
+    background-image: url('./assets/signUp_image1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+}
