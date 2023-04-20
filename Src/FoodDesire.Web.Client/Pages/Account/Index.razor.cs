@@ -1,18 +1,21 @@
+using Microsoft.AspNetCore.Components.Authorization;
+
 namespace FoodDesire.Web.Client.Pages.Account;
 public partial class Index : ComponentBase {
     [Inject]
-    private NavigationManager? _navigationManager { get; set; }
+    private NavigationManager _navigationManager { get; set; } = default!;
     [Inject]
-    private IAuthenticationService? _authenticationService { get; set; }
+    private AuthenticationStateProvider _authenticationStateProvider { get; set; } = default!;
     [Inject]
-    private IAccountPageService? _accountPageService { get; set; }
+    private IAccountPageService _accountPageService { get; set; } = default!;
 
     private Customer? customer = new();
 
 
     protected override async Task OnInitializedAsync() {
-        if (!await _authenticationService!.IsAuthenticated()) {
-            _navigationManager!.NavigateTo("/Account/SignUp");
+        AuthenticationState authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        if (!authState.User.Identity!.IsAuthenticated) {
+            _navigationManager.NavigateTo("/Account/SignIn");
             return;
         }
         customer = await _accountPageService!.Get();

@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.ML.Model", "Food
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.Web.Client", "FoodDesire.Web.Client\FoodDesire.Web.Client.csproj", "{8C1D5C47-2D44-4326-9555-8FAB5D9B7074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDesire.Web.Shared", "FoodDesire.Web.Shared\FoodDesire.Web.Shared.csproj", "{A883A0F4-8882-4C82-A5D9-419D6ABE901C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDesire.Web.Shared", "FoodDesire.Web.Shared\FoodDesire.Web.Shared.csproj", "{A883A0F4-8882-4C82-A5D9-419D6ABE901C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

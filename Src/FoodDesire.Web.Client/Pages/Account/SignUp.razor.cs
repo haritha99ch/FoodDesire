@@ -7,6 +7,8 @@ public partial class SignUp {
     private NavigationManager _navigationManager { get; set; } = default!;
     [Inject]
     private IAccountPageService _accountPageService { get; set; } = default!;
+    [Inject]
+    private IComponentCommunicationService<Web.Shared.SignIn> _signInCommunicationService { get; set; } = default!;
 
     private User user = new() {
         Account = new() {
@@ -43,6 +45,10 @@ public partial class SignUp {
         await form!.Validate();
         if (!form.IsValid) return;
         Customer? customer = await _accountPageService.SignUp(user);
+        _signInCommunicationService.Value = new() {
+            Email = customer!.User!.Account!.Email!,
+            Password = customer.User.Account.Password!,
+        };
         _navigationManager.NavigateTo("/Account/SignIn");
     }
 }

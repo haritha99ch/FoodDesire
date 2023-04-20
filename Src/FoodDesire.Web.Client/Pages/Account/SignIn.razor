@@ -1,0 +1,43 @@
+﻿@page "/Account/SignIn"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <EditForm Model="@_signIn" OnValidSubmit="SignInAsync">
+        <DataAnnotationsValidator/>
+        <MudPaper Class="pa-4">
+            <MudGrid>
+                <MudItem xs="12" sm="12">
+                    <MudText Align="Align.Center" Typo="Typo.h3">Signin</MudText>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudCardContent>
+                        <MudTextField Label="Email" Class="mt-3"
+                                      @bind-Value="_signIn.Email" For="@(() => _signIn.Email)"/>
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                      @bind-Value="_signIn.Password" For="@(() => _signIn.Password)" InputType="MudBlazor.InputType.Password"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">Signin</MudButton>
+                    </MudCardActions>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Button" FullWidth="true" Variant="Variant.Filled" OnClick="NavigateToSignUp" Color="Color.Secondary">Create an Account</MudButton>
+                    </MudCardActions>
+                    <MudCardContent>
+                        @if (_invalidSignIn)
+                        {
+                            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center" ShowCloseIcon="true" CloseIconClicked="(() => _invalidSignIn = false)">
+                                Invalid Email or Password</MudAlert>
+
+                        }
+                    </MudCardContent>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudCard Class="pa-4">
+                        <MudImage Src="./assets/signUp_image2.jpg" ObjectFit="ObjectFit.Cover" Fluid="true" />
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </EditForm>
+</MudContainer>
