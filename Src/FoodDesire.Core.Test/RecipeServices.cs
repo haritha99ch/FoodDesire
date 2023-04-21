@@ -65,7 +65,8 @@ public class RecipeServices : Services {
     [Test, Order(5), Description("Should Remove an ingredient from the recipe and Get all the ingredient for the recipe")]
     public async Task RemoveRecipeIngredient() {
         Recipe recipe = await _recipeService.GetRecipeById(1);
-        recipe = await _recipeService.RemoveRecipeIngredientById(recipe.Id, recipe.RecipeIngredients[1]);
+        recipe.RecipeIngredients.Remove(recipe.RecipeIngredients[1]);
+        recipe = await _recipeService.UpdateRecipe(recipe);
         List<Recipe>? recipes = await _recipeService.GetAllRecipesWithCategory();
 
         Assert.That(recipes[0].RecipeIngredients, Has.Count.EqualTo(4));
@@ -73,9 +74,9 @@ public class RecipeServices : Services {
 
     [Test, Order(6), Description("Should add an ingredient. The method will use the UpdatedRecipe")]
     public async Task AddIngredientToRecipe() {
-        Recipe recipe = await _recipeService
-            .AddRecipeIngredientToRecipe(1, RecipeDataHelper.GetRecipes()[0].RecipeIngredients[1]);
-        recipe = await _recipeService.GetRecipeById(1);
+        Recipe recipe = await _recipeService.GetRecipeById(1);
+        recipe.RecipeIngredients.Add(RecipeDataHelper.GetRecipes()[0].RecipeIngredients[1]);
+        recipe = await _recipeService.UpdateRecipe(recipe);
 
         Assert.That(recipe.RecipeIngredients, Has.Count.EqualTo(5));
     }

@@ -1,5 +1,4 @@
-﻿using FoodDesire.DAL.Helpers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace FoodDesire.DAL.Context;
 public class ApplicationDbContext : DbContext {
@@ -15,6 +14,7 @@ public class ApplicationDbContext : DbContext {
     public DbSet<Ingredient>? Ingredient { get; set; }
     public DbSet<RecipeCategory>? FoodCategory { get; set; }
     public DbSet<Recipe>? Recipe { get; set; }
+    public DbSet<Image>? Image { get; set; }
     public DbSet<RecipeReview>? RecipeReview { get; set; }
     public DbSet<FoodItem>? FoodItem { get; set; }
     public DbSet<Order>? Order { get; set; }
@@ -65,15 +65,6 @@ public class ApplicationDbContext : DbContext {
                 e => JsonConvert.SerializeObject(e),
                 e => JsonConvert.DeserializeObject<List<RecipeIngredient>>(e)!,
                 new ValueComparer<List<RecipeIngredient>>(
-                (c1, c2) => c1!.SequenceEqual(c2!),
-                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList()));
-        modelBuilder.Entity<Recipe>()
-            .Property(e => e.Images)
-            .HasConversion(
-                e => JsonConvert.SerializeObject(e, new ByteArrayConverter()),
-                e => JsonConvert.DeserializeObject<List<Image>>(e, new ByteArrayConverter())!,
-                new ValueComparer<List<Image>>(
                 (c1, c2) => c1!.SequenceEqual(c2!),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList()));

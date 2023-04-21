@@ -72,7 +72,7 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     private async Task<User> AcquireUser(string accessToken) {
-        if (_profile == null) await AcquireProfile(accessToken);
+        await AcquireProfile(accessToken);
         dynamic? birthDay;
         try {
             birthDay = (_profile!.anniversaries as List<dynamic>)!.SingleOrDefault(e => (e.type as string)!.Equals("birthday"));
@@ -87,6 +87,8 @@ public class AuthenticationService : IAuthenticationService {
         } catch (Exception) {
             profilePicture = null;
         }
+
+        var i = _profile.account;
 
         User user = new User() {
             FirstName = _profile!.names[0].first,

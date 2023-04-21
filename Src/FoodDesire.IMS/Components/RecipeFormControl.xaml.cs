@@ -20,6 +20,7 @@ public sealed partial class RecipeFormControl : UserControl {
     private void UserControl_Loaded(object sender, RoutedEventArgs e) {
         ViewModel.XamlRoot = XamlRoot;
         Recipe.XamlRoot = XamlRoot;
+        if (Recipe.Id == 0) return;
         //if (!ViewModel.RecipeCategories.Any(e => e.Id == Recipe.SelectedRecipeCategory!.Id))
         ViewModel.RecipeCategories.Add(Recipe.SelectedRecipeCategory!);
         Category.SelectedItem = Recipe.SelectedRecipeCategory;

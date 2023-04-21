@@ -23,22 +23,20 @@ public class RecipeService : IRecipeService {
         return newRecipe;
     }
 
-    public async Task<Recipe> AddRecipeIngredientToRecipe(
-        int recipeId, RecipeIngredient recipeIngredient
-        ) {
-        Recipe recipe = await _recipeRepository.GetByID(recipeId);
-        recipe.RecipeIngredients.Add(recipeIngredient);
-        recipe = await UpdateRecipe(recipe);
-        return recipe;
-    }
-
     public async Task<Recipe> GetRecipeById(int recipeId) {
-        Recipe recipe = await _recipeRepository.GetByID(recipeId);
+        Expression<Func<Recipe, bool>> filterExpression = e => e.Id == recipeId;
+
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.Images!).Include(e => e.RecipeCategory!).Include(e => e.Chef!).ThenInclude(e => e.User!);
+
+        Recipe recipe = await _recipeRepository.GetOne(filter, include);
         return recipe;
     }
 
     public async Task<List<Recipe>> GetAllRecipesWithCategory() {
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));
 
         List<Recipe> recipes = await _recipeRepository.Get(null, null, include);
         return recipes;
@@ -81,17 +79,11 @@ public class RecipeService : IRecipeService {
 
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
         IOrderedQueryable<Recipe> order(IQueryable<Recipe> e) => e.OrderBy(orderExpression);
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.RecipeCategory!).Include(e => e.Images);
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
         return recipes;
-    }
-
-    public async Task<Recipe> RemoveRecipeIngredientById(int recipeId, RecipeIngredient recipeIngredient) {
-        Recipe recipe = await _recipeRepository.GetByID(recipeId);
-        recipe.RecipeIngredients.Remove(recipeIngredient);
-        recipe = await UpdateRecipe(recipe);
-        return recipe;
     }
 
     public async Task<Recipe> UpdateRecipe(Recipe recipe) {
@@ -154,8 +146,10 @@ public class RecipeService : IRecipeService {
         if (string.IsNullOrEmpty(value)) return await GetAllRecipesWithCategory();
         Expression<Func<Recipe, bool>> filterExpression = e => e.Name.StartsWith(value);
 
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+
         List<Recipe> recipes = await _recipeRepository.Get(filter, null, include);
         return recipes;
     }
@@ -164,7 +158,8 @@ public class RecipeService : IRecipeService {
         Expression<Func<Recipe, bool>> filterExpression = e => e.IsMenuItem;
 
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression).Take(10);
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));
         IOrderedQueryable<Recipe> order(IQueryable<Recipe> e) => e.OrderBy(e => e.Times);
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, order, include);
@@ -179,7 +174,8 @@ public class RecipeService : IRecipeService {
     public async Task<List<Recipe>> GetAllRecipesWithCategory(bool menuItems) {
         Expression<Func<Recipe, bool>> filterExpression = e => e.IsMenuItem;
 
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
 
         List<Recipe> recipes = await _recipeRepository.Get(filter, null, include);
@@ -190,7 +186,8 @@ public class RecipeService : IRecipeService {
         if (string.IsNullOrEmpty(value)) return await GetAllRecipesWithCategory();
         Expression<Func<Recipe, bool>> filterExpression = e => e.Name.StartsWith(value) && e.IsMenuItem;
 
-        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) => e.Include(e => e.RecipeCategory!);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));
         IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
         List<Recipe> recipes = await _recipeRepository.Get(filter, null, include);
         return recipes;

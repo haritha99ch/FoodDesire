@@ -9,6 +9,7 @@
       mc:Ignorable="d">
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
@@ -34,6 +35,9 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <ProgressBar Style="{StaticResource LoadingPrograssBar}"
+                     VerticalAlignment="Top"
+                     IsIndeterminate="{x:Bind ViewModel.Loading, Mode=OneWay}" />
 
         <StackPanel x:Name="contentPanel">
             <RelativePanel>
@@ -139,10 +143,12 @@
                                 Margin="{StaticResource MediumTopMargin}"
                                 Orientation="Horizontal">
                         <Button Content="Edit"
+                                IsEnabled="{x:Bind ViewModel.Loading, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                                 Style="{ThemeResource AccentButtonStyle}"
                                 Margin="{StaticResource ContentDialogButton1HostMargin}"
                                 Command="{x:Bind ViewModel.EditRecipeCommand}" />
                         <Button Content="Delete"
+                                IsEnabled="{x:Bind ViewModel.Loading, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}"
                                 Style="{ThemeResource DefaultButtonStyle}"
                                 Margin="{StaticResource ContentDialogButton1HostMargin}"
                                 Command="{x:Bind ViewModel.DeleteRecipeCommand}"

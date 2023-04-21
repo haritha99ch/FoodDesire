@@ -10,10 +10,9 @@ public partial class EditRecipeViewModel : ObservableRecipient, INavigationAware
     }
 
     public async void OnNavigatedTo(object parameter) {
-        if (parameter is int recipeId) {
-            Recipe recipe = await _recipesPageService.GetRecipeById(recipeId);
+        if (parameter is Recipe recipe) {
             RecipeForm recipeForm = App.GetService<IMapper>().Map<RecipeForm>(recipe);
-            recipeForm.SelectedRecipeCategory = await _recipesPageService.GetRecipeCategoryById(recipe.RecipeCategoryId);
+            recipeForm.SelectedRecipeCategory = recipe.RecipeCategory;
             RecipeForm = recipeForm;
         }
     }

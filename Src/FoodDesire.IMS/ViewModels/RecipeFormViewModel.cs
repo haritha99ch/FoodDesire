@@ -31,8 +31,10 @@ public partial class RecipeFormViewModel : ObservableRecipient {
     [RelayCommand]
     private async Task AddNewRecipeCategory(RecipeForm recipe) {
         try {
-            if (RecipeCategories.Any(e => e.Name!.Equals(recipe.NewRecipeCategory.Name))) {
-                throw new Exception("Category Already Exists");
+            if (!(RecipeCategories.Count <= 1)) {
+                if (RecipeCategories.Any(e => e?.Name == recipe.NewRecipeCategory.Name)) {
+                    throw new Exception("Category Already Exists");
+                }
             }
         } catch (Exception ex) {
             ShowErrorsDialog dialog = App.GetService<IContentDialogFactory>()

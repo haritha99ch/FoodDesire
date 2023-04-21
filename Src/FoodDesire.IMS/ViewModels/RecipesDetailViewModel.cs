@@ -10,10 +10,14 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
     public bool IsChef => App.CurrentUserAccount?.Role == Role.Chef;
 
     [ObservableProperty]
+    private Recipe _recipeNP = default!;
+    [ObservableProperty]
     private RecipeDetail? _recipe;
 
     [ObservableProperty]
     private Chef? _createdBy;
+    [ObservableProperty]
+    private bool _loading = true;
 
     public RecipesDetailViewModel(
         IRecipesPageService recipesPageService,
@@ -29,11 +33,11 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
 
     public async void OnNavigatedTo(object parameter) {
         if (parameter is int recipeId) {
-            Recipe = _mapper.Map<RecipeDetail>(await _recipesPageService.GetRecipeById(recipeId));
-            CreatedBy = await _chefService.GetById(Recipe.ChefId);
-
-            RecipeCategory recipeCategory = await _recipesPageService.GetRecipeCategoryById(Recipe.RecipeCategoryId);
-            Recipe.CategoryName = recipeCategory.Name;
+            RecipeNP = await _recipesPageService.GetRecipeById(recipeId);
+            Recipe = _mapper.Map<RecipeDetail>(RecipeNP);
+            CreatedBy = RecipeNP.Chef;
+            Recipe.CategoryName = RecipeNP.RecipeCategory?.Name;
+            Loading = false;
         }
     }
 
@@ -42,7 +46,7 @@ public partial class RecipesDetailViewModel : ObservableRecipient, INavigationAw
     [RelayCommand]
     public void EditRecipe() {
         _navigationService.SetListDataItemForNextConnectedAnimation(Recipe!);
-        _navigationService.NavigateTo(typeof(EditRecipeViewModel).FullName!, Recipe!.Id);
+        _navigationService.NavigateTo(typeof(EditRecipeViewModel).FullName!, RecipeNP);
     }
 
     [RelayCommand]
