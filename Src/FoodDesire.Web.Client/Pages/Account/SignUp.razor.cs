@@ -41,13 +41,17 @@ public partial class SignUp {
         return null!;
     }
 
+    private void NavigateToSignIn() {
+        _navigationManager.NavigateTo("/Account/SignIn");
+    }
+
     private async void Register() {
         await form!.Validate();
         if (!form.IsValid) return;
         Customer? customer = await _accountPageService.SignUp(user);
         _signInCommunicationService.Value = new() {
             Email = customer!.User!.Account!.Email!,
-            Password = customer.User.Account.Password!,
+            Password = user.Account!.Password!,
         };
         _navigationManager.NavigateTo("/Account/SignIn");
     }

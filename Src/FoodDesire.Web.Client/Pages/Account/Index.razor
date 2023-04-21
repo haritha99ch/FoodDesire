@@ -1,6 +1,77 @@
 ﻿@page "/Account/"
 @page "/Account/Index"
 
-<h3>Index</h3>
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudPaper Class="pa-5">
+        <MudGrid>
+            <MudItem xs="12" sm="2">
+                <MudText Typo="Typo.h6">First Name: </MudText>
+            </MudItem>
+            <MudItem xs="12" sm="10">
+                <MudText>@_customer?.User?.FirstName</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="2">
+                <MudText Typo="Typo.h6">Last Name: </MudText>
+            </MudItem>
+            <MudItem xs="12" sm="10">
+                <MudText>@_customer?.User?.LastName</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="2">
+                <MudText Typo="Typo.h6">Date Of Birth: </MudText>
+            </MudItem>
+            <MudItem xs="12" sm="10">
+                <MudText>@_customer?.User?.DateOfBirth</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="2">
+                <MudText Typo="Typo.h6">Age: </MudText>
+            </MudItem>
+            <MudItem xs="12" sm="10">
+                <MudText>@_customer?.User?.Age</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="12">
+                <MudExpansionPanel Text="Address">
+                    <MudGrid>
+                        <MudItem xs="10" sm="2">
+                            <MudText Typo="Typo.h6">No: </MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="4">
+                            <MudText>@_customer?.User?.Address?.No</MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="2">
+                            <MudText Typo="Typo.h6">Street 1: </MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="4">
+                            <MudText>@_customer?.User?.Address?.Street1</MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="2">
+                            <MudText Typo="Typo.h6">Street 2: </MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="4">
+                            <MudText>@_customer?.User?.Address?.Street2</MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="2">
+                            <MudText Typo="Typo.h6">City: </MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="4">
+                            <MudText>@_customer?.User?.Address?.City</MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="2">
+                            <MudText Typo="Typo.h6">Postal Code:</MudText>
+                        </MudItem>
+                        <MudItem xs="10" sm="4">
+                            <MudText >@_customer?.User?.Address?.PostalCode</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudExpansionPanel>
+            </MudItem>
+            <MudItem xs="12" sm="2">
+                <MudText Typo="Typo.h6">Email: </MudText>
+            </MudItem>
+            <MudItem xs="12" sm="10">
+                <MudText>@_customer?.User?.Account?.Email</MudText>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
 
 

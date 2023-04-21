@@ -9,7 +9,7 @@ public partial class Index : ComponentBase {
     [Inject]
     private IAccountPageService _accountPageService { get; set; } = default!;
 
-    private Customer? customer = new();
+    private Customer? _customer = new();
 
 
     protected override async Task OnInitializedAsync() {
@@ -18,7 +18,7 @@ public partial class Index : ComponentBase {
             _navigationManager.NavigateTo("/Account/SignIn");
             return;
         }
-        customer = await _accountPageService!.Get();
+        _customer = await _accountPageService!.Get();
         await base.OnInitializedAsync();
     }
 }

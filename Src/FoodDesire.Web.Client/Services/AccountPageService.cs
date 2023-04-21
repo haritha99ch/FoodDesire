@@ -26,7 +26,7 @@ public class AccountPageService : IAccountPageService {
     public async Task<string?> SignIn(SignIn signIn) {
         HttpResponseMessage? response = await _httpClient.PostAsJsonAsync("/api/Account/SignIn", signIn);
         if (response.StatusCode != HttpStatusCode.OK) return null;
-        string? token = await response.Content.ReadFromJsonAsync<string>();
+        string token = await response.Content.ReadAsStringAsync();
         if (token == null) return token;
         await _authenticationService.SetAccessTokenAsync(token);
         return token;

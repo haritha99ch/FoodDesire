@@ -20,7 +20,7 @@
 
                     <MudGrid xs="12" sm="6">
                         <MudItem xs="12" sm="6">
-                            <MudDatePicker Label="Date of Birth" @bind-Value="user.DateOfBirth" Required="true" RequiredError="Birthday is required!" />
+                            <MudDatePicker Label="Date of Birth" @bind-Date="user.DateOfBirth" Required="true" RequiredError="Birthday is required!" />
                         </MudItem>
                         <MudItem xs="12" sm="6">
                             <MudRadioGroup T="Gender?" @bind-SelectedOption="user.Gender" Required="true" RequiredError="Gender is required!">
@@ -65,8 +65,9 @@
                     </MudGrid>
 
                     <div class="d-flex align-center justify-space-between mt-5">
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>form!.Reset())" Class="mx-2">Reset</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Tertiary" DisableElevation="true" OnClick="@(()=>form!.Reset())" Class="mx-2">Reset</MudButton>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Register" Class="ml-auto">Register</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="NavigateToSignIn" Class="ml-auto">Signin Instead</MudButton>
                     </div>
                 </MudForm>
             </MudPaper>
