@@ -1,7 +1,4 @@
-﻿using FoodDesire.Web.Client.Contracts.Services;
-using System.Net.Http.Json;
-
-namespace FoodDesire.Web.Client.Services;
+﻿namespace FoodDesire.Web.Client.Services;
 public class RecipePageService : IRecipePageService {
     private readonly HttpClient _httpClient;
 
@@ -9,7 +6,15 @@ public class RecipePageService : IRecipePageService {
         _httpClient = httpClient;
     }
 
-    public async Task<List<Recipe>?> GetRecipesBySearchAsync(string? search) => await _httpClient.GetFromJsonAsync<List<Recipe>?>($"api/Recipe?search={search}");
+    public async Task<List<RecipeListItem>> GetRecipesBySearchAsync(string? search) {
+        HttpResponseMessage? response = await _httpClient.GetAsync($"api/Recipe?search={search}");
+        if (response.StatusCode == HttpStatusCode.ServiceUnavailable) return new();
+        try {
+            return await response.Content.ReadFromJsonAsync<List<RecipeListItem>>() ?? new();
+        } catch (Exception) {
+            return new();
+        }
+    }
 
     public async Task<FoodItem?> AddFoodItemToCart(FoodItem foodItem) {
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/Recipe/AddToCart", foodItem);

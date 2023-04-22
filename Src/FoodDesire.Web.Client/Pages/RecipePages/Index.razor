@@ -1,2 +1,15 @@
 ﻿@page "/Recipe/Index"
-<h3>Recipe Index</h3>
+@using FoodDesire.Web.Client.Components
+
+<MudContainer>
+    <MudGrid>
+        @for (int i = 0; i < 10; i++)
+        {
+        <RecipeCardComponent AddToCartAction="AddToCart" EditAndAddToCartAction="EditAndAddToCart"/>
+        }
+        @*@foreach (RecipeListItem item in _recipes)
+        {
+            <RecipeCardComponent Recipe="@item" AddToCartAction="AddToCart" EditAndAddToCartAction="EditAndAddToCart"/>
+        }*@
+    </MudGrid>
+</MudContainer>

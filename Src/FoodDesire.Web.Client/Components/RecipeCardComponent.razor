@@ -1,1 +1,19 @@
-﻿
+﻿<MudItem xs="12" sm="4">
+    <MudCard>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" sm="4">
+                    <MudImage Src="@($"data:image/png;base64,{Recipe?.Images[0]?.Data}")" ObjectFit="ObjectFit.Fill" Fluid="true" />
+                </MudItem>
+                <MudItem xs="12" sm="8">
+                    <MudText Typo="Typo.h5">@Recipe?.Name</MudText>
+                    <MudText Typo="Typo.body2">@Recipe?.Description</MudText>
+                    <MudText Typo="Typo.h6">Rs. @Recipe?.FixedPrice</MudText>
+                    <MudRating ReadOnly="true" SelectedValue="(Recipe == null)? 0: Recipe.Stars" />
+                </MudItem>
+            </MudGrid>
+            <MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="AddToCart">Add To Cart</MudButton>
+            <MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="EditAndAddToCart">Edit & To Cart</MudButton>
+        </MudCardContent>
+    </MudCard>
+</MudItem>
