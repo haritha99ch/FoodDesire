@@ -9,6 +9,8 @@ public sealed class FoodItem : TrackedEntity {
     public int? ChefId { get; set; } //Prepares by
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; set; } = decimal.Zero;
+    [Required]
+    public int Quantity { get; set; } = 1;
     //Delete property = food has been prepared
     public FoodItemStatus Status { get; set; } = FoodItemStatus.Queued;
 

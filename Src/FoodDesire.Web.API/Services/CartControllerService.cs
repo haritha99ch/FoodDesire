@@ -18,6 +18,8 @@ public class CartControllerService : ICartControllerService {
 
     public async Task<Order> CreateOrderAsync(Order order) => await _orderService.NewOrder(order);
 
+    public Task<FoodItem> GetFoodItemByIdAsync(int foodItemId) => _foodItemService.GetFoodItemById(foodItemId);
+
     public async Task<Order> GetOrderAsync(int orderId) => await _orderService.GetOrderById(orderId);
 
     public async Task<Order> GetPendingOrderAsync(int customerId) => await _orderService.GetPendingOrderForCustomer(customerId);

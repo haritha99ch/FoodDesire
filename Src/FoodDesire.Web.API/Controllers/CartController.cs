@@ -64,8 +64,11 @@ public class CartController : ControllerBase {
         Order? order = await _chartControllerService.GetPendingOrderAsync(int.Parse(userId));
         if (order == null) return BadRequest("Could not find order!");
 
-        FoodItem? foodItem = order.FoodItems?.FirstOrDefault(e => e.Id == foodItemId);
+
+        FoodItem? foodItem = await _chartControllerService.GetFoodItemByIdAsync(foodItemId);
         if (foodItem == null) return BadRequest("Could not find food item!");
+
+        if (foodItem.OrderId != order.Id) return BadRequest("You are not authorized to remove this food item!");
 
         bool foodItemDelete = await _chartControllerService.RemoveFoodItem(foodItemId);
         return foodItemDelete ? Ok(foodItemDelete) : BadRequest(foodItemDelete);

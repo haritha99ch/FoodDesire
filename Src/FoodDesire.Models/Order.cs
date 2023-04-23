@@ -7,7 +7,6 @@ public sealed class Order : TrackedEntity {
     [Required]
     public DateTime DateTime { get; set; } = DateTime.Now;
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
-    public List<FoodItem>? FoodItems { get; set; }
     [Column(TypeName = "Decimal(18,2)")]
     public decimal Price { get; set; } = decimal.Zero;
 

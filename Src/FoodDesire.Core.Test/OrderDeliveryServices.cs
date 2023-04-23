@@ -56,7 +56,6 @@ public class OrderDeliveryServices : Services {
         Order deliveryOrder = await _orderDeliveryServices.NewDeliveryForOrder(1, delivery);
 
         Assert.That(deliveryOrder.Delivery!.IsDelivered, Is.False);
-        Assert.That(deliveryOrder.FoodItems, Has.Count.EqualTo(2));
         Assert.That(deliveryOrder.Delivery!, Is.Not.Null);
     }
 

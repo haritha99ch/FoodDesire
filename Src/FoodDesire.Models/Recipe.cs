@@ -8,7 +8,7 @@ public class Recipe : TrackedEntity {
     public required string Description { get; set; }
     public List<RecipeInstruction> RecipeInstructions { get; set; } = new();
     [Required]
-    public List<Image> Images { get; set; } = new();
+    public virtual List<Image> Images { get; set; } = new();
     [NotMapped]
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
     [Required]

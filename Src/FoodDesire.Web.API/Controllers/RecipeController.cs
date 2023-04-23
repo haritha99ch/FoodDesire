@@ -3,9 +3,11 @@
 [Route("api/[controller]")]
 public class RecipeController : ControllerBase {
     private readonly IRecipeControllerService _recipeControllerService;
+    private readonly ICartControllerService _cartControllerService;
 
-    public RecipeController(IRecipeControllerService recipeControllerService) {
+    public RecipeController(IRecipeControllerService recipeControllerService, ICartControllerService cartControllerService) {
         _recipeControllerService = recipeControllerService;
+        _cartControllerService = cartControllerService;
     }
 
     [HttpGet]
@@ -20,7 +22,10 @@ public class RecipeController : ControllerBase {
     [HttpPost(nameof(AddToCart)), Authorize]
     public async Task<ActionResult<FoodItem>> AddToCart(FoodItem foodItem) {
         string? userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (!foodItem.Order!.CustomerId.Equals(userId)) return BadRequest("You are not authorized to perform this action!");
+        if (foodItem.OrderId != 0) {
+            Order? order = await _cartControllerService.GetOrderAsync((int)foodItem.OrderId!);
+            if (order.CustomerId != int.Parse(userId!)) return BadRequest("You are not authorized to perform this action!");
+        }
         return Ok(await _recipeControllerService.CreateFoodItemAsync(foodItem));
     }
 }

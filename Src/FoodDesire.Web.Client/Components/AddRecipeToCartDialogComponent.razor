@@ -1,0 +1,42 @@
+﻿@using System.Net
+@using System.Text
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer>
+            @if (Loading)
+            {
+                <MudProgressCircular Indeterminate="true"></MudProgressCircular>
+            }
+            else
+            {
+                <MudGrid>
+                    <MudItem xs="12" sm="4">
+                        <MudCarousel ItemsSource="@_recipe.Images" Style="height:200px; width:200px">
+                            <ItemTemplate>
+                                <MudImage Src="@($"data:image/png;base64,{context.Data}")" ObjectFit="ObjectFit.Fill" Fluid="true" Height="200" Width="200" />
+                            </ItemTemplate>
+                        </MudCarousel>
+                    </MudItem>
+                    <MudItem xs="12" sm="8">
+                        <MudText Typo="Typo.h5">@_recipe?.Name</MudText>
+                        <MudText Typo="Typo.body2">@_recipe?.Description</MudText>
+                        <MudText Typo="Typo.h6">Rs. @_recipe?.FixedPrice</MudText>
+                        <MudRating ReadOnly="true" SelectedValue="(_recipe == null)? 0: Recipe.Stars" />
+                        <MudGrid>
+                            <MudItem xs="8" sm="4">
+                                <MudTextField @bind-Value="_quantity" Label="Filled" Variant="Variant.Filled" />
+                                <MudText Typo="Typo.h6">Rs. @(_recipe?.FixedPrice * _quantity)</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    </MudGrid>
+            }
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+
+        <MudButton Color="Color.Primary" OnClick="AddToCart">Add To Cart</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using FoodDesire.Web.Client.Components;
+using MudBlazor;
+using System.Collections.ObjectModel;
 
 namespace FoodDesire.Web.Client.Pages.RecipePages;
 public partial class Index : ComponentBase {
@@ -6,10 +8,13 @@ public partial class Index : ComponentBase {
     private IRecipePageService _RecipePageService { get; set; } = default!;
     [Inject]
     private IComponentCommunicationService<string> _SearchCommunicationService { get; set; } = default!;
+    [Inject]
+    private IDialogService _dialogService { get; set; } = default!;
 
-    private List<RecipeListItem> _recipes = new();
 
     private string? Search { get; set; }
+    private ObservableCollection<RecipeListItem> _recipes = new();
+
 
     protected override async Task OnInitializedAsync() {
         _SearchCommunicationService.OnChange += UpdateSearch;
@@ -18,10 +23,16 @@ public partial class Index : ComponentBase {
         await base.OnInitializedAsync();
     }
 
-
     private async Task UpdateRecipes() {
         _recipes.Clear();
-        _recipes = await _RecipePageService.GetRecipesBySearchAsync(Search) ?? new();
+        List<RecipeListItem> recipes = await _RecipePageService.GetRecipesBySearchAsync(Search) ?? new();
+        recipes.ForEach(_recipes.Add);
+    }
+
+    private async void AddToCart(RecipeListItem recipe) {
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true, };
+        DialogParameters? parameters = new() { [nameof(AddRecipeToCartDialogComponent.Recipe)] = recipe };
+        DialogResult? result = await _dialogService.Show<AddRecipeToCartDialogComponent>("Add To Cart", parameters, maxWidth).Result;
     }
 
     public async void UpdateSearch(string? search) {
@@ -29,11 +40,6 @@ public partial class Index : ComponentBase {
         await UpdateRecipes();
     }
 
-    private void AddToCart(RecipeListItem recipe) {
-        Debug.WriteLine($"Recipe {recipe.Name} was clicked.");
-    }
-
     private void EditAndAddToCart(RecipeListItem recipe) {
-        Debug.WriteLine($"Recipe {recipe.Name} was clicked.");
     }
 }

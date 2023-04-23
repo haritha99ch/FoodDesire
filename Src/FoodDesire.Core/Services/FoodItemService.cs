@@ -38,23 +38,29 @@ public class FoodItemService : IFoodItemService {
 
     public async Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId) {
         Order order = await _orderRepository.GetByID(orderId);
-        List<FoodItem> foodItems = order.FoodItems!.ToList();
+        Expression<Func<FoodItem, bool>> filterExpression = e => e.OrderId == order.Id;
+
+        IQueryable<FoodItem> filter(IQueryable<FoodItem> e) => e.Where(filterExpression);
+
+        List<FoodItem>? foodItems = await _foodItemRepository.Get(filter);
         return foodItems;
     }
     public async Task<FoodItem> UpdateFoodItem(FoodItem foodItem) {
         Recipe recipe = await _recipeService.GetRecipeById(foodItem.RecipeId);
         foodItem.Price = recipe.FixedPrice;
-        foodItem.FoodItemIngredients
-            .ForEach(e => {
-                if (!e.CanModify) return;
-                decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
-                if (!e.IsRequired) {
-                    foodItem.Price += multiplierPrice;
-                    return;
-                }
-                foodItem.Price += (e.Multiplier != 1) ? multiplierPrice - e.PricePerMultiplier : 0;
-            });
-        foodItem.Order!.Price = foodItem.Order.FoodItems!.Sum(e => e.Price);
+        foreach (FoodItemIngredient e in foodItem.FoodItemIngredients) {
+            if (!e.CanModify) continue;
+            decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
+            if (!e.IsRequired) {
+                foodItem.Price += multiplierPrice;
+                continue;
+            }
+            foodItem.Price += (e.Multiplier != 1) ? multiplierPrice - e.PricePerMultiplier : 0;
+        }
+        foodItem = await _foodItemRepository.Update(foodItem);
+        Order order = await _orderRepository.GetByID(foodItem.OrderId);
+        List<FoodItem>? foodItems = await GetAllFoodItemsForOrder(order.Id);
+        order!.Price = foodItems.Sum(e => e.Price * e.Quantity);
         FoodItem updatedFoodItem = await _foodItemRepository.Update(foodItem);
         return updatedFoodItem;
     }
@@ -74,8 +80,10 @@ public class FoodItemService : IFoodItemService {
         foodItem = await _foodItemRepository.Update(foodItem);
 
         Order order = await _orderRepository.GetByID(foodItem.OrderId);
+
+        List<FoodItem>? foodItems = await GetAllFoodItemsForOrder(order.Id);
         order.Status = OrderStatus.Prepared;
-        order.FoodItems!.ForEach(e => {
+        foodItems?.ForEach(e => {
             if (e.Status == FoodItemStatus.Preparing) order.Status = OrderStatus.Preparing;
         });
         await _orderRepository.Update(order);

@@ -25,7 +25,7 @@ public class OrderService : IOrderService {
         Expression<Func<Order, bool>> filterExpression = e => e.Status != OrderStatus.Delivered && e.Status != OrderStatus.Pending;
 
         IIncludableQueryable<Order, object?> include(IQueryable<Order> e) =>
-            e.Include(e => e.Delivery).Include(e => e.Customer).Include(e => e.FoodItems);
+            e.Include(e => e.Delivery).Include(e => e.Customer);
         IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
@@ -42,7 +42,7 @@ public class OrderService : IOrderService {
         IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
 
         IIncludableQueryable<Order, object?> include(IQueryable<Order> e) =>
-            e.Include(e => e.Delivery).Include(e => e.Customer).Include(e => e.FoodItems);
+            e.Include(e => e.Delivery).Include(e => e.Customer);
 
         Order order = await _orderRepository.GetOne(filter, include);
         return order;

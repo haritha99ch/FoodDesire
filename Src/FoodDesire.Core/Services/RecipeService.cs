@@ -34,6 +34,17 @@ public class RecipeService : IRecipeService {
         return recipe;
     }
 
+    public async Task<Recipe> GetRecipeById(int recipeId, bool menuItems) {
+        Expression<Func<Recipe, bool>> filterExpression = e => e.Id == recipeId;
+
+        IQueryable<Recipe> filter(IQueryable<Recipe> e) => e.Where(filterExpression);
+        IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
+            e.Include(e => e.Images!).Include(e => e.RecipeCategory!);
+
+        Recipe recipe = await _recipeRepository.GetOne(filter, include);
+        return recipe;
+    }
+
     public async Task<List<Recipe>> GetAllRecipesWithCategory() {
         IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
             e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));

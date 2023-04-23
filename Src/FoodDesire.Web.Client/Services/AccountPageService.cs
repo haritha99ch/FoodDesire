@@ -1,11 +1,7 @@
 ﻿namespace FoodDesire.Web.Client.Services;
-public class AccountPageService : IAccountPageService {
-    private readonly HttpClient _httpClient;
-    private readonly IAuthenticationService _authenticationService;
+public class AccountPageService : AuthorizedService, IAccountPageService {
 
-    public AccountPageService(HttpClient httpClient, IAuthenticationService authenticationService) {
-        _httpClient = httpClient;
-        _authenticationService = authenticationService;
+    public AccountPageService(HttpClient httpClient, IAuthenticationService authenticationService) : base(httpClient, authenticationService) {
     }
 
     public async Task<bool> Delete() {
@@ -37,13 +33,5 @@ public class AccountPageService : IAccountPageService {
     public async Task<Customer?> SignUp(User user) {
         HttpResponseMessage? response = await _httpClient.PostAsJsonAsync("/api/Account/SignUp", user);
         return response.StatusCode != HttpStatusCode.OK ? null : await response.Content.ReadFromJsonAsync<Customer>();
-    }
-
-    private async Task<HttpClient> AddAuthorizationHeader() {
-        var token = await _authenticationService.GetAccessTokenAsync();
-        if (!string.IsNullOrEmpty(token)) {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
-        return _httpClient;
     }
 }

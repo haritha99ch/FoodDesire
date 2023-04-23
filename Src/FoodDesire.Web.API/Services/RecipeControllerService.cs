@@ -8,7 +8,7 @@ public class RecipeControllerService : IRecipeControllerService {
         _foodItemService = foodItemService;
     }
 
-    public async Task<Recipe> GetRecipeByIdAsync(int id) => await _recipeService.GetRecipeById(id);
+    public async Task<Recipe> GetRecipeByIdAsync(int id) => await _recipeService.GetRecipeById(id, true);
 
     public async Task<IEnumerable<Recipe>> GetRecipesAsync() => await _recipeService.GetAllRecipesWithCategory(true);
 

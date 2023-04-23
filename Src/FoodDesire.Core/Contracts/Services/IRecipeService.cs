@@ -3,6 +3,7 @@ public interface IRecipeService {
     Task<Recipe> NewRecipe(Recipe recipe);
     Task<RecipeCategory> NewRecipeCategory(RecipeCategory recipeCategory);
     Task<Recipe> GetRecipeById(int recipeId);
+    Task<Recipe> GetRecipeById(int recipeId, bool menuItems = true);
     Task<List<Recipe>> GetAllRecipesWithCategory();
     Task<List<RecipeCategory>> GetAllRecipeCategories();
     Task<RecipeCategory> GetRecipeCategoryById(int categoryId);

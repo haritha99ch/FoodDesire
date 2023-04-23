@@ -52,10 +52,10 @@ public class ApplicationDbContext : DbContext {
                 (c1, c2) => c1!.SequenceEqual(c2!),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList()));
-        modelBuilder.Entity<FoodItem>()
-            .HasOne(e => e.Recipe)
-            .WithOne()
-            .OnDelete(DeleteBehavior.ClientSetNull);
+        //modelBuilder.Entity<FoodItem>()
+        //    .HasOne(e => e.Recipe)
+        //    .WithOne()
+        //    .OnDelete(DeleteBehavior.ClientSetNull);
         modelBuilder.Entity<Account>()
             .HasIndex(e => e.Email)
             .IsUnique();
@@ -78,9 +78,9 @@ public class ApplicationDbContext : DbContext {
             .HasConversion(
                 e => JsonConvert.SerializeObject(e),
                 e => JsonConvert.DeserializeObject<Address>(e));
-        modelBuilder.Entity<FoodItem>()
-            .HasOne(fi => fi.Recipe)
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+        //modelBuilder.Entity<FoodItem>()
+        //    .HasOne(fi => fi.Recipe)
+        //    .WithOne()
+        //    .OnDelete(DeleteBehavior.Cascade);
     }
 }
