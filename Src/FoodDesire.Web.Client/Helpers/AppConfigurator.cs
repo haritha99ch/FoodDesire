@@ -12,6 +12,7 @@ internal static class AppConfigurator {
 
         services.AddTransient<IHomePageService, HomePageService>();
         services.AddTransient<IRecipePageService, RecipePageService>();
+        services.AddTransient<ICartPageService, CartPageService>();
         services.AddSingleton(typeof(IComponentCommunicationService<>), typeof(ComponentCommunicationService<>));
         services.AddBlazoredLocalStorageAsSingleton();
         services.AddSingleton<IAuthenticationService, AuthenticationService>();

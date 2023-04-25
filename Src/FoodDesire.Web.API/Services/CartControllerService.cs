@@ -27,4 +27,5 @@ public class CartControllerService : ICartControllerService {
     public async Task<Order> PayForOrderAsync(int orderId) => await _paymentService.PaymentForOrder(orderId);
 
     public async Task<bool> RemoveFoodItem(int foodItemId) => await _foodItemService.RemoveFoodItem(foodItemId);
+    public async Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId) => await _foodItemService.GetAllFoodItemsForOrder(orderId);
 }

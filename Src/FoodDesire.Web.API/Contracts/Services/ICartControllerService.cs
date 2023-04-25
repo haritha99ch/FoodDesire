@@ -7,4 +7,5 @@ public interface ICartControllerService {
     Task<Order> PayForOrderAsync(int orderId);
     Task<bool> RemoveFoodItem(int foodItemId);
     Task<FoodItem> GetFoodItemByIdAsync(int foodItemId);
+    Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId);
 }

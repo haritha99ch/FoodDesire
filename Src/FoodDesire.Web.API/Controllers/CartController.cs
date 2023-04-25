@@ -2,10 +2,10 @@
 [ApiController]
 [Route("api/[controller]"), Authorize]
 public class CartController : ControllerBase {
-    private readonly ICartControllerService _chartControllerService;
+    private readonly ICartControllerService _cartControllerService;
 
     public CartController(ICartControllerService orderControllerService) {
-        _chartControllerService = orderControllerService;
+        _cartControllerService = orderControllerService;
     }
 
     [HttpGet(nameof(Index))]
@@ -13,64 +13,75 @@ public class CartController : ControllerBase {
         string? userId = GetUserId();
         return userId == null
             ? BadRequest("Could not find user!")
-            : Ok(await _chartControllerService.GetPendingOrderAsync(int.Parse(userId)));
+            : Ok(await _cartControllerService.GetPendingOrderAsync(int.Parse(userId)));
     }
 
-    [HttpGet(nameof(orderId))]
+    [HttpGet(nameof(Details))]
     public async Task<ActionResult<Order>> Details(int orderId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
 
-        Order order = await _chartControllerService.GetOrderAsync(orderId);
+        Order order = await _cartControllerService.GetOrderAsync(orderId);
         if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to view this order!");
 
-        return Ok(await _chartControllerService.GetOrderAsync(orderId));
+        return Ok(await _cartControllerService.GetOrderAsync(orderId));
     }
 
     [HttpPost]
     public async Task<ActionResult<Order>> CreateOrder(Order order) {
-        return Ok(await _chartControllerService.CreateOrderAsync(order));
+        return Ok(await _cartControllerService.CreateOrderAsync(order));
     }
 
-    [HttpPatch($"{nameof(orderId)}/{nameof(Pay)}")]
+    [HttpPatch({nameof(Pay))]
     public async Task<ActionResult<Order>> Pay(int orderId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
 
-        Order order = await _chartControllerService.GetOrderAsync(orderId);
+        Order order = await _cartControllerService.GetOrderAsync(orderId);
         if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to pay this order!");
 
         //TODO: implement payment gateway
         //TODO: Implement email service
-        return Ok(await _chartControllerService.PayForOrderAsync(orderId));
+        return Ok(await _cartControllerService.PayForOrderAsync(orderId));
     }
 
-    [HttpDelete($"{nameof(orderId)}/{nameof(Cancel)}")]
+    [HttpDelete(nameof(Cancel))]
     public async Task<ActionResult<bool>> Cancel(int orderId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
 
-        Order order = await _chartControllerService.GetOrderAsync(orderId);
+        Order order = await _cartControllerService.GetOrderAsync(orderId);
         if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to cancel this order!");
 
-        return Ok(await _chartControllerService.CancelOrderAsync(orderId));
+        return Ok(await _cartControllerService.CancelOrderAsync(orderId));
     }
 
-    [HttpPatch($"{nameof(RemoveFoodItem)}/{nameof(foodItemId)}")]
+    [HttpGet(nameof(GetFoodItems))]
+    public async Task<ActionResult<List<FoodItem>>> GetFoodItems(int orderId) {
+        string? userId = GetUserId();
+        if (userId == null) return BadRequest("Could not find user!");
+
+        Order order = await _cartControllerService.GetOrderAsync(orderId);
+        if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to cancel this order!");
+
+        return Ok(await _cartControllerService.GetAllFoodItemsForOrder(orderId));
+    }
+
+    [HttpPatch(nameof(RemoveFoodItem))]
     public async Task<ActionResult<bool>> RemoveFoodItem(int foodItemId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
 
-        Order? order = await _chartControllerService.GetPendingOrderAsync(int.Parse(userId));
+        Order? order = await _cartControllerService.GetPendingOrderAsync(int.Parse(userId));
         if (order == null) return BadRequest("Could not find order!");
 
 
-        FoodItem? foodItem = await _chartControllerService.GetFoodItemByIdAsync(foodItemId);
+        FoodItem? foodItem = await _cartControllerService.GetFoodItemByIdAsync(foodItemId);
         if (foodItem == null) return BadRequest("Could not find food item!");
 
         if (foodItem.OrderId != order.Id) return BadRequest("You are not authorized to remove this food item!");
 
-        bool foodItemDelete = await _chartControllerService.RemoveFoodItem(foodItemId);
+        bool foodItemDelete = await _cartControllerService.RemoveFoodItem(foodItemId);
         return foodItemDelete ? Ok(foodItemDelete) : BadRequest(foodItemDelete);
     }
 

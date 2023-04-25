@@ -41,8 +41,10 @@ public class FoodItemService : IFoodItemService {
         Expression<Func<FoodItem, bool>> filterExpression = e => e.OrderId == order.Id;
 
         IQueryable<FoodItem> filter(IQueryable<FoodItem> e) => e.Where(filterExpression);
+        IIncludableQueryable<FoodItem, object> include(IQueryable<FoodItem> e) =>
+            e.Include(e => e.Recipe).ThenInclude(e => e!.Images.Take(1));
 
-        List<FoodItem>? foodItems = await _foodItemRepository.Get(filter);
+        List<FoodItem>? foodItems = await _foodItemRepository.Get(filter: filter, include: include);
         return foodItems;
     }
     public async Task<FoodItem> UpdateFoodItem(FoodItem foodItem) {
