@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Models;
-public sealed class FoodItemIngredient {
+public class FoodItemIngredient {
     [AllowNull]
     public int? Recipe_Id { get; set; }
     [AllowNull]

@@ -41,5 +41,11 @@ public partial class Index : ComponentBase {
     }
 
     private void EditAndAddToCart(RecipeListItem recipe) {
+        DialogOptions maxWidth = new DialogOptions() {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+        };
+        DialogParameters? parameters = new() { [nameof(EditAndAddRecipeToCartDialogComponent.Recipe)] = recipe };
+        _dialogService.Show<EditAndAddRecipeToCartDialogComponent>("Edit And Add To Cart", parameters, maxWidth);
     }
 }

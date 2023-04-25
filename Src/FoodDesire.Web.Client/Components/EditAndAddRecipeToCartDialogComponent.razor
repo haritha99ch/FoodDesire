@@ -1,0 +1,83 @@
+﻿@using System.Net
+@using System.Text
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer>
+            @if (_loading)
+            {
+                <MudProgressCircular Indeterminate="true"></MudProgressCircular>
+            }
+            else
+            {
+                <MudGrid>
+                    <MudItem xs="12" sm="4">
+                        <MudCarousel ItemsSource="@_recipe.Images" Style="height:200px; width:200px">
+                            <ItemTemplate>
+                                <MudImage Src="@($"data:image/png;base64,{context.Data}")" ObjectFit="ObjectFit.Fill" Fluid="true" Height="200" Width="200" />
+                            </ItemTemplate>
+                        </MudCarousel>
+                    </MudItem>
+                    <MudItem xs="12" sm="8">
+                        <MudText Typo="Typo.h5">@_recipe?.Name</MudText>
+                        <MudText Typo="Typo.body2">@_recipe?.Description</MudText>
+                        <MudText Typo="Typo.h6">Rs. @_recipe?.FixedPrice</MudText>
+                        <MudRating ReadOnly="true" SelectedValue="(_recipe == null)? 0: Recipe.Stars" />
+                        <MudGrid>
+                            <MudItem xs="8" sm="4">
+                                <MudTextField @bind-Value="@_foodItem!.Quantity" Label="Filled" Variant="Variant.Filled" />
+                                <MudText Typo="Typo.h6">Rs. @(_foodItem.Price * _foodItem!.Quantity)</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                        <MudItem xs="12" sm="12">
+                            <MudGrid>
+                                @foreach (FoodItemIngredientDetail item in _foodItems)
+                            {
+                                @if (item.CanModify)
+                                {
+                                    @*Recipe/ Ingredient name and user can edit the amount by using a slider*@
+                                    <MudItem xs="12" sm="12">
+                                        <MudGrid>
+                                            <MudItem xs="12" sm="6">
+                                                <MudText Typo="Typo.h6">@item.Ingredient_Name@item.Recipe_Name</MudText>
+                                            </MudItem>
+                                            <MudItem xs="12" sm="6">
+                                                <MudSlider  Value="@item.Multiplier"
+                                                            ValueChanged="(double v) => OnSliderValueChanged(item, v)"
+                                                            Min="0.5" Max="@(item.RecommendedMultiplier*2)" 
+                                                            Variant="Variant.Filled"
+                                                            Step="0.5">X @item.Multiplier</MudSlider>
+                                            </MudItem>
+                                        </MudGrid>
+                                    </MudItem>
+                                }
+                            }
+                        </MudGrid>
+                    </MudItem>
+                </MudGrid>
+            }
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+
+        <MudButton Color="Color.Primary" OnClick="AddToCart">Add To Cart</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private void OnSliderValueChanged(FoodItemIngredientDetail item, double value){
+        item.Multiplier = value;
+        _foodItem!.Price = _recipe.FixedPrice;
+        foreach (FoodItemIngredient e in _foodItems) {
+            if (!e.CanModify) continue;
+            decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
+            if (!e.IsRequired) {
+                _foodItem.Price += multiplierPrice;
+                continue;
+            }
+            _foodItem.Price += (e.Multiplier != 1) ? multiplierPrice - e.PricePerMultiplier : 0;
+        }
+    }
+}

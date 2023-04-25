@@ -100,23 +100,30 @@ public class RecipeService : IRecipeService {
     public async Task<Recipe> UpdateRecipe(Recipe recipe) {
         if (recipe.RecipeIngredients.Count == 0)
             return await _recipeRepository.Update(recipe);
+        decimal profit = 0;
+        if (!(recipe.MinimumPrice == 0 || recipe.FixedPrice == 0)) {
+            profit = (recipe.FixedPrice - recipe.MinimumPrice) / recipe.MinimumPrice * 100;
+        }
         recipe.MinimumPrice = decimal.Zero;
         foreach (var recipeIngredient in recipe.RecipeIngredients) {
             if (recipeIngredient.Recipe_Id != null) {
                 Recipe recipeFromIngredient = await _recipeRepository.GetByID(recipeIngredient.Recipe_Id);
                 recipeIngredient.Value = (decimal)((double)recipeFromIngredient.FixedPrice * recipeIngredient.Amount);
-                recipeIngredient.PricePerMultiplier = recipeFromIngredient.FixedPrice;
+                recipeIngredient.PricePerMultiplier = Math.Round(recipeFromIngredient.FixedPrice * (1 + profit / 100), 2);
                 recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(Convert.ToDouble(recipeFromIngredient.FixedPrice) * recipeIngredient.Amount);
                 continue;
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
             recipeIngredient.Value = (decimal)((double)ingredient.CurrentPricePerUnit * recipeIngredient.Amount);
-            recipeIngredient.PricePerMultiplier = await SetMinimumPricePerMultiplier(recipeIngredient);
+            recipeIngredient.PricePerMultiplier = Math.Round(ingredient.CurrentPricePerUnit * (1 + profit / 100), 2);
             recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
         }
         if (recipe.FixedPrice < recipe.MinimumPrice)
             recipe.FixedPrice = recipe.MinimumPrice;
-
+        if (profit == 0) {
+            recipe = await _recipeRepository.Update(recipe);
+            await UpdateRecipe(recipe);
+        }
         return await _recipeRepository.Update(recipe);
     }
 

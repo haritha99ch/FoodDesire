@@ -66,7 +66,6 @@ public partial class RecipeIngredientForm : ObservableObject {
             if (Amount == 0) return false;
             if (!CanModify) return true;
             if (CanModify && RecommendedAmount <= Amount) return false;
-            if (!UpdateRecipeIngredientPricePerMultiplier) return false;
             return true;
         }
     }
@@ -105,24 +104,4 @@ public partial class RecipeIngredientForm : ObservableObject {
     [ObservableProperty]
     private double _value = 0;
     public bool SelectedIngredientIsRaw => SelectedIngredient != null;
-
-    public bool UpdateRecipeIngredientPricePerMultiplier {
-        get {
-            try {
-                if (SelectedIngredient != null) {
-                    double price = Amount * (double)SelectedIngredient.CurrentPricePerUnit;
-                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
-                    return true;
-                }
-                if (SelectedRecipeAsIngredient != null) {
-                    double price = Amount * (double)SelectedRecipeAsIngredient.FixedPrice;
-                    PricePerMultiplier = (PricePerMultiplier < price) ? price : PricePerMultiplier;
-                    return true;
-                }
-            } catch (Exception) {
-                return false;
-            }
-            return true;
-        }
-    }
 }
