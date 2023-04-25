@@ -63,6 +63,7 @@ public partial class RecipeIngredientForm : ObservableObject {
     public bool IsAddRecipeIngredientButtonEnabled {
         get {
             if (SelectedIngredient == null && SelectedRecipeAsIngredient == null) return false;
+            if (!IsRequired && CanModify) return true;
             if (Amount == 0) return false;
             if (!CanModify) return true;
             if (CanModify && RecommendedAmount <= Amount) return false;

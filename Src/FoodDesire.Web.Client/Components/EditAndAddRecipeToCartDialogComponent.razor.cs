@@ -44,9 +44,10 @@ public partial class EditAndAddRecipeToCartDialogComponent {
                 Recipe_Id = e.Recipe_Id,
                 Recipe_Name = e.Recipe_Name,
                 IsRequired = e.IsRequired,
-                Multiplier = 1,
+                Multiplier = (!e.IsRequired) ? 0 : 1,
                 PricePerMultiplier = e.PricePerMultiplier,
-                RecommendedMultiplier = e.RecommendedAmount / e.Amount
+                RecommendedMultiplier = e.RecommendedAmount / e.Amount,
+                Measurement = e.Measurement,
             });
         });
     }

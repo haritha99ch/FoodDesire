@@ -1,8 +1,8 @@
 ﻿namespace FoodDesire.ML.Model.Services;
 public class PredictionService : IPredictionService {
-    private PredictionEngine<RecipeReview, RecipePrediction>? _predictionEngine;
+    private PredictionEngine<PredictRating, RecipePrediction>? _predictionEngine;
     private readonly MLContext _mlContext;
-    protected static string _modelPath => Path.Combine(AppContext.BaseDirectory, "recommender.mdl");
+    protected static string _modelPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "FoodDesire.ML.Model", "bin", "Debug", "net7.0", "recommender.mdl");
     private ITransformer? _model;
 
     public PredictionService() {
@@ -22,7 +22,7 @@ public class PredictionService : IPredictionService {
         }
         if (_model == null) throw new Exception($"Failed to load Model");
 
-        _predictionEngine = _mlContext.Model.CreatePredictionEngine<RecipeReview, RecipePrediction>(_model);
+        _predictionEngine = _mlContext.Model.CreatePredictionEngine<PredictRating, RecipePrediction>(_model);
     }
 
     public bool EnsureModelLoaded() {

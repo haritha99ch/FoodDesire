@@ -5,7 +5,7 @@ internal class RecommendationService : IRecommendationService {
 
     private readonly MLContext _mlContext;
     private IDataView? _data;
-    private PredictionEngine<RecipeReview, RecipePrediction>? _predictionEngine;
+    private PredictionEngine<PredictRating, RecipePrediction>? _predictionEngine;
     private ITransformer? _model;
     private TrainTestData _splitData;
     protected static string _modelPath => Path.Combine(AppContext.BaseDirectory, "recommender.mdl");
@@ -41,13 +41,14 @@ internal class RecommendationService : IRecommendationService {
         var metrics = _mlContext.Regression.Evaluate(predictions, labelColumnName: "Rating");
         Console.WriteLine(metrics);
 
-        _predictionEngine = _mlContext.Model.CreatePredictionEngine<RecipeReview, RecipePrediction>(_model);
+        _predictionEngine = _mlContext.Model.CreatePredictionEngine<PredictRating, RecipePrediction>(_model);
 
         //TODO: Evaluate model
     }
 
     public void SaveModel() {
         _mlContext.Model.Save(_model, _splitData.TrainSet.Schema, _modelPath);
+        Console.WriteLine(_modelPath);
     }
 }
 

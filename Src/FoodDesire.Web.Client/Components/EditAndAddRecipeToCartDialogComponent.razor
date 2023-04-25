@@ -41,13 +41,15 @@
                                         <MudGrid>
                                             <MudItem xs="12" sm="6">
                                                 <MudText Typo="Typo.h6">@item.Ingredient_Name@item.Recipe_Name</MudText>
+                                                <MudText>@item.Amount @item.Measurement</MudText>
                                             </MudItem>
                                             <MudItem xs="12" sm="6">
                                                 <MudSlider  Value="@item.Multiplier"
+                                                            TickMarks="true" TickMarkLabels="@(GenerateTickMarkLabels((item.IsRequired)? 0.5: 0, (item.RecommendedMultiplier*2), 0.5))"
                                                             ValueChanged="(double v) => OnSliderValueChanged(item, v)"
-                                                            Min="0.5" Max="@(item.RecommendedMultiplier*2)" 
+                                                            Min="@((item.IsRequired)? 0.5: 0)" Max="@(item.RecommendedMultiplier*2)" 
                                                             Variant="Variant.Filled"
-                                                            Step="0.5">X @item.Multiplier</MudSlider>
+                                                            Step="0.5"/>
                                             </MudItem>
                                         </MudGrid>
                                     </MudItem>
@@ -67,6 +69,17 @@
 </MudDialog>
 
 @code {
+    private string[] GenerateTickMarkLabels(double min, double max, double step){
+        int numberOfLabels = (int)((max - min) / step) + 1;
+        string[] labels = new string[numberOfLabels];
+        for (int i = 0; i < numberOfLabels; i++)
+        {
+            labels[i] = (min + i * step).ToString();
+        }
+        return labels;
+    }
+
+
     private void OnSliderValueChanged(FoodItemIngredientDetail item, double value){
         item.Multiplier = value;
         _foodItem!.Price = _recipe.FixedPrice;

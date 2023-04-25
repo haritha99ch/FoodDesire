@@ -10,6 +10,7 @@ internal static class AppConfigurator {
         IMapper? mapper = configuration.CreateMapper();
         services.AddSingleton(mapper);
 
+        services.AddTransient<IHomePageService, HomePageService>();
         services.AddTransient<IRecipePageService, RecipePageService>();
         services.AddSingleton(typeof(IComponentCommunicationService<>), typeof(ComponentCommunicationService<>));
         services.AddBlazoredLocalStorageAsSingleton();

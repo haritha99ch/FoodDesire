@@ -109,12 +109,14 @@ public class RecipeService : IRecipeService {
             if (recipeIngredient.Recipe_Id != null) {
                 Recipe recipeFromIngredient = await _recipeRepository.GetByID(recipeIngredient.Recipe_Id);
                 recipeIngredient.Value = (decimal)((double)recipeFromIngredient.FixedPrice * recipeIngredient.Amount);
+                recipeIngredient.Measurement = Measurement.Each;
                 recipeIngredient.PricePerMultiplier = Math.Round(recipeFromIngredient.FixedPrice * (1 + profit / 100), 2);
                 recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : Convert.ToDecimal(Convert.ToDouble(recipeFromIngredient.FixedPrice) * recipeIngredient.Amount);
                 continue;
             }
             Ingredient ingredient = await _ingredientRepository.GetByID(recipeIngredient.Ingredient_Id);
             recipeIngredient.Value = (decimal)((double)ingredient.CurrentPricePerUnit * recipeIngredient.Amount);
+            recipeIngredient.Measurement = ingredient.Measurement;
             recipeIngredient.PricePerMultiplier = Math.Round(ingredient.CurrentPricePerUnit * (1 + profit / 100), 2);
             recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
         }

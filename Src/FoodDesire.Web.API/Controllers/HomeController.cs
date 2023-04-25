@@ -8,7 +8,7 @@ public class HomeController : ControllerBase {
         _homeControllerService = homeControllerService;
     }
 
-    [HttpGet]
+    [HttpGet(nameof(Index))]
     public async Task<ActionResult<IEnumerable<Recipe>>> Index() {
         string? userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         return Ok(string.IsNullOrEmpty(userId) ? await _homeControllerService.GetTop10Recipes()
