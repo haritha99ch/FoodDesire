@@ -47,4 +47,13 @@ public class OrderService : IOrderService {
         Order order = await _orderRepository.GetOne(filter, include);
         return order;
     }
+
+    public async Task<List<Order>> GetAllCustomerOrders(int customerId) {
+        Expression<Func<Order, bool>> filterExpression = e => e.CustomerId == customerId;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+
+        List<Order> orders = await _orderRepository.Get(filter);
+        return orders;
+    }
 }

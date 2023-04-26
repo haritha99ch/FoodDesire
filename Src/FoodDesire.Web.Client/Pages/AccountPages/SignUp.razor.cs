@@ -1,7 +1,7 @@
 using MudBlazor;
 using System.Text.RegularExpressions;
 
-namespace FoodDesire.Web.Client.Pages.Account;
+namespace FoodDesire.Web.Client.Pages.AccountPages;
 public partial class SignUp {
     [Inject]
     private NavigationManager _navigationManager { get; set; } = default!;

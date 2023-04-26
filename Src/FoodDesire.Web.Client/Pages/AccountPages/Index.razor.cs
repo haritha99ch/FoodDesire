@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace FoodDesire.Web.Client.Pages.Account;
+namespace FoodDesire.Web.Client.Pages.AccountPages;
 public partial class Index : ComponentBase {
     [Inject]
     private NavigationManager _navigationManager { get; set; } = default!;

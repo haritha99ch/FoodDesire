@@ -1,0 +1,38 @@
+﻿@page "/Order/Index"
+@page "/Order"
+
+<MudContainer>
+    <MudPaper Class="pa-4">
+        <MudSimpleTable Style="overflow-y: scroll;">
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Ordered Date & Time</th>
+                    <th>Total</th>
+                    <th>Order Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @if (_loading)
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+            }
+            <tbody>
+                @foreach (var item in _orders)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.DateTime</td>
+                        <td>Rs. @item.Price</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Visibility" aria-label="View" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudPaper>
+</MudContainer>
+
+

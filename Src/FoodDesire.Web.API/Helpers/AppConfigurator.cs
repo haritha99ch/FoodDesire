@@ -18,5 +18,6 @@ internal static class AppConfigurator {
         builder.Services.AddTransient<IRecipeControllerService, RecipeControllerService>();
         builder.Services.AddTransient<ICartControllerService, CartControllerService>();
         builder.Services.AddTransient<IAccountControllerService, AccountControllerService>();
+        builder.Services.AddTransient<IOrderControllerService, OrderControllerService>();
     }
 }

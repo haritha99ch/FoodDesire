@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace FoodDesire.Web.Client.Pages.Cart;
+namespace FoodDesire.Web.Client.Pages.CartPages;
 public partial class Index : ComponentBase {
     [Inject] private ICartPageService _cartPageService { get; set; } = default!;
     [Inject] private IAuthenticationService _authenticationService { get; set; } = default!;

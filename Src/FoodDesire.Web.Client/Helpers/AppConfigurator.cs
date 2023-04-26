@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FoodDesire.Web.Client.Services;
+﻿using FoodDesire.Web.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FoodDesire.Web.Client.Helpers;
@@ -18,5 +17,6 @@ internal static class AppConfigurator {
         services.AddSingleton<IAuthenticationService, AuthenticationService>();
         services.AddScoped<AuthenticationStateProvider, UserAuthenticationStateProvider>();
         services.AddTransient<IAccountPageService, AccountPageService>();
+        services.AddTransient<IOrderPageService, OrderPageService>();
     }
 }

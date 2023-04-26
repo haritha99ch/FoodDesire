@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 
-namespace FoodDesire.Web.Client.Pages.Account;
+namespace FoodDesire.Web.Client.Pages.AccountPages;
 public partial class SignIn : ComponentBase {
     [Inject]
     private NavigationManager _navigationManager { get; set; } = default!;
