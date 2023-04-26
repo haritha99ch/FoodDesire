@@ -22,8 +22,9 @@ public class PaymentService : IPaymentService {
         order.Payment = new Payment() {
             OrderId = orderId,
             Value = (order.Delivery == null) ? order.Price : order.Price + order.Delivery.Fee,
-            PaymentType = PaymentType.Order
+            PaymentType = PaymentType.Order,
         };
+        order.Status = OrderStatus.Ordered;
         order = await _orderRepository.Update(order);
         return order;
     }

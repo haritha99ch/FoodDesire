@@ -1,0 +1,23 @@
+﻿<td>
+    <MudImage Src="@($"data:image/png;base64,{FoodItem?.Recipe?.Images[0]?.Data}")" Style="height:50px" ObjectFit="ObjectFit.Fill" Fluid="true" />
+</td>
+<td>
+    <MudText>@FoodItem?.Recipe?.Name </MudText>
+</td>
+<td>
+    <MudText>X @FoodItem?.Quantity</MudText>
+</td>
+<td>
+    <MudText>Rs. @FoodItem?.Price</MudText>
+</td>
+<td>
+    <MudText>Rs. @(FoodItem?.Price * FoodItem?.Quantity)</MudText>
+    </td>
+    <td>
+        <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Edit" OnClick="Edit" aria-label="delete" />
+    </td>
+    <td>
+        <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="Delete" aria-label="delete" />
+    </td>
+
+

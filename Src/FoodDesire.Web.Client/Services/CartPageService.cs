@@ -19,17 +19,17 @@ public class CartPageService : AuthorizedService, ICartPageService {
     }
 
     public async Task<Order> PayForOrderAsync(int orderId) {
-        HttpResponseMessage response = await (await AddAuthorizationHeader()).GetAsync($"api/Cart/Pay?orderId={orderId}");
+        HttpResponseMessage response = await (await AddAuthorizationHeader()).PatchAsync($"api/Cart/Pay?orderId={orderId}", null);
         return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadFromJsonAsync<Order>() ?? null!;
     }
 
     public async Task<bool> RemoveFoodItemByIdAsync(int foodItemId) {
-        HttpResponseMessage response = await (await AddAuthorizationHeader()).GetAsync($"api/Cart/RemoveFoodItem?foodItemId={orderId}");
+        HttpResponseMessage response = await (await AddAuthorizationHeader()).DeleteAsync($"api/Cart/RemoveFoodItem?foodItemId={foodItemId}");
         return response.StatusCode != HttpStatusCode.OK ? false! : await response.Content.ReadFromJsonAsync<bool>();
     }
 
-    public async Task<List<FoodItem>> GetFoodItemsForOrderAsync(int orderId) {
+    public async Task<List<FoodItemListDetail>> GetFoodItemsForOrderAsync(int orderId) {
         HttpResponseMessage response = await (await AddAuthorizationHeader()).GetAsync($"api/Cart/GetFoodItems?orderId={orderId}");
-        return response.StatusCode != HttpStatusCode.OK ? new() : await response.Content.ReadFromJsonAsync<List<FoodItem>>() ?? new();
+        return response.StatusCode != HttpStatusCode.OK ? new() : await response.Content.ReadFromJsonAsync<List<FoodItemListDetail>>() ?? new();
     }
 }

@@ -164,7 +164,7 @@ public class RecipeService : IRecipeService {
 
     public async Task<List<Recipe>> SearchRecipes(string value) {
         if (string.IsNullOrEmpty(value)) return await GetAllRecipesWithCategory();
-        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.StartsWith(value);
+        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.Contains(value);
 
         IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
             e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));
@@ -204,7 +204,7 @@ public class RecipeService : IRecipeService {
 
     public async Task<List<Recipe>> SearchRecipes(string value, bool menuItems) {
         if (string.IsNullOrEmpty(value)) return await GetAllRecipesWithCategory();
-        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.StartsWith(value) && e.IsMenuItem;
+        Expression<Func<Recipe, bool>> filterExpression = e => e.Name.Contains(value) && e.IsMenuItem;
 
         IIncludableQueryable<Recipe, object> include(IQueryable<Recipe> e) =>
             e.Include(e => e.RecipeCategory!).Include(e => e.Images.Take(1));

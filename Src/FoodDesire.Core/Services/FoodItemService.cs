@@ -94,7 +94,15 @@ public class FoodItemService : IFoodItemService {
     }
 
     public async Task<bool> RemoveFoodItem(int foodItemId) {
+        FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
+        Order order = await _orderRepository.GetByID(foodItem.OrderId);
         bool foodItemDeleted = await _foodItemRepository.Delete(foodItemId);
+
+        List<FoodItem>? foodItems = await GetAllFoodItemsForOrder(order.Id);
+        if (foodItems.Count == 0) return await _orderRepository.Delete(order.Id);
+        order!.Price = foodItems.Sum(e => e.Price * e.Quantity);
+
+        order = await _orderRepository.Update(order);
         return foodItemDeleted;
     }
 

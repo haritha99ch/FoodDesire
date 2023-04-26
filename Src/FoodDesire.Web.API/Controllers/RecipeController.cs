@@ -22,7 +22,7 @@ public class RecipeController : ControllerBase {
     [HttpPost(nameof(AddToCart)), Authorize]
     public async Task<ActionResult<FoodItem>> AddToCart(FoodItem foodItem) {
         string? userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        if (foodItem.OrderId != 0 || foodItem.OrderId != null) {
+        if (foodItem.Order == null) {
             Order? order = await _cartControllerService.GetOrderAsync((int)foodItem.OrderId!);
             if (order.CustomerId != int.Parse(userId!)) return BadRequest("You are not authorized to perform this action!");
         }

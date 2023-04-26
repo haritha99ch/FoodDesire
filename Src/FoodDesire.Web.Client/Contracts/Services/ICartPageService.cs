@@ -5,5 +5,5 @@ public interface ICartPageService {
     Task<Order> PayForOrderAsync(int orderId);
     Task<bool> CancelOrderAsync(int orderId);
     Task<bool> RemoveFoodItemByIdAsync(int foodItemId);
-    Task<List<FoodItem>> GetFoodItemsForOrderAsync(int orderId);
+    Task<List<FoodItemListDetail>> GetFoodItemsForOrderAsync(int orderId);
 }

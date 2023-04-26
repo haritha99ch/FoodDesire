@@ -1,6 +1,88 @@
-﻿@page "/Cart/Index"
+﻿@using FoodDesire.Web.Client.Components;
+@using Microsoft.AspNetCore.Components.Forms
+@page "/Cart/Index"
 @page "/Cart"
 
-<h3>Cart Index</h3>
+<MudContainer>
+    <MudText Typo="Typo.h3">Cart</MudText>
+    @if (_loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        @if (_order == null)
+        {
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">Your cart is empty</MudText>
+            </MudPaper>
+        }
+        else
+        {
+            <MudGrid>
+                <MudItem xs="12" sm="8">
+                    <MudSimpleTable Style="overflow-y: scroll;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in _foodItems)
+                            {
+                                <tr>
+                                    <FoodItemListItemComponent FoodItem="item" OnDelete="OnItemDelete" />
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </MudItem>
+                <MudItem xs="12" md="4">
+                    <MudPaper Class="pa-4 mud-height-full">
+                        <MudText Typo="Typo.h4">Order Summary</MudText>
+                        <MudDivider />
+                        <MudText Typo="Typo.h6">Subtotal: </MudText>
+                        <MudText Typo="Typo.h6">Rs. @_order.Price</MudText>
+                        <MudDivider />
+                        <MudText Typo="Typo.h6">Address: </MudText>
+                        <EditForm Model="@_address" OnValidSubmit="PayForOrder">
+                            <MudGrid>
+                                <MudItem xs="12" sm="6" Class="pa-2">
+                                    <MudTextField Label="No" @bind-Value="_address.No" For="@(()=>_address.No)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6" Class="pa-2">
+                                    <MudTextField Label="Street 1" @bind-Value="_address.Street1" For="@(()=>_address.Street1)" Required />
+                                </MudItem>
+                                <MudItem xs="12" sm="6" Class="pa-2">
+                                    <MudTextField Label="Street 2" @bind-Value="_address.Street2" For="@(()=>_address.Street2)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6" Class="pa-2">
+                                    <MudTextField Label="Country" @bind-Value="_address.City" For="@(()=>_address.City)" Required />
+                                </MudItem>
+                                <MudItem xs="12" sm="6" Class="pa-2">
+                                    <MudTextField Label="Postal Code" @bind-Value="_address.PostalCode" For="@(()=>_address.PostalCode)" Required />
+                                </MudItem>
+                            </MudGrid>
+                            <MudDivider />
+                            <MudButton Class="ma-2"
+                                       ButtonType="ButtonType.Button"
+                                       Variant="Variant.Outlined"
+                                       Color="Color.Error">Delete</MudButton>
+                            <MudButton Class="ma-2"
+                                       ButtonType="ButtonType.Submit"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary">Pay Now</MudButton>
+                        </EditForm>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        }
+    }
+</MudContainer>
 
 

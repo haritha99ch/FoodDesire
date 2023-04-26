@@ -1,10 +1,15 @@
 ﻿@page "/Recipe/Index"
 @using FoodDesire.Web.Client.Components
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
 
 <MudContainer>
     <MudGrid>
-        @foreach(var item in _recipes){
-            <RecipeCardComponent Recipe="item" AddToCartAction="AddToCart" EditAndAddToCartAction="EditAndAddToCart"/>
+        @foreach (var item in _recipes)
+        {
+            <RecipeCardComponent Recipe="item" AddToCartAction="AddToCart" EditAndAddToCartAction="EditAndAddToCart" />
         }
     </MudGrid>
 </MudContainer>

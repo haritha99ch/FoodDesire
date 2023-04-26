@@ -19,8 +19,8 @@ public partial class EditAndAddRecipeToCartDialogComponent {
     private RecipeDetail _recipe = default!;
     private int _quantity = 1;
     private bool _loading = true;
-    protected override async void OnInitialized() {
-        base.OnInitialized();
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
         _loading = true;
         _isAuthenticated = await _authenticationService.IsAuthenticated();
         _recipe = await _recipePageService.GetRecipeByIdAsync(Recipe.Id);

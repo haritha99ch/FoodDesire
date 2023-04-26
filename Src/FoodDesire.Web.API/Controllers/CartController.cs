@@ -32,7 +32,7 @@ public class CartController : ControllerBase {
         return Ok(await _cartControllerService.CreateOrderAsync(order));
     }
 
-    [HttpPatch({nameof(Pay))]
+    [HttpPatch(nameof(Pay))]
     public async Task<ActionResult<Order>> Pay(int orderId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
@@ -67,7 +67,7 @@ public class CartController : ControllerBase {
         return Ok(await _cartControllerService.GetAllFoodItemsForOrder(orderId));
     }
 
-    [HttpPatch(nameof(RemoveFoodItem))]
+    [HttpDelete(nameof(RemoveFoodItem))]
     public async Task<ActionResult<bool>> RemoveFoodItem(int foodItemId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
