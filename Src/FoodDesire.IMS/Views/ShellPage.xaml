@@ -90,9 +90,11 @@
                                   Glyph="&#xea37;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Supplies" helpers:NavigationHelper.NavigateTo="FoodDesire.IMS.ViewModels.SuppliesViewModel">
+                <NavigationViewItem x:Uid="Shell_Supplies"
+                                    helpers:NavigationHelper.NavigateTo="FoodDesire.IMS.ViewModels.SuppliesViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe7c3;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Recipes"
@@ -100,6 +102,13 @@
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xf0e2;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_FoodItems"
+                                    helpers:NavigationHelper.NavigateTo="FoodDesire.IMS.ViewModels.FoodItemsViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xea37;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

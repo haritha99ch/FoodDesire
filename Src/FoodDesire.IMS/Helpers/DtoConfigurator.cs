@@ -13,5 +13,6 @@ public class DtoConfigurator {
         config.CreateMap<RecipeIngredient, RecipeIngredientForm>();
         config.CreateMap<RecipeForm, Recipe>();
         config.CreateMap<Recipe, RecipeForm>();
+        config.CreateMap<FoodItem, FoodItemDetail>();
     }
 }

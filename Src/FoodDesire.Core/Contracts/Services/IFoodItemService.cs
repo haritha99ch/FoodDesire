@@ -7,4 +7,6 @@ public interface IFoodItemService {
     Task<FoodItem> PrepareFoodItem(int foodItemId, int chefId);
     Task<FoodItem> FoodItemPrepared(int foodItemId);
     Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId);
+    Task<List<FoodItem>> GetQueuedFoodItems();
+    Task<List<FoodItem>> GetAcceptedFoodItem(int chefId);
 }

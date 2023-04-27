@@ -20,7 +20,9 @@ public class FoodItemService : IFoodItemService {
             foodItem.FoodItemIngredients
                 .Add(new FoodItemIngredient {
                     Recipe_Id = e.Recipe_Id,
+                    Recipe_Name = e.Recipe_Name,
                     Ingredient_Id = e.Ingredient_Id,
+                    Ingredient_Name = e.Ingredient_Name,
                     Amount = e.Amount,
                     IsRequired = e.IsRequired,
                     CanModify = e.CanModify,
@@ -109,5 +111,29 @@ public class FoodItemService : IFoodItemService {
     public async Task<FoodItem> GetFoodItemById(int foodItemId) {
         FoodItem foodItem = await _foodItemRepository.GetByID(foodItemId);
         return foodItem;
+    }
+
+    public async Task<List<FoodItem>> GetQueuedFoodItems() {
+        Expression<Func<FoodItem, bool>> filterExpression = e => e.Status.Equals(FoodItemStatus.Queued);
+
+        IQueryable<FoodItem> filter(IQueryable<FoodItem> e) => e.Where(filterExpression);
+        IIncludableQueryable<FoodItem, object> include(IQueryable<FoodItem> e) =>
+            e.Include(e => e.Recipe).Include(e => e.Chef).ThenInclude(e => e!.User).Include(e => e.Order)!;
+        IOrderedQueryable<FoodItem> order(IQueryable<FoodItem> e) => e.OrderBy(e => e.OrderId).OrderBy(e => e.Order!.DateTime);
+
+        List<FoodItem>? foodItems = await _foodItemRepository.Get(filter, order, include);
+        return foodItems;
+    }
+
+    public async Task<List<FoodItem>> GetAcceptedFoodItem(int chefId) {
+        Expression<Func<FoodItem, bool>> filterExpression = e => e.ChefId == chefId && !e.Status.Equals(FoodItemStatus.Prepared);
+
+        IQueryable<FoodItem> filter(IQueryable<FoodItem> e) => e.Where(filterExpression);
+        IIncludableQueryable<FoodItem, object> include(IQueryable<FoodItem> e) =>
+            e.Include(e => e.Recipe).Include(e => e.Chef).ThenInclude(e => e!.User).Include(e => e.Order)!;
+        IOrderedQueryable<FoodItem> order(IQueryable<FoodItem> e) => e.OrderBy(e => e.OrderId).OrderBy(e => e.Order!.DateTime);
+
+        List<FoodItem>? foodItems = await _foodItemRepository.Get(filter, order, include);
+        return foodItems;
     }
 }

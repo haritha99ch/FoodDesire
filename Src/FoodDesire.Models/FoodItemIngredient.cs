@@ -2,8 +2,10 @@
 public class FoodItemIngredient {
     [AllowNull]
     public int? Recipe_Id { get; set; }
+    public string? Recipe_Name { get; set; }
     [AllowNull]
     public int? Ingredient_Id { get; set; }
+    public string? Ingredient_Name { get; set; }
     [Required]
     public double Amount { get; set; }
     [Required]

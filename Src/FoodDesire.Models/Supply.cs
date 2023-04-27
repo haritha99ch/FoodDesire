@@ -2,8 +2,8 @@
 public sealed class Supply : TrackedEntity {
     [AllowNull]
     public int? SupplierId { get; set; }
-    [Required]
-    public int IngredientId { get; set; }
+    [AllowNull]
+    public int? IngredientId { get; set; }
     [Required]
     public double Amount { get; set; } = 0;
     [Required]

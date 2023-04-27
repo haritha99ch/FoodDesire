@@ -89,8 +89,19 @@ public class IngredientService : IIngredientService {
         return updatedIngredient;
     }
 
-    public async Task<bool> DeleteIngredientById(int ingredientCategoryId) {
-        bool deleted = await _ingredientRepository.Delete(ingredientCategoryId);
+    public async Task<bool> DeleteIngredientById(int ingredientId) {
+        Expression<Func<Supply, bool>> filterExpression = e => e.IngredientId == ingredientId;
+
+        IQueryable<Supply> filter(IQueryable<Supply> e) => e.Where(filterExpression);
+
+        List<Supply> supplies = await _supplyTRepository.Get(filter);
+        foreach (Supply supply in supplies) {
+            supply.IngredientId = null;
+            await _supplyTRepository.Update(supply);
+            await _supplyTRepository.SaveChanges();
+        }
+
+        bool deleted = await _ingredientRepository.Delete(ingredientId);
         return deleted;
     }
 

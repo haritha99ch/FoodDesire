@@ -189,4 +189,10 @@
   <data name="Shell_EditRecipe.Content" xml:space="preserve">
     <value>EditRecipe</value>
   </data>
+  <data name="Orders_NoSelection.Text" xml:space="preserve">
+    <value>Select an item from the list.</value>
+  </data>
+  <data name="Shell_FoodItems.Content" xml:space="preserve">
+    <value>Food Items</value>
+  </data>
 </root>
