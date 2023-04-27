@@ -1,0 +1,67 @@
+﻿@using FoodDesire.Web.Client.Components
+
+@page "/Order/{OrderId:int}"
+
+<MudContainer>
+    <MudText Typo="Typo.h3">All Orders</MudText>
+    @if (_loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        @if (_order == null)
+        {
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">No thing to see here</MudText>
+            </MudPaper>
+        }
+        else
+        {
+            <MudGrid>
+                <MudItem xs="12" sm="8">
+                    <MudSimpleTable Style="overflow-y: scroll;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in _foodItems)
+                            {
+                                <tr>
+                                    <FoodItemListItemComponent FoodItem="item" ViewOnly="true" />
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </MudItem>
+                <MudItem xs="12" md="4">
+                    <MudPaper Class="pa-4 mud-height-full">
+                        <MudText Typo="Typo.h4">Order Summary</MudText>
+                        <MudDivider Class="ma-2" />
+                        <MudText Typo="Typo.h6">Subtotal: </MudText>
+                        <MudText Typo="Typo.h6">Rs. @_order.Price</MudText>
+                        <MudDivider Class="ma-2" />
+                        <MudText Typo="Typo.h6">Order Status: </MudText>
+                        <MudText Typo="Typo.h6">@_order.Status</MudText>
+                        <MudDivider Class="ma-2"/>
+                        <MudText Typo="Typo.h6">Address: </MudText>
+                        <MudText Typo="Typo.h6">@_order.Delivery?.Address?.No </MudText>
+                        <MudText Typo="Typo.h6">@_order.Delivery?.Address?.Street1 </MudText>
+                        <MudText Typo="Typo.h6">@_order.Delivery?.Address?.Street2 </MudText>
+                        <MudText Typo="Typo.h6">@_order.Delivery?.Address?.City </MudText>
+                        <MudText Typo="Typo.h6">@_order.Delivery?.Address?.PostalCode </MudText>
+                        <MudDivider />
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        }
+    }
+</MudContainer>
+

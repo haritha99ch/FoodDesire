@@ -1,7 +1,9 @@
 namespace FoodDesire.Web.Client.Components;
 public partial class FoodItemListItemComponent : ComponentBase {
     [Parameter]
-    public FoodItemListDetail FoodItem { get; set; } = new();
+    public FoodItemListItem FoodItem { get; set; } = new();
+    [Parameter]
+    public bool ViewOnly { get; set; } = false;
     [Parameter]
     public EventCallback<int> OnDelete { get; set; }
     [Parameter]

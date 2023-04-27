@@ -17,8 +17,8 @@ public class OrderController : ControllerBase {
         return Ok(await _orderControllerService.GetOrdersAsync(int.Parse(userId)));
     }
 
-    [HttpGet(nameof(Detail))]
-    private async Task<ActionResult<Order>> Detail(int orderId) {
+    [HttpGet]
+    public async Task<ActionResult<Order>> Detail(int orderId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
 

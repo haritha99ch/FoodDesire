@@ -45,6 +45,16 @@ public class CartController : ControllerBase {
         return Ok(await _cartControllerService.PayForOrderAsync(orderId));
     }
 
+    [HttpPatch(nameof(Update))]
+    public async Task<ActionResult<Order>> Update(Order order) {
+        string? userId = GetUserId();
+        if (userId == null) return BadRequest("Could not find user!");
+
+        if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to pay this order!");
+
+        return Ok(await _cartControllerService.UpdateOrderAsync(order));
+    }
+
     [HttpDelete(nameof(Cancel))]
     public async Task<ActionResult<bool>> Cancel(int orderId) {
         string? userId = GetUserId();

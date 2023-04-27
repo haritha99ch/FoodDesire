@@ -12,7 +12,17 @@ public class OrderService : IOrderService {
     }
 
     public async Task<Order> GetOrderById(int orderId) {
-        Order order = await _orderRepository.GetByID(orderId);
+        Expression<Func<Order, bool>> filterExpression = e => e.Id == orderId;
+
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery).Include(e => e.Customer);
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+
+        Order order = await _orderRepository.GetOne(filter: filter, include: include);
+        return order;
+    }
+
+    public async Task<Order> UpdateOrder(Order order) {
+        order = await _orderRepository.Update(order);
         return order;
     }
 

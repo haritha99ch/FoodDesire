@@ -4,6 +4,7 @@ public interface IOrderService {
     Task<List<Order>> GetAllOrders();
     Task<List<Order>> GetRemainingOrders();
     Task<Order> GetOrderById(int orderId);
+    Task<Order> UpdateOrder(Order order);
     Task<bool> DeleteOrderById(int orderId);
     Task<Order> GetPendingOrderForCustomer(int userId);
     Task<List<Order>> GetAllCustomerOrders(int customerId);

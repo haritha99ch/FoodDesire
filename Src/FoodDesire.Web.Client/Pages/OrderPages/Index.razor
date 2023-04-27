@@ -26,7 +26,9 @@
                         <td>Rs. @item.Price</td>
                         <td>@item.Status</td>
                         <td>
-                            <MudIconButton ButtonType="ButtonType.Button" Icon="@Icons.Material.Filled.Visibility" aria-label="View" />
+                            <MudIconButton ButtonType="ButtonType.Button"
+                                           OnClick="@(()=>OrderDetails(item.Id))"
+                                           Icon="@Icons.Material.Filled.Visibility" aria-label="View" />
                         </td>
                     </tr>
                 }

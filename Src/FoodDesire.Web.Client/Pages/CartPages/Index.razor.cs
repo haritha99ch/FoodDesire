@@ -11,7 +11,7 @@ public partial class Index : ComponentBase {
 
     private Order? _order;
     private Address _address = new();
-    private List<FoodItemListDetail> _foodItems = new();
+    private List<FoodItemListItem> _foodItems = new();
 
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
@@ -64,10 +64,14 @@ public partial class Index : ComponentBase {
     private async Task PayForOrder(EditContext context) {
         if (!context.Validate()) return;
         //TODO: Implement Payment Getaway
-        _order.Delivery = new() {
+        _order!.Delivery = new() {
             Address = _address,
             IsDelivered = false,
         };
+        Order order = await _cartPageService.UpdateOrderAsync(_order);
+        if (order == null) return;
+        _order = order;
+        _order.Delivery = null;
         _order = await _cartPageService.PayForOrderAsync(_order.Id);
         _navigationManager.NavigateTo("/Recipe/Index");
     }

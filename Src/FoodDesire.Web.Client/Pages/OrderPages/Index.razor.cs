@@ -19,4 +19,8 @@ public partial class Index : ComponentBase {
         _loading = false;
     }
 
+    private void OrderDetails(int orderId) {
+        _navigationManager.NavigateTo($"/Order/{orderId}");
+    }
+
 }

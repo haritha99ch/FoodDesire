@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.Web.Shared;
-public class FoodItemListDetail {
+public class FoodItemListItem {
     public int Id { get; set; }
     public int RecipeId { get; set; }
     public int? OrderId { get; set; }

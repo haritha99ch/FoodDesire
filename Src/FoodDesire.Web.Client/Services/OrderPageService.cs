@@ -4,7 +4,7 @@ public class OrderPageService : AuthorizedService, IOrderPageService {
         : base(httpClient, authenticationService) { }
 
     public async Task<Order> GetAsync(int orderId) {
-        HttpResponseMessage response = await (await AddAuthorizationHeader()).GetAsync($"/api/Order/Detail?{nameof(orderId)}={orderId}");
+        HttpResponseMessage response = await (await AddAuthorizationHeader()).GetAsync($"/api/Order?{nameof(orderId)}={orderId}");
         return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadFromJsonAsync<Order>() ?? null!;
     }
 

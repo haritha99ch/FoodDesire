@@ -8,4 +8,5 @@ public interface ICartControllerService {
     Task<bool> RemoveFoodItem(int foodItemId);
     Task<FoodItem> GetFoodItemByIdAsync(int foodItemId);
     Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId);
+    Task<Order> UpdateOrderAsync(Order order);
 }
