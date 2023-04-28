@@ -195,4 +195,7 @@
   <data name="Shell_FoodItems.Content" xml:space="preserve">
     <value>Food Items</value>
   </data>
+  <data name="Shell_Deliveries.Content" xml:space="preserve">
+    <value>Deliveries</value>
+  </data>
 </root>

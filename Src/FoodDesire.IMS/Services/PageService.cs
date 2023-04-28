@@ -13,6 +13,7 @@ public class PageService : IPageService {
         Configure<NewRecipeViewModel, NewRecipePage>();
         Configure<EditRecipeViewModel, EditRecipePage>();
         Configure<FoodItemsViewModel, FoodItemsPage>();
+        Configure<DeliveriesViewModel, DeliveriesPage>();
     }
 
     public Type GetPageType(string key) {

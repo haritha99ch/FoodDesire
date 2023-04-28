@@ -1,0 +1,82 @@
+﻿<Page x:Class="FoodDesire.IMS.Views.DeliveriesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:components="using:FoodDesire.IMS.Components"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid x:Name="ContentArea">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0"
+              x:Name="UserSupplies">
+            <!--Visibility="{x:Bind ViewModel.IsSupplier, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="My Supplies"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+            <ListView Grid.Row="1"
+                      Margin="0,20,40,20"
+                      VerticalAlignment="Stretch"
+                      BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
+                      BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
+                      CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
+                      CanDragItems="True"
+                      CanReorderItems="True"
+                      AllowDrop="True"
+                      DragOver="UserOrders_DragOver"
+                      Drop="UserOrders_Drop"
+                      SelectionMode="Single"
+                      IsItemClickEnabled="True"
+                      ItemClick="UserOrders_ItemClick">
+                <!--ItemsSource="{x:Bind ViewModel.UserSupplies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <components:SuppliesListItemControl />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              x:Name="PendingSupplies">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Text="Pending Supplies"
+                       Style="{StaticResource SubtitleTextBlockStyle}" />
+            <ListView Grid.Column="1"
+                      Grid.Row="1"
+                      Margin="0,20,40,20"
+                      BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
+                      BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
+                      CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
+                      CanDragItems="True"
+                      SelectionMode="Single"
+                      DragItemsStarting="PreparedOrders_DragItemsStarting">
+                      <!--ItemsSource="{x:Bind ViewModel.PendingSupplies, Mode=OneWay}"-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <components:SuppliesListItemControl />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
