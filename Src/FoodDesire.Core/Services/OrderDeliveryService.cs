@@ -24,6 +24,17 @@ public class OrderDeliveryService : IOrderDeliveryService {
         return order;
     }
 
+    public async Task<Order> TakeOrderDelivery(int orderId, int delivererId) {
+        Order order = await _orderRepository.GetByID(orderId);
+        Delivery delivery = await GetDeliveryById((int)order.DeliveryId!);
+        delivery.DelivererId = delivererId;
+        delivery = await _deliveryRepository.Update(delivery);
+        order.Status = OrderStatus.Delivering;
+        order = await _orderRepository.Update(order);
+        order.Delivery = delivery;
+        return order;
+    }
+
     public async Task<List<Order>> GetAllDeliveredOrders() {
         Expression<Func<Order, bool>> filterExpression = e => e.Delivery!.IsDelivered;
 
@@ -35,7 +46,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
     }
 
     public async Task<List<Order>> GetAllOrdersToDeliver() {
-        Expression<Func<Order, bool>> filterExpression = e => e.Delivery == null || !e.Delivery.IsDelivered;
+        Expression<Func<Order, bool>> filterExpression = e => e.Status.Equals(OrderStatus.Prepared);
 
         IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
         IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery);
@@ -44,11 +55,21 @@ public class OrderDeliveryService : IOrderDeliveryService {
         return orders;
     }
 
-    public async Task<Delivery> OrderIsDelivered(int orderId) {
+    public async Task<Order> OrderIsDelivered(int orderId) {
         Order order = await _orderRepository.GetByID(orderId);
         order.Delivery!.IsDelivered = true;
         order.Status = OrderStatus.Delivered;
         order = await _orderRepository.Update(order);
-        return order.Delivery!;
+        return order;
+    }
+
+    public async Task<List<Order>> GetDelivererOrders(int delivererId) {
+        Expression<Func<Order, bool>> filterExpression = e => e.Status.Equals(OrderStatus.Delivering) && e.Delivery!.DelivererId == delivererId;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery);
+
+        List<Order> orders = await _orderRepository.Get(filter, null, include);
+        return orders;
     }
 }

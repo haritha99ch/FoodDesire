@@ -74,8 +74,8 @@ public class OrderDeliveryServices : Services {
 
     [Test, Order(3)]
     public async Task SetAsDelivered() {
-        Delivery? delivered = await _orderDeliveryServices.OrderIsDelivered(1);
-        Assert.That(delivered!.IsDelivered, Is.True);
+        Order? order = await _orderDeliveryServices.OrderIsDelivered(1);
+        Assert.That(order.Delivery!.IsDelivered, Is.True);
 
         List<Order> orders = await _orderDeliveryServices.GetAllOrdersToDeliver();
         Assert.That(orders, Has.Count.EqualTo(1));

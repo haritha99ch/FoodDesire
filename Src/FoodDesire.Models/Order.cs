@@ -26,6 +26,8 @@ public enum OrderStatus {
     Preparing,
     [Display(Name = "Prepared")]
     Prepared,
+    [Display(Name = "Delivering")]
+    Delivering,
     [Display(Name = "Delivered")]
     Delivered,
 }
