@@ -109,6 +109,7 @@
                 <AppBarButton Icon="Accept"
                               Visibility="{x:Bind ViewModel.MyFoodItemsOnly, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
                               IsEnabled="{x:Bind ViewModel.ItemSelected, Mode=OneWay}"
+                              Command="{x:Bind ViewModel.MarkFoodItemAsPreparedCommand}"
                               Label="Complete FoodItem" />
             </CommandBar>
         </StackPanel>

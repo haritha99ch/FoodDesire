@@ -16,6 +16,9 @@
 	<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Components\FoodItemIngredientItemControl.xaml" />
+  </ItemGroup>
 
 
   <ItemGroup>
@@ -41,6 +44,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Components\FoodItemIngredientItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Components\RecipeListItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

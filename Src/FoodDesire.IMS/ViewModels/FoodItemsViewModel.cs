@@ -67,6 +67,13 @@ public partial class FoodItemsViewModel : ObservableRecipient, INavigationAware 
     [RelayCommand]
     private async Task AddFoodItemToPreparingList() {
         FoodItem foodItem = await _foodItemsPageService.AddFootItemToPreparingList(Selected!.Id, _chef!.Id);
+        if (!foodItem.Status.Equals(FoodItemStatus.Preparing)) return;
+        await GetFoodItems();
+    }
+
+    [RelayCommand]
+    private async Task MarkFoodItemAsPrepared() {
+        FoodItem foodItem = await _foodItemsPageService.CompletePreparingFoodItem(Selected!.Id);
         if (!foodItem.Status.Equals(FoodItemStatus.Prepared)) return;
         await GetFoodItems();
     }

@@ -5,15 +5,9 @@ public sealed partial class FoodItemDetailControl : UserControl {
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
     public static readonly DependencyProperty ListDetailsMenuItemProperty =
-        DependencyProperty.Register("ListDetailsMenuItem", typeof(FoodItemDetail), typeof(FoodItemDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+        DependencyProperty.Register("ListDetailsMenuItem", typeof(FoodItemDetail), typeof(FoodItemDetailControl), new PropertyMetadata(null));
 
     public FoodItemDetailControl() {
         InitializeComponent();
-    }
-
-    private static void OnListDetailsMenuItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is FoodItemDetailControl control) {
-            control.ForegroundElement.ChangeView(0, 0, 1);
-        }
     }
 }

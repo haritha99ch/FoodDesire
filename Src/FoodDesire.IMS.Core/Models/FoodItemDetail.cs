@@ -8,7 +8,7 @@ public partial class FoodItemDetail : ObservableObject {
     private int _quantity;
     [ObservableProperty]
     private DateTime _dateTime;
-    ObservableCollection<FoodItemIngredient> _foodItemIngredients = new();
+    public ObservableCollection<FoodItemIngredient> FoodItemIngredients { get; set; } = new();
     [ObservableProperty]
     private FoodItemStatus _status;
     [ObservableProperty]

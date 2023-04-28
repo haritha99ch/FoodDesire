@@ -3,35 +3,37 @@ public class FoodItemService : IFoodItemService {
     private readonly IRepository<FoodItem> _foodItemRepository;
     private readonly IRecipeService _recipeService;
     private readonly IRepository<Order> _orderRepository;
+    private readonly IRepository<Ingredient> _ingredientRepository;
 
     public FoodItemService(
         IRepository<FoodItem> foodItemRepository,
         IRepository<Order> orderRepository,
-        IRecipeService recipeService
-        ) {
+        IRecipeService recipeService,
+        IRepository<Ingredient> ingredientRepository) {
         _foodItemRepository = foodItemRepository;
         _orderRepository = orderRepository;
         _recipeService = recipeService;
+        _ingredientRepository = ingredientRepository;
     }
 
     public async Task<FoodItem> NewFoodItem(FoodItem foodItem) {
-        Recipe recipe = await _recipeService.GetRecipeById(foodItem.RecipeId);
-        recipe.RecipeIngredients.ForEach(e => {
+        if (!foodItem.FoodItemIngredients.Any()) {
+            Recipe recipe = await _recipeService.GetRecipeById(foodItem.RecipeId);
+            recipe.RecipeIngredients.ForEach(e =>
             foodItem.FoodItemIngredients
-                .Add(new FoodItemIngredient {
-                    Recipe_Id = e.Recipe_Id,
-                    Recipe_Name = e.Recipe_Name,
-                    Ingredient_Id = e.Ingredient_Id,
-                    Ingredient_Name = e.Ingredient_Name,
-                    Amount = e.Amount,
-                    IsRequired = e.IsRequired,
-                    CanModify = e.CanModify,
-                    RecommendedMultiplier = e.RecommendedAmount / e.Amount,
-                    PricePerMultiplier = e.PricePerMultiplier,
-                    Multiplier = e.IsRequired ? 1 : 0
-                });
-
-        });
+                    .Add(new FoodItemIngredient {
+                        Recipe_Id = e.Recipe_Id,
+                        Recipe_Name = e.Recipe_Name,
+                        Ingredient_Id = e.Ingredient_Id,
+                        Ingredient_Name = e.Ingredient_Name,
+                        Amount = e.Amount,
+                        IsRequired = e.IsRequired,
+                        CanModify = e.CanModify,
+                        RecommendedMultiplier = e.RecommendedAmount / e.Amount,
+                        PricePerMultiplier = e.PricePerMultiplier,
+                        Multiplier = e.IsRequired ? 1 : 0
+                    }));
+        }
         FoodItem newFoodItem = await _foodItemRepository.Add(foodItem);
         newFoodItem.Order!.Status = OrderStatus.Pending;
         foodItem = await UpdateFoodItem(newFoodItem);
@@ -79,6 +81,9 @@ public class FoodItemService : IFoodItemService {
 
     public async Task<FoodItem> FoodItemPrepared(int foodItemId) {
         FoodItem foodItem = await GetFoodItemById(foodItemId);
+        foreach (FoodItemIngredient item in foodItem.FoodItemIngredients) {
+            await ConsumeIngredients(item, foodItem.Quantity);
+        }
         foodItem.Status = FoodItemStatus.Prepared;
         foodItem.Deleted = true;
         foodItem = await _foodItemRepository.Update(foodItem);
@@ -93,6 +98,32 @@ public class FoodItemService : IFoodItemService {
         await _orderRepository.Update(order);
 
         return foodItem;
+    }
+
+    private async Task ConsumeIngredients(FoodItemIngredient foodItemIngredient, double quantity = 1) {
+        if (foodItemIngredient.Ingredient_Id != null) {
+            double amount = quantity * foodItemIngredient.Amount * (double)foodItemIngredient.Multiplier;
+            await ConsumeIngredient((int)foodItemIngredient.Ingredient_Id, amount);
+            return;
+        }
+        if (foodItemIngredient.Recipe_Id != null) {
+            double amount = quantity * (double)foodItemIngredient.Multiplier * foodItemIngredient.Amount;
+            await ConsumeIngredientsFromRecipe((int)foodItemIngredient.Recipe_Id, amount);
+        }
+    }
+    private async Task ConsumeIngredientsFromRecipe(int recipeId, double quantity) {
+        Recipe recipe = await _recipeService.GetRecipeById(recipeId);
+        foreach (RecipeIngredient item in recipe.RecipeIngredients) {
+            if (item.Recipe_Id != null) await ConsumeIngredientsFromRecipe(recipeId, quantity);
+            double amount = quantity * item.Amount;
+            if (item.Ingredient_Id != null) await ConsumeIngredient((int)item.Ingredient_Id, amount);
+        }
+    }
+
+    private async Task ConsumeIngredient(int ingredientId, double amount) {
+        Ingredient ingredient = await _ingredientRepository.GetByID(ingredientId);
+        ingredient.CurrentQuantity -= amount;
+        ingredient = await _ingredientRepository.Update(ingredient);
     }
 
     public async Task<bool> RemoveFoodItem(int foodItemId) {

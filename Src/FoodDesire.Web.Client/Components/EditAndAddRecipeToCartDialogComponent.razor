@@ -32,7 +32,7 @@
                         </MudItem>
                         <MudItem xs="12" sm="12">
                             <MudGrid>
-                                @foreach (FoodItemIngredientDetail item in _foodItems)
+                                @foreach (FoodItemIngredientDetail item in _foodItemIngredients)
                             {
                                 @if (item.CanModify)
                                 {
@@ -83,7 +83,7 @@
     private void OnSliderValueChanged(FoodItemIngredientDetail item, double value){
         item.Multiplier = value;
         _foodItem!.Price = _recipe.FixedPrice;
-        foreach (FoodItemIngredient e in _foodItems) {
+        foreach (FoodItemIngredient e in _foodItemIngredients) {
             if (!e.CanModify) continue;
             decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
             if (!e.IsRequired) {

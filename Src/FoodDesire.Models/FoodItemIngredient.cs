@@ -9,6 +9,8 @@ public class FoodItemIngredient {
     [Required]
     public double Amount { get; set; }
     [Required]
+    public Measurement Measurement { get; set; }
+    [Required]
     public double RecommendedMultiplier { get; set; }
     [Required]
     public bool IsRequired { get; set; } = true;
@@ -18,4 +20,6 @@ public class FoodItemIngredient {
     [Column(TypeName = "Decimal(18,2)")]
     public decimal PricePerMultiplier { get; set; }
     public double Multiplier { get; set; } = 1;
+
+    public double TotalAmount => Amount * Multiplier;
 }
