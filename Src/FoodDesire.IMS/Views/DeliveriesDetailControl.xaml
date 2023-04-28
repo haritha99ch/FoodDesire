@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="FoodDesire.IMS.Views.DeliveriesDetailControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="using:FoodDesire.Models"
+             mc:Ignorable="d">
+    <ScrollViewer Name="ForegroundElement"
+                  HorizontalAlignment="Stretch"
+                  VerticalScrollMode="Enabled"
+                  IsTabStop="True">
+        <StackPanel HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Stretch">
+                <TextBlock Margin="{StaticResource SmallLeftMargin}"
+                           VerticalAlignment="Center"
+                           Text="Order for"
+                           Style="{ThemeResource TitleTextBlockStyle}" />
+                <TextBlock Margin="{StaticResource SmallLeftMargin}"
+                           VerticalAlignment="Center"
+                           Text="{x:Bind ListDetailsMenuItem.Customer.User.FirstName, Mode=OneWay}"
+                           Style="{ThemeResource TitleTextBlockStyle}" />
+            </StackPanel>
+            <StackPanel Padding="0,15,0,0">
+                <TextBlock Text="Status"
+                           Style="{StaticResource DetailSubTitleStyle}" />
+
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.Status, Mode=OneWay}"
+                           Style="{StaticResource DetailBodyBaseMediumStyle}" />
+
+                <TextBlock Margin="{StaticResource SmallTopMargin}"
+                           Text="Order date"
+                           Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.DateTime, Mode=OneWay}"
+                           Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                <TextBlock Margin="{StaticResource SmallTopMargin}"
+                           Text="Name"
+                           Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Style="{StaticResource DetailBodyBaseMediumStyle}">
+                    <Run Text="{x:Bind ListDetailsMenuItem.Customer.User.FirstName, Mode=OneWay}" />
+                    <Run Text="{x:Bind ListDetailsMenuItem.Customer.User.LastName, Mode=OneWay}" />
+                </TextBlock>
+
+                <TextBlock Margin="{StaticResource SmallTopMargin}"
+                           Text="Ship to"
+                           Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Style="{StaticResource DetailBodyBaseMediumStyle}">
+                    <Run Text="{x:Bind ListDetailsMenuItem.Delivery.Address.No, Mode=OneWay}" />
+                    <Run Text="{x:Bind ListDetailsMenuItem.Delivery.Address.Street1, Mode=OneWay}" />
+                    <LineBreak />
+                    <Run Text="{x:Bind ListDetailsMenuItem.Delivery.Address.Street2, Mode=OneWay}" />
+                    <Run Text="{x:Bind ListDetailsMenuItem.Delivery.Address.City, Mode=OneWay}" />
+                    <Run Text="{x:Bind ListDetailsMenuItem.Delivery.Address.PostalCode, Mode=OneWay}" />
+                </TextBlock>
+                <TextBlock Margin="{StaticResource SmallTopMargin}"
+                           Text="Order total"
+                           Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.Price, Mode=OneWay}"
+                           Style="{StaticResource DetailBodyBaseMediumStyle}" />
+
+                <ListView ItemsSource="{x:Bind ViewModel.FoodItems, Mode=OneWay}"
+                          Margin="{StaticResource SmallTopMargin}"
+                          MaxHeight="600"
+                          SelectionMode="None"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.IsVerticalScrollChainingEnabled="True"
+                          ScrollViewer.VerticalScrollMode="Enabled">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:FoodItem">
+                            <Grid VerticalAlignment="Center"
+                                  Background="{StaticResource CardStrokeColorDefault}"
+                                  Padding="5"
+                                  Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0"
+                                           Margin="5"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Recipe.Name, Mode=OneWay}" />
+                                <TextBlock Grid.Column="1"
+                                           Margin="5"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Quantity, Mode=OneWay}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

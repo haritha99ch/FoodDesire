@@ -6,7 +6,7 @@ public class DeliveriesPageService : IDeliveriesPageService {
         _orderDeliveryService = orderDeliveryService;
     }
 
-    public async Task<Order> CompleteDeliveries(int deliveryId) => await _orderDeliveryService.OrderIsDelivered(deliveryId);
+    public async Task<Order> CompleteDeliveryForOrder(int deliveryId) => await _orderDeliveryService.OrderIsDelivered(deliveryId);
 
     public async Task<List<Order>> GetMyOrdersToDeliver(int delivererId) => await _orderDeliveryService.GetDelivererOrders(delivererId);
 

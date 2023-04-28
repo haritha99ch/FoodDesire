@@ -3,80 +3,95 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:components="using:FoodDesire.IMS.Components"
-      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+      xmlns:models="using:FoodDesire.Models"
+      xmlns:views="using:FoodDesire.IMS.Views"
+      xmlns:behaviors="using:FoodDesire.IMS.Behaviors"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
     <Page.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <DataTemplate x:Key="ItemTemplate"
+                      x:DataType="models:Order">
+            <Grid Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Margin="{StaticResource SmallLeftMargin}"
+                            VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource ListTitleStyle}">
+                        <Run Text="Order Id: " />
+                        <Run Text="{x:Bind Id, Mode=OneWay}" />
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Margin="{StaticResource SmallLeftMargin}"
+                            VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource ListTitleStyle}" 
+                               Text="{x:Bind Delivery.Address.City}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DetailsTemplate">
+            <Grid>
+                <views:DeliveriesDetailControl ListDetailsMenuItem="{Binding}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NoSelectionContentTemplate">
+            <Grid>
+                <TextBlock x:Uid="Deliveries_NoSelection"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           Style="{ThemeResource SubtitleTextBlockStyle}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ListHeaderTemplate">
+            <Grid Height="40">
+                <TextBlock VerticalAlignment="Center"
+                           Style="{StaticResource ListTitleStyle}"
+                           Text="{Binding}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="MinimalListHeaderTemplate">
+            <Grid Height="40">
+                <TextBlock Margin="96,0,0,0"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource ListTitleStyle}"
+                           Text="{Binding}" />
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid x:Name="ContentArea">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0"
-              x:Name="UserSupplies">
-            <!--Visibility="{x:Bind ViewModel.IsSupplier, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"-->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0"
-                       Text="My Supplies"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource SubtitleTextBlockStyle}" />
-            <ListView Grid.Row="1"
-                      Margin="0,20,40,20"
-                      VerticalAlignment="Stretch"
-                      BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
-                      BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
-                      CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
-                      CanDragItems="True"
-                      CanReorderItems="True"
-                      AllowDrop="True"
-                      DragOver="UserOrders_DragOver"
-                      Drop="UserOrders_Drop"
-                      SelectionMode="Single"
-                      IsItemClickEnabled="True"
-                      ItemClick="UserOrders_ItemClick">
-                <!--ItemsSource="{x:Bind ViewModel.UserSupplies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <components:SuppliesListItemControl />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-
-        <Grid Grid.Column="1"
-              x:Name="PendingSupplies">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Text="Pending Supplies"
-                       Style="{StaticResource SubtitleTextBlockStyle}" />
-            <ListView Grid.Column="1"
-                      Grid.Row="1"
-                      Margin="0,20,40,20"
-                      BorderBrush="{StaticResource ListViewGroupHeaderForegroundThemeBrush}"
-                      BorderThickness="{StaticResource ListViewItemRevealBorderThemeThickness}"
-                      CornerRadius="{StaticResource ListViewItemCheckBoxCornerRadius}"
-                      CanDragItems="True"
-                      SelectionMode="Single"
-                      DragItemsStarting="PreparedOrders_DragItemsStarting">
-                      <!--ItemsSource="{x:Bind ViewModel.PendingSupplies, Mode=OneWay}"-->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <components:SuppliesListItemControl />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ListDetailsViewControl.ListHeaderTemplate"
+                                Value="{StaticResource ListHeaderTemplate}" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <controls:ListDetailsView x:Uid="Deliveries"
+                                  x:Name="ListDetailsViewControl"
+                                  BackButtonBehavior="Manual"
+                                  Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  DetailsTemplate="{StaticResource DetailsTemplate}"
+                                  ItemsSource="{x:Bind ViewModel.PreparedOrders, Mode=OneWay}"
+                                  ItemTemplate="{StaticResource ItemTemplate}"
+                                  ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
+                                  NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
+                                  SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
+                                  ViewStateChanged="OnViewStateChanged" />
     </Grid>
 </Page>

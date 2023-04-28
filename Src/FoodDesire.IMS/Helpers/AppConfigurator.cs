@@ -76,6 +76,8 @@ internal static class AppConfigurator {
         services.AddTransient<DeliveriesViewModel>();
         services.AddTransient<DeliveriesPage>();
 
+        services.AddTransient<DeliveriesDetailViewModel>();
+
         // Configuration
         services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
     }

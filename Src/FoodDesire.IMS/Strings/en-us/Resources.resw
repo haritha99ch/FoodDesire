@@ -198,4 +198,7 @@
   <data name="Shell_Deliveries.Content" xml:space="preserve">
     <value>Deliveries</value>
   </data>
+  <data name="Deliveries_NoSelection.Text" xml:space="preserve">
+    <value>Select an item from the list.</value>
+  </data>
 </root>

@@ -39,7 +39,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
         Expression<Func<Order, bool>> filterExpression = e => e.Delivery!.IsDelivered;
 
         IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
-        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(o => o.Delivery);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(o => o.Delivery).Include(e => e.Customer).ThenInclude(c => c!.User);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;
@@ -49,7 +49,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
         Expression<Func<Order, bool>> filterExpression = e => e.Status.Equals(OrderStatus.Prepared);
 
         IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
-        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery).Include(e => e.Customer).ThenInclude(c => c!.User);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;
@@ -67,7 +67,7 @@ public class OrderDeliveryService : IOrderDeliveryService {
         Expression<Func<Order, bool>> filterExpression = e => e.Status.Equals(OrderStatus.Delivering) && e.Delivery!.DelivererId == delivererId;
 
         IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
-        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery).Include(e => e.Customer).ThenInclude(c => c!.User);
 
         List<Order> orders = await _orderRepository.Get(filter, null, include);
         return orders;
