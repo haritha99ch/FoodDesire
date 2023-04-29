@@ -4,4 +4,6 @@ public interface IRecipePageService {
     Task<RecipeDetail> GetRecipeByIdAsync(int id);
     Task<FoodItem?> AddFoodItemToCartAsync(FoodItem foodItem);
     Task<Order> GetCurrentUserExistingOrderAsync();
+    Task<List<RecipeReview>> GetRecipeReviewsForRecipeAsync(int recipeId);
+    Task<RecipeReview> AddRecipeReviewsForRecipeAsync(RecipeReview recipeReview);
 }

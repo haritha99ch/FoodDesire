@@ -48,4 +48,24 @@ public class RecipePageService : AuthorizedService, IRecipePageService {
             return default!;
         }
     }
+
+    public async Task<List<RecipeReview>> GetRecipeReviewsForRecipeAsync(int recipeId) {
+        HttpResponseMessage? response = await _httpClient.GetAsync($"api/Recipe/Reviews?recipeId={recipeId}");
+        if (response.StatusCode != HttpStatusCode.OK) return default!;
+        try {
+            return await response.Content.ReadFromJsonAsync<List<RecipeReview>>() ?? default!;
+        } catch (Exception) {
+            return default!;
+        }
+    }
+
+    public async Task<RecipeReview> AddRecipeReviewsForRecipeAsync(RecipeReview recipeReview) {
+        HttpResponseMessage? response = await _httpClient.PostAsJsonAsync($"api/Recipe/Review", recipeReview);
+        if (response.StatusCode != HttpStatusCode.OK) return default!;
+        try {
+            return await response.Content.ReadFromJsonAsync<RecipeReview>() ?? default!;
+        } catch (Exception) {
+            return default!;
+        }
+    }
 }

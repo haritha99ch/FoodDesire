@@ -8,6 +8,8 @@ public class RecipeReview : Entity {
     [Required]
     [Range(0, 1)]
     public float Rating { get; set; }
+    [AllowNull]
+    public DateTime DateTime { get; set; } = DateTime.Now;
 
     [ForeignKey(nameof(CustomerId))]
     public Customer? Customer { get; set; }

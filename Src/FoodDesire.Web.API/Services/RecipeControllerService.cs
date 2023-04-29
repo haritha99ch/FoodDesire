@@ -15,4 +15,7 @@ public class RecipeControllerService : IRecipeControllerService {
     public async Task<IEnumerable<Recipe>> GetRecipesAsync(string search) => await _recipeService.SearchRecipes(search, true);
 
     public async Task<FoodItem> CreateFoodItemAsync(FoodItem foodItem) => await _foodItemService.NewFoodItem(foodItem);
+
+    public async Task<List<RecipeReview>> GetReviewsForRecipe(int recipeId) => await _recipeService.GetReviewsForRecipe(recipeId);
+    public async Task<RecipeReview> AddReviewForRecipe(RecipeReview recipeReview) => await _recipeService.AddReviewForForRecipe(recipeReview);
 }

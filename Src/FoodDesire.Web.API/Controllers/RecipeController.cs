@@ -28,4 +28,10 @@ public class RecipeController : ControllerBase {
         }
         return Ok(await _recipeControllerService.CreateFoodItemAsync(foodItem));
     }
+
+    [HttpGet(nameof(Reviews))]
+    public async Task<ActionResult<List<RecipeReview>>> Reviews(int recipeId) => Ok(await _recipeControllerService.GetReviewsForRecipe(recipeId));
+
+    [HttpPost(nameof(Review)), Authorize]
+    public async Task<ActionResult<RecipeReview>> Review(RecipeReview recipeReview) => Ok(await _recipeControllerService.AddReviewForRecipe(recipeReview));
 }

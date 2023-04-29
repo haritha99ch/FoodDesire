@@ -17,6 +17,8 @@ public interface IRecipeService {
     Task<List<Recipe>> SearchRecipes(string value);
     Task<List<Recipe>> GetTop10Recipes();
     Task<List<RecipeReview>> GetAllRecipeRatings();
+    Task<List<RecipeReview>> GetReviewsForRecipe(int recipeId);
+    Task<RecipeReview> AddReviewForForRecipe(RecipeReview recipeReview);
     Task<List<Recipe>> GetAllRecipesWithCategory(bool menuItems);
     Task<List<Recipe>> SearchRecipes(string value, bool menuItems);
 }

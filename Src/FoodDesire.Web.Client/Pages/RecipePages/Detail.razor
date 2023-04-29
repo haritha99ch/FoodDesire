@@ -57,6 +57,24 @@ else
                             }
                         </MudGrid>
                     </MudExpansionPanel>
+
+                    <MudExpansionPanel Text="Reviews">
+                        <MudGrid>
+                            @foreach (RecipeReview item in _recipeReviews)
+                            {
+                                <MudItem xs="12" sm="12" Class="mt-4">
+                                    <MudGrid>
+                                        <MudItem xs="12" sm="6">
+                                            <MudText>@item.DateTime</MudText>
+                                            <MudText Typo="Typo.h6">@item.Customer.User.FirstName @item.Customer.User.LastName: &nbsp;</MudText>
+                                            <MudRating ReadOnly="true" SelectedValue="@((int)(item.Rating * 5))" />
+                                            <MudText Class="flex-lg-wrap">@item.FeedBack</MudText>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudExpansionPanel>
                 </MudExpansionPanels>
             </MudItem>
         </MudGrid>
