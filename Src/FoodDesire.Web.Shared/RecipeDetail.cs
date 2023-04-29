@@ -3,7 +3,6 @@ public class RecipeDetail {
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public List<RecipeInstruction> RecipeInstructions { get; set; } = new();
     public List<ImageB64> Images { get; set; } = new();
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new();
     public decimal MinimumPrice { get; set; }

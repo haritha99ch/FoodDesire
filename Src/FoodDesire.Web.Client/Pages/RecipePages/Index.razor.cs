@@ -2,12 +2,10 @@
 
 namespace FoodDesire.Web.Client.Pages.RecipePages;
 public partial class Index : ComponentBase {
-    [Inject]
-    private IRecipePageService _RecipePageService { get; set; } = default!;
-    [Inject]
-    private IComponentCommunicationService<string> _SearchCommunicationService { get; set; } = default!;
-    [Inject]
-    private IDialogService _dialogService { get; set; } = default!;
+    [Inject] private IRecipePageService _RecipePageService { get; set; } = default!;
+    [Inject] private IComponentCommunicationService<string> _SearchCommunicationService { get; set; } = default!;
+    [Inject] private NavigationManager _navigationManager { get; set; } = default!;
+    [Inject] private IDialogService _dialogService { get; set; } = default!;
 
     private bool _loading = true;
 
@@ -52,5 +50,9 @@ public partial class Index : ComponentBase {
         };
         DialogParameters? parameters = new() { [nameof(EditAndAddRecipeToCartDialogComponent.Recipe)] = recipe };
         DialogResult? result = await _dialogService.Show<EditAndAddRecipeToCartDialogComponent>("Edit And Add To Cart", parameters, maxWidth).Result;
+    }
+
+    private void ShowDetail(RecipeListItem recipe) {
+        _navigationManager.NavigateTo($"/Recipe/{recipe.Id}");
     }
 }

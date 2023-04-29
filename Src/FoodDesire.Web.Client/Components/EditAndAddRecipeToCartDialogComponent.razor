@@ -14,7 +14,7 @@
                     <MudItem xs="12" sm="4">
                         <MudCarousel ItemsSource="@_recipe.Images" Style="height:200px; width:200px">
                             <ItemTemplate>
-                                <MudImage Src="@($"data:image/png;base64,{context.Data}")" ObjectFit="ObjectFit.Fill" Fluid="true" Height="200" Width="200" />
+                                <MudImage Src="@($"data:image/png;base64,{context.Data}")" ObjectFit="ObjectFit.Fill" Fluid="true" />
                             </ItemTemplate>
                         </MudCarousel>
                     </MudItem>

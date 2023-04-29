@@ -1,0 +1,64 @@
+﻿@page "/Recipe/{RecipeId:int}"
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="12">
+                <MudPaper Class="pa-4">
+                    <MudText Typo="Typo.h4">@_recipeDetail?.Name</MudText>
+                    <MudGrid>
+                        <MudItem xs="12" md="4" Class="d-flex" Style="height:300px;">
+                            <MudCarousel ItemsSource="@_recipeDetail?.Images" Style="height:300px;">
+                                <ItemTemplate>
+                                    <MudImage Src="@($"data:image/png;base64,{context.Data}")" ObjectFit="ObjectFit.Fill" Fluid="true" Class="rounded-lg" />
+                                </ItemTemplate>
+                            </MudCarousel>
+
+                        </MudItem>
+                        <MudItem xs="12" sm="8">
+                            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                                <MudText Typo="Typo.h5">Description:</MudText>
+                                <MudText Typo="Typo.h6">@_recipeDetail?.Description</MudText>
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                                <MudText Typo="Typo.h5">Category:</MudText>
+                                <MudText Typo="Typo.h6">@_recipeDetail?.RecipeCategory?.Name</MudText>
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                                <MudText Typo="Typo.h5">Price:</MudText>
+                                <MudText Typo="Typo.h6">Rs. @_recipeDetail?.FixedPrice</MudText>
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                                <MudText Typo="Typo.h5">Rating:</MudText>
+                                <MudRating ReadOnly="true" SelectedValue="(_recipeDetail == null)? 0: _recipeDetail.Stars" />
+                            </MudItem>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="12">
+                <MudExpansionPanels>
+                    <MudExpansionPanel Text="Recipe Ingredients">
+                        <MudGrid>
+                            @foreach (RecipeIngredient item in _recipeDetail.RecipeIngredients)
+                            {
+                                <MudItem xs="12" sm="12">
+                                    <MudGrid>
+                                        <MudItem xs="12" sm="6" Class="d-flex">
+                                            <MudText Typo="Typo.h6">@item.Ingredient_Name@item.Recipe_Name: &nbsp;</MudText>
+                                            <MudText Typo="Typo.h6">@item.Amount @item.Measurement</MudText>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}
