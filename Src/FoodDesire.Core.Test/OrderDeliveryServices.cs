@@ -26,7 +26,16 @@ public class OrderDeliveryServices : Services {
         FoodItem foodItem = new() {
             RecipeId = 1,
             Order = new() {
-                CustomerId = 1
+                CustomerId = 1,
+                Delivery = new Delivery {
+                    Address = new Address {
+                        City = "Lagos",
+                        Street1 = "Ogunlana Drive",
+                        Street2 = "Surulere",
+                        No = "No 1",
+                    },
+                    DelivererId = 1,
+                }
             }
         };
         await _foodItemService.NewFoodItem(foodItem);
@@ -42,34 +51,12 @@ public class OrderDeliveryServices : Services {
         ApplicationHostHelper.TearDownHost();
     }
 
-    [Test, Order(1)]
-    public async Task NewDelivery() {
-        Delivery delivery = new Delivery {
-            Address = new Address {
-                City = "Lagos",
-                Street1 = "Ogunlana Drive",
-                Street2 = "Surulere",
-                No = "No 1",
-            },
-            DelivererId = 1,
-        };
-        Order deliveryOrder = await _orderDeliveryServices.NewDeliveryForOrder(1, delivery);
-
-        Assert.That(deliveryOrder.Delivery!.IsDelivered, Is.False);
-        Assert.That(deliveryOrder.Delivery!, Is.Not.Null);
-    }
-
     [Test, Order(2)]
     public async Task GetOrderToDeliver() {
-        FoodItem foodItem = new() {
-            RecipeId = 1,
-            Order = new() {
-                CustomerId = 1
-            }
-        };
-        await _foodItemService.NewFoodItem(foodItem);
+        await _foodItemService.FoodItemPrepared(1);
+        await _foodItemService.FoodItemPrepared(2);
         List<Order> orders = await _orderDeliveryServices.GetAllOrdersToDeliver();
-        Assert.That(orders, Has.Count.EqualTo(2));
+        Assert.That(orders, Has.Count.EqualTo(1));
     }
 
     [Test, Order(3)]
@@ -78,7 +65,7 @@ public class OrderDeliveryServices : Services {
         Assert.That(order.Delivery!.IsDelivered, Is.True);
 
         List<Order> orders = await _orderDeliveryServices.GetAllOrdersToDeliver();
-        Assert.That(orders, Has.Count.EqualTo(1));
+        Assert.That(orders, Has.Count.EqualTo(0));
     }
 
     [Test, Order(4)]
