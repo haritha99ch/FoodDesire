@@ -4,4 +4,5 @@ public interface IDeliveriesPageService {
     Task<Order> CompleteDeliveryForOrder(int deliveryId);
     Task<List<Order>> GetOrdersToDeliver();
     Task<List<Order>> GetMyOrdersToDeliver(int delivererId);
+    Task<List<FoodItem>> GetFoodItemsForSelectedOrder(int id);
 }

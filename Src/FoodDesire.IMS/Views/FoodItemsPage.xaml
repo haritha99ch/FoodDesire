@@ -70,9 +70,10 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-
+    
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -90,12 +91,17 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+        <Grid>
+            <TextBlock Text="Food Items"
+                       Style="{ThemeResource TitleTextBlockStyle}" />
+        </Grid>
 
-        <StackPanel Orientation="Horizontal"
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
                     Visibility="{x:Bind ViewModel.IsChef, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <CheckBox IsChecked="{x:Bind ViewModel.MyFoodItemsOnly, Mode=TwoWay}"
                       Command="{x:Bind ViewModel.UpdateFoodItemsCommand}"
-                      Content="My Food Items Only"/>
+                      Content="My Food Items Only" />
             <CommandBar Grid.Row="0"
                         Background="Transparent"
                         IsOpen="False"
@@ -114,7 +120,7 @@
             </CommandBar>
         </StackPanel>
 
-        <controls:ListDetailsView Grid.Row="1"
+        <controls:ListDetailsView Grid.Row="2"
                                   x:Uid="Orders"
                                   x:Name="ListDetailsViewControl"
                                   BackButtonBehavior="Manual"

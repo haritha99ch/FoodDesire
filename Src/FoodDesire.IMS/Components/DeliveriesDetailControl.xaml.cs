@@ -1,4 +1,4 @@
-﻿namespace FoodDesire.IMS.Views;
+﻿namespace FoodDesire.IMS.Components;
 
 public sealed partial class DeliveriesDetailControl : UserControl {
     public DeliveriesDetailViewModel ViewModel { get; }

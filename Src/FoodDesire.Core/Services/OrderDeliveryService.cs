@@ -56,7 +56,12 @@ public class OrderDeliveryService : IOrderDeliveryService {
     }
 
     public async Task<Order> OrderIsDelivered(int orderId) {
-        Order order = await _orderRepository.GetByID(orderId);
+        Expression<Func<Order, bool>> filterExpression = e => e.Id == orderId;
+
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+        IIncludableQueryable<Order, object?> include(IQueryable<Order> e) => e.Include(e => e.Delivery);
+        Order order = await _orderRepository.GetOne(filter: filter, include: include);
+
         order.Delivery!.IsDelivered = true;
         order.Status = OrderStatus.Delivered;
         order = await _orderRepository.Update(order);

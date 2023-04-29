@@ -35,14 +35,15 @@ public class FoodItemService : IFoodItemService {
                     }));
         }
         FoodItem newFoodItem = await _foodItemRepository.Add(foodItem);
-        newFoodItem.Order!.Status = OrderStatus.Pending;
         foodItem = await UpdateFoodItem(newFoodItem);
+        Order order = await _orderRepository.GetByID(newFoodItem.OrderId);
+        order.Status = OrderStatus.Pending;
+        await _orderRepository.Update(order);
         return newFoodItem;
     }
 
     public async Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId) {
-        Order order = await _orderRepository.GetByID(orderId);
-        Expression<Func<FoodItem, bool>> filterExpression = e => e.OrderId == order.Id;
+        Expression<Func<FoodItem, bool>> filterExpression = e => e.OrderId == orderId;
 
         IQueryable<FoodItem> filter(IQueryable<FoodItem> e) => e.Where(filterExpression);
         IIncludableQueryable<FoodItem, object> include(IQueryable<FoodItem> e) =>

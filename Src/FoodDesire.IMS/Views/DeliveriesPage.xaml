@@ -5,11 +5,13 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:models="using:FoodDesire.Models"
-      xmlns:views="using:FoodDesire.IMS.Views"
+      xmlns:components="using:FoodDesire.IMS.Components"
       xmlns:behaviors="using:FoodDesire.IMS.Behaviors"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
     <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="ItemTemplate"
                       x:DataType="models:Order">
             <Grid Height="60">
@@ -28,15 +30,15 @@
                 <StackPanel Grid.Column="1"
                             Margin="{StaticResource SmallLeftMargin}"
                             VerticalAlignment="Center">
-                    <TextBlock Style="{StaticResource ListTitleStyle}" 
-                               Text="{x:Bind Delivery.Address.City}"/>
+                    <TextBlock Style="{StaticResource ListTitleStyle}"
+                               Text="{x:Bind Delivery.Address.City}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="DetailsTemplate">
             <Grid>
-                <views:DeliveriesDetailControl ListDetailsMenuItem="{Binding}" />
+                <components:DeliveriesDetailControl ListDetailsMenuItem="{Binding}" />
             </Grid>
         </DataTemplate>
 
@@ -67,31 +69,68 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="641" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="ListDetailsViewControl.ListHeaderTemplate"
-                                Value="{StaticResource ListHeaderTemplate}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        <controls:ListDetailsView x:Uid="Deliveries"
-                                  x:Name="ListDetailsViewControl"
-                                  BackButtonBehavior="Manual"
-                                  Background="Transparent"
-                                  BorderBrush="Transparent"
-                                  DetailsTemplate="{StaticResource DetailsTemplate}"
-                                  ItemsSource="{x:Bind ViewModel.PreparedOrders, Mode=OneWay}"
-                                  ItemTemplate="{StaticResource ItemTemplate}"
-                                  ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
-                                  NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
-                                  SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
-                                  ViewStateChanged="OnViewStateChanged" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBlock Text="Order Deliveries"
+                       Style="{ThemeResource TitleTextBlockStyle}" />
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    Visibility="{x:Bind ViewModel.IsDeliverer, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+            <CheckBox IsChecked="{x:Bind ViewModel.DelivererOrdersOnly, Mode=TwoWay}"
+                      Command="{x:Bind ViewModel.UpdateOrdersCommand}"
+                      Content="My Food Items Only" />
+            <CommandBar Grid.Row="0"
+                        Background="Transparent"
+                        IsOpen="False"
+                        HorizontalAlignment="Left"
+                        DefaultLabelPosition="Right">
+                <AppBarButton Icon="Add"
+                              Visibility="{x:Bind ViewModel.DelivererOrdersOnly, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True}"
+                              IsEnabled="{x:Bind ViewModel.ItemSelected, Mode=OneWay}"
+                              Command="{x:Bind ViewModel.AcceptDeliveryForOrderCommand}"
+                              Label="Add to your deliveries" />
+                <AppBarButton Icon="Accept"
+                              Visibility="{x:Bind ViewModel.DelivererOrdersOnly, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                              IsEnabled="{x:Bind ViewModel.ItemSelected, Mode=OneWay}"
+                              Command="{x:Bind ViewModel.CompleteOrderCommand}"
+                              Label="Mark as delivered" />
+            </CommandBar>
+        </StackPanel>
+
+        <Grid x:Name="ContentArea"
+              Grid.Row="2">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="641" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="ListDetailsViewControl.ListHeaderTemplate"
+                                    Value="{StaticResource ListHeaderTemplate}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <controls:ListDetailsView x:Uid="Deliveries"
+                                      x:Name="ListDetailsViewControl"
+                                      BackButtonBehavior="Manual"
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      DetailsTemplate="{StaticResource DetailsTemplate}"
+                                      ItemsSource="{x:Bind ViewModel.PreparedOrders, Mode=OneWay}"
+                                      ItemTemplate="{StaticResource ItemTemplate}"
+                                      ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
+                                      NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
+                                      SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
+                                      ViewStateChanged="OnViewStateChanged" />
+        </Grid>
     </Grid>
 </Page>
