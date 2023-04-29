@@ -56,7 +56,7 @@ public partial class Index : ComponentBase {
 
         if (result.Canceled) return;
 
-        bool orderDeleted = await _cartPageService.CancelOrderAsync(_order.Id);
+        bool orderDeleted = await _cartPageService.CancelOrderAsync(_order!.Id);
         if (!orderDeleted) return;
         _navigationManager.NavigateTo("/Recipe/Index");
     }

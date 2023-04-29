@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-
-namespace FoodDesire.IMS.ViewModels;
+﻿namespace FoodDesire.IMS.ViewModels;
 
 public partial class FoodItemsViewModel : ObservableRecipient, INavigationAware {
     private readonly IFoodItemsPageService _foodItemsPageService;
@@ -46,7 +44,7 @@ public partial class FoodItemsViewModel : ObservableRecipient, INavigationAware 
         FoodItems.Clear();
         List<FoodItem> foodItems = new();
         if (MyFoodItemsOnly) {
-            foodItems = await _foodItemsPageService.GetAcceptedFoodItemsAsync(_chef.Id) ?? new();
+            foodItems = await _foodItemsPageService.GetAcceptedFoodItemsAsync(_chef!.Id) ?? new();
         } else {
             foodItems = await _foodItemsPageService.GetQueuedFoodItemsAsync() ?? new();
         }

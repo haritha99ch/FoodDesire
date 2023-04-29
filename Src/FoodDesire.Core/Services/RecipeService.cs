@@ -195,14 +195,24 @@ public class RecipeService : IRecipeService {
         Expression<Func<RecipeReview, bool>> filterExpression = e => e.RecipeId == recipeId;
 
         IQueryable<RecipeReview> filter(IQueryable<RecipeReview> e) => e.Where(filterExpression);
-        IIncludableQueryable<RecipeReview, object> include(IQueryable<RecipeReview> e) => e.Include(e => e.Customer).ThenInclude(e => e.User)!;
+        IIncludableQueryable<RecipeReview, object> include(IQueryable<RecipeReview> e) => e.Include(e => e.Customer).ThenInclude(e => e!.User)!;
 
         List<RecipeReview> recipeReview = await _recipeRatingRepository.Get(filter: filter, include: include);
         return recipeReview;
     }
 
     public async Task<RecipeReview> AddReviewForForRecipe(RecipeReview recipeReview) {
+        recipeReview.Rating /= 5;
         recipeReview = await _recipeRatingRepository.Add(recipeReview);
+
+        Expression<Func<RecipeReview, bool>> filterExpression = e => e.RecipeId == recipeReview.RecipeId;
+        IQueryable<RecipeReview> filter(IQueryable<RecipeReview> e) => e.Where(filterExpression);
+        List<RecipeReview> recipeReviews = await _recipeRatingRepository.Get(filter);
+
+        Recipe recipe = await _recipeRepository.GetByID(recipeReview.RecipeId);
+        recipe.Rating = recipeReviews.Average(e => e.Rating);
+        recipe = await _recipeRepository.Update(recipe);
+
         return recipeReview;
     }
 

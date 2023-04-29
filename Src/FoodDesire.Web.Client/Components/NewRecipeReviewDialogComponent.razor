@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<MudDialog>
+    <DialogContent>
+        @if (_loading)
+        {
+            <MudProgressCircular Indeterminate="true"></MudProgressCircular>
+        }
+        else
+        {
+        <EditForm Model="@_review" OnValidSubmit="SubmitReview">
+            <DataAnnotationsValidator />
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12" sm="12">
+                        <MudRating @bind-SelectedValue="@_rating" />
+                    </MudItem>
+                    <MudItem xs="12" sm="12">
+                            <MudTextField @bind-Value="@_review.FeedBack" Label="Feed Back" For="@(()=>_review.FeedBack)" />
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Secondary">Close</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Review</MudButton>
+            </MudCardActions>
+        </EditForm>
+        }
+    </DialogContent>
+</MudDialog>

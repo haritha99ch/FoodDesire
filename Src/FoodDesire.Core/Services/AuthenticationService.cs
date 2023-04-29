@@ -88,7 +88,7 @@ public class AuthenticationService : IAuthenticationService {
             profilePicture = null;
         }
 
-        var i = _profile.account;
+        var i = _profile!.account;
 
         User user = new User() {
             FirstName = _profile!.names[0].first,

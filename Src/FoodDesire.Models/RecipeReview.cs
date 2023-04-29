@@ -4,9 +4,9 @@ public class RecipeReview : Entity {
     public int CustomerId { get; set; }
     [Required]
     public int RecipeId { get; set; }
+    [Display(Name = "Feed Back")]
     public string? FeedBack { get; set; }
     [Required]
-    [Range(0, 1)]
     public float Rating { get; set; }
     [AllowNull]
     public DateTime DateTime { get; set; } = DateTime.Now;

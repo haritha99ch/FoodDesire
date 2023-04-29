@@ -13,20 +13,28 @@
 <td>
     <MudText>Rs. @(FoodItem?.Price * FoodItem?.Quantity)</MudText>
     </td>
-    @if(!ViewOnly)
-    {
-        <td>
-            <MudIconButton ButtonType="MudBlazor.ButtonType.Button" Icon="@Icons.Material.Filled.Edit" OnClick="Edit" aria-label="delete" />
-        </td>
-        <td>
+    @if (!ViewOnly)
+{
+    <td>
+        <MudIconButton ButtonType="MudBlazor.ButtonType.Button" Icon="@Icons.Material.Filled.Edit" OnClick="Edit" aria-label="delete" />
+    </td>
+    <td>
         <MudIconButton ButtonType="MudBlazor.ButtonType.Button" Icon="@Icons.Material.Filled.Delete" Color="MudBlazor.Color.Error" OnClick="Delete" aria-label="delete" />
-        </td>
-    }
-    else
+    </td>
+}
+else
+{
+    @if (Delivered)
     {
+        <td>
+            <MudButton ButtonType="MudBlazor.ButtonType.Button" Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="Review" >Review</MudButton>
+        </td>
         <td></td>
-        <td></td>
+
     }
+    <td></td>
+    <td></td>
+}
 
 
 

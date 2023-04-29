@@ -44,7 +44,7 @@ else
                 <MudExpansionPanels>
                     <MudExpansionPanel Text="Recipe Ingredients">
                         <MudGrid>
-                            @foreach (RecipeIngredient item in _recipeDetail.RecipeIngredients)
+                            @foreach (RecipeIngredient item in _recipeDetail?.RecipeIngredients!)
                             {
                                 <MudItem xs="12" sm="12">
                                     <MudGrid>
@@ -66,7 +66,7 @@ else
                                     <MudGrid>
                                         <MudItem xs="12" sm="6">
                                             <MudText>@item.DateTime</MudText>
-                                            <MudText Typo="Typo.h6">@item.Customer.User.FirstName @item.Customer.User.LastName: &nbsp;</MudText>
+                                            <MudText Typo="Typo.h6">@item?.Customer?.User?.FirstName @item?.Customer?.User?.LastName: &nbsp;</MudText>
                                             <MudRating ReadOnly="true" SelectedValue="@((int)(item.Rating * 5))" />
                                             <MudText Class="flex-lg-wrap">@item.FeedBack</MudText>
                                         </MudItem>

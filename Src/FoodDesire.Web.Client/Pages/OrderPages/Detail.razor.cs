@@ -2,6 +2,7 @@ namespace FoodDesire.Web.Client.Pages.OrderPages;
 public partial class Detail : ComponentBase {
     [Inject] private IOrderPageService _orderPageService { get; set; } = default!;
     [Inject] private ICartPageService _cartPageService { get; set; } = default!;
+    [Inject] private IDialogService _dialogService { get; set; } = default!;
 
     [Parameter] public int OrderId { get; set; }
 
@@ -19,4 +20,10 @@ public partial class Detail : ComponentBase {
     }
 
     private async Task GetFoodItems() => _foodItems = await _cartPageService.GetFoodItemsForOrderAsync(OrderId);
+
+    private async void ReviewRecipe(int recipeId) {
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true, };
+        DialogParameters? parameters = new() { [nameof(NewRecipeReviewDialogComponent.RecipeId)] = recipeId };
+        DialogResult? result = await _dialogService.Show<NewRecipeReviewDialogComponent>("Review Recipe", parameters, maxWidth).Result;
+    }
 }

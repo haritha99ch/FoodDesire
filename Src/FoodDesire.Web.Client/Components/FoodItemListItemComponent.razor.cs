@@ -5,11 +5,15 @@ public partial class FoodItemListItemComponent : ComponentBase {
     [Parameter]
     public bool ViewOnly { get; set; } = false;
     [Parameter]
+    public bool Delivered { get; set; } = false;
+    [Parameter]
     public EventCallback<int> OnDelete { get; set; }
     [Parameter]
     public EventCallback<int> OnEdit { get; set; }
     [Parameter]
     public EventCallback<int> OnView { get; set; }
+    [Parameter]
+    public EventCallback<int> OnReview { get; set; }
 
 
 
@@ -21,5 +25,8 @@ public partial class FoodItemListItemComponent : ComponentBase {
     }
     public async Task View() {
         await OnView.InvokeAsync(FoodItem.Id);
+    }
+    private async void Review() {
+        await OnReview.InvokeAsync(FoodItem.RecipeId);
     }
 }

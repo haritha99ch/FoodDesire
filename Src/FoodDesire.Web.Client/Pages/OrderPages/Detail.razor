@@ -35,7 +35,7 @@
                             @foreach (var item in _foodItems)
                             {
                                 <tr>
-                                    <FoodItemListItemComponent FoodItem="item" ViewOnly="true" />
+                                    <FoodItemListItemComponent FoodItem="item" ViewOnly="true" Delivered="@(_order.Status.Equals(OrderStatus.Delivered))" OnReview="ReviewRecipe" />
                                 </tr>
                             }
                         </tbody>
