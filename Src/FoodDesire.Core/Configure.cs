@@ -34,6 +34,8 @@ public static class Configure {
         services.AddTransient<IIngredientService, IngredientService>();
         services.AddTransient<IOrderDeliveryService, OrderDeliveryService>();
         services.AddTransient<ISupplyService, SupplyService>();
+
+        services.AddTransient<IRecipeReviewService, RecipeReviewService>();
     }
 
     public static void ConfigureServices(IServiceCollection services) {

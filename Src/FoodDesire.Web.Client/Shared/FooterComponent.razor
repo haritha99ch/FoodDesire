@@ -1,0 +1,25 @@
+﻿@inject NavigationManager _navigationManager
+<div class="footer">
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="4">
+                <MudLink OnClick="@(()=>_navigationManager.NavigateTo("/Home/AboutUs"))">
+                    <MudText Typo="Typo.h6">Food Desire</MudText>
+                </MudLink>
+                <MudText Typo="Typo.body2">Order your favorite food online from our restaurant.</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudText Typo="Typo.h6">Contact Us</MudText>
+                <MudText Typo="Typo.body2">Phone: +94 70 5924 764</MudText>
+                <MudText Typo="Typo.body2">Email: info@onlinefoodordering.com</MudText>
+                <MudText Typo="Typo.body2">Address: 123 Main Street, Kahagolla, Diyatalawa</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudText Typo="Typo.h6">Follow Us</MudText>
+                <MudIconButton Icon="@Icons.Custom.Brands.Facebook" Color="Color.Primary" />
+                <MudIconButton Icon="@Icons.Custom.Brands.Twitter" Color="Color.Primary" />
+                <MudIconButton Icon="@Icons.Custom.Brands.Instagram" Color="Color.Primary" />
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</div>

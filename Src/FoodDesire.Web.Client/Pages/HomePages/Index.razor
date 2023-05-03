@@ -1,0 +1,32 @@
+﻿@page "/"
+@page "/Home/Index"
+@page "/Home/"
+@using FoodDesire.Web.Client.Components
+
+<MudPaper Style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');" Class="p-4">
+    <MudPaper Class="ma-5 p-4">
+        <h1 class="mud-typography-header2">Welcome to Food Desire!</h1>
+        <p>Food Desire is a food delivery service that allows you to order food from your favorite restaurants and have it delivered right to your doorstep. We offer a wide variety of cuisines, including Indian, Chinese, Italian, Mexican, and more. Our goal is to make ordering food as easy and convenient as possible.</p>
+    </MudPaper>
+</MudPaper>
+<MudContainer>
+    @if (_loading)
+    {
+        <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+        </div>
+
+    }
+    else
+    {
+        <div class="d-flex">
+            <h3 class="mud-typography-header6">For You:</h3> &nbsp;&nbsp; <MudLink OnClick="@(()=>_navigationManager.NavigateTo("/Home/AboutUs"))" >See all...</MudLink>
+        </div>
+        <MudGrid>
+            @foreach (var item in _recipes)
+            {
+                <RecipeCardComponent Recipe="item" AddToCartAction="AddToCart" EditAndAddToCartAction="EditAndAddToCart" ShowDetailAction="ShowDetail" />
+            }
+        </MudGrid>
+    }
+</MudContainer>
