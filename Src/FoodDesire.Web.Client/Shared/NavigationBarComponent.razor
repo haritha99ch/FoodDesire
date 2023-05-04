@@ -26,10 +26,10 @@
     </MudAppBar>
     <MudDrawer @bind-Open="@open" Elevation="1">
         <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Home/Index"))">Home</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Recipe/Index"))">Store</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Cart/Index"))">Cart</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Order/Index"))">Orders</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Home/Index"))">Home</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Fastfood" Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Recipe/Index"))">Store</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.ShoppingCart" Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Cart/Index"))">Cart</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.ViewList" Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Order/Index"))">Orders</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 </MudLayout>

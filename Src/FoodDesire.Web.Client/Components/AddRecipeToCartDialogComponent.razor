@@ -35,8 +35,10 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-
-        <MudButton Color="Color.Primary" OnClick="AddToCart">Add To Cart</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Cancel">Cancel</MudButton>
+        @if (!Loading)
+        {
+            <MudButton Color="Color.Primary" Variant="@Variant.Filled" StartIcon="@Icons.Material.Filled.AddShoppingCart" OnClick="AddToCart">Add To Cart</MudButton>
+            <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Cancel" OnClick="Cancel">Cancel</MudButton>
+        }
     </DialogActions>
 </MudDialog>

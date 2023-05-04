@@ -43,13 +43,14 @@
                                                 <MudText Typo="Typo.h6">@item.Ingredient_Name@item.Recipe_Name</MudText>
                                                 <MudText>@item.Amount @item.Measurement</MudText>
                                             </MudItem>
-                                            <MudItem xs="12" sm="6">
-                                                <MudSlider  Value="@item.Multiplier"
+                                            <MudItem xs="12" sm="6" Class="d-flex">
+                                                <MudText Typo="Typo.h6">X</MudText>
+                                                <MudSlider Value="@item.Multiplier"
                                                             TickMarks="true" TickMarkLabels="@(GenerateTickMarkLabels((item.IsRequired)? 0.5: 0, (item.RecommendedMultiplier*2), 0.5))"
                                                             ValueChanged="(double v) => OnSliderValueChanged(item, v)"
-                                                            Min="@((item.IsRequired)? 0.5: 0)" Max="@(item.RecommendedMultiplier*2)" 
+                                                            Min="@((item.IsRequired)? 0.5: 0)" Max="@(item.RecommendedMultiplier*2)"
                                                             Variant="Variant.Filled"
-                                                            Step="0.5"/>
+                                                            Step="0.5" />
                                             </MudItem>
                                         </MudGrid>
                                     </MudItem>
@@ -62,14 +63,17 @@
         </MudContainer>
     </DialogContent>
     <DialogActions>
-
-        <MudButton Color="Color.Primary" OnClick="AddToCart">Add To Cart</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Cancel">Cancel</MudButton>
+        @if (!_loading)
+        {
+            <MudButton Color="Color.Primary" Variant="@Variant.Filled" StartIcon="@Icons.Material.Filled.AddShoppingCart" OnClick="AddToCart">Add To Cart</MudButton>
+            <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Cancel" OnClick="Cancel">Cancel</MudButton>
+        }
     </DialogActions>
 </MudDialog>
 
 @code {
-    private string[] GenerateTickMarkLabels(double min, double max, double step){
+    private string[] GenerateTickMarkLabels(double min, double max, double step)
+    {
         int numberOfLabels = (int)((max - min) / step) + 1;
         string[] labels = new string[numberOfLabels];
         for (int i = 0; i < numberOfLabels; i++)
@@ -80,13 +84,16 @@
     }
 
 
-    private void OnSliderValueChanged(FoodItemIngredientDetail item, double value){
+    private void OnSliderValueChanged(FoodItemIngredientDetail item, double value)
+    {
         item.Multiplier = value;
         _foodItem!.Price = _recipe.FixedPrice;
-        foreach (FoodItemIngredient e in _foodItemIngredients) {
+        foreach (FoodItemIngredient e in _foodItemIngredients)
+        {
             if (!e.CanModify) continue;
             decimal multiplierPrice = Convert.ToDecimal(Convert.ToDouble(e.PricePerMultiplier) * e.Multiplier);
-            if (!e.IsRequired) {
+            if (!e.IsRequired)
+            {
                 _foodItem.Price += multiplierPrice;
                 continue;
             }
