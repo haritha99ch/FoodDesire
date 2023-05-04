@@ -1,10 +1,10 @@
-﻿using FoodDesire.IMS.Core.Models;
-
-namespace FoodDesire.IMS.Core.Contracts.Services;
+﻿namespace FoodDesire.IMS.Core.Contracts.Services;
 public interface IHomeService {
     Task<decimal> GetTotalIncome();
     Task<decimal> GetTotalExpense();
-    Task<List<Order>> GetPendingOrders();
+    Task<int> GetPendingOrderCount();
     Task<List<Supply>> GetRecentSupply();
     Task<InventorySummary> GetInventorySummery();
+    Task<List<Recipe>> GetTop10Recipes();
+    Task<int> GetCompletedOrderCount();
 }

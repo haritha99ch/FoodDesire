@@ -237,4 +237,10 @@ public class RecipeService : IRecipeService {
         List<Recipe> recipes = await _recipeRepository.Get(filter, null, include);
         return recipes;
     }
+
+    public async Task IncrementTimesUsed(int recipeId) {
+        Recipe recipe = await GetRecipeById(recipeId);
+        recipe.Times++;
+        await _recipeRepository.Update(recipe);
+    }
 }

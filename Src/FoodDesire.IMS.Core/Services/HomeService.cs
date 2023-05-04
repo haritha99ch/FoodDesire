@@ -3,15 +3,17 @@ public class HomeService : IHomeService {
     private readonly IIngredientService _ingredientService;
     private readonly IPaymentService _paymentService;
     private readonly IOrderService _orderService;
+    private readonly IRecipeService _recipeService;
 
     public HomeService(
         IIngredientService ingredientService,
         IPaymentService paymentService,
-        IOrderService orderService
-        ) {
+        IOrderService orderService,
+        IRecipeService recipeService) {
         _ingredientService = ingredientService;
         _paymentService = paymentService;
         _orderService = orderService;
+        _recipeService = recipeService;
     }
 
     public async Task<InventorySummary> GetInventorySummery() {
@@ -28,9 +30,9 @@ public class HomeService : IHomeService {
         return summaryDTO;
     }
 
-    public async Task<List<Order>> GetPendingOrders() {
-        List<Order> orders = await _orderService.GetRemainingOrders();
-        return orders;
+    public async Task<int> GetPendingOrderCount() {
+        int count = await _orderService.GetPendingOrderCount();
+        return count;
     }
 
     public Task<List<Supply>> GetRecentSupply() {
@@ -46,6 +48,16 @@ public class HomeService : IHomeService {
     public async Task<decimal> GetTotalIncome() {
         List<Payment> payments = await _paymentService.GetIncome();
         decimal income = payments.Sum(e => e.Value);
-        throw new NotImplementedException();
+        return income;
+    }
+
+    public async Task<List<Recipe>> GetTop10Recipes() {
+        List<Recipe> recipes = await _recipeService.GetTop10Recipes();
+        return recipes;
+    }
+
+    public async Task<int> GetCompletedOrderCount() {
+        int count = await _orderService.GetCompletedOrderCount();
+        return count;
     }
 }

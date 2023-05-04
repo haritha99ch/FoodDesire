@@ -9,4 +9,5 @@ public interface IFoodItemService {
     Task<List<FoodItem>> GetAllFoodItemsForOrder(int orderId);
     Task<List<FoodItem>> GetQueuedFoodItems();
     Task<List<FoodItem>> GetAcceptedFoodItem(int chefId);
+    Task IncrementTimesForRecipesInOrder(int orderId);
 }

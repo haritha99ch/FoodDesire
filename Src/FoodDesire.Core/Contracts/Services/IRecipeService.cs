@@ -21,4 +21,5 @@ public interface IRecipeService {
     Task<RecipeReview> AddReviewForForRecipe(RecipeReview recipeReview);
     Task<List<Recipe>> GetAllRecipesWithCategory(bool menuItems);
     Task<List<Recipe>> SearchRecipes(string value, bool menuItems);
+    Task IncrementTimesUsed(int recipeId);
 }

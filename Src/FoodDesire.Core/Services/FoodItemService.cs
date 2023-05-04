@@ -168,4 +168,11 @@ public class FoodItemService : IFoodItemService {
         List<FoodItem>? foodItems = await _foodItemRepository.Get(filter, order, include);
         return foodItems;
     }
+
+    public async Task IncrementTimesForRecipesInOrder(int orderId) {
+        List<FoodItem> foodItems = await GetAllFoodItemsForOrder(orderId);
+        foreach (FoodItem item in foodItems) {
+            await _recipeService.IncrementTimesUsed(item.RecipeId);
+        }
+    }
 }

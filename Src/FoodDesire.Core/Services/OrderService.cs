@@ -66,4 +66,20 @@ public class OrderService : IOrderService {
         List<Order> orders = await _orderRepository.Get(filter);
         return orders;
     }
+
+    public async Task<int> GetCompletedOrderCount() {
+        Expression<Func<Order, bool>> filterExpression = e => e.Status.Equals(OrderStatus.Delivered);
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+
+        List<Order> orders = await _orderRepository.Get(filter);
+        return orders.Count;
+    }
+
+    public async Task<int> GetPendingOrderCount() {
+        Expression<Func<Order, bool>> filterExpression = e => e.Status.Equals(OrderStatus.Ordered);
+        IQueryable<Order> filter(IQueryable<Order> e) => e.Where(filterExpression);
+
+        List<Order> orders = await _orderRepository.Get(filter);
+        return orders.Count;
+    }
 }

@@ -4,17 +4,19 @@ public class PaymentService : IPaymentService {
     private readonly ITrackingRepository<Supply> _supplyRepository;
     private readonly IRepository<Order> _orderRepository;
     private readonly IRepository<Admin> _adminRepository;
+    private readonly IFoodItemService _foodItemService;
 
     public PaymentService(
         ITrackingRepository<Payment> paymentRepository,
         ITrackingRepository<Supply> supplyRepository,
         IRepository<Order> orderRepository,
-        IRepository<Admin> adminRepository
-        ) {
+        IRepository<Admin> adminRepository,
+        IFoodItemService foodItemService) {
         _paymentRepository = paymentRepository;
         _supplyRepository = supplyRepository;
         _orderRepository = orderRepository;
         _adminRepository = adminRepository;
+        _foodItemService = foodItemService;
     }
 
     public async Task<Order> PaymentForOrder(int orderId) {

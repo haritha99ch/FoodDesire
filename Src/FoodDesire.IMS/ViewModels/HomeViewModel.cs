@@ -1,22 +1,46 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-public class HomeViewModel : ObservableRecipient, IInitializable {
+public partial class HomeViewModel : ObservableRecipient, INavigationAware {
     private readonly IHomeService _homeService;
-    private InventorySummary _inventorySummary = new();
+    private readonly IMapper _mapper;
+
+    [ObservableProperty]
     private bool _isLoading;
+    [ObservableProperty]
+    private decimal _income;
+    [ObservableProperty]
+    private decimal _expense;
+    [ObservableProperty]
+    private decimal _profit;
+    [ObservableProperty]
+    private float _profitPercentage;
+    public ObservableCollection<RecipeListItemDetail> Recipes { get; set; } = new();
+    [ObservableProperty]
+    private int _pendingOrderCount;
+    [ObservableProperty]
+    private int _completedOrderCount;
 
-    public InventorySummary InventorySummary {
-        get => _inventorySummary;
-        set => SetProperty(ref _inventorySummary, value);
-    }
-    public bool IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
-
-    public HomeViewModel(IHomeService homeService) {
+    public HomeViewModel(IHomeService homeService, IMapper mapper) {
         _homeService = homeService;
-        _ = OnInit();
+        _mapper = mapper;
     }
 
-    public async Task OnInit() {
-        InventorySummary = await _homeService.GetInventorySummery();
+    public async void OnNavigatedTo(object parameter) {
+        IsLoading = true;
+
+        Income = await _homeService.GetTotalIncome();
+        Expense = await _homeService.GetTotalExpense();
+
+        Profit = Income - Expense;
+        ProfitPercentage = (float)Math.Round((double)(Profit / Income) * 100, 2);
+
+        PendingOrderCount = await _homeService.GetPendingOrderCount();
+        CompletedOrderCount = await _homeService.GetCompletedOrderCount();
+
+        List<Recipe> recipes = await _homeService.GetTop10Recipes();
+        recipes.ForEach(e => Recipes.Add(_mapper.Map<RecipeListItemDetail>(e)));
+
         IsLoading = false;
     }
+
+    public void OnNavigatedFrom() { }
 }

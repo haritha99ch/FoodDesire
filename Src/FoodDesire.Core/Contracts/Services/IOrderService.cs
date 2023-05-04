@@ -8,4 +8,6 @@ public interface IOrderService {
     Task<bool> DeleteOrderById(int orderId);
     Task<Order> GetPendingOrderForCustomer(int userId);
     Task<List<Order>> GetAllCustomerOrders(int customerId);
+    Task<int> GetCompletedOrderCount();
+    Task<int> GetPendingOrderCount();
 }
