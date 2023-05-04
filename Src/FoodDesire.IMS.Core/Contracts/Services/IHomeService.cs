@@ -1,7 +1,7 @@
 ﻿namespace FoodDesire.IMS.Core.Contracts.Services;
 public interface IHomeService {
-    Task<decimal> GetTotalIncome();
-    Task<decimal> GetTotalExpense();
+    Task<List<Payment>> GetIncomes();
+    Task<List<Payment>> GetExpenses();
     Task<int> GetPendingOrderCount();
     Task<List<Supply>> GetRecentSupply();
     Task<InventorySummary> GetInventorySummery();

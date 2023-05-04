@@ -3,77 +3,236 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:oxy="using:OxyPlot"
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+      xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+      xmlns:models="using:FoodDesire.IMS.Models"
+      xmlns:components="using:FoodDesire.IMS.Components"
+      xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
       mc:Ignorable="d">
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:StringFormatConverter x:Key="StringFormatConverter" />
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <!--Financial and Inventory-->
+        <TextBlock Grid.Row="0" 
+                   Text="Summery"
+                   Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Margin="{StaticResource XSmallLeftTopRightBottomMargin}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <!--Financial-->
+            <Grid Grid.Column="0"
+                  Grid.Row="0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+                  Background="{StaticResource CardBackgroundFillColorDefault}"
+                  Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
-            <StackPanel Grid.Column="0"
-                        Grid.Row="0"
-                        Padding="20,10"
-                        Margin="5"
-                        CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
-                        Background="{StaticResource CardBackgroundFillColorDefault}">
+                <ProgressRing IsIndeterminate="{x:Bind ViewModel.RecipesLoading, Mode=OneWay}"
+                              Height="50"
+                              Width="50"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+            </Grid>
 
-                <TextBlock Style="{StaticResource TitleLargeTextBlockStyle}"
-                           Text="Income" />
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
-                           Foreground="{ThemeResource SystemFillColorSuccess}">
+            <Grid Grid.Column="0"
+                  Grid.Row="0"
+                  Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Grid.Row="0"
+                            Padding="20,10"
+                            Margin="0,0,2,2"
+                            CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+                            Background="{StaticResource CardBackgroundFillColorDefault}">
+
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                               Text="Income" />
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource SystemFillColorSuccess}">
                         <Run x:Uid="Currency" />
                         <Run Text="{x:Bind ViewModel.Income, Mode=OneWay}" />
-                </TextBlock>
-            </StackPanel>
+                    </TextBlock>
+                </StackPanel>
 
-            <StackPanel Grid.Column="2"
-                        Grid.Row="0"
-                        Margin="5"
-                        CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
-                        Padding="20,10"
-                        Background="{StaticResource CardBackgroundFillColorDefault}">
+                <StackPanel Grid.Column="2"
+                            Grid.Row="0"
+                            CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+                            Padding="20,10"
+                            Margin="2,0,2,2"
+                            Background="{StaticResource CardBackgroundFillColorDefault}">
 
-                <TextBlock Style="{StaticResource TitleLargeTextBlockStyle}"
-                           Text="Expense" />
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
-                           Foreground="{ThemeResource SystemFillColorCritical}">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                               Text="Expense" />
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                               Foreground="{ThemeResource SystemFillColorCritical}">
                         <Run x:Uid="Currency" />
                         <Run Text="{x:Bind ViewModel.Expense, Mode=OneWay}" />
-                </TextBlock>
-            </StackPanel>
+                    </TextBlock>
+                </StackPanel>
 
-            <StackPanel Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        Margin="5"
-                        CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
-                        Padding="20,10"
-                        Background="{StaticResource CardBackgroundFillColorDefault}">
-
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Style="{StaticResource TitleLargeTextBlockStyle}"
+                <StackPanel Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Padding="20,10"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Margin="0,2,2,0"
+                            CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+                            Background="{StaticResource CardBackgroundFillColorDefault}">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
                                HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
                                Text="Profit" />
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
                         <Run x:Uid="Currency" />
                         <Run Text="{x:Bind ViewModel.Profit, Mode=OneWay}" />
                     </TextBlock>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
+
+            <!--Inventory-->
+            <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  Padding="20,10"
+                  CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+                  Visibility="{x:Bind ViewModel.InventorySummeryLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                  Background="{StaticResource CardBackgroundFillColorDefault}">
+
+                <ProgressRing IsIndeterminate="{x:Bind ViewModel.InventorySummeryLoading, Mode=OneWay}"
+                              Height="50"
+                              Width="50"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+            </Grid>
+
+            <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  Padding="20,10, 20, 0"
+                  x:Name="ContainerGrid"
+                  Margin="2,0,0,0"
+                  CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+                  Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"
+                  Background="{StaticResource CardBackgroundFillColorDefault}">
+
+                <ProgressRing Value="{x:Bind ViewModel.InventorySummary.AvailableSpace, Mode=OneWay}"
+                              IsIndeterminate="False"
+                              Background="{StaticResource ProgressBarBackgroundThemeBrush}"
+                              Width="150"
+                              Height="150"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Text="{x:Bind ViewModel.InventorySummary.AvailableSpace, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:0.##} %'}" />
+
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                           Text="Inventory" />
+            </Grid>
+
+
         </Grid>
 
+        <!--Chart-->
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Padding="20,10"
+              Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+              CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+              Background="{StaticResource CardBackgroundFillColorDefault}"
+              Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
-        <Grid Grid.Column="1">
+            <ProgressRing IsIndeterminate="{x:Bind ViewModel.ChartLoading, Mode=OneWay}"
+                          Height="50"
+                          Width="50"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Padding="20,10"
+              Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+              CornerRadius="{StaticResource ColorPickerSliderCornerRadius}"
+              Background="{StaticResource CardBackgroundFillColorDefault}"
+              Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}">
+
+            <oxy:PlotView Model="{x:Bind ViewModel.Model, Mode=OneWay}" />
+        </Grid>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Style="{StaticResource SubtitleTextBlockStyle}"
+                   Text="Top Selling Recipes" />
+            
+        <Grid Grid.Row="1"
+              Grid.RowSpan="2"
+              Grid.Column="1"
+              ColumnSpacing="5"
+              Margin="{StaticResource XSmallLeftTopRightBottomMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                <ProgressRing IsIndeterminate="{x:Bind ViewModel.RecipesLoading, Mode=OneWay}"
+                              Height="50"
+                              Width="50"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+            </Grid>
+
+            <controls:AdaptiveGridView Grid.Row="1"
+                                       Visibility="{x:Bind ViewModel.RecipesLoading, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"
+                                       animations:Connected.ListItemElementName="itemThumbnail"
+                                       animations:Connected.ListItemKey="animationKeyContentGrid"
+                                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                       ScrollViewer.IsVerticalScrollChainingEnabled="True"
+                                       ScrollViewer.VerticalScrollMode="Enabled"
+                                       IsItemClickEnabled="True"
+                                       DesiredWidth="350"
+                                       ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
+                                       ItemsSource="{x:Bind ViewModel.Recipes,Mode=OneWay}"
+                                       SelectionMode="None"
+                                       StretchContentForSingleRow="False">
+                <controls:AdaptiveGridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:RecipeListItemDetail">
+                        <components:RecipeListItemControl />
+                    </DataTemplate>
+                </controls:AdaptiveGridView.ItemTemplate>
+            </controls:AdaptiveGridView>
         </Grid>
     </Grid>
 </Page>

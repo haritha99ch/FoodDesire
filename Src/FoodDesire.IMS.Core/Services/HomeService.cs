@@ -39,16 +39,15 @@ public class HomeService : IHomeService {
         throw new NotImplementedException();
     }
 
-    public async Task<decimal> GetTotalExpense() {
+    public async Task<List<Payment>> GetExpenses() {
         List<Payment> payments = await _paymentService.GetExpenses();
         decimal expense = payments.Sum(e => e.Value);
-        return expense;
+        return payments;
     }
 
-    public async Task<decimal> GetTotalIncome() {
+    public async Task<List<Payment>> GetIncomes() {
         List<Payment> payments = await _paymentService.GetIncome();
-        decimal income = payments.Sum(e => e.Value);
-        return income;
+        return payments;
     }
 
     public async Task<List<Recipe>> GetTop10Recipes() {

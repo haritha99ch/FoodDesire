@@ -74,7 +74,7 @@
             <TextBlock x:Uid="Settings_MyAccount"
                        Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <components:EmployeesDetailControl ListDetailsMenuItem="{x:Bind ViewModel.User}" />
+                <components:EmployeesDetailControl ListDetailsMenuItem="{x:Bind ViewModel.User, Mode=OneWay}" />
                 <Button Style="{StaticResource AccentButtonStyle}"
                         Margin="{StaticResource SmallTopBottomMargin}"
                         Content="Sign out"
