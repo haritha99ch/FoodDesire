@@ -6,6 +6,23 @@
         <MudTextField @bind-Value="Search" Class="ma-2" Label="Search Foods" Variant="Variant.Filled" TextChanged="OnSearchTextChanged" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Dark" Href="https://github.com/haritha99ch/FoodDesire" Target="_blank" />
+        <MudMenu FullWidth="true">
+            <ActivatorContent>
+                <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">Account</MudChip>
+            </ActivatorContent>
+            <ChildContent>
+                @if (_isAuthenticated)
+                {
+                    <MudMenuItem OnClick="@(()=>NavigateTo("/Account/Index"))">Profile</MudMenuItem>
+                    <MudMenuItem OnClick="OnSignOutButtonClicked">Sign Out</MudMenuItem>
+                }
+                else
+                {
+                    <MudMenuItem OnClick="@(()=>NavigateTo("/Account/SignUp"))">Sign Up</MudMenuItem>
+                    <MudMenuItem OnClick="@(()=>NavigateTo("/Account/SignIn"))">Sign In</MudMenuItem>
+                }
+            </ChildContent>
+        </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="@open" Elevation="1">
         <MudNavMenu>
@@ -13,7 +30,6 @@
             <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Recipe/Index"))">Store</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Cart/Index"))">Cart</MudNavLink>
             <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Order/Index"))">Orders</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All" OnClick="@(()=>NavigateTo("/Account/Index"))">Profile</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 </MudLayout>

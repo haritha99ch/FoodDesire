@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
 
 namespace FoodDesire.Web.Client.Pages.AccountPages;
 public partial class SignIn : ComponentBase {
@@ -33,7 +32,14 @@ public partial class SignIn : ComponentBase {
     private async Task SignInAsync(EditContext context) {
         StateHasChanged();
         string? token = await _accountPageService.SignIn(_signIn);
-        if (token != null) NavigateToIndex();
+        if (token != null) {
+            OnSignIn();
+            NavigateToIndex();
+        }
         _invalidSignIn = true;
+    }
+
+    private void OnSignIn() {
+        _signInCommunicationService.NotifyStateChanged(_signIn);
     }
 }

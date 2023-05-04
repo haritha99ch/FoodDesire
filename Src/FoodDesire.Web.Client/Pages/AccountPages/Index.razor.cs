@@ -9,10 +9,12 @@ public partial class Index : ComponentBase {
     [Inject]
     private IAccountPageService _accountPageService { get; set; } = default!;
 
+    private bool _loading = true;
     private Customer? _customer = new();
 
 
     protected override async Task OnInitializedAsync() {
+        _loading = true;
         AuthenticationState authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         if (!authState.User.Identity!.IsAuthenticated) {
             _navigationManager.NavigateTo("/Account/SignIn");
@@ -20,5 +22,6 @@ public partial class Index : ComponentBase {
         }
         _customer = await _accountPageService!.Get();
         await base.OnInitializedAsync();
+        _loading = false;
     }
 }
