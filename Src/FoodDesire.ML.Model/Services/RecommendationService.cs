@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.ML.Model;
+﻿using Microsoft.ML.Trainers.Recommender;
+
+namespace FoodDesire.ML.Model;
 internal class RecommendationService : IRecommendationService {
     private readonly IRepository<RecipeReview> _recipeRepository;
     private readonly IMapper _mapper;
@@ -24,9 +26,9 @@ internal class RecommendationService : IRecommendationService {
         recipeRatings.ForEach(e => ratings.Add(_mapper.Map<PredictRating>(e)));
         _data = _mlContext.Data.LoadFromEnumerable(ratings);
 
-        _splitData = _mlContext.Data.TrainTestSplit(_data);
+        _splitData = _mlContext.Data.TrainTestSplit(_data, testFraction: 0.3);
 
-        var pipeline =
+        EstimatorChain<MatrixFactorizationPredictionTransformer> pipeline =
             _mlContext.Transforms.Conversion.MapValueToKey("CustomerId")
             .Append(_mlContext.Transforms.Conversion.MapValueToKey("RecipeId"))
             .Append(_mlContext.Recommendation().Trainers.MatrixFactorization(
@@ -36,14 +38,13 @@ internal class RecommendationService : IRecommendationService {
                     LabelColumnName = "Rating"
                 }));
         _model = pipeline.Fit(_splitData.TrainSet);
-
-        var predictions = _model.Transform(_splitData.TestSet);
-        var metrics = _mlContext.Regression.Evaluate(predictions, labelColumnName: "Rating");
-        Console.WriteLine(metrics);
-
         _predictionEngine = _mlContext.Model.CreatePredictionEngine<PredictRating, RecipePrediction>(_model);
 
-        //TODO: Evaluate model
+        IDataView predictions = _model.Transform(_splitData.TestSet);
+        RegressionMetrics metrics = _mlContext.Regression.Evaluate(predictions, labelColumnName: "Rating");
+        Console.WriteLine($"Mean Absolute Error: {metrics.MeanAbsoluteError}");
+        Console.WriteLine($"Mean Squared Error: {metrics.MeanSquaredError}");
+        Console.WriteLine($"Root Mean Squared Error: {metrics.RootMeanSquaredError}");
     }
 
     public void SaveModel() {
