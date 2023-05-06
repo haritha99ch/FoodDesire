@@ -2,10 +2,9 @@ name: .NET Core Desktop
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
     strategy:
       matrix:
@@ -13,30 +12,27 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      
-    - name: Setting Environment Variables
-      env:
-        APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
-      run: |
-        Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
-        Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
-      shell: pwsh
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 7.0.x
+      - name: Setting Environment Variables
+        env:
+          APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
+        run: |
+          Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
+          Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
+        shell: pwsh
 
-    - name: Setup NuGet
-      uses: nuget/setup-nuget@v1
-      with:
-        nuget-api-key: ${{ secrets.PACKAGES_ACCESS_TOKEN }}
-        nuget-source: 'https://nuget.pkg.github.com/haritha99ch/index.json'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.x
 
-    - name: Build
-      run: dotnet build Src/FoodDesire.sln --configuration ${{ matrix.configuration }}
+      - name: Build
+        run: dotnet build Src/FoodDesire.sln --configuration ${{ matrix.configuration }}
 
-    - name: Run tests
-      run: dotnet test Src/
+      - name: Run tests
+        run: dotnet test Src/
+
+      - name: Train Recommendation Model
+        run: dotnet run --project Src/FoodDesire.ML.Model --configuration ${{ matrix.configuration }}
