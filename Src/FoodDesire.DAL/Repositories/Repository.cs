@@ -58,7 +58,7 @@ public class Repository<T> : IRepository<T> where T : Entity {
         IQueryable<T>? query = entitySet.AsNoTracking();
         query = filter(query);
         if (include != null) query = include(query);
-        T? entity = await query.FirstAsync();
+        T? entity = await query.FirstOrDefaultAsync();
         return entity!;
     }
 
