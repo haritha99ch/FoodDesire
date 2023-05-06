@@ -9,7 +9,6 @@ public sealed partial class IngredientsPage : Page {
     public IngredientsPage() {
         InitializeComponent();
         ViewModel = App.GetService<IngredientsViewModel>();
-        DataContext = ViewModel;
     }
 
     private void IngredientList_ItemClick(object sender, ItemClickEventArgs e) {

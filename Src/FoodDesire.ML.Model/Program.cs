@@ -1,6 +1,4 @@
-﻿using FoodDesire.ML.Model.Helpers;
-
-Console.WriteLine("Configuring app...");
+﻿Console.WriteLine("Configuring app...");
 
 var Host = Microsoft.Extensions.Hosting.Host
     .CreateDefaultBuilder()
@@ -15,10 +13,10 @@ try {
     await service.ConfigurePredictionEngine();
     Console.WriteLine("Model configured");
 
-    Console.WriteLine("Model saved");
-    service.SaveModel();
+    Console.WriteLine("Model saving...");
+    await service.SaveModel();
+    Console.WriteLine("Model Saved");
 
-    // TODO: Evaluate model
 } catch (Exception ex) {
     Console.WriteLine(ex.Message);
     Console.WriteLine("Stopping the configuration");

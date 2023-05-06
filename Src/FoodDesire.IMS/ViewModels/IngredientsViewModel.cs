@@ -1,5 +1,5 @@
 ﻿namespace FoodDesire.IMS.ViewModels;
-public partial class IngredientsViewModel : ObservableRecipient, IInitializable {
+public partial class IngredientsViewModel : ObservableRecipient, INavigationAware {
     private readonly IIngredientsPageService _ingredientsPageService;
     private readonly IMapper _mapper;
     [ObservableProperty]
@@ -20,10 +20,14 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
     public IngredientsViewModel(IIngredientsPageService ingredientsPageService, IMapper mapper) {
         _mapper = mapper;
         _ingredientsPageService = ingredientsPageService;
-        _ = OnInit();
     }
 
-    public async Task OnInit() {
+    public async void OnNavigatedTo(object parameter) {
+        await LoadData();
+    }
+
+    private async Task LoadData() {
+        IsLoading = true;
         List<Ingredient> ingredients = await _ingredientsPageService.GetAllIngredients();
         List<IngredientDetails>? ingredientsDetails = ingredients
             .Select(_mapper.Map<IngredientDetails>)
@@ -32,6 +36,8 @@ public partial class IngredientsViewModel : ObservableRecipient, IInitializable 
         ingredientsDetails.ForEach(IngredientsDetail.Add);
         IsLoading = false;
     }
+
+    public void OnNavigatedFrom() { }
 
     private async void OnSearchTextChanged() {
         await _searchSemaphore.WaitAsync();
