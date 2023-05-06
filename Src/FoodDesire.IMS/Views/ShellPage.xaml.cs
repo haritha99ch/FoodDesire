@@ -48,7 +48,6 @@ public sealed partial class ShellPage : Page {
                 dialog.PrimaryButtonText = "Sign in";
             }
         }
-        await ViewModel.GetUser();
         ContentGrid.IsHitTestVisible = true;
     }
 

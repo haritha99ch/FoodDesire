@@ -46,12 +46,16 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware {
 
     public async void OnNavigatedTo(object parameter) {
         IsLoading = true;
+        await LoadData();
+        IsLoading = false;
+    }
+
+    private async Task LoadData() {
         await loadFinancialData();
         await LoadToDosCount();
         await LoadTop10Recipes();
         await LoadInventorySummery();
         PlotChart();
-        IsLoading = false;
     }
 
     private async Task LoadInventorySummery() {
@@ -78,7 +82,7 @@ public partial class HomeViewModel : ObservableRecipient, INavigationAware {
         Expense = _expenses.Sum(e => e.Value);
 
         Profit = Income - Expense;
-        ProfitPercentage = (float)Math.Round((double)(Profit / Income) * 100, 2);
+        ProfitPercentage = (Income > 0) ? (float)Math.Round((double)(Profit / Income) * 100, 2) : 0;
         ProfitLoading = false;
     }
 
