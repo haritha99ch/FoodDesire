@@ -7,9 +7,9 @@ public static class Configure {
         IServiceCollection services,
         string dbConnectionString
         ) {
-        services.AddDbContext<ApplicationDbContext>(
-            options =>
-                options.UseSqlServer(dbConnectionString));
+        services.AddDbContext<ApplicationDbContext>(options
+            => options.UseSqlServer(dbConnectionString), ServiceLifetime.Scoped, ServiceLifetime.Scoped);
+
         GetServices(services);
     }
 

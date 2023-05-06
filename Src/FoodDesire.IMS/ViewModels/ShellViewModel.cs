@@ -59,6 +59,7 @@ public partial class ShellViewModel : ObservableRecipient {
         NavigationViewService = navigationViewService;
         _authenticationService = authenticationService;
         _localSettingsService = localSettingsService;
+
         _ = GetUser();
     }
 
