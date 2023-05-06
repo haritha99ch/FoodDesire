@@ -31,16 +31,16 @@ jobs:
         shell: pwsh
 
       - name: Build with dotnet
-        run: dotnet build Src/FoodDesire.sln --configuration Release
+        run: dotnet build .\Src\FoodDesire.sln --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Src/FoodDesire.Web.API
+        run: dotnet publish .\Src\FoodDesire.Web.API\ -c Release -o ${{env.DOTNET_ROOT}}\FoodDesireApp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/Src/FoodDesire.Web.API
+          path: ${{env.DOTNET_ROOT}}\FoodDesireApp
 
   deploy:
     runs-on: windows-latest
