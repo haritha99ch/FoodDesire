@@ -51,11 +51,10 @@ jobs:
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
           $certificatePath = ".\Src\FoodDesire.IMS\GitHubActionsWorkflow.pfx"
           [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-
       - name: Create the app package
         run: msbuild .\Src\FoodDesire.IMS\ /p:Configuration=$env:Configuration /p:Platform=$env:Platform /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
         env:
-          Appx_Bundle: Always
+          Appx_Bundle: Never
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: Packages\
           Configuration: ${{ matrix.configuration }}
@@ -69,3 +68,44 @@ jobs:
         with:
           name: MSIX Package
           path: .\Src\FoodDesire.IMS\Packages
+  
+  release:
+    needs: build
+    runs-on: windows-latest
+    steps:
+     - name: Download MSIX package
+       uses: actions/download-artifact@v2
+       with:
+         name: MSIX Package
+         path: .\Src\FoodDesire.IMS\Packages
+
+     - name: Get version number
+       run: |
+        $version = (Get-ChildItem .\Src\FoodDesire.IMS\Packages | Where-Object { $_.PSIsContainer } | Select-Object -First 1).Name.Split("_")[3]
+        echo "VERSION_NUMBER=$version" >> $GITHUB_ENV
+       shell: pwsh
+
+     - name: Create Release
+       id: create_release
+       uses: actions/create-release@v1
+       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       with:
+        tag_name: ${{ github.run_number }}
+        release_name: Release v${{ env.VERSION_NUMBER }}
+        draft: false
+        prerelease: false
+
+     - name: Zip Packages directory
+       run: Compress-Archive -Path .\Src\FoodDesire.IMS\Packages\* -DestinationPath .\Packages.zip
+       shell: pwsh
+
+     - name: Upload Zip Asset
+       uses: actions/upload-release-asset@v1
+       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: .\Packages.zip
+        asset_name: Packages.zip
+        asset_content_type: application/zip
