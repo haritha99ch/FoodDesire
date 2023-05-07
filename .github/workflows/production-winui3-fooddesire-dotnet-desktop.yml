@@ -25,6 +25,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setting Environment Variables
+        env:
+          APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
+        run: |
+          Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
+          Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
+        shell: pwsh
+
       - name: Install .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -34,30 +42,30 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Restore the application
-        run: msbuild .\Src\$env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+        run: msbuild .\Src\FoodDesire.IMS\ /t:Restore /p:Configuration=$env:Configuration
         env:
           Configuration: ${{ matrix.configuration }}
 
       - name: Decode the pfx
         run: |
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
-          $certificatePath = "GitHubActionsWorkflow.pfx"
+          $certificatePath = ".\Src\FoodDesire.IMS\GitHubActionsWorkflow.pfx"
           [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
       - name: Create the app package
-        run: msbuild .\Src\$env:Solution_Name /p:Configuration=$env:Configuration /p:Platform=$env:Platform /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
+        run: msbuild .\Src\FoodDesire.IMS\ /p:Configuration=$env:Configuration /p:Platform=$env:Platform /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
         env:
-          Appx_Bundle: Never
+          Appx_Bundle: Always
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: Packages\
           Configuration: ${{ matrix.configuration }}
           Platform: ${{ matrix.platform }}
 
       - name: Remove the pfx
-        run: Remove-Item -path GitHubActionsWorkflow.pfx
+        run: Remove-Item -path .\Src\FoodDesire.IMS\GitHubActionsWorkflow.pfx
 
       - name: Upload MSIX package
         uses: actions/upload-artifact@v2
         with:
           name: MSIX Package
-          path: .\Src\${{ env.Solution_Name }}\\Packages
+          path: .\Src\FoodDesire.IMS\Packages

@@ -4,7 +4,7 @@
     <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>FoodDesire.IMS</RootNamespace>
-    <ApplicationIcon>WindowIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
@@ -15,6 +15,16 @@
     <EnableMsixTooling>true</EnableMsixTooling>
 	<SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
 	<PackageIcon>Square150x150Logo.scale-200.png</PackageIcon>
+	<GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+	<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+	<PackageCertificateKeyFile>FoodDesire.IMS_TemporaryKey.pfx</PackageCertificateKeyFile>
+	<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+	<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+	<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+	<GenerateTestArtifacts>True</GenerateTestArtifacts>
+	<AppxBundle>Never</AppxBundle>
+	<AppInstallerUri>C:\Packages</AppInstallerUri>
+	<PackageCertificateThumbprint>4E9971A721C6F54C4AC0BCE276F359A6301AF859</PackageCertificateThumbprint>
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
   <ItemGroup>
@@ -23,14 +33,10 @@
     <Content Remove="Assets\StoreLogo.scale-150.png" />
     <Content Remove="Assets\StoreLogo.scale-200.png" />
     <Content Remove="Assets\StoreLogo.scale-400.png" />
-    <Content Remove="Assets\WindowIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Components\DeliveriesListItemControl.xaml" />
     <None Remove="Components\FoodItemIngredientItemControl.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="WindowIcon.ico" />
   </ItemGroup>
 
 
