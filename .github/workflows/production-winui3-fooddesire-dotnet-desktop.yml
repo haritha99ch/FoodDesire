@@ -69,3 +69,33 @@ jobs:
         with:
           name: MSIX Package
           path: .\Src\FoodDesire.IMS\Packages
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Download MSIX package
+        uses: actions/download-artifact@v2
+        with:
+          name: MSIX Package
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: release-${{ github.event_name }}-${{ github.run_number }}-${{ github.run_id }}
+          release_name: Release ${{ github.event_name }}-${{ github.run_number }}-${{ github.run_id }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: .\MSIX Package\FoodDesire.IMS_1.0.0.0_x64_Test\FoodDesire.IMS_1.0.0.0_x64.msix
+          asset_name: FoodDesire.IMS_1.0.0.0_x64.msix
+          asset_content_type: application/octet-stream
