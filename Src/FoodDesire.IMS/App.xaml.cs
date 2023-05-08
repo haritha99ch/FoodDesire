@@ -1,5 +1,7 @@
-﻿namespace FoodDesire.IMS;
-public partial class App : Application {
+﻿using System.Windows.Forms;
+
+namespace FoodDesire.IMS;
+public partial class App : Microsoft.UI.Xaml.Application {
     public IHost Host { get; }
     public static WindowEx MainWindow { get; } = new MainWindow();
     public static IConfiguration Configuration { get; } = (Current as App)!.Host.Services.GetRequiredService<IConfiguration>();
@@ -31,8 +33,14 @@ public partial class App : Application {
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args) {
-        await EnsureAdmin();
-        await GetCurrentUser();
+        try {
+            await EnsureAdmin();
+            await GetCurrentUser();
+        } catch (Exception ex) {
+            MessageBox.Show($"Error while ensuring admin: {ex.Message}");
+            Exit();
+            return;
+        }
         base.OnLaunched(args);
         await GetService<IActivationService>().ActivateAsync(args);
     }

@@ -13,7 +13,7 @@
   <Identity
     Name="aeef0453-4ca2-4228-a06b-7f52bee4fcf8"
     Publisher="CN=Haritha Rathnayake"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
     
   <mp:PhoneIdentity PhoneProductId="aeef0453-4ca2-4228-a06b-7f52bee4fcf8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
@@ -38,7 +38,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="Food Desire"
-        Description="Inventory Management System For Food Desire Restaurants"
+        Description="Inventory Management System For Food Desire Restaurant"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

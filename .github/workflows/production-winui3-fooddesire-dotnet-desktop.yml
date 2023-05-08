@@ -51,17 +51,27 @@ jobs:
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
           $certificatePath = ".\Src\FoodDesire.IMS\GitHubActionsWorkflow.pfx"
           [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
       - name: Create the app package
         run: msbuild .\Src\FoodDesire.IMS\ /p:Configuration=$env:Configuration /p:Platform=$env:Platform /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
         env:
-          Appx_Bundle: Never
+          Appx_Bundle: Always
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: Packages\
           Configuration: ${{ matrix.configuration }}
           Platform: ${{ matrix.platform }}
 
-      - name: Remove the pfx
-        run: Remove-Item -path .\Src\FoodDesire.IMS\GitHubActionsWorkflow.pfx
+      - name: Get app version
+        run: |
+          $xml = [xml](Get-Content .\Src\FoodDesire.IMS\Package.appxmanifest)
+          $version = $xml.Package.Identity.Version
+          $version | Out-File -FilePath ".\version.txt"
+
+      - name: Upload MSIX Version
+        uses: actions/upload-artifact@v2
+        with:
+            name: MSIX Version
+            path: .\version.txt
 
       - name: Upload MSIX package
         uses: actions/upload-artifact@v2
@@ -73,39 +83,48 @@ jobs:
     needs: build
     runs-on: windows-latest
     steps:
-     - name: Download MSIX package
-       uses: actions/download-artifact@v2
-       with:
-         name: MSIX Package
-         path: .\Src\FoodDesire.IMS\Packages
-
-     - name: Get version number
-       run: |
-        $version = (Get-ChildItem .\Src\FoodDesire.IMS\Packages | Where-Object { $_.PSIsContainer } | Select-Object -First 1).Name.Split("_")[3]
-        echo "VERSION_NUMBER=$version" >> $GITHUB_ENV
-       shell: pwsh
-
-     - name: Create Release
-       id: create_release
-       uses: actions/create-release@v1
-       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-        tag_name: ${{ github.run_number }}
-        release_name: Release v${{ env.VERSION_NUMBER }}
-        draft: false
-        prerelease: false
-
-     - name: Zip Packages directory
-       run: Compress-Archive -Path .\Src\FoodDesire.IMS\Packages\* -DestinationPath .\Packages.zip
-       shell: pwsh
-
-     - name: Upload Zip Asset
-       uses: actions/upload-release-asset@v1
-       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: .\Packages.zip
-        asset_name: Packages.zip
-        asset_content_type: application/zip
+      - name: Download MSIX package
+        uses: actions/download-artifact@v2
+        with:
+          name: MSIX Package
+          path: .\Packages
+    
+      - name: Download MSIX version
+        uses: actions/download-artifact@v2
+        with:
+          name: MSIX Version
+          path: .\build
+    
+      - name: Read app version
+        id: read_version
+        run: |
+            echo "::set-output name=version::$(Get-Content .\build\version.txt)"
+    
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.read_version.outputs.version }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release v${{ env.VERSION }}
+          draft: false
+          prerelease: false
+    
+      - name: Zip Packages directory
+        env:
+         VERSION: ${{ steps.read_version.outputs.version }}
+        run: Compress-Archive -Path .\Packages\* -DestinationPath .\FoodDesire_v${{ env.VERSION }}.zip
+        shell: pwsh
+    
+      - name: Upload Zip Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.read_version.outputs.version }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: .\FoodDesire_v${{ env.VERSION }}.zip
+          asset_name: FoodDesire_v${{ env.VERSION }}.zip
+          asset_content_type: application/zip
