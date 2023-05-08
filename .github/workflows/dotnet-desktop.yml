@@ -2,7 +2,7 @@ name: .NET Core Desktop
 
 on:
   pull_request:
-    branches: ["main"]
+    branches: ["main", "production-*"]
 
 jobs:
   build:
@@ -15,18 +15,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setting Environment Variables
-        env:
-          APPSETTINGS_PRODUCTION: ${{ secrets.APPSETTINGS_PRODUCTION }}
-        run: |
-          Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Production.json" -Value $env:APPSETTINGS_PRODUCTION
-          Set-Content -Path "Src/FoodDesire.AppSettings/appsettings.Development.json" -Value $env:APPSETTINGS_PRODUCTION
-        shell: pwsh
-
-      - name: Setup .NET
+      - name: Setup .NET 7
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 7.0.x
+
+      - name: Setting User Secrets
+        env:
+            CONNECTIONSTRINGS_DEFAULTCONNECTION: ${{ secrets.USERSECRETS_CONNECTIONSTRINGS_DEFAULTCONNECTION }}
+            CONNECTIONSTRINGS_STORAGECONNECTION: ${{ secrets.USERSECRETS_CONNECTIONSTRINGS_STORAGECONNECTION }}
+            CLIENTID: ${{ secrets.USERSECRETS_CLIENTID }}
+            JWT_SIGNINKEY: ${{ secrets.USERSECRETS_JWT_SIGNINKEY }}
+        run: |
+            dotnet user-secrets set "ConnectionStrings:DefaultConnection" $env:CONNECTIONSTRINGS_DEFAULTCONNECTION --project .\Src\FoodDesire.AppSettings\
+            dotnet user-secrets set "ConnectionStrings:StorageConnection" $env:CONNECTIONSTRINGS_STORAGECONNECTION --project .\Src\FoodDesire.AppSettings\
+            dotnet user-secrets set "ClientID" $env:CLIENTID --project .\Src\FoodDesire.AppSettings\
+            dotnet user-secrets set "Jwt:SignInKey" $env:JWT_SIGNINKEY --project .\Src\FoodDesire.AppSettings\
+        shell: pwsh
 
       - name: Build
         run: dotnet build Src/FoodDesire.sln --configuration ${{ matrix.configuration }}

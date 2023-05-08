@@ -21,6 +21,5 @@
     <ProjectReference Include="..\FoodDesire.DAL\FoodDesire.DAL.csproj" />
     <ProjectReference Include="..\FoodDesire.ML.Model\FoodDesire.ML.Model.csproj" />
     <ProjectReference Include="..\FoodDesire.Web.Client\FoodDesire.Web.Client.csproj" />
-    <ProjectReference Include="..\FoodDesire.Web.Shared\FoodDesire.Web.Shared.csproj" />
   </ItemGroup>
 </Project>

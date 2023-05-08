@@ -1,8 +1,7 @@
 namespace FoodDesire.Web.API.Helpers;
 internal static class AppConfigurator {
     internal static void Configure(WebApplicationBuilder builder) {
-        string environmentName = builder.Environment.EnvironmentName;
-        AppSettings.Configure.ConfigureEnvironment(builder.Configuration, environmentName);
+        AppSettings.Configure.ConfigureEnvironment(builder.Configuration);
         ConfigureServices(builder);
     }
 

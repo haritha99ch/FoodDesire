@@ -4,7 +4,7 @@ namespace FoodDesire.ML.Model.Helpers;
 internal static class AppConfigurator {
     internal static void Configure(HostBuilderContext context, IConfigurationBuilder config) {
         string environmentName = context.HostingEnvironment.EnvironmentName;
-        AppSettings.Configure.ConfigureEnvironment(config, environmentName);
+        AppSettings.Configure.ConfigureEnvironment(config);
     }
 
     internal static void Configure(HostBuilderContext context, IServiceCollection services) {

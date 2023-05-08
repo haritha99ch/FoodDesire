@@ -15,7 +15,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
                 environmentName = context.HostingEnvironment.EnvironmentName).Build();
 
         ConfigurationBuilder? builder = new ConfigurationBuilder();
-        AppSettings.Configure.ConfigureEnvironment(builder, environmentName);
+        AppSettings.Configure.ConfigureEnvironment(builder);
         IConfigurationRoot? config = builder.Build();
 
         string connectionString = config.GetConnectionString("DefaultConnection")!;
