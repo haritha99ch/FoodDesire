@@ -4,7 +4,7 @@
 name: WinUI 3 MSIX app
 
 on:
-  push:
+  pull_request:
     branches: 
         - production-ims
   workflow_dispatch:
@@ -62,7 +62,7 @@ jobs:
       - name: Create the app package
         run: msbuild .\Src\FoodDesire.IMS\ /p:Configuration=$env:Configuration /p:Platform=$env:Platform /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:AppxPackageDir="$env:Appx_Package_Dir" /p:GenerateAppxPackageOnBuild=true
         env:
-          Appx_Bundle: Always
+          Appx_Bundle: Never
           Appx_Package_Build_Mode: SideloadOnly
           Appx_Package_Dir: Packages\
           Configuration: ${{ matrix.configuration }}
@@ -125,13 +125,17 @@ jobs:
         run: Compress-Archive -Path .\Packages\* -DestinationPath .\FoodDesire_v${{ env.VERSION }}.zip
         shell: pwsh
     
-      - name: Upload Zip Asset
-        uses: actions/upload-release-asset@v1
+      - name: Upload MSIX Assets
+        run: |
+          $packages = Get-ChildItem -Path .\Packages -Filter *.msix -Recurse
+          foreach ($package in $packages) {
+            $response = Invoke-RestMethod `
+              -Method POST `
+              -Headers @{Authorization = "Bearer $env:GITHUB_TOKEN"} `
+              -Uri "${{ steps.create_release.outputs.upload_url }}?name=$($package.Name)" `
+              -InFile $package.FullName `
+              -ContentType "application/vnd.ms-appx"
+          }
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.read_version.outputs.version }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: .\FoodDesire_v${{ env.VERSION }}.zip
-          asset_name: FoodDesire_v${{ env.VERSION }}.zip
-          asset_content_type: application/zip

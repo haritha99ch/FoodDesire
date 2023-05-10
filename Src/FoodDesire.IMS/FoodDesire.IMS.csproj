@@ -23,7 +23,6 @@
 	<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 	<GenerateTestArtifacts>True</GenerateTestArtifacts>
 	<AppxBundle>Never</AppxBundle>
-	<AppInstallerUri>C:\Packages</AppInstallerUri>
 	<PackageCertificateThumbprint>4E9971A721C6F54C4AC0BCE276F359A6301AF859</PackageCertificateThumbprint>
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
   </PropertyGroup>
