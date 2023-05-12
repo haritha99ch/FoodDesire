@@ -13,7 +13,7 @@
   <Identity
     Name="aeef0453-4ca2-4228-a06b-7f52bee4fcf8"
     Publisher="CN=Haritha Rathnayake"
-    Version="1.0.3.0" />
+    Version="1.0.4.0" />
     
   <mp:PhoneIdentity PhoneProductId="aeef0453-4ca2-4228-a06b-7f52bee4fcf8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
