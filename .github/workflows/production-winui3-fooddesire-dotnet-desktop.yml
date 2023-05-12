@@ -98,6 +98,10 @@ jobs:
     needs: build
     runs-on: windows-latest
     steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Download MSIX package
         uses: actions/download-artifact@v2
         with:
@@ -126,20 +130,15 @@ jobs:
           release_name: Release v${{ env.VERSION }}
           draft: false
           prerelease: false
-    
-      - name: Zip Packages directory
-        env:
-         VERSION: ${{ steps.read_version.outputs.version }}
-        run: Compress-Archive -Path .\Packages\* -DestinationPath .\FoodDesire_v${{ env.VERSION }}.zip
-        shell: pwsh
-    
-      - name: Upload Zip Asset
-        uses: actions/upload-release-asset@v1
+
+      - name: Upload MSIX Files
+        run: |
+          foreach ($file in Get-ChildItem -Path .\Packages\*\*.msix) {
+            $fileName = $file.Name
+            echo "Uploading $fileName"
+            gh release upload ${{ github.run_number }} $file.FullName --clobber
+          }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.read_version.outputs.version }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: .\FoodDesire_v${{ env.VERSION }}.zip
-          asset_name: FoodDesire_v${{ env.VERSION }}.zip
-          asset_content_type: application/zip
+        working-directory: ${{ github.workspace }}
+        shell: pwsh
