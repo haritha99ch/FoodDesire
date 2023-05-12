@@ -5,16 +5,11 @@ using Windows.System;
 namespace FoodDesire.IMS.Views;
 // TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
 public sealed partial class ShellPage : Page {
-    public ShellViewModel ViewModel {
-        get;
-    }
+    public ShellViewModel ViewModel { get; }
 
     public ShellPage(ShellViewModel viewModel) {
         ViewModel = viewModel;
         InitializeComponent();
-
-        ViewModel.NavigationService.Frame = NavigationFrame;
-        ViewModel.NavigationViewService.Initialize(NavigationViewControl);
 
         // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
         // A custom title bar is required for full window theme and Mica support.
@@ -27,6 +22,7 @@ public sealed partial class ShellPage : Page {
     }
 
     private async void HomePage_Loaded(object sender, RoutedEventArgs e) {
+        await ViewModel.GetUser();
         ContentDialog dialog = new ContentDialog() {
             XamlRoot = XamlRoot,
             Style = (Style)Application.Current.Resources["DefaultContentDialogStyle"],
@@ -49,6 +45,9 @@ public sealed partial class ShellPage : Page {
             }
         }
         ContentGrid.IsHitTestVisible = true;
+        ViewModel.NavigationService.Frame = NavigationFrame;
+        ViewModel.NavigationViewService.Initialize(NavigationViewControl);
+        ViewModel.NavigationService.NavigateTo("FoodDesire.IMS.ViewModels.HomeViewModel");
     }
 
     private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e) {

@@ -52,15 +52,14 @@ public partial class ShellViewModel : ObservableRecipient {
         INavigationService navigationService,
         INavigationViewService navigationViewService,
         IAuthenticationService authenticationService,
-        ILocalSettingsService localSettingsService
-        ) {
+        ILocalSettingsService localSettingsService) {
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
         _authenticationService = authenticationService;
         _localSettingsService = localSettingsService;
 
-        _ = GetUser();
+        //_ = GetUser();
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e) {
