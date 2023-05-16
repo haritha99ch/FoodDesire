@@ -27,7 +27,7 @@
         </Grid.ColumnDefinitions>
         <!--Financial and Inventory-->
         <TextBlock Grid.Row="0" 
-                   Text="Summery"
+                   Text="Summary"
                    Style="{StaticResource SubtitleTextBlockStyle}"/>
 
         <Grid Grid.Row="1"

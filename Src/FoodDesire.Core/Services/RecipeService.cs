@@ -105,6 +105,13 @@ public class RecipeService : IRecipeService {
             profit = (recipe.FixedPrice - recipe.MinimumPrice) / recipe.MinimumPrice * 100;
         }
         recipe.MinimumPrice = decimal.Zero;
+        recipe = await UpdateRecipeIngredientsPrice(recipe, profit);
+        if (recipe.FixedPrice < recipe.MinimumPrice) recipe.FixedPrice = recipe.MinimumPrice;
+        if (recipe.FixedPrice > recipe.MinimumPrice) recipe = await UpdateRecipeIngredientsPrice(recipe, profit);
+        return await _recipeRepository.Update(recipe);
+    }
+
+    private async Task<Recipe> UpdateRecipeIngredientsPrice(Recipe recipe, decimal profit) {
         foreach (var recipeIngredient in recipe.RecipeIngredients) {
             if (recipeIngredient.Recipe_Id != null) {
                 Recipe recipeFromIngredient = await _recipeRepository.GetByID(recipeIngredient.Recipe_Id);
@@ -120,13 +127,7 @@ public class RecipeService : IRecipeService {
             recipeIngredient.PricePerMultiplier = Math.Round(ingredient.CurrentPricePerUnit * (1 + profit / 100), 2);
             recipe.MinimumPrice += (!recipeIngredient.IsRequired) ? 0 : (decimal)(recipeIngredient.Amount * Convert.ToDouble(ingredient.CurrentPricePerUnit));
         }
-        if (recipe.FixedPrice < recipe.MinimumPrice)
-            recipe.FixedPrice = recipe.MinimumPrice;
-        if (profit == 0) {
-            recipe = await _recipeRepository.Update(recipe);
-            await UpdateRecipe(recipe);
-        }
-        return await _recipeRepository.Update(recipe);
+        return recipe;
     }
 
     public async Task<bool> RemoveRecipeById(int recipeId) {
