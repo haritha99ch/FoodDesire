@@ -18,7 +18,7 @@
                   PlaceholderText="Raw Ingredient"
                   IsEditable="True"
                   ItemsSource="{x:Bind ViewModel.RawIngredients, Mode=OneWay}"
-                  SelectedItem="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedValue="{x:Bind RecipeIngredient.SelectedIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="Name"
                   SelectionChanged="RawIngredient_SelectionChanged" />
 
@@ -29,7 +29,7 @@
                   IsEditable="True"
                   Margin="{StaticResource SmallTopMargin}"
                   ItemsSource="{x:Bind ViewModel.RecipeAsIngredients, Mode=OneWay}"
-                  SelectedItem="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedValue="{x:Bind RecipeIngredient.SelectedRecipeAsIngredient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="Name"
                   SelectionChanged="Recipe_SelectionChanged"/>
 

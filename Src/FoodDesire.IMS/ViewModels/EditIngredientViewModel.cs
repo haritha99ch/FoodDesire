@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace FoodDesire.IMS.ViewModels;
+﻿namespace FoodDesire.IMS.ViewModels;
 public class EditIngredientViewModel : IngredientForm, IInitializable {
     private readonly IIngredientsPageService _ingredientsPageService;
     private readonly int _ingredientId;
@@ -20,7 +18,7 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         IngredientDescription = _ingredient.Description;
         IngredientMaximumQuantity = _ingredient.MaximumQuantity;
         Measurement = _ingredient.Measurement;
-        Category = IngredientCategories.SingleOrDefault(e => e.Id == _ingredient.IngredientCategoryId)!.Name;
+        Category = IngredientCategories.SingleOrDefault(i => i.Id == _ingredient.IngredientCategoryId);
         IsLoading = false;
     }
 
@@ -68,7 +66,6 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         bool deleted = await _ingredientsPageService.DeleteIngredientCategory((int)_ingredientCategoryId!);
         NewIngredientCategory = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
         IngredientCategories.Remove(NewIngredientCategory);
-        Categories.Remove(Category!);
         IsCategoriesLoaded = true;
     }
 }

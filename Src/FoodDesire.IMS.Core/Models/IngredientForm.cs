@@ -9,19 +9,17 @@ public abstract partial class IngredientForm : ObservableObject {
     [NotifyPropertyChangedFor(nameof(CanBeCreated))]
     private string? _ingredientDescription;
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Categories))]
     private ObservableCollection<IngredientCategory> _ingredientCategories = new();
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanBeCreated), nameof(IngredientCategoryCanBeEdited))]
-    private string? _category;
+    private IngredientCategory? _category;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanBeCreated))]
     private double? _ingredientMaximumQuantity;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanBeCreated))]
-    [NotifyPropertyChangedFor(nameof(DisplayMeasurement))]
     private Measurement _measurement;
-    private IList<Measurement> _measurements = Enum.GetValues(typeof(Measurement)).Cast<Measurement>().ToList();
+    public ObservableCollection<Measurement> Measurements = new ObservableCollection<Measurement>(Enum.GetValues(typeof(Measurement)).Cast<Measurement>());
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
     private string? _newIngredientCategoryName;
@@ -29,7 +27,6 @@ public abstract partial class IngredientForm : ObservableObject {
     [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
     private string? _newIngredientCategoryDescription;
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Categories), nameof(Categories))]
     private IngredientCategory? _newIngredientCategory;
     [ObservableProperty]
     private bool _isLoading = true;
@@ -38,14 +35,12 @@ public abstract partial class IngredientForm : ObservableObject {
     public bool IngredientCategoryCanBeEdited => (Category != null);
 
     protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
-    public List<string> Categories => IngredientCategories.Select(e => e.Name).ToList();
-    public IList<Measurement> Measurements => _measurements;
     public bool EditMode => !string.IsNullOrEmpty(IngredientName);
     public bool CanBeCreated {
         get {
             if (string.IsNullOrEmpty(IngredientName)) return false;
             if (string.IsNullOrEmpty(IngredientDescription)) return false;
-            if (string.IsNullOrEmpty(Category)) return false;
+            if (Category == null) return false;
             if (IngredientMaximumQuantity == null) return false;
             if (IngredientMaximumQuantity == 0) return false;
             return true;
@@ -58,12 +53,6 @@ public abstract partial class IngredientForm : ObservableObject {
             return true;
         }
     }
-    public string DisplayMeasurement => Measurement switch {
-        Measurement.Grams => "g",
-        Measurement.Liquid => "ml",
-        Measurement.Each => "each",
-        _ => "",
-    };
 
     [RelayCommand]
     public abstract void AddNewIngredientCategory();

@@ -59,8 +59,14 @@
             <ComboBox Grid.Column="0"
                       HorizontalAlignment="Stretch"
                       IsEnabled="{x:Bind ViewModel.IsCategoriesLoaded, Mode=OneWay}"
-                      ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.Category, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                      ItemsSource="{x:Bind ViewModel.IngredientCategories, Mode=OneWay}"
+                      SelectedValue="{x:Bind ViewModel.Category, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Name, Mode=TwoWay}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <ProgressBar Grid.Column="0"
                          VerticalAlignment="Bottom"
                          IsIndeterminate="True"
@@ -148,12 +154,12 @@
             <TextBlock Grid.Column="1"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       Text="{x:Bind ViewModel.DisplayMeasurement, Mode=OneWay}" />
+                       Text="{x:Bind ViewModel.Measurement, Mode=OneWay}" />
             <ComboBox Margin="5 0"
                       Grid.Column="2"
                       HorizontalAlignment="Stretch"
-                      ItemsSource="{x:Bind ViewModel.Measurements}"
-                      SelectedItem="{x:Bind ViewModel.Measurement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                      ItemsSource="{x:Bind ViewModel.Measurements, Mode=OneWay}"
+                      SelectedValue="{x:Bind ViewModel.Measurement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         </Grid>
 
     </Grid>
