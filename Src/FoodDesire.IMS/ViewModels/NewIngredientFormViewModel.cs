@@ -11,7 +11,7 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
     public async Task OnInit() {
         List<IngredientCategory> ingredientCategories = await _ingredientsPageService.GetAllIngredientCategory();
         ingredientCategories.ForEach(IngredientCategories.Add);
-        Category = Categories.FirstOrDefault();
+        Category = IngredientCategories.FirstOrDefault();
         IsLoading = false;
     }
 
@@ -19,7 +19,7 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
         _ingredient = new() {
             Name = IngredientName!,
             Description = IngredientDescription!,
-            IngredientCategoryId = (int)_ingredientCategoryId!,
+            IngredientCategoryId = Category!.Id,
             Measurement = Measurement,
             MaximumQuantity = (double)IngredientMaximumQuantity!
         };
@@ -60,7 +60,6 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
         bool deleted = await _ingredientsPageService.DeleteIngredientCategory((int)_ingredientCategoryId!);
         NewIngredientCategory = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
         IngredientCategories.Remove(NewIngredientCategory);
-        Categories.Remove(Category!);
         IsCategoriesLoaded = true;
     }
 }
