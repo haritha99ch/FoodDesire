@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    if: github.head_ref != 'production-web' && github.head_ref != 'production-ims'
     strategy:
       matrix:
         configuration: [Debug]
