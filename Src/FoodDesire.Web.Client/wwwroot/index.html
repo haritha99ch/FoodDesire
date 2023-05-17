@@ -31,8 +31,29 @@
         <a class="dismiss">????</a>
     </div>
     <!--<script src="_content/Syncfusion.Blazor/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>-->
+    <script src="https://www.paypal.com/sdk/js?client-id=AaH-K0PqPrtS85ypxjPERNnOYIoWQbcJDPCJTEVs-k9KgJ7WTjqnJDCoWFHbk1z7qXNtZlAZ0pQ9fJW_"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        async function presentPayPalOrder(orderId, objRef) {
+            paypal.Buttons({
+                createOrder: function () {
+                    return orderId;
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        if (details.status === "COMPLETED") {
+                            var shippingAddress = details.purchase_units[0].shipping.address
+                            objRef.invokeMethodAsync('HandleShippingAddress', shippingAddress);
+                        } else {
+                            // Payment failed
+                            // ...
+                        }
+                    });
+                }
+            }).render('#paypal-button-container');
+        }
+    </script>
 </body>
 
 </html>

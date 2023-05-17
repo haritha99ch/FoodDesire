@@ -12,7 +12,10 @@ internal static class AppConfigurator {
         Core.Configure.ConfigureServices(builder.Services);
         ML.Model.Configure.ConfigureServices(builder.Services);
 
+        builder.Services.AddHttpClient();
+
         // Web API Services
+        builder.Services.AddTransient<IPayPalAPIService, PayPalAPIService>();
         builder.Services.AddTransient<IHomeControllerService, HomeControllerService>();
         builder.Services.AddTransient<IRecipeControllerService, RecipeControllerService>();
         builder.Services.AddTransient<ICartControllerService, CartControllerService>();

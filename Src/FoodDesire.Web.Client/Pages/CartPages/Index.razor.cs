@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 
 namespace FoodDesire.Web.Client.Pages.CartPages;
 public partial class Index : ComponentBase {
@@ -6,15 +6,23 @@ public partial class Index : ComponentBase {
     [Inject] private IAuthenticationService _authenticationService { get; set; } = default!;
     [Inject] private NavigationManager _navigationManager { get; set; } = default!;
     [Inject] private IDialogService _dialogService { get; set; } = default!;
+    [Inject] private IJSRuntime _jSRuntime { get; set; } = default!;
+    [Inject] private IMapper _mapper { get; set; } = default!;
+    [Inject] private ISnackbar _snackBar { get; set; } = default!;
 
     private bool _loading = true;
+    private bool _presentingPayPalOrder = false;
+    private bool _showPayPalButtons = false;
+    private bool _paymentCompleted = false;
 
     private Order? _order;
-    private Address _address = new();
     private List<FoodItemListItem> _foodItems = new();
+
+    private DotNetObjectReference<Index> _objRef { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
+        _objRef = DotNetObjectReference.Create(this);
         _loading = true;
         if (!await _authenticationService.IsAuthenticated()) {
             _navigationManager.NavigateTo("/Account/SignIn");
@@ -61,18 +69,32 @@ public partial class Index : ComponentBase {
         _navigationManager.NavigateTo("/Recipe/Index");
     }
 
-    private async Task PayForOrder(EditContext context) {
-        if (!context.Validate()) return;
-        //TODO: Implement Payment Getaway
+    private async Task PayForOrder() {
+        _presentingPayPalOrder = true;
+        _showPayPalButtons = true;
+
+        string? orderId = await _cartPageService.PayForOrderAsync(_order!.Id);
+
+        await _jSRuntime.InvokeVoidAsync("presentPayPalOrder", orderId, _objRef);
+
+        _presentingPayPalOrder = false;
+        _showPayPalButtons = true;
+    }
+
+    [JSInvokable]
+    public async Task HandleShippingAddress(ShippingAddress shippingAddress) {
+        _presentingPayPalOrder = true;
+        // Handle the shipping address here
         _order!.Delivery = new() {
-            Address = _address,
-            IsDelivered = false,
+            Address = _mapper.Map<Address>(shippingAddress),
+            IsDelivered = false
         };
-        Order order = await _cartPageService.UpdateOrderAsync(_order);
-        if (order == null) return;
-        _order = order;
-        _order.Delivery = null;
-        _order = await _cartPageService.PayForOrderAsync(_order.Id);
-        _navigationManager.NavigateTo("/Recipe/Index");
+        Order order = await _cartPageService.CompletePayment(_order);
+        if (order.Status.Equals(OrderStatus.Ordered)) {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+            _snackBar.Add("Payment completed successfully!", Severity.Success);
+            _navigationManager.NavigateTo("/Order/Index");
+        }
+        _presentingPayPalOrder = false;
     }
 }

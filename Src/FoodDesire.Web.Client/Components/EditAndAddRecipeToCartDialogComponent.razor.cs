@@ -4,6 +4,8 @@ public partial class EditAndAddRecipeToCartDialogComponent {
     [Inject] private IAccountPageService _accountPageService { get; set; } = default!;
     [Inject] private IAuthenticationService _authenticationService { get; set; } = default!;
     [Inject] private IMapper _mapper { get; set; } = default!;
+    [Inject] private ISnackbar _snackBar { get; set; } = default!;
+
     [Parameter]
     public RecipeListItem Recipe { get; set; } = default!;
     private List<FoodItemIngredientDetail> _foodItemIngredients { get; set; } = new();
@@ -61,6 +63,8 @@ public partial class EditAndAddRecipeToCartDialogComponent {
 
         _foodItem = await _recipePageService.AddFoodItemToCartAsync(_foodItem);
         MudDialog.Close(DialogResult.Ok(true));
+        _snackBar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+        _snackBar.Add("Added to the cart!", Severity.Success);
     }
 
     private void Cancel() {

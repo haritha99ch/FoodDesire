@@ -3,9 +3,13 @@
 [Route("api/[controller]"), Authorize]
 public class CartController : ControllerBase {
     private readonly ICartControllerService _cartControllerService;
+    private readonly HttpClient _httpClient;
+    private readonly IPayPalAPIService _payPalAPIService;
 
-    public CartController(ICartControllerService orderControllerService) {
+    public CartController(ICartControllerService orderControllerService, HttpClient httpClient, IPayPalAPIService payPalAPIService) {
         _cartControllerService = orderControllerService;
+        _httpClient = httpClient;
+        _payPalAPIService = payPalAPIService;
     }
 
     [HttpGet(nameof(Index))]
@@ -33,16 +37,28 @@ public class CartController : ControllerBase {
     }
 
     [HttpPatch(nameof(Pay))]
-    public async Task<ActionResult<Order>> Pay(int orderId) {
+    public async Task<ActionResult<string>> Pay(int orderId) {
         string? userId = GetUserId();
         if (userId == null) return BadRequest("Could not find user!");
 
         Order order = await _cartControllerService.GetOrderAsync(orderId);
         if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to pay this order!");
 
-        //TODO: implement payment gateway
-        //TODO: Implement email service
-        return Ok(await _cartControllerService.PayForOrderAsync(orderId));
+        // Create a PayPal order
+        var payPalOrderId = await _payPalAPIService.CreatePayPalOrder(order);
+        return Ok(payPalOrderId);
+    }
+
+    [HttpPatch(nameof(CompletePayment))]
+    public async Task<ActionResult<Order>> CompletePayment(Order order) {
+        string? userId = GetUserId();
+        if (userId == null) return BadRequest("Could not find user!");
+
+        if (order.CustomerId != int.Parse(userId)) return BadRequest("You are not authorized to pay this order!");
+
+        await _cartControllerService.UpdateOrderAsync(order);
+
+        return Ok(await _cartControllerService.PayForOrderAsync(order.Id));
     }
 
     [HttpPatch(nameof(Update))]
@@ -99,3 +115,5 @@ public class CartController : ControllerBase {
         return User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 }
+
+

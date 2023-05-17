@@ -18,9 +18,9 @@ public class CartPageService : AuthorizedService, ICartPageService {
         return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadFromJsonAsync<Order>() ?? null!;
     }
 
-    public async Task<Order> PayForOrderAsync(int orderId) {
+    public async Task<string> PayForOrderAsync(int orderId) {
         HttpResponseMessage response = await (await AddAuthorizationHeader()).PatchAsync($"api/Cart/Pay?orderId={orderId}", null);
-        return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadFromJsonAsync<Order>() ?? null!;
+        return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadAsStringAsync() ?? null!;
     }
 
     public async Task<bool> RemoveFoodItemByIdAsync(int foodItemId) {
@@ -35,6 +35,11 @@ public class CartPageService : AuthorizedService, ICartPageService {
 
     public async Task<Order> UpdateOrderAsync(Order order) {
         HttpResponseMessage response = await (await AddAuthorizationHeader()).PatchAsJsonAsync($"api/Cart/Update", order);
+        return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadFromJsonAsync<Order>() ?? null!;
+    }
+
+    public async Task<Order> CompletePayment(Order order) {
+        HttpResponseMessage response = await (await AddAuthorizationHeader()).PatchAsJsonAsync($"api/Cart/CompletePayment", order);
         return response.StatusCode != HttpStatusCode.OK ? null! : await response.Content.ReadFromJsonAsync<Order>() ?? null!;
     }
 }

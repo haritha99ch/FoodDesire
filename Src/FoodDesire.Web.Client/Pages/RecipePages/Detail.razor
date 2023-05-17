@@ -36,6 +36,10 @@ else
                                 <MudText Typo="Typo.h5">Rating:</MudText>
                                 <MudRating ReadOnly="true" SelectedValue="(_recipeDetail == null)? 0: _recipeDetail.Stars" />
                             </MudItem>
+                            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                                <MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="AddToCart">Add To Cart</MudButton>
+                                <MudButton Color="Color.Primary" Variant="Variant.Outlined" Size="Size.Small" OnClick="EditAndAddToCart">Edit & To Cart</MudButton>
+                            </MudItem>
                         </MudItem>
                     </MudGrid>
                 </MudPaper>

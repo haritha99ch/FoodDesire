@@ -25,6 +25,16 @@ public static class AppSettingsValidator {
             invalidAppSettings = true;
             errors.Add("Missing JWT:SignInKey");
         }
+
+        if (_config["PayPal:Secret"] == null) {
+            invalidAppSettings = true;
+            errors.Add("Missing PayPal:Secret");
+        }
+
+        if (_config["PayPal:ClientId"]! == null) {
+            invalidAppSettings = true;
+            errors.Add("Missing PayPal:ClientId");
+        }
         _config = null;
         if (!invalidAppSettings) return;
         string message = $"Missing User Secrets. Use 'dotnet user-secrets set' to configure user secrets.\n";

@@ -1,4 +1,6 @@
-﻿namespace FoodDesire.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace FoodDesire.Models;
 public sealed class Payment : TrackedEntity {
     [Required]
     public PaymentType PaymentType { get; set; }
@@ -19,6 +21,7 @@ public sealed class Payment : TrackedEntity {
 
 
     [ForeignKey(nameof(OrderId))]
+    [JsonIgnore]
     public Order? Order { get; set; }
     [ForeignKey(nameof(EmployeeId))]
     public Employee? Employee { get; set; }
