@@ -35,11 +35,15 @@ jobs:
             CONNECTIONSTRINGS_STORAGECONNECTION: ${{ secrets.USERSECRETS_CONNECTIONSTRINGS_STORAGECONNECTION }}
             CLIENTID: ${{ secrets.USERSECRETS_CLIENTID }}
             JWT_SIGNINKEY: ${{ secrets.USERSECRETS_JWT_SIGNINKEY }}
+            PAYPAL_CLIENTID: ${{ secrets.USERSECRETS_PAYPAL_CLIENTID }}
+            PAYPAL_SECRET: ${{ secrets.USERSECRETS_PAYPAL_SECRET }}
         run: |
             dotnet user-secrets set "ConnectionStrings:DefaultConnection" $env:CONNECTIONSTRINGS_DEFAULTCONNECTION --project .\Src\FoodDesire.AppSettings\
             dotnet user-secrets set "ConnectionStrings:StorageConnection" $env:CONNECTIONSTRINGS_STORAGECONNECTION --project .\Src\FoodDesire.AppSettings\
             dotnet user-secrets set "ClientID" $env:CLIENTID --project .\Src\FoodDesire.AppSettings\
             dotnet user-secrets set "Jwt:SignInKey" $env:JWT_SIGNINKEY --project .\Src\FoodDesire.AppSettings\
+            dotnet user-secrets set "PayPal:ClientId" $env:PAYPAL_CLIENTID --project .\Src\FoodDesire.AppSettings\
+            dotnet user-secrets set "PayPal:Secret" $env:PAYPAL_SECRET --project .\Src\FoodDesire.AppSettings\
         shell: pwsh
 
       - name: Build
