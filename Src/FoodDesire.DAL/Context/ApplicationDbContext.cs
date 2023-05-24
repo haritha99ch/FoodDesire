@@ -68,6 +68,11 @@ public class ApplicationDbContext : DbContext {
                 (c1, c2) => c1!.SequenceEqual(c2!),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList()));
+        modelBuilder.Entity<Recipe>()
+            .HasMany(r => r.Images)
+            .WithOne(i => i.Recipe)
+            .HasForeignKey(i => i.RecipeId)
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<RecipeReview>()
             .HasOne(r => r.Recipe)
             .WithMany()
