@@ -21,7 +21,7 @@ public abstract partial class IngredientForm : ObservableObject {
     private Measurement _measurement;
     public ObservableCollection<Measurement> Measurements = new ObservableCollection<Measurement>(Enum.GetValues(typeof(Measurement)).Cast<Measurement>());
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
+    [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated), nameof(IngredientCategoryId))]
     private string? _newIngredientCategoryName;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CategoryCanBeCreated))]
@@ -34,7 +34,11 @@ public abstract partial class IngredientForm : ObservableObject {
     private bool _isCategoriesLoaded = true;
     public bool IngredientCategoryCanBeEdited => (Category != null);
 
-    protected int? _ingredientCategoryId => IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))?.Id;
+    private int _ingredientCategoryId;
+    protected int IngredientCategoryId {
+        get => Category!.Id;
+        set => _ingredientCategoryId = value;
+    }
     public bool EditMode => !string.IsNullOrEmpty(IngredientName);
     public bool CanBeCreated {
         get {

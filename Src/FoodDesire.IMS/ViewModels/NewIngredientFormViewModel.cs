@@ -57,7 +57,7 @@ public class NewIngredientFormViewModel : IngredientForm, IInitializable {
 
     public override async void DeleteIngredientCategory() {
         IsCategoriesLoaded = false;
-        bool deleted = await _ingredientsPageService.DeleteIngredientCategory((int)_ingredientCategoryId!);
+        bool deleted = await _ingredientsPageService.DeleteIngredientCategory(IngredientCategoryId);
         NewIngredientCategory = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
         IngredientCategories.Remove(NewIngredientCategory);
         IsCategoriesLoaded = true;

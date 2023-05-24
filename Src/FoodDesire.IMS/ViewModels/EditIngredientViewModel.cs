@@ -18,6 +18,7 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
         IngredientDescription = _ingredient.Description;
         IngredientMaximumQuantity = _ingredient.MaximumQuantity;
         Measurement = _ingredient.Measurement;
+        IngredientCategoryId = _ingredient.IngredientCategoryId;
         Category = IngredientCategories.SingleOrDefault(i => i.Id == _ingredient.IngredientCategoryId);
         IsLoading = false;
     }
@@ -25,7 +26,7 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
     public async Task<Ingredient> EditIngredient() {
         _ingredient.Name = IngredientName!;
         _ingredient.Description = IngredientDescription!;
-        _ingredient.IngredientCategoryId = (int)_ingredientCategoryId!;
+        _ingredient.IngredientCategoryId = IngredientCategoryId!;
         _ingredient.Measurement = Measurement;
         _ingredient.MaximumQuantity = (double)IngredientMaximumQuantity!;
 
@@ -63,7 +64,7 @@ public class EditIngredientViewModel : IngredientForm, IInitializable {
 
     public override async void DeleteIngredientCategory() {
         IsCategoriesLoaded = false;
-        bool deleted = await _ingredientsPageService.DeleteIngredientCategory((int)_ingredientCategoryId!);
+        bool deleted = await _ingredientsPageService.DeleteIngredientCategory(IngredientCategoryId!);
         NewIngredientCategory = IngredientCategories.SingleOrDefault(e => e.Name.Equals(Category))!;
         IngredientCategories.Remove(NewIngredientCategory);
         IsCategoriesLoaded = true;
