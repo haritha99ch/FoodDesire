@@ -107,7 +107,10 @@ public class RecipeService : IRecipeService {
         recipe.MinimumPrice = decimal.Zero;
         recipe = await UpdateRecipeIngredientsPrice(recipe, profit);
         if (recipe.FixedPrice < recipe.MinimumPrice) recipe.FixedPrice = recipe.MinimumPrice;
-        if (recipe.FixedPrice > recipe.MinimumPrice) recipe = await UpdateRecipeIngredientsPrice(recipe, profit);
+        if (recipe.FixedPrice > recipe.MinimumPrice) {
+            recipe.MinimumPrice = decimal.Zero;
+            recipe = await UpdateRecipeIngredientsPrice(recipe, profit);
+        }
         return await _recipeRepository.Update(recipe);
     }
 
