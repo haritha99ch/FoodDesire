@@ -6,7 +6,7 @@
 
     `dotnet user-secrets set "ConnectionStrings:DefaultConnection" CONNECTIONSTRINGS_DEFAULTCONNECTION`
 
-2. Set Azure Blob Storage Connection String (Required for hosting ML model). 
+2. Set Azure Blob Storage Connection String (Required for hosting ML model).
 
     `dotnet user-secrets set "ConnectionStrings:StorageConnection" CONNECTIONSTRINGS_STORAGECONNECTION`
 
