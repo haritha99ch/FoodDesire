@@ -2,6 +2,8 @@
 
 Food Desire is an online food ordering system developed by Haritha Rathnayake at the University of Plymouth. The project aims to enhance the food ordering experience by allowing customers to customize their meals and receive personalized recommendations. The system also includes an inventory management system for restaurants to manage ingredients and recipes.
 
+![Alt text](Images/Food%20Desire%20Poster.png)
+
 ## Features
 
 - Online food ordering
