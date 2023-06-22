@@ -2,6 +2,8 @@
 
 Food Desire is an online food ordering system developed by Haritha Rathnayake at the University of Plymouth. The project aims to enhance the food ordering experience by allowing customers to customize their meals and receive personalized recommendations. The system also includes an inventory management system for restaurants to manage ingredients and recipes.
 
+![Alt text](Images/Food%20Desire%20Poster.png)
+
 ## Features
 
 - Online food ordering
@@ -38,16 +40,7 @@ To set up the development environment for this project, you will need to have th
     `cd FoodDesire/Src`
 
 3. [Set Environment variables](Src/FoodDesire.AppSettings/README.md#setting-environment-variables).
-4. Configure Database using Entity Framework Core.
-    - Install dotnet EF core tools.
-        `dotnet tool install --global dotnet-ef`
-
-    - Add Migrations.
-        `dotnet ef migrations add Initial --project .\FoodDesire.DAL`
-
-    - Update Database.
-        `dotnet ef database update`
-
+4. [Configure Database using Entity Framework Core.](Src/FoodDesire.DAL/README.md#database-migrations)
 5. Build the solution.
 
     `dotnet build`
@@ -59,3 +52,7 @@ To set up the development environment for this project, you will need to have th
 7. [Train ML Model](Src/FoodDesire.ML.Model/README.md) (Optional, Dataset required).
 
     `dotnet run --project ./FoodDesire.ML.Model`
+
+8. Go through Domain Layers [Models](Src/FoodDesire.Models/README.md), [DAL](Src/FoodDesire.DAL/README.md), [Core](Src/FoodDesire.Core/README.md) to understand its structure and functionality.
+9. Go through the [Web Application](Src/FoodDesire.Web.API/README.md) to understand its structure and functionality.
+10. Go through the [Inventory Management System](Src/FoodDesire.IMS/README.md) to understand its structure and functionality.
