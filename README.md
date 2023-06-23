@@ -54,8 +54,8 @@ To set up the development environment for this project, you will need to have th
     `dotnet run --project ./FoodDesire.ML.Model`
 
 8. Go through Domain Layers [Models](Src/FoodDesire.Models/README.md), [DAL](Src/FoodDesire.DAL/README.md), [Core](Src/FoodDesire.Core/README.md) to understand its structure and functionality.
-9. Go through the [Web Application](Src/FoodDesire.Web.API/README.md) to understand its structure and functionality.
-10. Go through the [Inventory Management System](Src/FoodDesire.IMS/README.md) to understand its structure and functionality.
+9. Go through the [Inventory Management System](Src/FoodDesire.IMS/README.md) to understand its structure and functionality.
+10. Go through the [Web Application](Src/FoodDesire.Web.API/README.md) to understand its structure and functionality.
 
 ## DevOps Pipeline
 
