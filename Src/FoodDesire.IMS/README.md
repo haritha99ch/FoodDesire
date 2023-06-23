@@ -33,3 +33,17 @@ To run the WinUi3 project, follow these steps:
 
 - To add new pages to the project, you can use the Windows Template Studio. In Visual Studio, right-click on the project in the Solution Explorer and select "Add -> New Item". In the "Add New Item" dialog, select "Windows Template Studio" and follow the prompts to add a new page to your project.
 - To define new services for your project, you can create a new class that implements the desired functionality and register it with the dependency injection container in the `Helpers/AppConfigurator.cs`
+
+![IMS](../../Images/IMS%20(1).png)
+![IMS](../../Images/IMS%20(2).png)
+![IMS](../../Images/IMS%20(3).png)
+![IMS](../../Images/IMS%20(4).png)
+![IMS](../../Images/IMS%20(5).png)
+![IMS](../../Images/IMS%20(6).png)
+![IMS](../../Images/IMS%20(7).png)
+![IMS](../../Images/IMS%20(8).png)
+![IMS](../../Images/IMS%20(9).png)
+![IMS](../../Images/IMS%20(10).png)
+![IMS](../../Images/IMS%20(11).png)
+![IMS](../../Images/IMS%20(12).png)
+![IMS](../../Images/IMS%20(13).png)

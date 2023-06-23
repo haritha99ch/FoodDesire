@@ -2,7 +2,7 @@
 
 Food Desire is an online food ordering system developed by Haritha Rathnayake at the University of Plymouth. The project aims to enhance the food ordering experience by allowing customers to customize their meals and receive personalized recommendations. The system also includes an inventory management system for restaurants to manage ingredients and recipes.
 
-![Alt text](Images/Food%20Desire%20Poster.png)
+![Poster](Images/Food%20Desire%20Poster.png)
 
 ## Features
 
@@ -56,3 +56,18 @@ To set up the development environment for this project, you will need to have th
 8. Go through Domain Layers [Models](Src/FoodDesire.Models/README.md), [DAL](Src/FoodDesire.DAL/README.md), [Core](Src/FoodDesire.Core/README.md) to understand its structure and functionality.
 9. Go through the [Web Application](Src/FoodDesire.Web.API/README.md) to understand its structure and functionality.
 10. Go through the [Inventory Management System](Src/FoodDesire.IMS/README.md) to understand its structure and functionality.
+
+## DevOps Pipeline
+
+Automated development process of the system.
+
+1. Releases.
+    - Releases are automated using GitHub Actions. Go through [this guide](https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/apps/package-and-deploy/ci-for-winui3.md) and [workflow file](.github/workflows/production-winui3-fooddesire-dotnet-desktop.yml).
+    - Installing.
+        - Before installing the MSIX package, it is important to ensure that the certificate is installed in the system. This will allow the package to be trusted and installed    correctly. [Installing a test certificate directly from an MSIX package.](https://www.advancedinstaller.com/install-test-certificate-from-msix.html)
+        - It is important to note that the IMS app requires the use of [.NET user secrets](Src/FoodDesire.AppSettings/README.md#setting-environment-variables) on the client system. This ensures that only authorized individuals can access and use the app.
+
+2. Hosting.
+    The web app is hosted on Azure App Service. GitHub Actions is used to automate the deployment process. Go through [this guide](https://learn.microsoft.com/en-us/dotnet/devops/github-actions-overview) and [workflow file](.github/workflows/production-web_app-fooddesire-web-sea-dev-001.yml).
+
+Each of these steps is followed by automated testing to ensure that the app is functioning correctly. Go through [this guide](https://learn.microsoft.com/en-us/dotnet/devops/dotnet-test-github-action) and [workflow file](.github/workflows/dotnet-desktop.yml).

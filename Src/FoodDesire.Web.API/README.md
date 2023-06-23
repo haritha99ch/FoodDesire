@@ -57,3 +57,7 @@ The Food Desire Web API provides Swagger documentation for easy API exploration 
 
 - The Web API project depends on the Food Desire ML project for generating recipe recommendations. Ensure that the ML model is trained and available in the Azure Blob Storage specified in the configuration.
 - Custom services can be added or modified in the *AppConfigurator.ConfigureServices* method in the `Helpers/AppConfigurator.cs` file to extend the functionality of the API with the dependency injection.
+
+![Web](../../Images/Web%20(1).png)
+![Web](../../Images/Web%20(2).png)
+![Web](../../Images/Web%20(3).png)
