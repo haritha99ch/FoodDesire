@@ -71,3 +71,5 @@ Automated development process of the system.
     The web app is hosted on Azure App Service. GitHub Actions is used to automate the deployment process. Go through [this guide](https://learn.microsoft.com/en-us/dotnet/devops/github-actions-overview) and [workflow file](.github/workflows/production-web_app-fooddesire-web-sea-dev-001.yml).
 
 Each of these steps is followed by automated testing to ensure that the app is functioning correctly. Go through [this guide](https://learn.microsoft.com/en-us/dotnet/devops/dotnet-test-github-action) and [workflow file](.github/workflows/dotnet-desktop.yml).
+
+> I no longer have access to the student email which had a free Azure subscription. So the production environment is no longer available.
